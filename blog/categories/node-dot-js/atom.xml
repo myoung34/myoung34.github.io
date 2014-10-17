@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: node.js | Marcus Young]]></title>
+  <link href="http://myoung34.github.io/blog/categories/node-dot-js/atom.xml" rel="self"/>
+  <link href="http://myoung34.github.io/"/>
+  <updated>2014-10-17T11:47:42-05:00</updated>
+  <id>http://myoung34.github.io/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Creating an MVC Blog with Node.js and MongoDB]]></title>
+    <link href="http://myoung34.github.io/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
+    <updated>2012-04-25T00:00:00-05:00</updated>
+    <id>http://myoung34.github.io/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
+    <content type="html"><![CDATA[<p>This is going to be my first big tutorial. This is a simple tutorial to show how to build the worlds most basic blog with comment system in Node.js with Express for the MVC Routing, MongoDB as the storage engine, and Jade as the html shorthand. <!--more--></p>
+
+<p>I&#8217;m going to assume you know how to install the base packages for Node.js, npm (node package manager), and mongodb. First, let&#8217;s set up the database to hold some articles. The mongo collection will be a basic object with an id, article_title, and article_body:</p>
+
+<pre><code>[myoung@F00 tutorial]$ mongo tutorial
+MongoDB shell version: 2.0.2
+connecting to: tutorial
+&gt; db.articles.remove()
+&gt; db.articles.insert({"article_title": "Article 1","article_body": "This would be the data from &lt;strong&gt;Article 1&lt;/strong&gt;","article_date": new Date()});
+&gt; db.articles.insert({"article_title": "Article 2","article_body": "This would be the data from &lt;strong&gt;Article 2&lt;/strong&gt;
+I think I'll put some more data in this one =)","article_date": new Date()});
+</code></pre>
+
+<p>Now, let&#8217;s get the modules installed via npm.</p>
+
+<pre><code>[myoung@F00 ~]$ mkdir tutorial
+[myoung@F00 ~]$ cd tutorial
+[myoung@F00 tutorial]$ npm install connect # the middleware module for the model
+[myoung@F00 tutorial]$ npm install express # the module to set up 'route' or controllers
+[myoung@F00 tutorial]$ npm install jade # the module to set up shorthand html, or views
+</code></pre>
+
+<p>Next, the actual node app is needed. It&#8217;s a basic setup that loads the installed modules, listens on port 9095, and responds to any GET on &#8216;/&#8217; with &#8216;Hello from node.js!&#8217;</p>
+
+<pre><code>var express = require('express')
+var app = module.exports = express.createServer();
+
+// Configuration
+app.configure(function(){
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.use(express.static(__dirname + '/public'));
+  app.set('view options', { layout: false });
+  app.use(app.router);
+});
+
+app.configure('development', function(){
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+  app.use(express.errorHandler());
+});
+
+// Routes
+app.get('/',function(req,res) {
+  res.writeHead(200);
+  res.end("Hello from node.js!");
+});
+
+app.listen(9095);
+</code></pre>
+
+<p>If you run this, you&#8217;ll see that we have the worlds most basic server, let&#8217;s make it a little more advanced. This next version will set up a route that sends GET&#8217;s on &#8216;/&#8217; to &#8216;views/index.jade&#8217;</p>
+
+<pre><code>app.get('/',function(req,res) {
+  res.render('index', {});
+});
+</code></pre>
+
+<pre><code>-//new file: views/index.jade
+!!!
+html
+  head
+    title MVC Webpage
+  body
+    | This is the main layout
+</code></pre>
+
+<p>This is all fine and dandy, but it&#8217;s pretty basic. If we want to make any real web app, we have to minimize code reuse. The great thing about jade is its ability to extend other files.So let&#8217;s make a base layout.jade that holds all the html(in your final blog you&#8217;d want it to load the css, and actually set up the page). Extending in Jade works by creating a file, styling it with css, loading whatever jQuery modules or anything you&#8217;d want to display, and setting &#8216;blocks&#8217;. Blocks will be overridden by child pages, so you&#8217;d want it to be where your content is, or data that will change from view to view. A side note, which you&#8217;ll notice in later snippets, is that you can put inline JavaScript in the jade file, and it can determine what is rendered</p>
+
+<pre><code>-//file is layout.jade...the 'parent' view
+!!!
+html
+  head
+    title MVC Webpage
+  body
+    block content
+      | This is the main layout
+
+-//index.jade
+extends layout
+-//now index is a 'child' of layout
+block content
+  | This was overridden by the index =)
+</code></pre>
+
+<p>Now that we&#8217;ve got a successful, notably basic, MVC framework set, let&#8217;s make it Mongo compatible so we can display some stuff. I tested a few Mongo modules, but enjoyed this one the most. It plays more like the CLI and has minimal overhead</p>
+
+<pre><code>[myoung@F00 tutorial]$ npm install mongodb
+</code></pre>
+
+<p>Now the app.js has to be modified to make the connection, and on response to &#8216;/&#8217;, grab the collection as an array, and pass it to the page as a variable.The index.jade also has to be modified to check for the array passed in, and loop through it displaying the title and body</p>
+
+<pre><code>var mongodb = require('mongodb')
+  , Db = mongodb.Db
+  , Server = mongodb.Server
+  , db = new Db('tutorial', new Server('localhost', 27017, {auto_reconnect: true, native_parser: true}), {})
+var express = require('express')
+var app = module.exports = express.createServer();
+
+// Configuration
+app.configure(function(){
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.use(express.static(__dirname + '/public'));
+  app.set('view options', { layout: false });
+  app.use(app.router);
+});
+
+app.configure('development', function(){
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+  app.use(express.errorHandler());
+});
+
+// Routes
+//this is the route for /, or the root
+app.get('/',function(req,res) {
+  var data_collection = function(err,collection) {
+    //find all articles in the collection, and sort by article_date...
+    //pass it in as db_results
+    collection.find().sort({article_date: -1}).toArray(function(err,db_results) {
+      console.log(db_results);//just to show some output on the server, log the entire obj
+      res.render('index', {//render the index
+        blog_content: db_results //pass in the results to the page as a local blog_content
+      });
+    });
+  };
+
+  db.open(function(err, p_client) {
+    db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()
+  });
+
+});
+
+app.listen(9095);
+</code></pre>
+
+<pre><code>-//index.jade
+extends layout
+block content
+  -if(locals.blog_content) {
+    -for(var i=0; i&lt;blog_content.length; i++) {
+      h3=blog_content[i].article_title
+      p !{blog_content[i].article_body}
+    -}
+  -}
+</code></pre>
+
+<p>At this point the page will loop through the blog articles in the database and display them all on the same page. To make it a little nicer, let&#8217;s do some creative modifications.Index.jade will take the length of the array, and if it&#8217;s 1, display that article with a blank &#8216;Comment Section&#8217;. If it&#8217;s more than 1, let&#8217;s loop through all of them, and make the title link to the article itself.For this to really do anything, we need the link to go to a distinct article, so App.js will have to be mofied to allow a direct link. In this case, We&#8217;re going to make it go to &#8216;/index/mongos_id_of_article&#8217;.You&#8217;ll notice a little work to get the id from the link. Node.js sees &#8216;/index/mongos_id_of_article&#8217; as &#8216;/index/:article_id&#8217;, which is translated to &#8216;request.paracms.article_id&#8217;. The last part of this is the coersion from this id to a BSON id for a Mongo lookup (BSON.ObjectId).</p>
+
+<pre><code>-//index.jade
+extends layout
+block content
+  -if(locals.blog_content) {
+    -if(blog_content.length == 1) {
+      h3=blog_content[0].article_title
+      p !{blog_content[0].article_body}
+      hr(width="100%")
+      | Comment Section
+    -} else {
+      -for(var i=0; i&lt;blog_content.length; i++) {
+        h3
+          a(href='/article/'+blog_content[i]._id)=blog_content[i].article_title
+        p !{blog_content[i].article_body}
+      -}
+    -}
+  -}
+</code></pre>
+
+<pre><code>//this is the route for /article/somenumber .. somenumber is available in the request
+app.get('/article/:article_id',function(req,res) {
+  var data_collection = function(err,collection) {
+    var BSON = mongodb.BSONPure;//load the BSON object
+    var o_id = new BSON.ObjectID(req.params.article_id);//this is now a searchable
+                                                        //id for collection
+    collection.find({_id: o_id}).toArray(function(err,db_results) {
+      res.render('index', {//render the index
+        blog_content: db_results //pass the db_results to a local variable in index
+                                 //called blog_content
+      });
+    });
+  };
+  db.open(function(err, p_client) {
+    db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()
+  });
+});
+</code></pre>
+
+<p>If you run it at this point, you&#8217;ll be able to hit the index, see links to articles and go directly to them with a blank comment section. Let&#8217;s make that comment section. To prep for this, we&#8217;ll need a form to POST to /comment</p>
+
+<pre><code>-//index.jade
+extends layout
+block content
+  -if(locals.blog_content) {
+    -if(blog_content.length == 1) {
+      h3=blog_content[0].article_title
+      p !{blog_content[0].article_body}
+      hr(width="100%")
+      | Comment Section
+      form(method='post',action='/comment')
+        label Name:
+          input(type='text',name='postername')
+        label Comment:
+          textarea(type='text',name='postercomment')
+        input(type='hidden',name='current_id',value=blog_content[0]._id)
+        input(type='submit',value='submit')
+    -} else {
+      -for(var i=0; i&lt;blog_content.length; i++) {
+        h3
+          a(href='/article/'+blog_content[i]._id)=blog_content[i].article_title
+        p !{blog_content[i].article_body}
+      -}
+    -}
+  -}
+</code></pre>
+
+<p>If you run this now, you&#8217;ll get an error. That&#8217;s because we don&#8217;t have a route for a POST to /comment, so let&#8217;s set that up.</p>
+
+<pre><code>app.post('/comment',function(req,res) {                                                                         
+  var bodyarr = [];                                                                                             
+  req.on('data', function(chunk){                                                                               
+    bodyarr.push(chunk);                                                                                        
+  });                                                                                                           
+  req.on('end', function(){
+    /* This is hackish but is to only show proof of concept                                                     
+       This will split the bodyarr that we've created                                                           
+          ex: id=4&amp;body=what%20up&amp;something=somethingelse                                                       
+    */                                                                                                          
+    var values = bodyarr.join('').split('&amp;');                                                                   
+    var BSON = mongodb.BSONPure;//this will load the mongo BSON                                                 
+    var article_id = new BSON.ObjectID(values[2].split('=')[1]);//this was the argument for ID                  
+
+    //create a 'comment' object that contains the poster and comment                                            
+    var comment_object = {                                                                                      
+      'poster': values[].split('=')[1],
+      'comment': values[1].split('=')[1]
+    };                                                                                                          
+    var data_collection = function(err,collection) {                                                            
+      //call update on the collection, find by _id, and push the comment object onto it                         
+      collection.update({_id: article_id},{$push : { comments : comment_object }});
+      res.redirect('back');
+    };
+    db.open(function(err, p_client) {                                                                           
+      db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()   
+    });
+  });
+});
+</code></pre>
+
+<p>It got a little complicated in that snippet, so here&#8217;s a slight breakdown. The post takes the data as a stream (req.on) and pushes it to an array. On the end of the stream we&#8217;ll break up the values,and push it onto the mongo collection for that id (we know the id from the hidden form element). The push is an Object that&#8217;s a &#8216;poster&#8217; and a &#8216;comment&#8217;. When this is finished, we&#8217;ll redirect backwards. This is dandy, but you&#8217;ll notice we haven&#8217;t set up the view to display comments, only store. The newest code has the addition of a loop. If comments exists(if the collection even has a comment array), we will loop through it and display it. For handiness, you&#8217;ll also notice the addition of a link to &#8216;/&#8217;</p>
+
+<pre><code>-//index.jade 
+extends layout
+-//overwrite the content block with new data
+block content 
+  -if(locals.blog_content) {//make sure it has a blog_content (to be safe and not
+                            //cause an Express crash
+    -if(blog_content.length == 1) {//only 1 article, means they clicked on
+                                   //an article link to view it....
+                                   //so render it with the comment form data
+      h3=blog_content[0].article_title
+      p !{blog_content[0].article_body}
+      hr(width="100%")
+      | Comment Section
+      form(method='post',action='/comment')
+        label Name:
+          input(type='text',name='postername')
+        label Comment:
+          textarea(type='text',name='postercomment')
+        input(type='hidden',name='current_id',value=blog_content[0]._id)
+        input(type='submit',value='submit')
+      hr(width="100%")
+      -var comments = blog_content[0].comments;
+      -if(comments &amp;&amp; comments != undefined) {
+        -for(var i=0; i&lt;comments.length;i++) {
+          h3=comments[i].poster
+          | !{comments[i].comment}
+        -}
+      -}
+      hr(width="100%")
+      a(href='/') Home
+    -} else {//more than one article, meaning they're at the 'blog root',
+             //looking at all the links
+      -for(var i=0; i&lt;blog_content.length; i++) {//loop through blog array
+        h3
+          a(href='/article/'+blog_content[i]._id)=blog_content[i].article_title
+        p !{blog_content[i].article_body}
+      -}
+    -}
+  -}
+</code></pre>
+
+<p>This last snippet is a clean up of the comment post. Since it&#8217;s parsed as parameters, spaces are +&#8217;s. This could be fixed by modifying the way I handle the post as a stream, but for demonstrations sake, let&#8217;s just do a regex replace of /+/ to spaces.</p>
+
+<pre><code>app.post('/comment',function(req,res) {
+  var bodyarr = [];
+  req.on('data', function(chunk){
+    bodyarr.push(chunk);
+  });
+  req.on('end', function(){//the data has finished coming in
+    /* This is hackish but is to only show proof of concept
+       This will split the bodyarr that we've created
+          ex: id=4&amp;body=what%20up&amp;something=somethingelse
+    */
+    var values = bodyarr.join('').split('&amp;');
+    var BSON = mongodb.BSONPure;//this will load the mongo BSON
+    var article_id = new BSON.ObjectID(values[2].split('=')[1]);//this was the argument for ID
+
+    //create a 'comment' object that contains the poster and comment
+    var comment_object = {
+      'poster': values[].split('=')[1].replace(/+/g,' '),//had +'s for spaces, so replace them
+      'comment': values[1].split('=')[1].replace(/+/g,' ')
+    };
+
+    var data_collection = function(err,collection) {
+      //call update on the collection, find by _id, and push the comment object onto it
+      collection.update({_id: article_id},{$push : { comments : comment_object }});
+      res.redirect('back');//send the user to the previous page
+    };
+    db.open(function(err, p_client) {
+      db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()
+    });
+  });
+});
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[HL7 And Node.js]]></title>
+    <link href="http://myoung34.github.io/post/hl7-and-node-js/"/>
+    <updated>2012-03-12T00:00:00-05:00</updated>
+    <id>http://myoung34.github.io/post/hl7-and-node-js</id>
+    <content type="html"><![CDATA[<p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
+
+<!--more-->
+
+
+<p>I originally had the code shown here, but it speaks for itself at <a href="https://github.com/myoung34/Node.hl7">My Repo</a></p>
+]]></content>
+  </entry>
+  
+</feed>

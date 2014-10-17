@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: hl7 | Marcus Young]]></title>
+  <link href="http://myoung34.github.io/blog/categories/hl7/atom.xml" rel="self"/>
+  <link href="http://myoung34.github.io/"/>
+  <updated>2014-10-17T11:47:42-05:00</updated>
+  <id>http://myoung34.github.io/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[HL7 And Node.js]]></title>
+    <link href="http://myoung34.github.io/post/hl7-and-node-js/"/>
+    <updated>2012-03-12T00:00:00-05:00</updated>
+    <id>http://myoung34.github.io/post/hl7-and-node-js</id>
+    <content type="html"><![CDATA[<p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
+
+<!--more-->
+
+
+<p>I originally had the code shown here, but it speaks for itself at <a href="https://github.com/myoung34/Node.hl7">My Repo</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+  <url>
+    <loc>http://myoung34.github.io/post/mirth-puppet-module</loc>
+    
+    <lastmod>2014-05-14T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins</loc>
+    
+    <lastmod>2014-03-22T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet</loc>
+    
+    <lastmod>2014-03-21T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app</loc>
+    
+    <lastmod>2014-03-20T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines</loc>
+    
+    <lastmod>2014-03-19T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-overview</loc>
+    
+    <lastmod>2014-03-18T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/udoo-and-an-arduino-lcd</loc>
+    
+    <lastmod>2014-03-03T00:00:00-06:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/udoo-and-sata</loc>
+    
+    <lastmod>2014-02-23T00:00:00-06:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/puppet-and-marklogic</loc>
+    
+    <lastmod>2013-12-14T00:00:00-06:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/puppetconf2013</loc>
+    
+    <lastmod>2013-10-30T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/automatically-deploy-git-code-windows-puppet/</loc>
+    
+    <lastmod>2013-05-24T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/raspberry-pi-automated-bluetooth-audio-player/</loc>
+    
+    <lastmod>2013-03-12T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/fix-mediatombushare-broadcast-ssdp/</loc>
+    
+    <lastmod>2012-11-28T00:00:00-06:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/fix-gtablet-nvflash-freezing-upload/</loc>
+    
+    <lastmod>2012-11-27T00:00:00-06:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/</loc>
+    
+    <lastmod>2012-09-25T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/kegduino-aka-homebrew-and-arduinos-love-child/</loc>
+    
+    <lastmod>2012-07-25T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/i-made-beer/</loc>
+    
+    <lastmod>2012-05-11T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/creating-an-mvc-blog-with-node-js-and-mongodb/</loc>
+    
+    <lastmod>2012-04-25T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/seriously-mysql/</loc>
+    
+    <lastmod>2012-03-28T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/hl7-and-node-js/</loc>
+    
+    <lastmod>2012-03-12T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/ship-now-patch-later/</loc>
+    
+    <lastmod>2011-02-05T00:00:00-06:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/post/javascript-like-to-play-dumb/</loc>
+    
+    <lastmod>2011-02-03T00:00:00-06:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  
+  <url>
+    <loc>http://myoung34.github.io/blog/archives/</loc>
+    <lastmod>2014-10-17T11:47:42-05:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>http://myoung34.github.io/</loc>
+    <lastmod>2014-10-17T11:47:42-05:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  
+  
+</urlset>

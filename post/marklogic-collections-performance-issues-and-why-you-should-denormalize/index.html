@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize! - Marcus Young</title>
+  <meta name="author" content="Marcus Young">
+
+  
+  <meta name="description" content="Background Recently I&#8217;ve been on a new team at my work doing MarkLogic work. In a nutshell we&#8217;ve been developing a new HealthCare &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcus Young" type="application/atom+xml">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Marcus Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:myoung34.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="http://github.com/myoung34">Github</a></li>
+  <li><a href="http://plus.google.com/106595646200297464671">Google+</a></li>
+  <li><a href="http://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
+  <li><a href="https://www.dropbox.com/s/3dnv34v27xrnawb/Resume-Marcus.Young%20-%20Public.doc">Resume</a></li>
+  <li><a href="http://vizualize.me/4PXMEv1a2i#.Ub1B1JyIK64">Vizualize.me Resume</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">MarkLogic Collections &#8211; Performance Issues and Why You Should Denormalize!</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-25T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><!--more-->
+
+
+<h2>Background</h2>
+
+<p>Recently I&#8217;ve been on a new team at my work doing MarkLogic work. In a nutshell we&#8217;ve been developing a new HealthCare quality application from the ground up.  This would be our second application, but we learned enough from the first to make our priority creating a robust and scalable RESTful interface for document CRUD. With this we developed a middle tier that is almost completely configuration driven, meaning any new apps would be able to utilize this and not have to re-invent the wheel to get CRUD/Search working out-of-the-box.</p>
+
+<h2>The Approach To A Problem Using Lists</h2>
+
+<p>The application is revolved around patient CCD&#8217;s (XML representing all of a patients history per retrieval). MarkLogic is ideal for this since it&#8217;s built on XQuery, a functional language revolved around XML. Let me paint you a picture of what led us to collection issues. Say you want as a doctor, to search &#8220;gender:M&#8221; on a database, and just keep tacking on until you get to what you want to find (end result maybe: &#8220;gender:M AND dob GT 01-10-1987 AND problem:Asthma&#8221;). Now as a doctor, I found X patients and want to save that as a NON changing list&#8230;meaning that if I search any time after this, I&#8217;ll still get those X patients, and no more that match that criteria since.</p>
+
+<p>We implemented this using MarkLogic collections. Collections are handy in that you can take some documents, put them in a collection, and say:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>for $i in fn:collection('/doctors/marc/1')
+</span><span class='line'>  return $i</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That means whatever is in the collection &#8216;/doctors/marc/1&#8242; will always be there. Cool, that works great. So we implemented this &#8220;static list&#8221; as this:</p>
+
+<ol>
+<li>Take the query and execute it</li>
+<li>For each document in the result set, add them to a unique list: /lists/{unique id}</li>
+<li>change the query to list:{unique id} and add a new xml node <owner>{id of user}</owner></li>
+</ol>
+
+
+<p>The great thing about this, is you can have a collection constraint in our patients so you can just execute &#8220;list:{unique id}&#8221; and it will return all documents in that list. Awesome! It worked Great! Also note, yes we handled updating the list by re-executing it, and adding the new patients to that list. Deleting a list is also possible.</p>
+
+<h2>The Problem With MarkLogic Collections</h2>
+
+<p>As I said, this solution worked <strong>fantastically</strong>&#8230;at first. It worked until we hit 1500 fairly large patient documents. The performance crawled to a stop. <strong>The problem with collections is that the collection data is stored <span style="color: #ff0000;">internally. </span></strong><span style="color: #ff0000;"><span style="color: #000000;">That means that if you decide to make a list for &#8220;gender:M&#8221;, you&#8217;re modifying and locking potentially half the documents in the database. For us, that meant a 9+ minute list creation. Not acceptable. You can try to speed this up, sure, by creating limits on how many documents you can modify, perhaps other ways involving spawning it in threads or in the background, but that still creates server overhead and gets rid of transaction safety.</span></span></p>
+
+<h2>Denormalize Your Database/The Solution</h2>
+
+<p>The greatest thing about a NoSQL database is that it can be denormalized. This may make some people cringe, why afterall would you want to duplicate data? If used correctly, it works great. For this specifically, it means that instead of modifying all documents in the database by adding/removing them from collections, is to use a separate file, stored as &#8216;/lists/{user}/{unique id}&#8217; that contains links (uri&#8217;s) to the documents. This is fine, especially for this application, since patient records are never deleted. I&#8217;ve shown an example further below on how to see it in action!</p>
+
+<h2>The Code/TL;DR &#8211; Code or GTFO</h2>
+
+<p>The first thing you can do if you want to follow along is put a crap ton of delicious bacon documents into your database. You should copy/paste this into the QConsole and hit RUN! (it might take a few &#8211; it inserts 1200 documents&#8230;if it times out, insert 300 documents 4 times instead).<br/>
+<a href="https://gist.github.com/3785105" target=_blank>Click here for the code&#8230;too large to paste and the code isn&#8217;t too important</a><br/>
+Now for the bad code. This will search for <beef>*tips*</beef> effectively. Any documents that match that, it will put it into a collection called &#8216;/marc/favorites&#8217;.</p>
+
+<p>Then it will decide my favorites should be <pork>*ham*</pork>, so it will go through the collection, remove the originals, and add my new favorites. The important thing is to look at the number of documents affected and how long it takes! Ridiculous!</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let $docs :=  
+</span><span class='line'>  fn:distinct-values(
+</span><span class='line'>    for $i in cts:search(//beef,cts:word-query("tip"))
+</span><span class='line'>      return fn:base-uri($i)
+</span><span class='line'>  )
+</span><span class='line'>return
+</span><span class='line'>  for $i in $docs return
+</span><span class='line'>    xdmp:document-add-collections(
+</span><span class='line'>      $i,
+</span><span class='line'>      '/marc/favorites'
+</span><span class='line'>    )
+</span><span class='line'>(: 781 documents affected - Profile 2105 Expressions PT57.822894S :)
+</span><span class='line'> 
+</span><span class='line'>let $remove-from-collections :=
+</span><span class='line'>  for $i in fn:collection('/marc/favorites')
+</span><span class='line'>    return xdmp:document-remove-collections(fn:base-uri($i),'/beef/tips')
+</span><span class='line'>    
+</span><span class='line'>let $docs := 
+</span><span class='line'>  fn:distinct-values(
+</span><span class='line'>    for $i in cts:search(//pork,cts:word-query("ham"))
+</span><span class='line'>      return fn:base-uri($i)
+</span><span class='line'>  )
+</span><span class='line'> 
+</span><span class='line'>return
+</span><span class='line'>  for $i in $docs return
+</span><span class='line'>    xdmp:document-add-collections(
+</span><span class='line'>      $i,
+</span><span class='line'>      '/marc/favorites'
+</span><span class='line'>    )
+</span><span class='line'> 
+</span><span class='line'>(: 1051 documents affected - Profile 4245 Expressions PT48.439176S  :)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So what&#8217;s the best way to do it? Create a new document of URI&#8217;s to the documents, and store that! Don&#8217;t believe me? Look at the performance without indexes!</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let $docs := 
+</span><span class='line'>  fn:distinct-values(
+</span><span class='line'>    for $i in cts:search(//beef,cts:word-query("tip")) return
+</span><span class='line'>      fn:base-uri($i)
+</span><span class='line'>  )
+</span><span class='line'>  
+</span><span class='line'>let $favorites :=
+</span><span class='line'>  &lt;favorites&gt;{
+</span><span class='line'>    for $i in $docs return
+</span><span class='line'>      &lt;doc&gt;{$i}&lt;/doc&gt;
+</span><span class='line'>  }&lt;/favorites&gt;
+</span><span class='line'>  
+</span><span class='line'>return
+</span><span class='line'>  xdmp:document-insert(
+</span><span class='line'>    '/marc/favorites',
+</span><span class='line'>    $favorites
+</span><span class='line'>  )
+</span><span class='line'>(: 1 document affected - Profile 2643 Expressions PT0.326612S :)
+</span><span class='line'> 
+</span><span class='line'>let $docs := 
+</span><span class='line'>  fn:distinct-values(
+</span><span class='line'>    for $i in cts:search(//pork,cts:word-query("ham")) return
+</span><span class='line'>      fn:base-uri($i)
+</span><span class='line'>  )
+</span><span class='line'>  
+</span><span class='line'>let $favorites :=
+</span><span class='line'>  &lt;favorites&gt;{
+</span><span class='line'>    for $i in $docs return
+</span><span class='line'>      &lt;doc&gt;{$i}&lt;/doc&gt;
+</span><span class='line'>  }&lt;/favorites&gt;
+</span><span class='line'>  
+</span><span class='line'>return xdmp:node-replace(fn:doc('/marc/favorites')/favorites,$favorites)
+</span><span class='line'>(: 1 document affected - Profile 2144 Expressions PT0.67532S :)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And to improve your search, you could use something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cts:search(/,
+</span><span class='line'>  cts:document-query(
+</span><span class='line'>    fn:doc('/marc/favorites')/favorites//doc/text()
+</span><span class='line'>  )
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-25T00:00:00-05:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/kegduino-aka-homebrew-and-arduinos-love-child/" title="Previous Post: KegDuino AKA HomeBrew and Arduinos&#8217; Love Child">&laquo; KegDuino AKA HomeBrew and Arduinos&#8217; Love Child</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/fix-gtablet-nvflash-freezing-upload/" title="Next Post: (FIX) GTablet NVFlash Freezing During Upload">(FIX) GTablet NVFlash Freezing During Upload &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/mirth-puppet-module">New Puppet Module - MirthConnect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins">Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet">Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app">Complete Continuous Deployment Using Puppet and Pulp - Part 2 - the Application</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines">Complete Continuous Deployment Using Puppet and Pulp - Part 1 - the Machines</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Marcus Young -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'marcyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/';
+        var disqus_url = 'http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

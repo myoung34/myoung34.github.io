@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: fix | Marcus Young]]></title>
+  <link href="http://myoung34.github.io/blog/categories/fix/atom.xml" rel="self"/>
+  <link href="http://myoung34.github.io/"/>
+  <updated>2014-10-17T11:47:42-05:00</updated>
+  <id>http://myoung34.github.io/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP]]></title>
+    <link href="http://myoung34.github.io/post/fix-mediatombushare-broadcast-ssdp/"/>
+    <updated>2012-11-28T00:00:00-06:00</updated>
+    <id>http://myoung34.github.io/post/fix-mediatombushare-broadcast-ssdp</id>
+    <content type="html"><![CDATA[<p>If you&#8217;re running Mediatomb or uShare and your xbox, ps3, tv, or whatever other UPnP/DNLA device doesn&#8217;t see the server, here&#8217;s a few fixes I&#8217;ve discovered.<!--more--></p>
+
+<ul>
+<li>If you&#8217;re running SELinux, disable it temporarily (it doesn&#8217;t play well sometimes)</li>
+<li>Both of these use the IGMP protocol to display their SSDP. Try allowing it through IPTables: <figure class='code'><figcaption><span>bash </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># iptables -A INPUT -i &lt;em1|eth0|device name> -s 0.0.0.0/32 -d 224.0.0.1/32 -p igmp -j ACCEPT</span></code></pre></td></tr></table></div></figure></li>
+<li>Make sure your router allows UPnP</li>
+<li>Ensure the right ports are allowed through the firewall
+
+<ul>
+<li>ushare
+
+<ul>
+<li>UDP 1900</li>
+<li>TCP 2869</li>
+<li>TCP 5000</li>
+</ul>
+</li>
+<li>mediatomb
+
+<ul>
+<li>The port you have set in the /etc/mediatomb.conf as MT_PORT</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>I spent quite a while trying to figure this out on my set-up, and it turned out the igmp fix was all I needed.
+Days of work for 1 line in my /etc/sysconfig/iptables file.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[(FIX) GTablet NVFlash Freezing During Upload]]></title>
+    <link href="http://myoung34.github.io/post/fix-gtablet-nvflash-freezing-upload/"/>
+    <updated>2012-11-27T00:00:00-06:00</updated>
+    <id>http://myoung34.github.io/post/fix-gtablet-nvflash-freezing-upload</id>
+    <content type="html"><![CDATA[<p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
+
+<p>My GTablet runs <a href="http://forum.xda-developers.com/showthread.php?t=1084573" title="Beasty Clemsysn (Froyo)"></a> which I prefer since it&#8217;s freaking fast, however with the performance, there are a few bugs, all of which I seemed to hit in a single move&#8230;.so this is a &#8220;Don&#8217;t do&#8221;:</p>
+
+<ul>
+<li>Putting it in airplane mode goes ape-shit. There was no way to get it out, including reboots and settings changes.</li>
+<li>To fix this, I hit &#8216;Restore to factory defaults&#8217;&#8230; <strong>Don&#8217;t ever do this!</strong></li>
+<li>This fubared everything, which means restore old Rom&#8230;yay for my free time tonight.</li>
+</ul>
+
+
+<p>So far, whatever&#8230;easy fix right?<br/>
+Well if you&#8217;ve made it to this page, you see the title, and that&#8217;s what I&#8217;m here to fix.<br/>
+If for some reason you&#8217;re trying to NVFlash your gtablet (probably with gtab.nvflash.1.2.branch.20110508 with cwm5504 or gtab.nvflash.1.2.branch.20110508 with cwmv3028.zip), and it&#8217;s freezing on the flash, here&#8217;s what I did.</p>
+
+<p>Ready?<br/>
+In the <em>gtablet.cfg</em> file, swap the partition in question (the one freezing) with the previous one, but swap it on the filesystem level.<br/>
+For example, my Partition 7 froze on upload, so the diff between the original and my fix: <a href="https://gist.github.com/4152380" title="https://gist.github.com/4152380" target="_blank">gtablet.cfg-diff</a><br/>
+If you want my full fixed file (assuming yours broke on partition 7 as well): <a href="https://gist.github.com/4152387" title="https://gist.github.com/4152387" target="_blank">gtablet.cfg/4152387</a></p>
+]]></content>
+  </entry>
+  
+</feed>
