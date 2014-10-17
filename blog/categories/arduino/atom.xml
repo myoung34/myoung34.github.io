@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: arduino | Marcus Young]]></title>
-  <link href="http://myoung34.github.io/blog/categories/arduino/atom.xml" rel="self"/>
-  <link href="http://myoung34.github.io/"/>
-  <updated>2014-10-17T11:47:42-05:00</updated>
-  <id>http://myoung34.github.io/</id>
+  <link href="http://marcyoung.us/blog/categories/arduino/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2014-10-17T13:07:52-05:00</updated>
+  <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD]]></title>
-    <link href="http://myoung34.github.io/post/udoo-and-an-arduino-lcd"/>
+    <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd"/>
     <updated>2014-03-03T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/udoo-lcd</id>
+    <id>http://marcyoung.us/post/udoo-lcd</id>
     <content type="html"><![CDATA[<p>I have continued to want more out of my UDOO, so I decided to make use of a cracked LCD I had sitting around from Adafruit, by having the UDOO display system information to it.<!--more-->
 A side note: the linux distro I&rsquo;m using is Ubuntu 12.04 LTS for ARM, and by a cracked LCD I mean the digitizer doesn&rsquo;t work. You can modify this code to use the touchscreen functionality of the screen
 if you wish.</p>

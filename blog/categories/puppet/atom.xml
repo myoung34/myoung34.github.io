@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: puppet | Marcus Young]]></title>
-  <link href="http://myoung34.github.io/blog/categories/puppet/atom.xml" rel="self"/>
-  <link href="http://myoung34.github.io/"/>
-  <updated>2014-10-17T11:47:42-05:00</updated>
-  <id>http://myoung34.github.io/</id>
+  <link href="http://marcyoung.us/blog/categories/puppet/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2014-10-17T13:07:52-05:00</updated>
+  <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
-    <link href="http://myoung34.github.io/post/mirth-puppet-module"/>
+    <link href="http://marcyoung.us/post/mirth-puppet-module"/>
     <updated>2014-05-14T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/mirth-puppet-module</id>
+    <id>http://marcyoung.us/post/mirth-puppet-module</id>
     <content type="html"><![CDATA[<p>I released a new Puppet module to the forge out of another work necessity. Mirth is used pretty heavily for HL7 ETL, and has a ton of other uses. <!-- more --></p>
 
 <p>I started out at my current gig doing this, so it hurt a little to have to automate it, mostly out of fear of getting back into that engine =).</p>
@@ -42,9 +42,9 @@ class { 'mirthconnect':
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
     <updated>2014-03-22T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-4-puppet-and-jenkins</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-4-puppet-and-jenkins</id>
     <content type="html"><![CDATA[<p>So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy this application and keep it up to date, and we even have r10k handling the deployment of those puppet modules so that we don&rsquo;t have to worry about dependencies, and we can even stage them! What we don&rsquo;t have is a way of getting changes to that puppet module to the puppet master without remoting in and running r10k. That&rsquo;s easy to fix with jenkins!<!--more--></p>
 
 <p>If you were to stop right now, you&rsquo;re pretty close. But&hellip;remoting into the server to redeploy isn&rsquo;t scalable. What if you forget? What if you have a new guy that made a super awesome bugfix to your puppet module and forgot how to get it up to the servers? Enter jenkins. Note: I have travis-ci set up for the one here, but we&rsquo;re going to duplicate that logic. Travis-CI is nice if your module is on github, but it may not be. Or you may need it to do something else, such as trigger an r10k deployment, so that&rsquo;s why we&rsquo;re still implementing Jenkins.</p>
@@ -165,9 +165,9 @@ bundle exec rake
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
     <updated>2014-03-21T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-3-enter-puppet</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-3-enter-puppet</id>
     <content type="html"><![CDATA[<p>Now that we have a package, we need a way of installing it amirite? We&rsquo;re going to write a puppet module for this package complete with rspec tests<!--more--></p>
 
 <h1>The Module</h1>
@@ -298,9 +298,9 @@ bundle exec rake
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
     <updated>2014-03-20T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-2-the-application</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-2-the-application</id>
     <content type="html"><![CDATA[<p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.<!--more--></p>
 
 <h1>The Application</h1>
@@ -387,9 +387,9 @@ bundle exec rake stable
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 1 - The Machines]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
     <updated>2014-03-19T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-1-the-machines</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-1-the-machines</id>
     <content type="html"><![CDATA[<p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64<!--more--></p>
 
 <h1>Servers</h1>

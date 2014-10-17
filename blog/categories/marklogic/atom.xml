@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: marklogic | Marcus Young]]></title>
-  <link href="http://myoung34.github.io/blog/categories/marklogic/atom.xml" rel="self"/>
-  <link href="http://myoung34.github.io/"/>
-  <updated>2014-10-17T11:47:42-05:00</updated>
-  <id>http://myoung34.github.io/</id>
+  <link href="http://marcyoung.us/blog/categories/marklogic/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2014-10-17T13:07:52-05:00</updated>
+  <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
-    <link href="http://myoung34.github.io/post/puppet-and-marklogic"/>
+    <link href="http://marcyoung.us/post/puppet-and-marklogic"/>
     <updated>2013-12-14T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/puppet-and-marklogic</id>
+    <id>http://marcyoung.us/post/puppet-and-marklogic</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="http://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="http://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
 
 <p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
@@ -32,9 +32,9 @@
   
   <entry>
     <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
-    <link href="http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
+    <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
     <updated>2012-09-25T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
+    <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
     <content type="html"><![CDATA[<!--more-->
 
 

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: udoo | Marcus Young]]></title>
-  <link href="http://myoung34.github.io/blog/categories/udoo/atom.xml" rel="self"/>
-  <link href="http://myoung34.github.io/"/>
-  <updated>2014-10-17T11:47:42-05:00</updated>
-  <id>http://myoung34.github.io/</id>
+  <link href="http://marcyoung.us/blog/categories/udoo/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2014-10-17T13:07:52-05:00</updated>
+  <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD]]></title>
-    <link href="http://myoung34.github.io/post/udoo-and-an-arduino-lcd"/>
+    <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd"/>
     <updated>2014-03-03T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/udoo-lcd</id>
+    <id>http://marcyoung.us/post/udoo-lcd</id>
     <content type="html"><![CDATA[<p>I have continued to want more out of my UDOO, so I decided to make use of a cracked LCD I had sitting around from Adafruit, by having the UDOO display system information to it.<!--more-->
 A side note: the linux distro I&rsquo;m using is Ubuntu 12.04 LTS for ARM, and by a cracked LCD I mean the digitizer doesn&rsquo;t work. You can modify this code to use the touchscreen functionality of the screen
 if you wish.</p>
@@ -74,9 +74,9 @@ if you wish.</p>
   
   <entry>
     <title type="html"><![CDATA[UDOO and SATA - The Definitive Guide]]></title>
-    <link href="http://myoung34.github.io/post/udoo-and-sata"/>
+    <link href="http://marcyoung.us/post/udoo-and-sata"/>
     <updated>2014-02-23T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/udoo-sata</id>
+    <id>http://marcyoung.us/post/udoo-sata</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently purchase a <a href="http://www.udoo.org">udoo</a>. I am in love with it, however I had issues trying to boot from SATA.<!--more--></p>
 
 <p>Short story: 4 core ARM computer with SATA, LVDS, and arduino support. I decided upon getting it, the first thing I&rsquo;d do is ditch the MicroSD card and boot from SATA, but it proved to be challenging. The issue is that the older images (including the one I wanted), use U-Boot 2009 or similar as the bootloader, which don&rsquo;t have great SATA support.</p>

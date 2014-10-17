@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: performance | Marcus Young]]></title>
-  <link href="http://myoung34.github.io/blog/categories/performance/atom.xml" rel="self"/>
-  <link href="http://myoung34.github.io/"/>
-  <updated>2014-10-17T11:47:42-05:00</updated>
-  <id>http://myoung34.github.io/</id>
+  <link href="http://marcyoung.us/blog/categories/performance/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2014-10-17T13:07:52-05:00</updated>
+  <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[(FIX) GTablet NVFlash Freezing During Upload]]></title>
-    <link href="http://myoung34.github.io/post/fix-gtablet-nvflash-freezing-upload/"/>
+    <link href="http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/"/>
     <updated>2012-11-27T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/fix-gtablet-nvflash-freezing-upload</id>
+    <id>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload</id>
     <content type="html"><![CDATA[<p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
 
 <p>My GTablet runs <a href="http://forum.xda-developers.com/showthread.php?t=1084573" title="Beasty Clemsysn (Froyo)"></a> which I prefer since it&#8217;s freaking fast, however with the performance, there are a few bugs, all of which I seemed to hit in a single move&#8230;.so this is a &#8220;Don&#8217;t do&#8221;:</p>
@@ -42,9 +42,9 @@ If you want my full fixed file (assuming yours broke on partition 7 as well): <a
   
   <entry>
     <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
-    <link href="http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
+    <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
     <updated>2012-09-25T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
+    <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
     <content type="html"><![CDATA[<!--more-->
 
 

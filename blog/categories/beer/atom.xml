@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: beer | Marcus Young]]></title>
-  <link href="http://myoung34.github.io/blog/categories/beer/atom.xml" rel="self"/>
-  <link href="http://myoung34.github.io/"/>
-  <updated>2014-10-17T11:47:42-05:00</updated>
-  <id>http://myoung34.github.io/</id>
+  <link href="http://marcyoung.us/blog/categories/beer/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2014-10-17T13:07:52-05:00</updated>
+  <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[KegDuino AKA HomeBrew and Arduinos&#8217; Love Child]]></title>
-    <link href="http://myoung34.github.io/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
+    <link href="http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
     <updated>2012-07-25T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
+    <id>http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -36,9 +36,9 @@
   
   <entry>
     <title type="html"><![CDATA[I Made Beer]]></title>
-    <link href="http://myoung34.github.io/post/i-made-beer/"/>
+    <link href="http://marcyoung.us/post/i-made-beer/"/>
     <updated>2012-05-11T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/i-made-beer</id>
+    <id>http://marcyoung.us/post/i-made-beer</id>
     <content type="html"><![CDATA[<!--more-->
 
 

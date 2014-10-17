@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Marcus Young]]></title>
-  <link href="http://myoung34.github.io/atom.xml" rel="self"/>
-  <link href="http://myoung34.github.io/"/>
-  <updated>2014-10-17T11:47:42-05:00</updated>
-  <id>http://myoung34.github.io/</id>
+  <link href="http://marcyoung.us/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2014-10-17T13:07:52-05:00</updated>
+  <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
-    <link href="http://myoung34.github.io/post/mirth-puppet-module"/>
+    <link href="http://marcyoung.us/post/mirth-puppet-module"/>
     <updated>2014-05-14T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/mirth-puppet-module</id>
+    <id>http://marcyoung.us/post/mirth-puppet-module</id>
     <content type="html"><![CDATA[<p>I released a new Puppet module to the forge out of another work necessity. Mirth is used pretty heavily for HL7 ETL, and has a ton of other uses. <!-- more --></p>
 
 <p>I started out at my current gig doing this, so it hurt a little to have to automate it, mostly out of fear of getting back into that engine =).</p>
@@ -52,9 +52,9 @@
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
     <updated>2014-03-22T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-4-puppet-and-jenkins</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-4-puppet-and-jenkins</id>
     <content type="html"><![CDATA[<p>So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy this application and keep it up to date, and we even have r10k handling the deployment of those puppet modules so that we don&rsquo;t have to worry about dependencies, and we can even stage them! What we don&rsquo;t have is a way of getting changes to that puppet module to the puppet master without remoting in and running r10k. That&rsquo;s easy to fix with jenkins!<!--more--></p>
 
 <p>If you were to stop right now, you&rsquo;re pretty close. But&hellip;remoting into the server to redeploy isn&rsquo;t scalable. What if you forget? What if you have a new guy that made a super awesome bugfix to your puppet module and forgot how to get it up to the servers? Enter jenkins. Note: I have travis-ci set up for the one here, but we&rsquo;re going to duplicate that logic. Travis-CI is nice if your module is on github, but it may not be. Or you may need it to do something else, such as trigger an r10k deployment, so that&rsquo;s why we&rsquo;re still implementing Jenkins.</p>
@@ -177,9 +177,9 @@
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
     <updated>2014-03-21T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-3-enter-puppet</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-3-enter-puppet</id>
     <content type="html"><![CDATA[<p>Now that we have a package, we need a way of installing it amirite? We&rsquo;re going to write a puppet module for this package complete with rspec tests<!--more--></p>
 
 <h1>The Module</h1>
@@ -263,7 +263,7 @@
 
 <p>You have a module. How do you get it on foreman, or any Puppet master to actually work? Are you going to remote into it, check it out to some repository folder, symlink it to <strong>/etc/puppet/modules</strong> and call it good? That&rsquo;ll work, but how do you manage dependencies? Remember, you need the <em>puppetlabs-firewall</em> module there too for this to work. You&rsquo;ll probably need others. What happens when you have to fix this module? Fix it, see the tests are green (or dear god fix it on the ENC), and call that your process? The point of continous deployment, devops, etc etc is to have <strong>consistency</strong>. Having a one-off process for deploying your configuration management violates what you&rsquo;re trying to solve! Enter <strong>r10k</strong>. Essentially all you need is a new git repository (call this one <a href="https://github.com/myoung34/blog-r10k">blog-r10k</a> that holds information about what modules you need, where they came from, and what versions you want of them and where. This also adds the ability to <strong>stage</strong> modules. You can have a <em>dev</em> branch for your module, deploy it to <em>development</em> nodes, and vice versa. This means you can stop hoping your fix works and prove it before it hits production boxes.</p>
 
-<p>In the <a href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines/">Part 1</a> I hinted at modifying the <em>[development]</em> and <em>[production]</em> labels in the puppet configuration file. Now is when you find out why.</p>
+<p>In the <a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines/">Part 1</a> I hinted at modifying the <em>[development]</em> and <em>[production]</em> labels in the puppet configuration file. Now is when you find out why.</p>
 
 <h3>Set up r10k</h3>
 
@@ -317,9 +317,9 @@
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
     <updated>2014-03-20T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-2-the-application</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-2-the-application</id>
     <content type="html"><![CDATA[<p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.<!--more--></p>
 
 <h1>The Application</h1>
@@ -408,15 +408,15 @@
 
 <p>You&rsquo;ll notice that each time you make a change to the git repository, it will build an RPM for it and upload it to the Pulp server. That means that if you&rsquo;re subscribed to that Yum repository, you could do a <code>yum update myapp</code> and you&rsquo;d get a new version. We&rsquo;re getting very close to done =)</p>
 
-<p><img class="left" src="http://myoung34.github.io/images/jenkinsbuild.png" title="jenkins" ></p>
+<p><img class="left" src="http://marcyoung.us/images/jenkinsbuild.png" title="jenkins" ></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 1 - The Machines]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
     <updated>2014-03-19T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-part-1-the-machines</id>
+    <id>http://marcyoung.us/post/continuous-deployment-part-1-the-machines</id>
     <content type="html"><![CDATA[<p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64<!--more--></p>
 
 <h1>Servers</h1>
@@ -529,19 +529,19 @@
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Overview]]></title>
-    <link href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-overview"/>
+    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-overview"/>
     <updated>2014-03-18T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/continuous-deployment-overview</id>
+    <id>http://marcyoung.us/post/continuous-deployment-overview</id>
     <content type="html"><![CDATA[<p>This will be by far my biggest post to date. I&rsquo;ve been asked from multiple sources about the system I&rsquo;ve set up at my current company, so this is a very small version of it. By the end of this, assuming you follow along, you&rsquo;ll have a multiple node system set up that will deploy a linux service, packaged as an RPM, to internal Yum feeds, with Puppet along the way to keep this continuously deployed. The puppet module I&rsquo;ll write to do this will also be continuous, with all changes to it causing tests to run, and r10k to redeploy them if successful.<!--more--></p>
 
 <p>This series will be in this layout:</p>
 
 <ul>
 <li>Overview (this page)</li>
-<li><a href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines/">Part 1 - The Nodes and their purpose in this stack</a></li>
-<li><a href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app/">Part 2 - Creating a small linux service that causes new RPM builds when changes are seen via Jenkins</a></li>
-<li><a href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet/">Part 3 - Creating a puppet manifest to deploy and maintain the previous package</a></li>
-<li><a href="http://myoung34.github.io/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins/">Part 4 - Managing the puppet manifests so that changes also run tests and re-deploy to the ENC (foreman)</a>
+<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines/">Part 1 - The Nodes and their purpose in this stack</a></li>
+<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app/">Part 2 - Creating a small linux service that causes new RPM builds when changes are seen via Jenkins</a></li>
+<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet/">Part 3 - Creating a puppet manifest to deploy and maintain the previous package</a></li>
+<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins/">Part 4 - Managing the puppet manifests so that changes also run tests and re-deploy to the ENC (foreman)</a>
 <!--* [Part 5 - Simplifying your life with vagrant to develop and maintain this setup without worrying about nodes that are subscribed to the packages/puppet manifests]() - not available yet--></li>
 </ul>
 
@@ -606,9 +606,9 @@
   
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD]]></title>
-    <link href="http://myoung34.github.io/post/udoo-and-an-arduino-lcd"/>
+    <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd"/>
     <updated>2014-03-03T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/udoo-lcd</id>
+    <id>http://marcyoung.us/post/udoo-lcd</id>
     <content type="html"><![CDATA[<p>I have continued to want more out of my UDOO, so I decided to make use of a cracked LCD I had sitting around from Adafruit, by having the UDOO display system information to it.<!--more-->
 A side note: the linux distro I&rsquo;m using is Ubuntu 12.04 LTS for ARM, and by a cracked LCD I mean the digitizer doesn&rsquo;t work. You can modify this code to use the touchscreen functionality of the screen
 if you wish.</p>
@@ -655,19 +655,19 @@ if you wish.</p>
 
 <p>If everything went well, your UDOO should look and act like the pictures below. Good luck!</p>
 
-<p><img class="left" src="http://myoung34.github.io/images/IMG_0792.jpg" title="udoo 3" >
-<img class="left" src="http://myoung34.github.io/images/IMG_0793.jpg" title="udoo 3" >
-<img class="left" src="http://myoung34.github.io/images/IMG_0794.jpg" title="udoo 3" >
-<img class="left" src="http://myoung34.github.io/images/IMG_0795.jpg" title="udoo 3" >
-<img class="left" src="http://myoung34.github.io/images/IMG_0796.jpg" title="udoo 3" ></p>
+<p><img class="left" src="http://marcyoung.us/images/IMG_0792.jpg" title="udoo 3" >
+<img class="left" src="http://marcyoung.us/images/IMG_0793.jpg" title="udoo 3" >
+<img class="left" src="http://marcyoung.us/images/IMG_0794.jpg" title="udoo 3" >
+<img class="left" src="http://marcyoung.us/images/IMG_0795.jpg" title="udoo 3" >
+<img class="left" src="http://marcyoung.us/images/IMG_0796.jpg" title="udoo 3" ></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[UDOO and SATA - The Definitive Guide]]></title>
-    <link href="http://myoung34.github.io/post/udoo-and-sata"/>
+    <link href="http://marcyoung.us/post/udoo-and-sata"/>
     <updated>2014-02-23T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/udoo-sata</id>
+    <id>http://marcyoung.us/post/udoo-sata</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently purchase a <a href="http://www.udoo.org">udoo</a>. I am in love with it, however I had issues trying to boot from SATA.<!--more--></p>
 
 <p>Short story: 4 core ARM computer with SATA, LVDS, and arduino support. I decided upon getting it, the first thing I&rsquo;d do is ditch the MicroSD card and boot from SATA, but it proved to be challenging. The issue is that the older images (including the one I wanted), use U-Boot 2009 or similar as the bootloader, which don&rsquo;t have great SATA support.</p>
@@ -733,9 +733,9 @@ if you wish.</p>
   
   <entry>
     <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
-    <link href="http://myoung34.github.io/post/puppet-and-marklogic"/>
+    <link href="http://marcyoung.us/post/puppet-and-marklogic"/>
     <updated>2013-12-14T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/puppet-and-marklogic</id>
+    <id>http://marcyoung.us/post/puppet-and-marklogic</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="http://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="http://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
 
 <p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
@@ -750,9 +750,9 @@ if you wish.</p>
   
   <entry>
     <title type="html"><![CDATA[What I Learned From PuppetConf 2013]]></title>
-    <link href="http://myoung34.github.io/post/puppetconf2013"/>
+    <link href="http://marcyoung.us/post/puppetconf2013"/>
     <updated>2013-10-30T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/puppetconf</id>
+    <id>http://marcyoung.us/post/puppetconf</id>
     <content type="html"><![CDATA[<p>Wow. Work has been crazy. Enough for me to have no activity here. Time to change that, but putting in a blog post that might resemble a cracked article.<!--more--></p>
 
 <p>I recently attended Puppetconf 2013 in San Francisco, and it was amazing (except the food). I love that city now. Regardless, I went into this conference having written a few very incorrect modules that did work, although I&rsquo;m unsure how in hindsight. I decided to finally put in a post some of the takeaways I gathered. Ironically, almost all of my best information came from sitting down on developer day, which was a topic themed sit-down to talk to like minded people and puppet developers. The idea being to get them to look at your code, help you out, or just answer questions. This. Was. Awesome. Much thanks to Ashley Penney and Rob Reynolds for dealing with me.</p>
@@ -824,9 +824,9 @@ if you wish.</p>
   
   <entry>
     <title type="html"><![CDATA[Automatically deploy GIT code to Windows with Puppet]]></title>
-    <link href="http://myoung34.github.io/post/automatically-deploy-git-code-windows-puppet/"/>
+    <link href="http://marcyoung.us/post/automatically-deploy-git-code-windows-puppet/"/>
     <updated>2013-05-24T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/automatically-deploy-git-code-windows-puppet</id>
+    <id>http://marcyoung.us/post/automatically-deploy-git-code-windows-puppet</id>
     <content type="html"><![CDATA[<p>Recently I&#8217;ve been looking for ways of keeping a box up-to-date as far as git is concerned, and for windows the options are pretty limited. The vast majority of DevOps seem to like Puppet, so I decided to give it a try.<!--more--> The problem is windows isn&#8217;t very good without a few helper programs such as ssh, but we&#8217;ll get around that with Cygwin. The master box will be a Centos 6.4 x64 host.</p>
 
 <h2>Puppet Master</h2>
@@ -969,9 +969,9 @@ The easiest way is to create<strong> C:\Program Files\Puppet Labs\Puppet\bin\pup
   
   <entry>
     <title type="html"><![CDATA[Raspberry Pi-Automated Bluetooth Audio Player !]]></title>
-    <link href="http://myoung34.github.io/post/raspberry-pi-automated-bluetooth-audio-player/"/>
+    <link href="http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/"/>
     <updated>2013-03-12T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/raspberry-pi-automated-bluetooth-audio-player</id>
+    <id>http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -1042,9 +1042,9 @@ As always: there were issues. First, the support for this sucked. I was thankful
   
   <entry>
     <title type="html"><![CDATA[(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP]]></title>
-    <link href="http://myoung34.github.io/post/fix-mediatombushare-broadcast-ssdp/"/>
+    <link href="http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
     <updated>2012-11-28T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/fix-mediatombushare-broadcast-ssdp</id>
+    <id>http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
     <content type="html"><![CDATA[<p>If you&#8217;re running Mediatomb or uShare and your xbox, ps3, tv, or whatever other UPnP/DNLA device doesn&#8217;t see the server, here&#8217;s a few fixes I&#8217;ve discovered.<!--more--></p>
 
 <ul>
@@ -1074,9 +1074,9 @@ Days of work for 1 line in my /etc/sysconfig/iptables file.</p>
   
   <entry>
     <title type="html"><![CDATA[(FIX) GTablet NVFlash Freezing During Upload]]></title>
-    <link href="http://myoung34.github.io/post/fix-gtablet-nvflash-freezing-upload/"/>
+    <link href="http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/"/>
     <updated>2012-11-27T00:00:00-06:00</updated>
-    <id>http://myoung34.github.io/post/fix-gtablet-nvflash-freezing-upload</id>
+    <id>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload</id>
     <content type="html"><![CDATA[<p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
 
 <p>My GTablet runs <a href="http://forum.xda-developers.com/showthread.php?t=1084573" title="Beasty Clemsysn (Froyo)"></a> which I prefer since it&#8217;s freaking fast, however with the performance, there are a few bugs, all of which I seemed to hit in a single move&#8230;.so this is a &#8220;Don&#8217;t do&#8221;:</p>
@@ -1101,9 +1101,9 @@ If you want my full fixed file (assuming yours broke on partition 7 as well): <a
   
   <entry>
     <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
-    <link href="http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
+    <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
     <updated>2012-09-25T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
+    <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -1302,9 +1302,9 @@ Now for the bad code. This will search for <beef>*tips*</beef> effectively. Any 
   
   <entry>
     <title type="html"><![CDATA[KegDuino AKA HomeBrew and Arduinos&#8217; Love Child]]></title>
-    <link href="http://myoung34.github.io/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
+    <link href="http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
     <updated>2012-07-25T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
+    <id>http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -1323,9 +1323,9 @@ Now for the bad code. This will search for <beef>*tips*</beef> effectively. Any 
   
   <entry>
     <title type="html"><![CDATA[I Made Beer]]></title>
-    <link href="http://myoung34.github.io/post/i-made-beer/"/>
+    <link href="http://marcyoung.us/post/i-made-beer/"/>
     <updated>2012-05-11T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/i-made-beer</id>
+    <id>http://marcyoung.us/post/i-made-beer</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -1402,9 +1402,9 @@ For my birthday, my coworkers pitched in and bought me a starter kit from the lo
   
   <entry>
     <title type="html"><![CDATA[Creating an MVC Blog with Node.js and MongoDB]]></title>
-    <link href="http://myoung34.github.io/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
+    <link href="http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
     <updated>2012-04-25T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
+    <id>http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
     <content type="html"><![CDATA[<p>This is going to be my first big tutorial. This is a simple tutorial to show how to build the worlds most basic blog with comment system in Node.js with Express for the MVC Routing, MongoDB as the storage engine, and Jade as the html shorthand. <!--more--></p>
 
 <p>I&#8217;m going to assume you know how to install the base packages for Node.js, npm (node package manager), and mongodb. First, let&#8217;s set up the database to hold some articles. The mongo collection will be a basic object with an id, article_title, and article_body:</p>
@@ -2019,9 +2019,9 @@ For my birthday, my coworkers pitched in and bought me a starter kit from the lo
   
   <entry>
     <title type="html"><![CDATA[Seriously MySQL?]]></title>
-    <link href="http://myoung34.github.io/post/seriously-mysql/"/>
+    <link href="http://marcyoung.us/post/seriously-mysql/"/>
     <updated>2012-03-28T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/seriously-mysql</id>
+    <id>http://marcyoung.us/post/seriously-mysql</id>
     <content type="html"><![CDATA[<p>I recently discovered one of the most confusing things I&#8217;ve seen in MySQL.<!--more-->. Lets start with this table:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -2108,9 +2108,9 @@ For my birthday, my coworkers pitched in and bought me a starter kit from the lo
   
   <entry>
     <title type="html"><![CDATA[HL7 And Node.js]]></title>
-    <link href="http://myoung34.github.io/post/hl7-and-node-js/"/>
+    <link href="http://marcyoung.us/post/hl7-and-node-js/"/>
     <updated>2012-03-12T00:00:00-05:00</updated>
-    <id>http://myoung34.github.io/post/hl7-and-node-js</id>
+    <id>http://marcyoung.us/post/hl7-and-node-js</id>
     <content type="html"><![CDATA[<p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
 
 <!--more-->

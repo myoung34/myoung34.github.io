@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://myoung34.github.io/sitemap.xml 
+Sitemap: http://marcyoung.us/sitemap.xml 
