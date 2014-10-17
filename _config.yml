@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://myoung34.github.io
+title: Marcus Young
+subtitle: Software. Microcontrollers. Beer.
+author: Marcus Young
 simple_search: https://www.google.com/search
 description:
 
@@ -64,22 +64,22 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user:
+github_user: myoung34
 github_repo_count: 0
-github_show_profile_link: true
-github_skip_forks: true
+github_show_profile_link: false
+github_skip_forks: false
 
 # Twitter
 twitter_user:
-twitter_tweet_button: true
+twitter_tweet_button: false
 
 # Google +1
-google_plus_one: false
+google_plus_one: true
 google_plus_one_size: medium
 
 # Google Plus Profile
 # Hidden: No visible button, just add author information to search results
-googleplus_user:
+googleplus_user: 106595646200297464671
 googleplus_hidden: false
 
 # Pinboard
@@ -91,11 +91,14 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
-disqus_show_comment_count: false
+disqus_short_name: marcyoung
+disqus_show_comment_count: true
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-29328388-1
 
 # Facebook Like
-facebook_like: false
+facebook_like: true
+linkedin_user: marcus-young/2a/69b/a63
+vizualize_me: http://vizualize.me/4PXMEv1a2i#.Ub1B1JyIK64
+public_resume: https://www.dropbox.com/s/3dnv34v27xrnawb/Resume-Marcus.Young%20-%20Public.doc
