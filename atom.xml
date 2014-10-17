@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2014-10-17T13:07:52-05:00</updated>
+  <updated>2014-10-17T14:24:22-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
+    <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d"/>
+    <updated>2014-07-26T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/udoo-3d</id>
+    <content type="html"><![CDATA[<p>I finally broke down and bought a <a href="http://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
+
+<p>I expanded it horizontally a little to allow some cord room, and laid the sata drive below it, with a 3d printed spacer. Then mounted the UDOO inside. After much trial and error on the lid, I got snap fit, and some holes cut out for the button and LCD. I added screw mounts, but that didn&rsquo;t work out too well, so I ended up supergluing my home-made PCB&rsquo;s to the underside of it. One is the clock battery, the other is a push button and resistor, attached to an Arduino riser shield just below the screen. Bam.</p>
+
+<p>Also, excuse the not-so-perfect printing and mounting. I&rsquo;ve literally not printed out anything else. Go big or go home folks. Related: I love 3d printing.</p>
+
+<p>For pics, checkout <a href="http://marcyoung.us/post/udoo-and-an-arduino-lcd">the updated page</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
@@ -655,11 +670,21 @@ if you wish.</p>
 
 <p>If everything went well, your UDOO should look and act like the pictures below. Good luck!</p>
 
+<p>UPDATED 7/26/2014: Pics attached of the <a href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d">3d printed case</a></p>
+
 <p><img class="left" src="http://marcyoung.us/images/IMG_0792.jpg" title="udoo 3" >
 <img class="left" src="http://marcyoung.us/images/IMG_0793.jpg" title="udoo 3" >
 <img class="left" src="http://marcyoung.us/images/IMG_0794.jpg" title="udoo 3" >
 <img class="left" src="http://marcyoung.us/images/IMG_0795.jpg" title="udoo 3" >
-<img class="left" src="http://marcyoung.us/images/IMG_0796.jpg" title="udoo 3" ></p>
+<img class="left" src="http://marcyoung.us/images/IMG_0796.jpg" title="udoo 3" >
+<img class="left" src="http://marcyoung.us/images/IMG_1003.jpg" title="udoo 3d" >
+<img class="left" src="http://marcyoung.us/images/IMG_1004.jpg" title="udoo 3d" >
+<img class="left" src="http://marcyoung.us/images/IMG_1005.jpg" title="udoo 3d" >
+<img class="left" src="http://marcyoung.us/images/IMG_1006.jpg" title="udoo 3d" >
+<img class="left" src="http://marcyoung.us/images/IMG_1007.jpg" title="udoo 3d" >
+<img class="left" src="http://marcyoung.us/images/IMG_1008.jpg" title="udoo 3d" >
+<img class="left" src="http://marcyoung.us/images/IMG_1010.jpg" title="udoo 3d" >
+<img class="left" src="http://marcyoung.us/images/IMG_1012.jpg" title="udoo 3d" ></p>
 ]]></content>
   </entry>
   
@@ -2103,20 +2128,6 @@ For my birthday, my coworkers pitched in and bought me a starter kit from the lo
 
 
 <p>That&#8217;s fine and dandy, but the MySQL is ignoring the fact that I set date=NULL where the schema shouldn&#8217;t allow it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HL7 And Node.js]]></title>
-    <link href="http://marcyoung.us/post/hl7-and-node-js/"/>
-    <updated>2012-03-12T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/hl7-and-node-js</id>
-    <content type="html"><![CDATA[<p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
-
-<!--more-->
-
-
-<p>I originally had the code shown here, but it speaks for itself at <a href="https://github.com/myoung34/Node.hl7">My Repo</a></p>
 ]]></content>
   </entry>
   

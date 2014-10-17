@@ -3,6 +3,14 @@
   
   
   <url>
+    <loc>http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d</loc>
+    
+    <lastmod>2014-07-26T00:00:00-05:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://marcyoung.us/post/mirth-puppet-module</loc>
     
     <lastmod>2014-05-14T00:00:00-05:00</lastmod>
@@ -181,14 +189,14 @@
   
   <url>
     <loc>http://marcyoung.us/blog/archives/</loc>
-    <lastmod>2014-10-17T13:07:52-05:00</lastmod>
+    <lastmod>2014-10-17T14:24:22-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://marcyoung.us/</loc>
-    <lastmod>2014-10-17T13:07:52-05:00</lastmod>
+    <lastmod>2014-10-17T14:24:22-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

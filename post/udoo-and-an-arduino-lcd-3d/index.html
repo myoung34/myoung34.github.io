@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Ship Now, Patch Later - Marcus Young</title>
+  <title>UDOO and an Arduino LCD Part 2 - 3d Printer - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="As an amateur software developer, theres a new trend that bugs the crap out of me&#8230;.the new ship now patch later concept in the video game &hellip;">
+  <meta name="description" content="I finally broke down and bought a 3d printer. It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://marcyoung.us/post/ship-now-patch-later/">
+  <link rel="canonical" href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   <header>
     
       
-        <h1 class="entry-title">Ship Now, Patch Later</h1>
+        <h1 class="entry-title">UDOO and an Arduino LCD Part 2 - 3d Printer</h1>
       
     
     
@@ -110,7 +110,7 @@
   
 
 
-<time datetime="2011-02-05T00:00:00-06:00" pubdate data-updated="true"></time>
+<time datetime="2014-07-26T00:00:00-05:00" pubdate data-updated="true"></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,11 +119,13 @@
   </header>
 
 
-<div class="entry-content"><p>As an amateur software developer, theres a new trend that bugs the crap out of me&#8230;.the new ship now patch later concept in the video game development part of the world. I enjoy the occasional game to escape reality, and until I went to college I never truly respected game developers. The code they write is tough, and the schedules they keep are ridiculous.</p>
+<div class="entry-content"><p>I finally broke down and bought a <a href="http://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
 
-<p>Back in the day ( yes, I mean the Sega Genesis/SNES time period), games were solid. They may have had the occasional bug or glitch but nothing too bad. The concept was thrown against the wall, accepted, produced, scrutinized, published and shipped. If it wasnt finished it wasnt shipped since they were written on permanent medium (cartridge, disc, whatever). However, with the invention of internet-based downloads thats all changing.</p>
+<p>I expanded it horizontally a little to allow some cord room, and laid the sata drive below it, with a 3d printed spacer. Then mounted the UDOO inside. After much trial and error on the lid, I got snap fit, and some holes cut out for the button and LCD. I added screw mounts, but that didn&rsquo;t work out too well, so I ended up supergluing my home-made PCB&rsquo;s to the underside of it. One is the clock battery, the other is a push button and resistor, attached to an Arduino riser shield just below the screen. Bam.</p>
 
-<p>The concept is nice: preorder a game, get an optional internet based download. Even better: if theres a bug, the developers can send a patch out and get this taken care of (bigger games introduce more room for bugs, understandably). However, to me it seems that developers are using this as an excuse to release shotty games, which is crap. They think &#8220;We have a deadline, that glitch can be patched later&#8221;. This peeves me. It introduces area for a &#8220;it doesnt have to be finished for us to release it&#8221; mentality. I paid for this game, Id like it to be done when its shipped. I dont order a pepperoni pizza and say its ok if they hand me a cheese pizza with a bag of pepperonis. Id rather wait a little bit longer and have it ready to go.</p>
+<p>Also, excuse the not-so-perfect printing and mounting. I&rsquo;ve literally not printed out anything else. Go big or go home folks. Related: I love 3d printing.</p>
+
+<p>For pics, checkout <a href="/post/udoo-and-an-arduino-lcd">the updated page</a></p>
 </div>
 
 
@@ -146,12 +148,12 @@
   
 
 
-<time datetime="2011-02-05T00:00:00-06:00" pubdate data-updated="true"></time>
+<time datetime="2014-07-26T00:00:00-05:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/programming/'>programming</a>
+    <a class='category' href='/blog/categories/arduino/'>arduino</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/udoo/'>udoo</a>
   
 </span>
 
@@ -171,10 +173,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left articlenav" href="/post/javascript-like-to-play-dumb/" title="Previous Post: JavaScript Likes To Play Dumb">&laquo; JavaScript Likes To Play Dumb</a>
+        <a class="basic-alignment left articlenav" href="/post/mirth-puppet-module" title="Previous Post: New Puppet Module - MirthConnect">&laquo; New Puppet Module - MirthConnect</a>
       
-      
-        <a class="basic-alignment right articlenav" href="/post/hl7-and-node-js/" title="Next Post: HL7 And Node.js">HL7 And Node.js &raquo;</a>
       
     </p>
   </footer>
@@ -276,8 +276,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://marcyoung.us/post/ship-now-patch-later/';
-        var disqus_url = 'http://marcyoung.us/post/ship-now-patch-later/';
+        var disqus_identifier = 'http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d';
+        var disqus_url = 'http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d';
         var disqus_script = 'embed.js';
       
     (function () {

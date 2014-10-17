@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2014-10-17T13:07:52-05:00</updated>
+  <updated>2014-10-17T14:24:22-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
+    <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d"/>
+    <updated>2014-07-26T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/udoo-3d</id>
+    <content type="html"><![CDATA[<p>I finally broke down and bought a <a href="http://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
+
+<p>I expanded it horizontally a little to allow some cord room, and laid the sata drive below it, with a 3d printed spacer. Then mounted the UDOO inside. After much trial and error on the lid, I got snap fit, and some holes cut out for the button and LCD. I added screw mounts, but that didn&rsquo;t work out too well, so I ended up supergluing my home-made PCB&rsquo;s to the underside of it. One is the clock battery, the other is a push button and resistor, attached to an Arduino riser shield just below the screen. Bam.</p>
+
+<p>Also, excuse the not-so-perfect printing and mounting. I&rsquo;ve literally not printed out anything else. Go big or go home folks. Related: I love 3d printing.</p>
+
+<p>For pics, checkout <a href="/post/udoo-and-an-arduino-lcd">the updated page</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
@@ -382,104 +397,6 @@ bundle exec rake stable
 <p>You&rsquo;ll notice that each time you make a change to the git repository, it will build an RPM for it and upload it to the Pulp server. That means that if you&rsquo;re subscribed to that Yum repository, you could do a <code>yum update myapp</code> and you&rsquo;d get a new version. We&rsquo;re getting very close to done =)</p>
 
 <p><img class="left" src="/images/jenkinsbuild.png" title="jenkins" ></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 1 - The Machines]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
-    <updated>2014-03-19T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-1-the-machines</id>
-    <content type="html"><![CDATA[<p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64<!--more--></p>
-
-<h1>Servers</h1>
-
-<h2>Git server</h2>
-
-<p>For this you don&rsquo;t really need to set this one up, but most likely you&rsquo;ll have an internal git server. I&rsquo;ll be using Github for this demo. Use whatever you like.</p>
-
-<h2>Pulp</h2>
-
-<p>Set up the server and client via <a href="http://pulp-user-guide.readthedocs.org/en/pulp-2.3/installation.html">this guide</a>.</p>
-
-<p>When done, go ahead and create an <em>unstable</em> feed via:</p>
-
-<pre><code>pulp-admin login -uadmin -padmin
-pulp-admin rpm repo create --repo-id=unstable \
-  --relative-url=unstable --serve-http=true \
-  --display-name='Unstable Packages'
-pulp-admin logout
-</code></pre>
-
-<h2>Jenkins</h2>
-
-<p>Follow <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+RedHat+distributions">this guide</a> to set up jenkins.</p>
-
-<p>Install the jenkins plugins:</p>
-
-<ul>
-<li>git scm</li>
-<li>ssh plugin</li>
-<li>rvm</li>
-<li>warnings</li>
-</ul>
-
-
-<p>Install these extra Yum packages:</p>
-
-<p><code>yum install -y rpm-build rpm ruby ruby-devel rubygems git automake autoconf gcc gcc-c++</code></p>
-
-<p><a href="http://rvm.io">Set up RVM</a></p>
-
-<p>Install <a href="https://github.com/jordansissel/fpm">FPM</a> via gem: <code>gem install fpm</code></p>
-
-<p>Install the pulp-admin tools the same way you did on the pulp server <strong>Not the server, just the admin tools!</strong></p>
-
-<p>Go ahead an ensure all these bits and pieces work, such as connecting to pulp via the login command, using rvm, etc. Jenkins is the heavy lifter in this stack.</p>
-
-<h2>Foreman</h2>
-
-<p><a href="http://theforeman.org/manuals/1.4/quickstart_guide.html#Installation">The guide for 1.4.1 is here</a></p>
-
-<p>Install <strong>r10k</strong> via gem: <code>gem install r10k</code></p>
-
-<p>Also, install the Puppetlabs yum repository and update puppet to 3.4.2 or higher.</p>
-
-<p>Updating Puppet from 2 to 3 on Foreman requires some configuration changes. To get these, just re-run the <code># foreman-installer</code> command.</p>
-
-<p>Make these changes to <strong>/etc/puppet/puppet.conf</strong> for now:</p>
-
-<ul>
-<li>Under the <strong>[master]</strong> section add: <code>hiera_config   = $confdir/hiera/master/hiera.yaml</code></li>
-<li>Replace the <strong>[development]</strong> and <strong>[production]</strong> elements at the bottom with:
-<code>
-[development]
-modulepath     = /etc/puppet/environments/dev/modules:/etc/puppet/modules
-config_version =
-[production]
-modulepath     = /etc/puppet/environments/master/modules:/etc/puppet/modules
-config_version =
-</code></li>
-</ul>
-
-
-<h2>A puppet node</h2>
-
-<p>Because why not. Install the puppet yum repository and install Puppet 3.4.2 or higher.</p>
-
-<p>Make sure you have <code>pluginsync = true</code> in the <strong>/etc/puppet/puppet.conf</strong> file under <strong>[main]</strong></p>
-
-<p>My assumption before you move on, if you&rsquo;re following along, is that this node can connect to the puppet master (foreman) and generates all green when you run <code># puppet agent -t</code></p>
-
-<p>Lastly, make sure you&rsquo;re subscribed to the Yum repository for the <strong>myapp</strong> package we&rsquo;ve been building so that puppet can install it when we get to that point. To do that, create the file <strong>/etc/yum.repos.d/mypulp.repo</strong> with the contents:</p>
-
-<pre><code>[mypulp]
-name=My Pulp Provider - Unstable
-baseurl=http://pulp.blindrage.local/pulp/repos/unstable/
-enabled=1
-gpgcheck=0
-metadata_expire=10
-</code></pre>
 ]]></content>
   </entry>
   
