@@ -1,3 +1,6 @@
 [submodule ".themes/darkstripes"]
 	path = .themes/darkstripes
 	url = https://github.com/myoung34/darkstripes.git
+[submodule "_deploy"]
+	path = _deploy
+	url = git@github.com:myoung34/myoung34.github.io.git
