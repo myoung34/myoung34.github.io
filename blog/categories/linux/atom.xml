@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2014-10-17T14:24:22-05:00</updated>
+  <updated>2014-10-28T20:28:06-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,28 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
+    <link href="http://marcyoung.us/post/hbase-puppet-module"/>
+    <updated>2014-10-28T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/hbase-puppet-module</id>
+    <content type="html"><![CDATA[<p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
+
+<p>I present yet another HBase module. Unlike the ones on the forge, however, this one works.</p>
+
+<p>The RPMs are provided by a yum repo from <a href="http://hortonworks.com/hdp/">horton works data platform</a> which are very well made, contain well-catered configuration files, and even uses zookeeper out of the box. If you have made it this far and wish to try it out, it is very simple and works exremely well. While I would NOT use it in production in favor of a clustered set up with Thrift, Region Servers, or even YARN, it will work for most dev set ups. If you use it in production, drop me a line on how well it performs under load.</p>
+
+<p>If you are interested in something more suitable for production I recommand <a href="http://ambari.apache.org/">Ambari</a>. It&rsquo;s extremely awesome. Otherwise, just check out my current module at <a href="https://github.com/myoung34/puppet-hbase">my github</a> or on the <a href="https://forge.puppetlabs.com/myoung34/hbase">puppet forge</a>.</p>
+
+<p>Basic Usage:</p>
+
+<pre><code>class { 'hbase':
+  port =&gt; '8080', #default is '8000'
+}
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
@@ -308,95 +330,6 @@ bundle exec rake
 <h2>What you have at this point in this blog post</h2>
 
 <p>Right now, you have a Jenkins box that generates new RPMs of your application whenever you make changes to it. You also have a manifest that can manage it. However, this is a one-off. If you have to modify your manifest, you have to redeploy it via r10k to the ENC (foreman). It would be nice if you could utilize Jenkins for this. That&rsquo;s in the next post.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
-    <updated>2014-03-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-2-the-application</id>
-    <content type="html"><![CDATA[<p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.<!--more--></p>
-
-<h1>The Application</h1>
-
-<p>Like I said, it&rsquo;s simple. It&rsquo;s going to be a shell script that runs the <em>python SimpleHTTPServer</em> on port 8000, but it brings up some real life issues:</p>
-
-<ul>
-<li>How can we package it</li>
-<li>How can we ensure the port is open</li>
-<li>How can we test it</li>
-</ul>
-
-
-<p>The code is on <a href="https://github.com/myoung34/blog-exampleservice">this github page</a>.</p>
-
-<p>You&rsquo;ll notice the layout mimics its place on the filesystem. This may not be a realistic case, but it sure make sthe POC easy. You&rsquo;ll notice a <strong>Rakefile</strong> in the repository. This is the heart of our packaging for this. If you look into it, you&rsquo;ll see it&rsquo;s essentially a Makefile (see what I did there???). There are many other ways to approach this, but it&rsquo;s the simplest for now. Basically the rake file will parse the <em>version</em> file (which is <a href="http://semver.org/">semantically versioned</a>), and tries to build an RPM via FPM based on it.</p>
-
-<ol>
-<li> The <strong>unstable</strong> build will happen as <code>bundle exec rake unstable</code>
-
-<ul>
-<li>This will create an rpm such as: <strong>myapp-0.0.1-beta.1.{timestamp}.x86_64.rpm</strong></li>
-<li>This is timestamped because many merges to dev can happen before a version bump.</li>
-</ul>
-</li>
-<li> The <strong>stable</strong> build will happen as <code>bundle exec rake stable</code>
-
-<ul>
-<li>This will create an rpm such as <strong>myapp-0.0.1-1.x86_64.rpm</strong></li>
-<li>There should be no timestamping here, master merges should always be tagged and versioned appropriately.</li>
-</ul>
-</li>
-<li> Both of the previous builds will attempt to upload to the pulp repository we set up.</li>
-</ol>
-
-
-<h1>The Jenkins set up</h1>
-
-<h3>There is a pre-requisite.</h3>
-
-<p>If you look at the Rakefile closely, you&rsquo;ll see (or have wondered already) that pulp-admin requires a username and password. You wouldn&rsquo;t want to put this in the git repository, so the Rakefile has an implicit requirement for a file <strong>.pulp.yml</strong> in the home directory (for Jenkins this should be <em>/usr/lib/jenkins</em>.</p>
-
-<h3>The Jobs</h3>
-
-<ol>
-<li> Unstable Job
-
-<ul>
-<li>Create a job that watches that git repository&rsquo;s <strong>dev</strong> branch</li>
-<li>The git repository is <a href="https://github.com/myoung34/blog-exampleservice.git">https://github.com/myoung34/blog-exampleservice.git</a></li>
-<li>Poll SCM every 3 minutes <code>H/3 * * * *</code></li>
-<li>Run under rvm. I chose <strong>2.0.0</strong></li>
-<li>Run a build script:
-<code>
-bundle install
-bundle exec rake
-</code></li>
-</ul>
-</li>
-<li> Stable Job
-
-<ul>
-<li>Create a job that watches that git repository&rsquo;s <strong>master</strong> branch</li>
-<li>The git repository is <a href="https://github.com/myoung34/blog-exampleservice.git">https://github.com/myoung34/blog-exampleservice.git</a></li>
-<li>Poll SCM every 3 minutes <code>H/3 * * * *</code></li>
-<li>Run under rvm. I chose <strong>2.0.0</strong></li>
-<li>Run a build script:
-<code>
-bundle install
-bundle exec rake stable
-</code></li>
-</ul>
-</li>
-</ol>
-
-
-<h1>Profit</h1>
-
-<p>You&rsquo;ll notice that each time you make a change to the git repository, it will build an RPM for it and upload it to the Pulp server. That means that if you&rsquo;re subscribed to that Yum repository, you could do a <code>yum update myapp</code> and you&rsquo;d get a new version. We&rsquo;re getting very close to done =)</p>
-
-<p><img class="left" src="/images/jenkinsbuild.png" title="jenkins" ></p>
 ]]></content>
   </entry>
   

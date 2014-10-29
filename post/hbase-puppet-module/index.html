@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Puppet and MarkLogic - Marcus Young</title>
+  <title>Yet another Puppet module - HBase - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the puppetforge. One of which is something &hellip;">
+  <meta name="description" content="In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://marcyoung.us/post/puppet-and-marklogic">
+  <link rel="canonical" href="http://marcyoung.us/post/hbase-puppet-module">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   <header>
     
       
-        <h1 class="entry-title">Puppet and MarkLogic</h1>
+        <h1 class="entry-title">Yet Another Puppet Module - HBase</h1>
       
     
     
@@ -110,7 +110,7 @@
   
 
 
-<time datetime="2013-12-14T00:00:00-06:00" pubdate data-updated="true"></time>
+<time datetime="2014-10-28T00:00:00-05:00" pubdate data-updated="true"></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,15 +119,23 @@
   </header>
 
 
-<div class="entry-content"><p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="http://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="http://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
+<div class="entry-content"><p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
 
-<p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
+<p>I present yet another HBase module. Unlike the ones on the forge, however, this one works.</p>
 
-<p>How does this suck for me? I like to test. It&rsquo;s my new thing. In order to test your module, you need consistency, and for this that&rsquo;s hard to do without violating their terms. My solution? I have a super secret vagrant .box file that has a local Yum repository with the versions I know it supports (everything over version 6). No big deal, sort of.</p>
+<p>The RPMs are provided by a yum repo from <a href="http://hortonworks.com/hdp/">horton works data platform</a> which are very well made, contain well-catered configuration files, and even uses zookeeper out of the box. If you have made it this far and wish to try it out, it is very simple and works exremely well. While I would NOT use it in production in favor of a clustered set up with Thrift, Region Servers, or even YARN, it will work for most dev set ups. If you use it in production, drop me a line on how well it performs under load.</p>
 
-<p>Did I mention the software also requires activation? That affects testing too, because I can&rsquo;t just hardcode my license information even though it&rsquo;s free and easily obtainable. My solution was to force the user to have a <code>~/.marklogic.yml</code> file that contains the information. None of this means anything to the normal use who wishes to install marklogic, they just need a Yum repository set up that holds the MarkLogic version. It does mean something to me in terms of making something that&rsquo;s easy to fork and fix if there are issues.</p>
+<p>If you are interested in something more suitable for production I recommand <a href="http://ambari.apache.org/">Ambari</a>. It&rsquo;s extremely awesome. Otherwise, just check out my current module at <a href="https://github.com/myoung34/puppet-hbase">my github</a> or on the <a href="https://forge.puppetlabs.com/myoung34/hbase">puppet forge</a>.</p>
 
-<p>TL;DR: <a href="http://www.puppetforge.com/myoung34/marklogic">My module is here.</a></p>
+<p>Basic Usage:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class { 'hbase':
+</span><span class='line'>  port =&gt; '8080', #default is '8000'
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -150,12 +158,12 @@
   
 
 
-<time datetime="2013-12-14T00:00:00-06:00" pubdate data-updated="true"></time>
+<time datetime="2014-10-28T00:00:00-05:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/deployment/'>deployment</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>, <a class='category' href='/blog/categories/uncategorized/'>uncategorized</a>, <a class='category' href='/blog/categories/windows/'>windows</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>
   
 </span>
 
@@ -175,10 +183,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left articlenav" href="/post/puppetconf2013" title="Previous Post: What I Learned From PuppetConf 2013">&laquo; What I Learned From PuppetConf 2013</a>
+        <a class="basic-alignment left articlenav" href="/post/udoo-and-an-arduino-lcd-3d" title="Previous Post: UDOO and an Arduino LCD Part 2 - 3d Printer">&laquo; UDOO and an Arduino LCD Part 2 - 3d Printer</a>
       
-      
-        <a class="basic-alignment right articlenav" href="/post/udoo-and-sata" title="Next Post: UDOO and SATA - The Definitive Guide">UDOO and SATA - The Definitive Guide &raquo;</a>
       
     </p>
   </footer>
@@ -280,8 +286,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://marcyoung.us/post/puppet-and-marklogic';
-        var disqus_url = 'http://marcyoung.us/post/puppet-and-marklogic';
+        var disqus_identifier = 'http://marcyoung.us/post/hbase-puppet-module';
+        var disqus_url = 'http://marcyoung.us/post/hbase-puppet-module';
         var disqus_script = 'embed.js';
       
     (function () {

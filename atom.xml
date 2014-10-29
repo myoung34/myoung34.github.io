@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2014-10-17T14:24:22-05:00</updated>
+  <updated>2014-10-28T20:28:06-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
+    <link href="http://marcyoung.us/post/hbase-puppet-module"/>
+    <updated>2014-10-28T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/hbase-puppet-module</id>
+    <content type="html"><![CDATA[<p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
+
+<p>I present yet another HBase module. Unlike the ones on the forge, however, this one works.</p>
+
+<p>The RPMs are provided by a yum repo from <a href="http://hortonworks.com/hdp/">horton works data platform</a> which are very well made, contain well-catered configuration files, and even uses zookeeper out of the box. If you have made it this far and wish to try it out, it is very simple and works exremely well. While I would NOT use it in production in favor of a clustered set up with Thrift, Region Servers, or even YARN, it will work for most dev set ups. If you use it in production, drop me a line on how well it performs under load.</p>
+
+<p>If you are interested in something more suitable for production I recommand <a href="http://ambari.apache.org/">Ambari</a>. It&rsquo;s extremely awesome. Otherwise, just check out my current module at <a href="https://github.com/myoung34/puppet-hbase">my github</a> or on the <a href="https://forge.puppetlabs.com/myoung34/hbase">puppet forge</a>.</p>
+
+<p>Basic Usage:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class { 'hbase':
+</span><span class='line'>  port =&gt; '8080', #default is '8000'
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
@@ -2039,95 +2064,6 @@ For my birthday, my coworkers pitched in and bought me a starter kit from the lo
 </span><span class='line'>  });
 </span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Seriously MySQL?]]></title>
-    <link href="http://marcyoung.us/post/seriously-mysql/"/>
-    <updated>2012-03-28T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/seriously-mysql</id>
-    <content type="html"><![CDATA[<p>I recently discovered one of the most confusing things I&#8217;ve seen in MySQL.<!--more-->. Lets start with this table:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>| Table | Create Table      
-</span><span class='line'>| blah  | CREATE TABLE 'blah' (
-</span><span class='line'>  'id' int(11) NOT NULL,
-</span><span class='line'>    'date' datetime NOT NULL
-</span><span class='line'>    ) ENGINE=MyISAM DEFAULT CHARSET=latin1 |</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What this means is you have a required date. Let&#8217;s say this is to ENFORCE that date is there and valid (without a default value obviously).Now, what you can expect, is that you cannot force the column to take a default value&#8230;it must be specified, so this is what you&#8217;d expect to see:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mysql&gt; insert into blah set id=1,date=NULL;
-</span><span class='line'>ERROR 1048 (23000): Column 'date' cannot be null</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cool&#8230;that&#8217;s right&#8230;so why does this work?</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mysql&gt; update blah set date=NULL where date is not null;
-</span><span class='line'>Query OK, 1 row affected, 1 warning (0.00 sec)
-</span><span class='line'>Rows matched: 1  Changed: 1  Warnings: 1
-</span><span class='line'> 
-</span><span class='line'> mysql&gt; select * from blah;
-</span><span class='line'> +------+---------------------+
-</span><span class='line'> | id   | date                |
-</span><span class='line'> +------+---------------------+
-</span><span class='line'> |    1 | 0000-00-00 00:00:00 |
-</span><span class='line'> +------+---------------------+
-</span><span class='line'> 1 row in set (0.00 sec)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>&#8230;&#8230;&#8230;Huh? It took on a default value, even specified as null?!If that doesn&#8217;t irritate you, what about this?</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mysql&gt; insert into blah set id=2;
-</span><span class='line'>Query OK, 1 row affected, 1 warning (0.00 sec)
-</span><span class='line'> 
-</span><span class='line'> mysql&gt; select * from blah;
-</span><span class='line'> +------+---------------------+
-</span><span class='line'> | id   | date                |
-</span><span class='line'> +------+---------------------+
-</span><span class='line'> |    1 | 0000-00-00 00:00:00 |
-</span><span class='line'> |    2 | 0000-00-00 00:00:00 |
-</span><span class='line'> +------+---------------------+
-</span><span class='line'> 2 rows in set (0.00 sec)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>&#8230;.So, I&#8217;ve specified that it cannot be NULL, but because datetime doesn&#8217;t actually have a NULL datatype, it accepts the NULL datetime of &#8217;0000-00-00 00:00:00&#8242;. This is completely illogical. What&#8217;s worse, I specified NOT NULL, yet wrote an update to set date=NULL, and it passed. According to the MySQL 5 page, it&#8217;s because:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Illegal DATETIME, DATE, or TIMESTAMP values are converted to the “zero” value of the  appropriate type ('0000-00-00 00:00:00' or '0000-00-00').</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&#8217;s fine and dandy, but the MySQL is ignoring the fact that I set date=NULL where the schema shouldn&#8217;t allow it.</p>
 ]]></content>
   </entry>
   
