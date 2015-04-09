@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2014-11-17T17:08:10-06:00</updated>
+  <updated>2015-04-08T19:59:40-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -89,15 +89,15 @@ class { 'mirthconnect':
 <h3>The Jenkins job for puppet-exampleservice</h3>
 
 <ol>
-<li> Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
-<li> Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
-<li> Have it run in rvm 2.0.0</li>
-<li> Create an <strong>execute shell</strong> build step with:
+<li>Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
+<li>Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
+<li>Have it run in rvm 2.0.0</li>
+<li>Create an <strong>execute shell</strong> build step with:
 <code>
 bundle install
 bundle exec rake
 </code></li>
-<li> From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
+<li>From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
 
 <ul>
 <li>set <em>scan console log</em> to <strong>puppet-lint</strong></li>
@@ -111,9 +111,9 @@ bundle exec rake
 <h3>The Jenkins job to re-deploy puppet modules on the ENC</h3>
 
 <ol>
-<li> Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
-<li> Add a string parameter <strong>git_branch</strong></li>
-<li> Add a build step <strong>execute shell script on remote host using ssh</strong>
+<li>Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
+<li>Add a string parameter <strong>git_branch</strong></li>
+<li>Add a build step <strong>execute shell script on remote host using ssh</strong>
 
 <ul>
 <li>Select your ENC (set one up in the <strong>Manage jenkins</strong> portion first and make sure your private/public keys work) with:
@@ -163,7 +163,7 @@ bundle exec rake
 <p>You&rsquo;re now ready for your previous module to notify this build.</p>
 
 <ol>
-<li> Go back to your puppet module job and:
+<li>Go back to your puppet module job and:
 
 <ol>
 <li>Create a post-build action <strong>trigger parameterized build on other projects</strong></li>
@@ -180,10 +180,10 @@ bundle exec rake
 <p>Technically you&rsquo;re close, but you might want to redeploy if your r10k changes. You can do that right now!</p>
 
 <ol>
-<li> Create a new free-style joba and call it <em>puppet-r10k</em></li>
-<li> There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
-<li> Make it poll SCM every x minutes</li>
-<li> Create a post-build action <strong>trigger parameterized build on other projects</strong>
+<li>Create a new free-style joba and call it <em>puppet-r10k</em></li>
+<li>There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
+<li>Make it poll SCM every x minutes</li>
+<li>Create a post-build action <strong>trigger parameterized build on other projects</strong>
 
 <ul>
 <li>Set &lsquo;projects to build&rsquo; to <strong>Redeploy Puppet Modules</strong></li>
@@ -212,14 +212,14 @@ bundle exec rake
 <p>The module for this is going to be simple. The application as it is right now is an HTTP server in python. So our module needs to do these things:</p>
 
 <ol>
-<li> Manage the package and make sure it&rsquo;s always the latest
+<li>Manage the package and make sure it&rsquo;s always the latest
 
 <ul>
 <li>This ensures that new builds will be reinstalled</li>
 </ul>
 </li>
-<li> Open the firewall for TCP port 8000</li>
-<li> Make sure dependencies are installed
+<li>Open the firewall for TCP port 8000</li>
+<li>Make sure dependencies are installed
 
 <ul>
 <li>The RPM has a dependency set for <em>python</em>, so yum would take care of this, but I like to be explicit and not assume that the RPM knows edge cases.</li>
@@ -269,13 +269,13 @@ bundle exec rake
 <h3>Tests</h3>
 
 <ol>
-<li> Puppetlint
+<li>Puppetlint
 
 <ul>
 <li>Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you&rsquo;ll want to take a look at <a href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/">this guide</a></li>
 </ul>
 </li>
-<li> RSpec-Puppet
+<li>RSpec-Puppet
 
 <ul>
 <li>Let&rsquo;s you write assertions for the catalog. Examples would include testing manifest logic, like not doing something if a flag was true or false, etc. See <a href="rspec-puppet.com/tutorial/">the rspec-puppet pages</a></li>
@@ -318,7 +318,7 @@ bundle exec rake
 <h3>What&rsquo;s missing</h3>
 
 <ol>
-<li> Acceptance tests
+<li>Acceptance tests
 
 <ul>
 <li>Before this would have been <strong>rspec-system-puppet</strong> but it&rsquo;s deprecated for <a href="https://github.com/puppetlabs/beaker">Beaker</a>. Note that both of these use Vagrant to spin up a siloed Virtual Machine to test the module in isolation. If you&rsquo;re wanting to do this, make sure your jenkins can spin up a virtual machine. If your jenkins is at AWS for example, you&rsquo;d probably want to look at having it spin up an AMI to run this. My current setup does not allow the creation of VMs from a VM (My jenkins is a VM).</li>

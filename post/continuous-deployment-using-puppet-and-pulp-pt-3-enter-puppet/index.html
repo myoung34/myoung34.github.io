@@ -126,14 +126,14 @@
 <p>The module for this is going to be simple. The application as it is right now is an HTTP server in python. So our module needs to do these things:</p>
 
 <ol>
-<li> Manage the package and make sure it&rsquo;s always the latest
+<li>Manage the package and make sure it&rsquo;s always the latest
 
 <ul>
 <li>This ensures that new builds will be reinstalled</li>
 </ul>
 </li>
-<li> Open the firewall for TCP port 8000</li>
-<li> Make sure dependencies are installed
+<li>Open the firewall for TCP port 8000</li>
+<li>Make sure dependencies are installed
 
 <ul>
 <li>The RPM has a dependency set for <em>python</em>, so yum would take care of this, but I like to be explicit and not assume that the RPM knows edge cases.</li>
@@ -183,13 +183,13 @@
 <h3>Tests</h3>
 
 <ol>
-<li> Puppetlint
+<li>Puppetlint
 
 <ul>
 <li>Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you&rsquo;ll want to take a look at <a href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/">this guide</a></li>
 </ul>
 </li>
-<li> RSpec-Puppet
+<li>RSpec-Puppet
 
 <ul>
 <li>Let&rsquo;s you write assertions for the catalog. Examples would include testing manifest logic, like not doing something if a flag was true or false, etc. See <a href="rspec-puppet.com/tutorial/">the rspec-puppet pages</a></li>
@@ -239,7 +239,7 @@
 <h3>What&rsquo;s missing</h3>
 
 <ol>
-<li> Acceptance tests
+<li>Acceptance tests
 
 <ul>
 <li>Before this would have been <strong>rspec-system-puppet</strong> but it&rsquo;s deprecated for <a href="https://github.com/puppetlabs/beaker">Beaker</a>. Note that both of these use Vagrant to spin up a siloed Virtual Machine to test the module in isolation. If you&rsquo;re wanting to do this, make sure your jenkins can spin up a virtual machine. If your jenkins is at AWS for example, you&rsquo;d probably want to look at having it spin up an AMI to run this. My current setup does not allow the creation of VMs from a VM (My jenkins is a VM).</li>
@@ -322,6 +322,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/book">Well, I Wrote a Book</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/hbase-puppet-module">Yet Another Puppet Module - HBase</a>
       </li>
     
@@ -335,10 +339,6 @@
     
       <li class="post">
         <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins">Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet">Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet</a>
       </li>
     
   </ul>
@@ -391,7 +391,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Marcus Young -
+  Copyright &copy; 2015 - Marcus Young -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

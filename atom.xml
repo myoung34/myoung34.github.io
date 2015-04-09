@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2014-11-17T17:08:10-06:00</updated>
+  <updated>2015-04-08T19:59:40-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Well, I wrote a book]]></title>
+    <link href="http://marcyoung.us/post/book"/>
+    <updated>2015-04-08T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/book</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s been quite a while since my last post, but I promise I have somewhat of a decent reason. I wrote a book on AWS design patterns!<!-- more --></p>
+
+<p>About 4 months ago I was approached about writing a book on UDOO. I turned it down as I didn&rsquo;t feel like I would have enough content to write anything meaningful on it other than I have no idea what the name means. I then stayed on their list and reviewed a book on <a href="https://www.packtpub.com/virtualization-and-cloud/getting-started-red-hat-enterprise-virtualization">RHEV</a> (or the downstream oVirt) as well as a book on <a href="https://www.packtpub.com/networking-and-servers/learning-puppet-security">puppet security</a>.</p>
+
+<p>After doing these reviews I figured &ldquo;why not&rdquo; and asked if there were any topics I could work on. Long story short I wrote <a href="https://www.packtpub.com/web-development/implementing-cloud-design-patterns-aws">a book on implementing design patterns at AWS</a>.</p>
+
+<p>Writing the book was fairly straight-forward and I didn&rsquo;t have too many issues. Basically I borrowed a lot of concepts from the very outdated topics from the Ninja Of Three pages (and by borrowed I mean don&rsquo;t go there) and adapted them for use, updated them to reflect changes at AWS (which get updated so much my book is already out of date before publication - hawt), and gave in depth information on what these patterns mean to DevOps, developers, and customers.</p>
+
+<p>If you&rsquo;re reading this and <strong>really</strong> want to help a newbie out, please purchase it as 100% of the proceeds go to student loans and nice bourbon (order not guaranteed).</p>
+
+<p>The book is pending a last review before publication right now. I submitted a few images for the cover photo that have not been selected by the publisher yet but I give you my top two rejected images.</p>
+
+<p><img src="http://marcyoung.us/images/book.jpg"/><img src="http://marcyoung.us/images/book-alt.jpg"/></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
@@ -102,10 +123,10 @@
 <h3>The Jenkins job for puppet-exampleservice</h3>
 
 <ol>
-<li> Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
-<li> Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
-<li> Have it run in rvm 2.0.0</li>
-<li> Create an <strong>execute shell</strong> build step with:</li>
+<li>Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
+<li>Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
+<li>Have it run in rvm 2.0.0</li>
+<li>Create an <strong>execute shell</strong> build step with:</li>
 </ol>
 
 
@@ -116,7 +137,7 @@
 
 
 <ol>
-<li> From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
+<li>From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
 
 <ul>
 <li>set <em>scan console log</em> to <strong>puppet-lint</strong></li>
@@ -130,9 +151,9 @@
 <h3>The Jenkins job to re-deploy puppet modules on the ENC</h3>
 
 <ol>
-<li> Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
-<li> Add a string parameter <strong>git_branch</strong></li>
-<li> Add a build step <strong>execute shell script on remote host using ssh</strong>
+<li>Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
+<li>Add a string parameter <strong>git_branch</strong></li>
+<li>Add a build step <strong>execute shell script on remote host using ssh</strong>
 
 <ul>
 <li>Select your ENC (set one up in the <strong>Manage jenkins</strong> portion first and make sure your private/public keys work) with:</li>
@@ -178,7 +199,7 @@
 <p>You&rsquo;re now ready for your previous module to notify this build.</p>
 
 <ol>
-<li> Go back to your puppet module job and:
+<li>Go back to your puppet module job and:
 
 <ol>
 <li>Create a post-build action <strong>trigger parameterized build on other projects</strong></li>
@@ -195,10 +216,10 @@
 <p>Technically you&rsquo;re close, but you might want to redeploy if your r10k changes. You can do that right now!</p>
 
 <ol>
-<li> Create a new free-style joba and call it <em>puppet-r10k</em></li>
-<li> There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
-<li> Make it poll SCM every x minutes</li>
-<li> Create a post-build action <strong>trigger parameterized build on other projects</strong>
+<li>Create a new free-style joba and call it <em>puppet-r10k</em></li>
+<li>There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
+<li>Make it poll SCM every x minutes</li>
+<li>Create a post-build action <strong>trigger parameterized build on other projects</strong>
 
 <ul>
 <li>Set &lsquo;projects to build&rsquo; to <strong>Redeploy Puppet Modules</strong></li>
@@ -227,14 +248,14 @@
 <p>The module for this is going to be simple. The application as it is right now is an HTTP server in python. So our module needs to do these things:</p>
 
 <ol>
-<li> Manage the package and make sure it&rsquo;s always the latest
+<li>Manage the package and make sure it&rsquo;s always the latest
 
 <ul>
 <li>This ensures that new builds will be reinstalled</li>
 </ul>
 </li>
-<li> Open the firewall for TCP port 8000</li>
-<li> Make sure dependencies are installed
+<li>Open the firewall for TCP port 8000</li>
+<li>Make sure dependencies are installed
 
 <ul>
 <li>The RPM has a dependency set for <em>python</em>, so yum would take care of this, but I like to be explicit and not assume that the RPM knows edge cases.</li>
@@ -284,13 +305,13 @@
 <h3>Tests</h3>
 
 <ol>
-<li> Puppetlint
+<li>Puppetlint
 
 <ul>
 <li>Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you&rsquo;ll want to take a look at <a href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/">this guide</a></li>
 </ul>
 </li>
-<li> RSpec-Puppet
+<li>RSpec-Puppet
 
 <ul>
 <li>Let&rsquo;s you write assertions for the catalog. Examples would include testing manifest logic, like not doing something if a flag was true or false, etc. See <a href="rspec-puppet.com/tutorial/">the rspec-puppet pages</a></li>
@@ -340,7 +361,7 @@
 <h3>What&rsquo;s missing</h3>
 
 <ol>
-<li> Acceptance tests
+<li>Acceptance tests
 
 <ul>
 <li>Before this would have been <strong>rspec-system-puppet</strong> but it&rsquo;s deprecated for <a href="https://github.com/puppetlabs/beaker">Beaker</a>. Note that both of these use Vagrant to spin up a siloed Virtual Machine to test the module in isolation. If you&rsquo;re wanting to do this, make sure your jenkins can spin up a virtual machine. If your jenkins is at AWS for example, you&rsquo;d probably want to look at having it spin up an AMI to run this. My current setup does not allow the creation of VMs from a VM (My jenkins is a VM).</li>
@@ -378,21 +399,21 @@
 <p>You&rsquo;ll notice the layout mimics its place on the filesystem. This may not be a realistic case, but it sure make sthe POC easy. You&rsquo;ll notice a <strong>Rakefile</strong> in the repository. This is the heart of our packaging for this. If you look into it, you&rsquo;ll see it&rsquo;s essentially a Makefile (see what I did there???). There are many other ways to approach this, but it&rsquo;s the simplest for now. Basically the rake file will parse the <em>version</em> file (which is <a href="http://semver.org/">semantically versioned</a>), and tries to build an RPM via FPM based on it.</p>
 
 <ol>
-<li> The <strong>unstable</strong> build will happen as <code>bundle exec rake unstable</code>
+<li>The <strong>unstable</strong> build will happen as <code>bundle exec rake unstable</code>
 
 <ul>
 <li>This will create an rpm such as: <strong>myapp-0.0.1-beta.1.{timestamp}.x86_64.rpm</strong></li>
 <li>This is timestamped because many merges to dev can happen before a version bump.</li>
 </ul>
 </li>
-<li> The <strong>stable</strong> build will happen as <code>bundle exec rake stable</code>
+<li>The <strong>stable</strong> build will happen as <code>bundle exec rake stable</code>
 
 <ul>
 <li>This will create an rpm such as <strong>myapp-0.0.1-1.x86_64.rpm</strong></li>
 <li>There should be no timestamping here, master merges should always be tagged and versioned appropriately.</li>
 </ul>
 </li>
-<li> Both of the previous builds will attempt to upload to the pulp repository we set up.</li>
+<li>Both of the previous builds will attempt to upload to the pulp repository we set up.</li>
 </ol>
 
 
@@ -405,7 +426,7 @@
 <h3>The Jobs</h3>
 
 <ol>
-<li> Unstable Job
+<li>Unstable Job
 
 <ul>
 <li>Create a job that watches that git repository&rsquo;s <strong>dev</strong> branch</li>
@@ -425,7 +446,7 @@
 
 
 <ol>
-<li> Stable Job
+<li>Stable Job
 
 <ul>
 <li>Create a job that watches that git repository&rsquo;s <strong>master</strong> branch</li>
@@ -593,7 +614,7 @@
 <h3>Workflows</h3>
 
 <ol>
-<li> Developer workflow
+<li>Developer workflow
 
 <ul>
 <li>Continuous integration of puppet modules
@@ -620,7 +641,7 @@
 </li>
 </ul>
 </li>
-<li> Server workflow (puppet agents)
+<li>Server workflow (puppet agents)
 
 <ul>
 <li>Servers subscribe to a repository (stable or unstable)</li>
@@ -817,8 +838,8 @@ if you wish.</p>
 <li>Tests, tests tests.
 
 <ol>
-<li> <a href="http://rspec-puppet.com/tutorial/">rspec-puppet</a> lets you write rspec tests for your manifests.</li>
-<li> <a href="https://github.com/puppetlabs/rspec-system-puppet">rspec-system-puppet</a> lets you write system tests for a full stack (catalog)</li>
+<li><a href="http://rspec-puppet.com/tutorial/">rspec-puppet</a> lets you write rspec tests for your manifests.</li>
+<li><a href="https://github.com/puppetlabs/rspec-system-puppet">rspec-system-puppet</a> lets you write system tests for a full stack (catalog)</li>
 </ol>
 </li>
 <li><a href="http://puppet-lint.com/">Puppet-lint</a>. Use it. Love it. Always run with <em>&ndash;no-80chars-check</em> flag (1990 called, it wants its&#8217; 1024x768 resolution back).</li>
@@ -830,8 +851,8 @@ if you wish.</p>
 <li>Use a module deployment manager.
 
 <ol>
-<li> <a href="https://github.com/adrienthebo/r10k">r10k</a>. I now use this everywhere. You can easily set it up to deploy your modules from <em>master</em> to <em>/etc/puppet/environments/production</em> and <em>dev</em> to <em>/etc/puppet/environments/development</em> , which is so awesome. This makes staggering environments a snap. I plan on writing a quick guide to this soon.</li>
-<li> <a href="https://github.com/rodjek/librarian-puppet">Puppet libarian</a> is another I&rsquo;ve not yet used, but I&rsquo;ve heard good and bad.</li>
+<li><a href="https://github.com/adrienthebo/r10k">r10k</a>. I now use this everywhere. You can easily set it up to deploy your modules from <em>master</em> to <em>/etc/puppet/environments/production</em> and <em>dev</em> to <em>/etc/puppet/environments/development</em> , which is so awesome. This makes staggering environments a snap. I plan on writing a quick guide to this soon.</li>
+<li><a href="https://github.com/rodjek/librarian-puppet">Puppet libarian</a> is another I&rsquo;ve not yet used, but I&rsquo;ve heard good and bad.</li>
 </ol>
 </li>
 <li><a href="http://docs.puppetlabs.com/hiera/1/">Hiera</a> is fantastic. Separate your data from your modules.</li>
@@ -1446,623 +1467,6 @@ For my birthday, my coworkers pitched in and bought me a starter kit from the lo
 </div>
 
 
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Creating an MVC Blog with Node.js and MongoDB]]></title>
-    <link href="http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
-    <updated>2012-04-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
-    <content type="html"><![CDATA[<p>This is going to be my first big tutorial. This is a simple tutorial to show how to build the worlds most basic blog with comment system in Node.js with Express for the MVC Routing, MongoDB as the storage engine, and Jade as the html shorthand. <!--more--></p>
-
-<p>I&#8217;m going to assume you know how to install the base packages for Node.js, npm (node package manager), and mongodb. First, let&#8217;s set up the database to hold some articles. The mongo collection will be a basic object with an id, article_title, and article_body:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[myoung@F00 tutorial]$ mongo tutorial
-</span><span class='line'>MongoDB shell version: 2.0.2
-</span><span class='line'>connecting to: tutorial
-</span><span class='line'>&gt; db.articles.remove()
-</span><span class='line'>&gt; db.articles.insert({"article_title": "Article 1","article_body": "This would be the data from &lt;strong&gt;Article 1&lt;/strong&gt;","article_date": new Date()});
-</span><span class='line'>&gt; db.articles.insert({"article_title": "Article 2","article_body": "This would be the data from &lt;strong&gt;Article 2&lt;/strong&gt;
-</span><span class='line'>I think I'll put some more data in this one =)","article_date": new Date()});</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, let&#8217;s get the modules installed via npm.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[myoung@F00 ~]$ mkdir tutorial
-</span><span class='line'>[myoung@F00 ~]$ cd tutorial
-</span><span class='line'>[myoung@F00 tutorial]$ npm install connect # the middleware module for the model
-</span><span class='line'>[myoung@F00 tutorial]$ npm install express # the module to set up 'route' or controllers
-</span><span class='line'>[myoung@F00 tutorial]$ npm install jade # the module to set up shorthand html, or views</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Next, the actual node app is needed. It&#8217;s a basic setup that loads the installed modules, listens on port 9095, and responds to any GET on &#8216;/&#8217; with &#8216;Hello from node.js!&#8217;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>var express = require('express')
-</span><span class='line'>var app = module.exports = express.createServer();
-</span><span class='line'> 
-</span><span class='line'>// Configuration
-</span><span class='line'>app.configure(function(){
-</span><span class='line'>  app.set('views', __dirname + '/views');
-</span><span class='line'>  app.set('view engine', 'jade');
-</span><span class='line'>  app.use(express.static(__dirname + '/public'));
-</span><span class='line'>  app.set('view options', { layout: false });
-</span><span class='line'>  app.use(app.router);
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>app.configure('development', function(){
-</span><span class='line'>  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>app.configure('production', function(){
-</span><span class='line'>  app.use(express.errorHandler());
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>// Routes
-</span><span class='line'>app.get('/',function(req,res) {
-</span><span class='line'>  res.writeHead(200);
-</span><span class='line'>  res.end("Hello from node.js!");
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>app.listen(9095);</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you run this, you&#8217;ll see that we have the worlds most basic server, let&#8217;s make it a little more advanced. This next version will set up a route that sends GET&#8217;s on &#8216;/&#8217; to &#8216;views/index.jade&#8217;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>app.get('/',function(req,res) {
-</span><span class='line'>  res.render('index', {});
-</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-//new file: views/index.jade
-</span><span class='line'>!!!
-</span><span class='line'>html
-</span><span class='line'>  head
-</span><span class='line'>    title MVC Webpage
-</span><span class='line'>  body
-</span><span class='line'>    | This is the main layout</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is all fine and dandy, but it&#8217;s pretty basic. If we want to make any real web app, we have to minimize code reuse. The great thing about jade is its ability to extend other files.So let&#8217;s make a base layout.jade that holds all the html(in your final blog you&#8217;d want it to load the css, and actually set up the page). Extending in Jade works by creating a file, styling it with css, loading whatever jQuery modules or anything you&#8217;d want to display, and setting &#8216;blocks&#8217;. Blocks will be overridden by child pages, so you&#8217;d want it to be where your content is, or data that will change from view to view. A side note, which you&#8217;ll notice in later snippets, is that you can put inline JavaScript in the jade file, and it can determine what is rendered</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-//file is layout.jade...the 'parent' view
-</span><span class='line'>!!!
-</span><span class='line'>html
-</span><span class='line'>  head
-</span><span class='line'>    title MVC Webpage
-</span><span class='line'>  body
-</span><span class='line'>    block content
-</span><span class='line'>      | This is the main layout
-</span><span class='line'> 
-</span><span class='line'>-//index.jade
-</span><span class='line'>extends layout
-</span><span class='line'>-//now index is a 'child' of layout
-</span><span class='line'>block content
-</span><span class='line'>  | This was overridden by the index =)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now that we&#8217;ve got a successful, notably basic, MVC framework set, let&#8217;s make it Mongo compatible so we can display some stuff. I tested a few Mongo modules, but enjoyed this one the most. It plays more like the CLI and has minimal overhead</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[myoung@F00 tutorial]$ npm install mongodb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now the app.js has to be modified to make the connection, and on response to &#8216;/&#8217;, grab the collection as an array, and pass it to the page as a variable.The index.jade also has to be modified to check for the array passed in, and loop through it displaying the title and body</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>var mongodb = require('mongodb')
-</span><span class='line'>  , Db = mongodb.Db
-</span><span class='line'>  , Server = mongodb.Server
-</span><span class='line'>  , db = new Db('tutorial', new Server('localhost', 27017, {auto_reconnect: true, native_parser: true}), {})
-</span><span class='line'>var express = require('express')
-</span><span class='line'>var app = module.exports = express.createServer();
-</span><span class='line'> 
-</span><span class='line'>// Configuration
-</span><span class='line'>app.configure(function(){
-</span><span class='line'>  app.set('views', __dirname + '/views');
-</span><span class='line'>  app.set('view engine', 'jade');
-</span><span class='line'>  app.use(express.static(__dirname + '/public'));
-</span><span class='line'>  app.set('view options', { layout: false });
-</span><span class='line'>  app.use(app.router);
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>app.configure('development', function(){
-</span><span class='line'>  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>app.configure('production', function(){
-</span><span class='line'>  app.use(express.errorHandler());
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>// Routes
-</span><span class='line'>//this is the route for /, or the root
-</span><span class='line'>app.get('/',function(req,res) {
-</span><span class='line'>  var data_collection = function(err,collection) {
-</span><span class='line'>    //find all articles in the collection, and sort by article_date...
-</span><span class='line'>    //pass it in as db_results
-</span><span class='line'>    collection.find().sort({article_date: -1}).toArray(function(err,db_results) {
-</span><span class='line'>      console.log(db_results);//just to show some output on the server, log the entire obj
-</span><span class='line'>      res.render('index', {//render the index
-</span><span class='line'>        blog_content: db_results //pass in the results to the page as a local blog_content
-</span><span class='line'>      });
-</span><span class='line'>    });
-</span><span class='line'>  };
-</span><span class='line'> 
-</span><span class='line'>  db.open(function(err, p_client) {
-</span><span class='line'>    db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()
-</span><span class='line'>  });
-</span><span class='line'> 
-</span><span class='line'>});
-</span><span class='line'> 
-</span><span class='line'>app.listen(9095);</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-//index.jade
-</span><span class='line'>extends layout
-</span><span class='line'>block content
-</span><span class='line'>  -if(locals.blog_content) {
-</span><span class='line'>    -for(var i=0; i&lt;blog_content.length; i++) {
-</span><span class='line'>      h3=blog_content[i].article_title
-</span><span class='line'>      p !{blog_content[i].article_body}
-</span><span class='line'>    -}
-</span><span class='line'>  -}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>At this point the page will loop through the blog articles in the database and display them all on the same page. To make it a little nicer, let&#8217;s do some creative modifications.Index.jade will take the length of the array, and if it&#8217;s 1, display that article with a blank &#8216;Comment Section&#8217;. If it&#8217;s more than 1, let&#8217;s loop through all of them, and make the title link to the article itself.For this to really do anything, we need the link to go to a distinct article, so App.js will have to be mofied to allow a direct link. In this case, We&#8217;re going to make it go to &#8216;/index/mongos_id_of_article&#8217;.You&#8217;ll notice a little work to get the id from the link. Node.js sees &#8216;/index/mongos_id_of_article&#8217; as &#8216;/index/:article_id&#8217;, which is translated to &#8216;request.paracms.article_id&#8217;. The last part of this is the coersion from this id to a BSON id for a Mongo lookup (BSON.ObjectId).</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-//index.jade
-</span><span class='line'>extends layout
-</span><span class='line'>block content
-</span><span class='line'>  -if(locals.blog_content) {
-</span><span class='line'>    -if(blog_content.length == 1) {
-</span><span class='line'>      h3=blog_content[0].article_title
-</span><span class='line'>      p !{blog_content[0].article_body}
-</span><span class='line'>      hr(width="100%")
-</span><span class='line'>      | Comment Section
-</span><span class='line'>    -} else {
-</span><span class='line'>      -for(var i=0; i&lt;blog_content.length; i++) {
-</span><span class='line'>        h3
-</span><span class='line'>          a(href='/article/'+blog_content[i]._id)=blog_content[i].article_title
-</span><span class='line'>        p !{blog_content[i].article_body}
-</span><span class='line'>      -}
-</span><span class='line'>    -}
-</span><span class='line'>  -}</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>//this is the route for /article/somenumber .. somenumber is available in the request
-</span><span class='line'>app.get('/article/:article_id',function(req,res) {
-</span><span class='line'>  var data_collection = function(err,collection) {
-</span><span class='line'>    var BSON = mongodb.BSONPure;//load the BSON object
-</span><span class='line'>    var o_id = new BSON.ObjectID(req.params.article_id);//this is now a searchable
-</span><span class='line'>                                                        //id for collection
-</span><span class='line'>    collection.find({_id: o_id}).toArray(function(err,db_results) {
-</span><span class='line'>      res.render('index', {//render the index
-</span><span class='line'>        blog_content: db_results //pass the db_results to a local variable in index
-</span><span class='line'>                                 //called blog_content
-</span><span class='line'>      });
-</span><span class='line'>    });
-</span><span class='line'>  };
-</span><span class='line'>  db.open(function(err, p_client) {
-</span><span class='line'>    db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()
-</span><span class='line'>  });
-</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you run it at this point, you&#8217;ll be able to hit the index, see links to articles and go directly to them with a blank comment section. Let&#8217;s make that comment section. To prep for this, we&#8217;ll need a form to POST to /comment</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-//index.jade
-</span><span class='line'>extends layout
-</span><span class='line'>block content
-</span><span class='line'>  -if(locals.blog_content) {
-</span><span class='line'>    -if(blog_content.length == 1) {
-</span><span class='line'>      h3=blog_content[0].article_title
-</span><span class='line'>      p !{blog_content[0].article_body}
-</span><span class='line'>      hr(width="100%")
-</span><span class='line'>      | Comment Section
-</span><span class='line'>      form(method='post',action='/comment')
-</span><span class='line'>        label Name:
-</span><span class='line'>          input(type='text',name='postername')
-</span><span class='line'>        label Comment:
-</span><span class='line'>          textarea(type='text',name='postercomment')
-</span><span class='line'>        input(type='hidden',name='current_id',value=blog_content[0]._id)
-</span><span class='line'>        input(type='submit',value='submit')
-</span><span class='line'>    -} else {
-</span><span class='line'>      -for(var i=0; i&lt;blog_content.length; i++) {
-</span><span class='line'>        h3
-</span><span class='line'>          a(href='/article/'+blog_content[i]._id)=blog_content[i].article_title
-</span><span class='line'>        p !{blog_content[i].article_body}
-</span><span class='line'>      -}
-</span><span class='line'>    -}
-</span><span class='line'>  -}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you run this now, you&#8217;ll get an error. That&#8217;s because we don&#8217;t have a route for a POST to /comment, so let&#8217;s set that up.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>app.post('/comment',function(req,res) {                                                                         
-</span><span class='line'>  var bodyarr = [];                                                                                             
-</span><span class='line'>  req.on('data', function(chunk){                                                                               
-</span><span class='line'>    bodyarr.push(chunk);                                                                                        
-</span><span class='line'>  });                                                                                                           
-</span><span class='line'>  req.on('end', function(){
-</span><span class='line'>    /* This is hackish but is to only show proof of concept                                                     
-</span><span class='line'>       This will split the bodyarr that we've created                                                           
-</span><span class='line'>          ex: id=4&body=what%20up&something=somethingelse                                                       
-</span><span class='line'>    */                                                                                                          
-</span><span class='line'>    var values = bodyarr.join('').split('&');                                                                   
-</span><span class='line'>    var BSON = mongodb.BSONPure;//this will load the mongo BSON                                                 
-</span><span class='line'>    var article_id = new BSON.ObjectID(values[2].split('=')[1]);//this was the argument for ID                  
-</span><span class='line'> 
-</span><span class='line'>    //create a 'comment' object that contains the poster and comment                                            
-</span><span class='line'>    var comment_object = {                                                                                      
-</span><span class='line'>      'poster': values[].split('=')[1],
-</span><span class='line'>      'comment': values[1].split('=')[1]
-</span><span class='line'>    };                                                                                                          
-</span><span class='line'>    var data_collection = function(err,collection) {                                                            
-</span><span class='line'>      //call update on the collection, find by _id, and push the comment object onto it                         
-</span><span class='line'>      collection.update({_id: article_id},{$push : { comments : comment_object }});
-</span><span class='line'>      res.redirect('back');
-</span><span class='line'>    };
-</span><span class='line'>    db.open(function(err, p_client) {                                                                           
-</span><span class='line'>      db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()   
-</span><span class='line'>    });
-</span><span class='line'>  });
-</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It got a little complicated in that snippet, so here&#8217;s a slight breakdown. The post takes the data as a stream (req.on) and pushes it to an array. On the end of the stream we&#8217;ll break up the values,and push it onto the mongo collection for that id (we know the id from the hidden form element). The push is an Object that&#8217;s a &#8216;poster&#8217; and a &#8216;comment&#8217;. When this is finished, we&#8217;ll redirect backwards. This is dandy, but you&#8217;ll notice we haven&#8217;t set up the view to display comments, only store. The newest code has the addition of a loop. If comments exists(if the collection even has a comment array), we will loop through it and display it. For handiness, you&#8217;ll also notice the addition of a link to &#8216;/&#8217;</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-//index.jade 
-</span><span class='line'>extends layout
-</span><span class='line'>-//overwrite the content block with new data
-</span><span class='line'>block content 
-</span><span class='line'>  -if(locals.blog_content) {//make sure it has a blog_content (to be safe and not
-</span><span class='line'>                            //cause an Express crash
-</span><span class='line'>    -if(blog_content.length == 1) {//only 1 article, means they clicked on
-</span><span class='line'>                                   //an article link to view it....
-</span><span class='line'>                                   //so render it with the comment form data
-</span><span class='line'>      h3=blog_content[0].article_title
-</span><span class='line'>      p !{blog_content[0].article_body}
-</span><span class='line'>      hr(width="100%")
-</span><span class='line'>      | Comment Section
-</span><span class='line'>      form(method='post',action='/comment')
-</span><span class='line'>        label Name:
-</span><span class='line'>          input(type='text',name='postername')
-</span><span class='line'>        label Comment:
-</span><span class='line'>          textarea(type='text',name='postercomment')
-</span><span class='line'>        input(type='hidden',name='current_id',value=blog_content[0]._id)
-</span><span class='line'>        input(type='submit',value='submit')
-</span><span class='line'>      hr(width="100%")
-</span><span class='line'>      -var comments = blog_content[0].comments;
-</span><span class='line'>      -if(comments && comments != undefined) {
-</span><span class='line'>        -for(var i=0; i&lt;comments.length;i++) {
-</span><span class='line'>          h3=comments[i].poster
-</span><span class='line'>          | !{comments[i].comment}
-</span><span class='line'>        -}
-</span><span class='line'>      -}
-</span><span class='line'>      hr(width="100%")
-</span><span class='line'>      a(href='/') Home
-</span><span class='line'>    -} else {//more than one article, meaning they're at the 'blog root',
-</span><span class='line'>             //looking at all the links
-</span><span class='line'>      -for(var i=0; i&lt;blog_content.length; i++) {//loop through blog array
-</span><span class='line'>        h3
-</span><span class='line'>          a(href='/article/'+blog_content[i]._id)=blog_content[i].article_title
-</span><span class='line'>        p !{blog_content[i].article_body}
-</span><span class='line'>      -}
-</span><span class='line'>    -}
-</span><span class='line'>  -}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This last snippet is a clean up of the comment post. Since it&#8217;s parsed as parameters, spaces are +&#8217;s. This could be fixed by modifying the way I handle the post as a stream, but for demonstrations sake, let&#8217;s just do a regex replace of /+/ to spaces.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>app.post('/comment',function(req,res) {
-</span><span class='line'>  var bodyarr = [];
-</span><span class='line'>  req.on('data', function(chunk){
-</span><span class='line'>    bodyarr.push(chunk);
-</span><span class='line'>  });
-</span><span class='line'>  req.on('end', function(){//the data has finished coming in
-</span><span class='line'>    /* This is hackish but is to only show proof of concept
-</span><span class='line'>       This will split the bodyarr that we've created
-</span><span class='line'>          ex: id=4&body=what%20up&something=somethingelse
-</span><span class='line'>    */
-</span><span class='line'>    var values = bodyarr.join('').split('&');
-</span><span class='line'>    var BSON = mongodb.BSONPure;//this will load the mongo BSON
-</span><span class='line'>    var article_id = new BSON.ObjectID(values[2].split('=')[1]);//this was the argument for ID
-</span><span class='line'> 
-</span><span class='line'>    //create a 'comment' object that contains the poster and comment
-</span><span class='line'>    var comment_object = {
-</span><span class='line'>      'poster': values[].split('=')[1].replace(/+/g,' '),//had +'s for spaces, so replace them
-</span><span class='line'>      'comment': values[1].split('=')[1].replace(/+/g,' ')
-</span><span class='line'>    };
-</span><span class='line'> 
-</span><span class='line'>    var data_collection = function(err,collection) {
-</span><span class='line'>      //call update on the collection, find by _id, and push the comment object onto it
-</span><span class='line'>      collection.update({_id: article_id},{$push : { comments : comment_object }});
-</span><span class='line'>      res.redirect('back');//send the user to the previous page
-</span><span class='line'>    };
-</span><span class='line'>    db.open(function(err, p_client) {
-</span><span class='line'>      db.collection('articles', data_collection);//this is the name of the collection...ie db.articles.find()
-</span><span class='line'>    });
-</span><span class='line'>  });
-</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
   </entry>

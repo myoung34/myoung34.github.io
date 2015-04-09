@@ -137,21 +137,21 @@
 <p>You&rsquo;ll notice the layout mimics its place on the filesystem. This may not be a realistic case, but it sure make sthe POC easy. You&rsquo;ll notice a <strong>Rakefile</strong> in the repository. This is the heart of our packaging for this. If you look into it, you&rsquo;ll see it&rsquo;s essentially a Makefile (see what I did there???). There are many other ways to approach this, but it&rsquo;s the simplest for now. Basically the rake file will parse the <em>version</em> file (which is <a href="http://semver.org/">semantically versioned</a>), and tries to build an RPM via FPM based on it.</p>
 
 <ol>
-<li> The <strong>unstable</strong> build will happen as <code>bundle exec rake unstable</code>
+<li>The <strong>unstable</strong> build will happen as <code>bundle exec rake unstable</code>
 
 <ul>
 <li>This will create an rpm such as: <strong>myapp-0.0.1-beta.1.{timestamp}.x86_64.rpm</strong></li>
 <li>This is timestamped because many merges to dev can happen before a version bump.</li>
 </ul>
 </li>
-<li> The <strong>stable</strong> build will happen as <code>bundle exec rake stable</code>
+<li>The <strong>stable</strong> build will happen as <code>bundle exec rake stable</code>
 
 <ul>
 <li>This will create an rpm such as <strong>myapp-0.0.1-1.x86_64.rpm</strong></li>
 <li>There should be no timestamping here, master merges should always be tagged and versioned appropriately.</li>
 </ul>
 </li>
-<li> Both of the previous builds will attempt to upload to the pulp repository we set up.</li>
+<li>Both of the previous builds will attempt to upload to the pulp repository we set up.</li>
 </ol>
 
 
@@ -164,7 +164,7 @@
 <h3>The Jobs</h3>
 
 <ol>
-<li> Unstable Job
+<li>Unstable Job
 
 <ul>
 <li>Create a job that watches that git repository&rsquo;s <strong>dev</strong> branch</li>
@@ -184,7 +184,7 @@
 
 
 <ol>
-<li> Stable Job
+<li>Stable Job
 
 <ul>
 <li>Create a job that watches that git repository&rsquo;s <strong>master</strong> branch</li>
@@ -279,6 +279,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/book">Well, I Wrote a Book</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/hbase-puppet-module">Yet Another Puppet Module - HBase</a>
       </li>
     
@@ -292,10 +296,6 @@
     
       <li class="post">
         <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins">Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet">Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet</a>
       </li>
     
   </ul>
@@ -348,7 +348,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Marcus Young -
+  Copyright &copy; 2015 - Marcus Young -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

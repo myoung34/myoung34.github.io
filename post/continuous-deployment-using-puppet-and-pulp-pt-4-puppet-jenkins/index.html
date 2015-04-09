@@ -126,10 +126,10 @@
 <h3>The Jenkins job for puppet-exampleservice</h3>
 
 <ol>
-<li> Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
-<li> Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
-<li> Have it run in rvm 2.0.0</li>
-<li> Create an <strong>execute shell</strong> build step with:</li>
+<li>Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
+<li>Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
+<li>Have it run in rvm 2.0.0</li>
+<li>Create an <strong>execute shell</strong> build step with:</li>
 </ol>
 
 
@@ -140,7 +140,7 @@
 
 
 <ol>
-<li> From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
+<li>From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
 
 <ul>
 <li>set <em>scan console log</em> to <strong>puppet-lint</strong></li>
@@ -154,9 +154,9 @@
 <h3>The Jenkins job to re-deploy puppet modules on the ENC</h3>
 
 <ol>
-<li> Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
-<li> Add a string parameter <strong>git_branch</strong></li>
-<li> Add a build step <strong>execute shell script on remote host using ssh</strong>
+<li>Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
+<li>Add a string parameter <strong>git_branch</strong></li>
+<li>Add a build step <strong>execute shell script on remote host using ssh</strong>
 
 <ul>
 <li>Select your ENC (set one up in the <strong>Manage jenkins</strong> portion first and make sure your private/public keys work) with:</li>
@@ -202,7 +202,7 @@
 <p>You&rsquo;re now ready for your previous module to notify this build.</p>
 
 <ol>
-<li> Go back to your puppet module job and:
+<li>Go back to your puppet module job and:
 
 <ol>
 <li>Create a post-build action <strong>trigger parameterized build on other projects</strong></li>
@@ -219,10 +219,10 @@
 <p>Technically you&rsquo;re close, but you might want to redeploy if your r10k changes. You can do that right now!</p>
 
 <ol>
-<li> Create a new free-style joba and call it <em>puppet-r10k</em></li>
-<li> There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
-<li> Make it poll SCM every x minutes</li>
-<li> Create a post-build action <strong>trigger parameterized build on other projects</strong>
+<li>Create a new free-style joba and call it <em>puppet-r10k</em></li>
+<li>There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
+<li>Make it poll SCM every x minutes</li>
+<li>Create a post-build action <strong>trigger parameterized build on other projects</strong>
 
 <ul>
 <li>Set &lsquo;projects to build&rsquo; to <strong>Redeploy Puppet Modules</strong></li>
@@ -307,6 +307,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/book">Well, I Wrote a Book</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/hbase-puppet-module">Yet Another Puppet Module - HBase</a>
       </li>
     
@@ -320,10 +324,6 @@
     
       <li class="post">
         <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins">Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet">Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet</a>
       </li>
     
   </ul>
@@ -376,7 +376,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Marcus Young -
+  Copyright &copy; 2015 - Marcus Young -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
