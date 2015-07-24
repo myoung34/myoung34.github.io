@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>HL7 And Node.js - Marcus Young</title>
+  <title>Azure, Github, and a Corporate Proxy - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217; &hellip;">
+  <meta name="description" content="Recently I started playing around with Azure and deploying an ASP.NET MVC site via its Github linkage. I had some strange issues. Problem 1: I am a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://marcyoung.us/post/hl7-and-node-js/">
+  <link rel="canonical" href="http://marcyoung.us/post/azure-github-proxy">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   <header>
     
       
-        <h1 class="entry-title">HL7 and Node.js</h1>
+        <h1 class="entry-title">Azure, Github, and a Corporate Proxy</h1>
       
     
     
@@ -110,7 +110,7 @@
   
 
 
-<time datetime="2012-03-12T00:00:00-05:00" pubdate data-updated="true"></time>
+<time datetime="2015-05-18T00:00:00-05:00" pubdate data-updated="true"></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,12 +119,61 @@
   </header>
 
 
-<div class="entry-content"><p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
+<div class="entry-content"><p>Recently I started playing around with Azure and deploying an ASP.NET MVC site via its Github linkage. I had some strange issues.<!-- more --></p>
 
-<!--more-->
+<h1>Problem 1: I am a masochist</h1>
+
+<p>Under the strange suspicion that I had no idea how to actually build NuGet packages and deploy an ASP.NET site via CI/CD I decided to take on the masochistic task upon myself.
+If you <a href="https://github.com/myoung34/HelloWorldASP">take a look at my very basic MVC site</a>, you won&rsquo;t see much of interest. None actually, I&rsquo;m not sure why you possibly clicked that link.</p>
+
+<p>It&rsquo;s a basic MVC app using a terrible NuGet package I&rsquo;ve been deploying that adds some string extension methods. If you run that in Visual Studio, all is well.</p>
+
+<h1>Problem 2: The work proxy</h1>
+
+<p>I tried to publish it to Azure using <a href="http://blogs.technet.com/b/cbernier/archive/2013/09/24/deploy-your-web-application-to-windows-azure-from-with-visual-studio.aspx">the publish feature from VS2013 into Azure</a> but immediately ran into a &lsquo;me&rsquo; problem.</p>
+
+<p>You see, I was deploying from my work PC, which is absolutely blocked from doing anything. All of the traffic from my work PC <strong>must</strong> be published through a web proxy on-site.</p>
+
+<p>This is fine for things like Chrome, which pick those settings up automatically. For cygwin (see problem 1) there are a lot of steps to take.</p>
+
+<ul>
+<li>wget/Vagrant: I had to export <code>http_proxy</code>, <code>https_proxy</code>, and <code>ftp_proxy</code> (after pulling down the proxy PAC and finding which proxy address to use).</li>
+<li>cURL: I had to write a wrapper <code>/usr/local/bin/curl</code>(higher in the PATH) that basically said <code>/usr/bin/curl --proxy 'http://proxyaddress:80' "$@"</code>.</li>
+<li>subversion: I had to add <code>http-proxy-host = proxyaddress</code> into <code>~/.subversion/servers</code> in the <code>[global]</code> section.</li>
+<li>git: OMG GIT. So here&rsquo;s the thing. git behind a corporate firewall is hard. It can&rsquo;t resolve through DNS and it can&rsquo;t do anything it needs to do.
+
+<ul>
+<li>First I installed <a href="http://ntlmaps.sourceforge.net/">ntmlaps</a> into <code>~/software/ntlmaps</code></li>
+<li>Next I set my <code>~.bash_profile</code> to start up a command in screen if it hasn&rsquo;t already to start ntlmaps.
+
+<ul>
+<li><code>[[ -n $(screen -ls | grep -E 'git-proxy.\*\((A|De)tached\)$') ]] || screen -d -S git-proxy -m python ~/software/ntlmaps/main.py</code></li>
+</ul>
+</li>
+<li>Next I set git to use this proxy: <code>for i in http https; do git config --global $i.proxy http://localhost:5865</code></li>
+</ul>
+</li>
+</ul>
 
 
-<p>I originally had the code shown here, but it speaks for itself at <a href="https://github.com/myoung34/Node.hl7">My Repo</a></p>
+<h1>Problem 3: Visual Studio and Azure Deploy</h1>
+
+<p><a href="http://blog.kloud.com.au/2014/11/13/publish-to-a-new-azure-website-from-behind-a-proxy/">Visual studio cannot deploy to Azure behind a PAC proxy</a>.</p>
+
+<p>Sites like this one claim you can make changes to the VS2013 executable config but I had zero luck.</p>
+
+<p>So little luck in fact that it just plain failed with an unconnectable error.</p>
+
+<p>From then I said nevermind and decided to just link my Azure app to my github repo using the web UI. All went great and it immediately deployed however when I browsed to my website I was <a href="http://www.dotnetthoughts.net/azure-system-methodaccessexception-attempt-by-security-transparent-method/">greeted with this error.</a>.</p>
+
+<p>All of the blog posts and stack overflow questions say to install the WebHelpers NuGet package via <code>Install-Package -Id  Microsoft.AspNet.WebHelpers</code>, but that didn&rsquo;t solve it. It redeployed and had the same error.</p>
+
+<p>The posts also say to just select the <code>Remove additional files at destination</code> checkbox on Visual Studio deploy. Well that&rsquo;s useless because I cannot deploy via visual studio. After fighting long and hard and redeploying via Github repeatedly, I found the answer.</p>
+
+<h1>Answer: Select the <code>Remove additional files at destination</code> no matter what.</h1>
+
+<p>Yup. I changed to the guest network, selected the checkbox, published successfully and all went well. My app was now live.
+I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been working fine since.</p>
 </div>
 
 
@@ -147,12 +196,12 @@
   
 
 
-<time datetime="2012-03-12T00:00:00-05:00" pubdate data-updated="true"></time>
+<time datetime="2015-05-18T00:00:00-05:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/hl7/'>hl7</a>, <a class='category' href='/blog/categories/node-dot-js/'>node.js</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+    <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/azure/'>azure</a>, <a class='category' href='/blog/categories/cloud/'>cloud</a>
   
 </span>
 
@@ -172,10 +221,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left articlenav" href="/post/ship-now-patch-later/" title="Previous Post: Ship Now, Patch Later">&laquo; Ship Now, Patch Later</a>
+        <a class="basic-alignment left articlenav" href="/post/book" title="Previous Post: Well, I wrote a book">&laquo; Well, I wrote a book</a>
       
-      
-        <a class="basic-alignment right articlenav" href="/post/seriously-mysql/" title="Next Post: Seriously MySQL?">Seriously MySQL? &raquo;</a>
       
     </p>
   </footer>
@@ -277,8 +324,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://marcyoung.us/post/hl7-and-node-js/';
-        var disqus_url = 'http://marcyoung.us/post/hl7-and-node-js/';
+        var disqus_identifier = 'http://marcyoung.us/post/azure-github-proxy';
+        var disqus_url = 'http://marcyoung.us/post/azure-github-proxy';
         var disqus_script = 'embed.js';
       
     (function () {

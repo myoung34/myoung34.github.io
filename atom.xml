@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2015-04-08T19:59:40-05:00</updated>
+  <updated>2015-07-24T14:46:25-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Azure, Github, and a Corporate Proxy]]></title>
+    <link href="http://marcyoung.us/post/azure-github-proxy"/>
+    <updated>2015-05-18T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/aspnet-github</id>
+    <content type="html"><![CDATA[<p>Recently I started playing around with Azure and deploying an ASP.NET MVC site via its Github linkage. I had some strange issues.<!-- more --></p>
+
+<h1>Problem 1: I am a masochist</h1>
+
+<p>Under the strange suspicion that I had no idea how to actually build NuGet packages and deploy an ASP.NET site via CI/CD I decided to take on the masochistic task upon myself.
+If you <a href="https://github.com/myoung34/HelloWorldASP">take a look at my very basic MVC site</a>, you won&rsquo;t see much of interest. None actually, I&rsquo;m not sure why you possibly clicked that link.</p>
+
+<p>It&rsquo;s a basic MVC app using a terrible NuGet package I&rsquo;ve been deploying that adds some string extension methods. If you run that in Visual Studio, all is well.</p>
+
+<h1>Problem 2: The work proxy</h1>
+
+<p>I tried to publish it to Azure using <a href="http://blogs.technet.com/b/cbernier/archive/2013/09/24/deploy-your-web-application-to-windows-azure-from-with-visual-studio.aspx">the publish feature from VS2013 into Azure</a> but immediately ran into a &lsquo;me&rsquo; problem.</p>
+
+<p>You see, I was deploying from my work PC, which is absolutely blocked from doing anything. All of the traffic from my work PC <strong>must</strong> be published through a web proxy on-site.</p>
+
+<p>This is fine for things like Chrome, which pick those settings up automatically. For cygwin (see problem 1) there are a lot of steps to take.</p>
+
+<ul>
+<li>wget/Vagrant: I had to export <code>http_proxy</code>, <code>https_proxy</code>, and <code>ftp_proxy</code> (after pulling down the proxy PAC and finding which proxy address to use).</li>
+<li>cURL: I had to write a wrapper <code>/usr/local/bin/curl</code>(higher in the PATH) that basically said <code>/usr/bin/curl --proxy 'http://proxyaddress:80' "$@"</code>.</li>
+<li>subversion: I had to add <code>http-proxy-host = proxyaddress</code> into <code>~/.subversion/servers</code> in the <code>[global]</code> section.</li>
+<li>git: OMG GIT. So here&rsquo;s the thing. git behind a corporate firewall is hard. It can&rsquo;t resolve through DNS and it can&rsquo;t do anything it needs to do.
+
+<ul>
+<li>First I installed <a href="http://ntlmaps.sourceforge.net/">ntmlaps</a> into <code>~/software/ntlmaps</code></li>
+<li>Next I set my <code>~.bash_profile</code> to start up a command in screen if it hasn&rsquo;t already to start ntlmaps.
+
+<ul>
+<li><code>[[ -n $(screen -ls | grep -E 'git-proxy.\*\((A|De)tached\)$') ]] || screen -d -S git-proxy -m python ~/software/ntlmaps/main.py</code></li>
+</ul>
+</li>
+<li>Next I set git to use this proxy: <code>for i in http https; do git config --global $i.proxy http://localhost:5865</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Problem 3: Visual Studio and Azure Deploy</h1>
+
+<p><a href="http://blog.kloud.com.au/2014/11/13/publish-to-a-new-azure-website-from-behind-a-proxy/">Visual studio cannot deploy to Azure behind a PAC proxy</a>.</p>
+
+<p>Sites like this one claim you can make changes to the VS2013 executable config but I had zero luck.</p>
+
+<p>So little luck in fact that it just plain failed with an unconnectable error.</p>
+
+<p>From then I said nevermind and decided to just link my Azure app to my github repo using the web UI. All went great and it immediately deployed however when I browsed to my website I was <a href="http://www.dotnetthoughts.net/azure-system-methodaccessexception-attempt-by-security-transparent-method/">greeted with this error.</a>.</p>
+
+<p>All of the blog posts and stack overflow questions say to install the WebHelpers NuGet package via <code>Install-Package -Id  Microsoft.AspNet.WebHelpers</code>, but that didn&rsquo;t solve it. It redeployed and had the same error.</p>
+
+<p>The posts also say to just select the <code>Remove additional files at destination</code> checkbox on Visual Studio deploy. Well that&rsquo;s useless because I cannot deploy via visual studio. After fighting long and hard and redeploying via Github repeatedly, I found the answer.</p>
+
+<h1>Answer: Select the <code>Remove additional files at destination</code> no matter what.</h1>
+
+<p>Yup. I changed to the guest network, selected the checkbox, published successfully and all went well. My app was now live.
+I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been working fine since.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Well, I wrote a book]]></title>
@@ -31,6 +94,8 @@
 <p>The book is pending a last review before publication right now. I submitted a few images for the cover photo that have not been selected by the publisher yet but I give you my top two rejected images.</p>
 
 <p><img src="http://marcyoung.us/images/book.jpg"/><img src="http://marcyoung.us/images/book-alt.jpg"/></p>
+
+<p>Update 4/29/2015: <a href="http://amzn.to/1zrxpZx">It&rsquo;s back up for sale at amazon</a></p>
 ]]></content>
   </entry>
   
@@ -1385,85 +1450,6 @@ Now for the bad code. This will search for <beef>*tips*</beef> effectively. Any 
   <a href="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
     The kegduino in action
   </p>
-</div>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[I Made Beer]]></title>
-    <link href="http://marcyoung.us/post/i-made-beer/"/>
-    <updated>2012-05-11T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/i-made-beer</id>
-    <content type="html"><![CDATA[<!--more-->
-
-
-<p>This is going to mainly a picture post, but I&#8217;ll give a bit of background.<br/>
-For my birthday, my coworkers pitched in and bought me a starter kit from the local homebrew shop (Allseasons), which consisted of a fermenter, bottler, cleaning supplies, hydrometer, auto-siphon, and tubing.</p>
-
-<p><a href="http://marcyoung.us/wp-content/uploads/2012/07/setup.jpg"><img class="alignnone size-medium wp-image-27" title="setup" src="http://marcyoung.us/wp-content/uploads/2012/07/setup-300x199.jpg" alt="" width="300" height="199" /></a></p>
-
-<p>Through amazon I got the rest of what I thought I needed, which was a wort chiller, boil pot, and some keg stuff. This was my outcome.</p>
-
-<p>Disclaimer: Ignore image quality, I&#8217;m not used to fancy DSLR cameras.</p>
-
-<!-- see gallery_shortcode() in wp-includes/media.php -->
-
-
-
-
-<div id='gallery-1' class='gallery galleryid-21 gallery-columns-3 gallery-size-thumbnail'>
-  <dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/setup/' title='setup'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/setup-150x150.jpg" class="attachment-thumbnail" alt="setup" /></a>
-    </dt>
-  </dl>
-  
-  <dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/steeping/' title='steeping'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/steeping-150x150.jpg" class="attachment-thumbnail" alt="steeping" /></a>
-    </dt>
-  </dl>
-  
-  <dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/fermenting/' title='fermenting'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/fermenting-150x150.jpg" class="attachment-thumbnail" alt="fermenting" /></a>
-    </dt>
-  </dl>
-  
-  <br style="clear: both" /><dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/krausen/' title='krausen'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/krausen-150x150.jpg" class="attachment-thumbnail" alt="krausen" /></a>
-    </dt>
-  </dl>
-  
-  <dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/siphoning/' title='siphoning'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/siphoning-150x150.jpg" class="attachment-thumbnail" alt="siphoning" /></a>
-    </dt>
-  </dl>
-  
-  <dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/kegging/' title='kegging'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/kegging-150x150.jpg" class="attachment-thumbnail" alt="kegging" /></a>
-    </dt>
-  </dl>
-  
-  <br style="clear: both" /><dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/more-carbonating/' title='more carbonating'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/more-carbonating-150x150.jpg" class="attachment-thumbnail" alt="more carbonating" /></a>
-    </dt>
-  </dl>
-  
-  <dl class='gallery-item'>
-    <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/carbonating/' title='carbonating'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/carbonating-150x150.jpg" class="attachment-thumbnail" alt="carbonating" /></a>
-    </dt>
-  </dl>
-  
-  <br style='clear: both;' />
 </div>
 
 
