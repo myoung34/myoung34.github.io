@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: adafruit | Marcus Young]]></title>
+  <link href="http://marcyoung.us/blog/categories/adafruit/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2015-08-24T14:15:49-05:00</updated>
+  <id>http://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Adafruit PiGrrl Pocket Build]]></title>
+    <link href="http://marcyoung.us/post/pigrrl-pocket"/>
+    <updated>2015-08-20T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/pigrrl</id>
+    <content type="html"><![CDATA[<p>After building the arcade cabinet I saw the PiGrrl Pocket and unfortunately for my pocket: I made one as well. <!-- more --></p>
+
+<p>The Adafruit guide was pretty straight forward and I only blew one raspberry pi in the process (make sure you don&rsquo;t skip the part about disabling the TFT backlight or you&rsquo;ll cross wires during the troubleshooting phase).</p>
+
+<p><img class="left" src="/images/pigrrl1.jpg" title="cabinet 1" >
+<img class="left" src="/images/pigrrl2.jpg" title="cabinet 2" >
+<img class="left" src="/images/pigrrl3.jpg" title="cabinet 3" >
+<img class="left" src="/images/pigrrl4.jpg" title="cabinet 4" >
+<img class="left" src="/images/pigrrl5.jpg" title="cabinet 5" >
+<img class="left" src="/images/pigrrl6.jpg" title="cabinet 6" >
+<img class="left" src="/images/pigrrl7.jpg" title="cabinet 7" >
+<img class="left" src="/images/pigrrl8.jpg" title="cabinet 8" >
+<img class="left" src="/images/pigrrl9.jpg" title="cabinet 9" >
+<img class="left" src="/images/pigrrl10.jpg" title="cabinet 10" >
+<img class="left" src="/images/pigrrl11.jpg" title="cabinet 11" ></p>
+]]></content>
+  </entry>
+  
+</feed>

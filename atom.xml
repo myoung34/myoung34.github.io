@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2015-07-24T14:46:25-05:00</updated>
+  <updated>2015-08-24T14:15:49-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Adafruit PiGrrl Pocket Build]]></title>
+    <link href="http://marcyoung.us/post/pigrrl-pocket"/>
+    <updated>2015-08-20T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/pigrrl</id>
+    <content type="html"><![CDATA[<p>After building the arcade cabinet I saw the PiGrrl Pocket and unfortunately for my pocket: I made one as well. <!-- more --></p>
+
+<p>The Adafruit guide was pretty straight forward and I only blew one raspberry pi in the process (make sure you don&rsquo;t skip the part about disabling the TFT backlight or you&rsquo;ll cross wires during the troubleshooting phase).</p>
+
+<p><img class="left" src="http://marcyoung.us/images/pigrrl1.jpg" title="cabinet 1" >
+<img class="left" src="http://marcyoung.us/images/pigrrl2.jpg" title="cabinet 2" >
+<img class="left" src="http://marcyoung.us/images/pigrrl3.jpg" title="cabinet 3" >
+<img class="left" src="http://marcyoung.us/images/pigrrl4.jpg" title="cabinet 4" >
+<img class="left" src="http://marcyoung.us/images/pigrrl5.jpg" title="cabinet 5" >
+<img class="left" src="http://marcyoung.us/images/pigrrl6.jpg" title="cabinet 6" >
+<img class="left" src="http://marcyoung.us/images/pigrrl7.jpg" title="cabinet 7" >
+<img class="left" src="http://marcyoung.us/images/pigrrl8.jpg" title="cabinet 8" >
+<img class="left" src="http://marcyoung.us/images/pigrrl9.jpg" title="cabinet 9" >
+<img class="left" src="http://marcyoung.us/images/pigrrl10.jpg" title="cabinet 10" >
+<img class="left" src="http://marcyoung.us/images/pigrrl11.jpg" title="cabinet 11" ></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My First (and likely last) MAME cabinet build]]></title>
+    <link href="http://marcyoung.us/post/mame-cabinet"/>
+    <updated>2015-08-19T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/cabinet</id>
+    <content type="html"><![CDATA[<p>I decided many months ago to build a bar-top cabinet. After many frustrations and failed attempts: it&rsquo;s done.<!-- more --></p>
+
+<p>It was fairly simple after getting the table saw I needed and some parts later on.
+Basically it was a fly-by-your seat design with some generic parts.</p>
+
+<ul>
+<li>Raspberry Pi running PiPlay</li>
+<li>A super cheap <a href="http://www.panelook.com/EJ080NA-04C_Innolux_8.0_LCM_overview_12715.html">8&#8221; LCD with LVDS to HDMI/Composite out</a></li>
+<li>Wood.</li>
+<li>Arcade buttons and a USB controller for them.</li>
+</ul>
+
+
+<p>After giving up and restarting a few times, lo&#8217; and behold.</p>
+
+<p><img class="left" src="http://marcyoung.us/images/cabinet1.jpg" title="cabinet 1" >
+<img class="left" src="http://marcyoung.us/images/cabinet2.jpg" title="cabinet 2" >
+<img class="left" src="http://marcyoung.us/images/cabinet3.jpg" title="cabinet 3" >
+<img class="left" src="http://marcyoung.us/images/cabinet4.jpg" title="cabinet 4" >
+<img class="left" src="http://marcyoung.us/images/cabinet5.jpg" title="cabinet 5" >
+<img class="left" src="http://marcyoung.us/images/cabinet6.jpg" title="cabinet 6" >
+<img class="left" src="http://marcyoung.us/images/cabinet7.jpg" title="cabinet 7" >
+<img class="left" src="http://marcyoung.us/images/cabinet8.jpg" title="cabinet 8" >
+<img class="left" src="http://marcyoung.us/images/cabinet9.jpg" title="cabinet 9" >
+<img class="left" src="http://marcyoung.us/images/cabinet10.jpg" title="cabinet 10" >
+<img class="left" src="http://marcyoung.us/images/cabinet11.jpg" title="cabinet 11" ></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Azure, Github, and a Corporate Proxy]]></title>
@@ -1232,228 +1289,6 @@ If for some reason you&#8217;re trying to NVFlash your gtablet (probably with gt
 In the <em>gtablet.cfg</em> file, swap the partition in question (the one freezing) with the previous one, but swap it on the filesystem level.<br/>
 For example, my Partition 7 froze on upload, so the diff between the original and my fix: <a href="https://gist.github.com/4152380" title="https://gist.github.com/4152380" target="_blank">gtablet.cfg-diff</a><br/>
 If you want my full fixed file (assuming yours broke on partition 7 as well): <a href="https://gist.github.com/4152387" title="https://gist.github.com/4152387" target="_blank">gtablet.cfg/4152387</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
-    <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
-    <updated>2012-09-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
-    <content type="html"><![CDATA[<!--more-->
-
-
-<h2>Background</h2>
-
-<p>Recently I&#8217;ve been on a new team at my work doing MarkLogic work. In a nutshell we&#8217;ve been developing a new HealthCare quality application from the ground up.  This would be our second application, but we learned enough from the first to make our priority creating a robust and scalable RESTful interface for document CRUD. With this we developed a middle tier that is almost completely configuration driven, meaning any new apps would be able to utilize this and not have to re-invent the wheel to get CRUD/Search working out-of-the-box.</p>
-
-<h2>The Approach To A Problem Using Lists</h2>
-
-<p>The application is revolved around patient CCD&#8217;s (XML representing all of a patients history per retrieval). MarkLogic is ideal for this since it&#8217;s built on XQuery, a functional language revolved around XML. Let me paint you a picture of what led us to collection issues. Say you want as a doctor, to search &#8220;gender:M&#8221; on a database, and just keep tacking on until you get to what you want to find (end result maybe: &#8220;gender:M AND dob GT 01-10-1987 AND problem:Asthma&#8221;). Now as a doctor, I found X patients and want to save that as a NON changing list&#8230;meaning that if I search any time after this, I&#8217;ll still get those X patients, and no more that match that criteria since.</p>
-
-<p>We implemented this using MarkLogic collections. Collections are handy in that you can take some documents, put them in a collection, and say:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>for $i in fn:collection('/doctors/marc/1')
-</span><span class='line'>  return $i</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That means whatever is in the collection &#8216;/doctors/marc/1&#8242; will always be there. Cool, that works great. So we implemented this &#8220;static list&#8221; as this:</p>
-
-<ol>
-<li>Take the query and execute it</li>
-<li>For each document in the result set, add them to a unique list: /lists/{unique id}</li>
-<li>change the query to list:{unique id} and add a new xml node <owner>{id of user}</owner></li>
-</ol>
-
-
-<p>The great thing about this, is you can have a collection constraint in our patients so you can just execute &#8220;list:{unique id}&#8221; and it will return all documents in that list. Awesome! It worked Great! Also note, yes we handled updating the list by re-executing it, and adding the new patients to that list. Deleting a list is also possible.</p>
-
-<h2>The Problem With MarkLogic Collections</h2>
-
-<p>As I said, this solution worked <strong>fantastically</strong>&#8230;at first. It worked until we hit 1500 fairly large patient documents. The performance crawled to a stop. <strong>The problem with collections is that the collection data is stored <span style="color: #ff0000;">internally. </span></strong><span style="color: #ff0000;"><span style="color: #000000;">That means that if you decide to make a list for &#8220;gender:M&#8221;, you&#8217;re modifying and locking potentially half the documents in the database. For us, that meant a 9+ minute list creation. Not acceptable. You can try to speed this up, sure, by creating limits on how many documents you can modify, perhaps other ways involving spawning it in threads or in the background, but that still creates server overhead and gets rid of transaction safety.</span></span></p>
-
-<h2>Denormalize Your Database/The Solution</h2>
-
-<p>The greatest thing about a NoSQL database is that it can be denormalized. This may make some people cringe, why afterall would you want to duplicate data? If used correctly, it works great. For this specifically, it means that instead of modifying all documents in the database by adding/removing them from collections, is to use a separate file, stored as &#8216;/lists/{user}/{unique id}&#8217; that contains links (uri&#8217;s) to the documents. This is fine, especially for this application, since patient records are never deleted. I&#8217;ve shown an example further below on how to see it in action!</p>
-
-<h2>The Code/TL;DR &#8211; Code or GTFO</h2>
-
-<p>The first thing you can do if you want to follow along is put a crap ton of delicious bacon documents into your database. You should copy/paste this into the QConsole and hit RUN! (it might take a few &#8211; it inserts 1200 documents&#8230;if it times out, insert 300 documents 4 times instead).<br/>
-<a href="https://gist.github.com/3785105" target=_blank>Click here for the code&#8230;too large to paste and the code isn&#8217;t too important</a><br/>
-Now for the bad code. This will search for <beef>*tips*</beef> effectively. Any documents that match that, it will put it into a collection called &#8216;/marc/favorites&#8217;.</p>
-
-<p>Then it will decide my favorites should be <pork>*ham*</pork>, so it will go through the collection, remove the originals, and add my new favorites. The important thing is to look at the number of documents affected and how long it takes! Ridiculous!</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>let $docs :=  
-</span><span class='line'>  fn:distinct-values(
-</span><span class='line'>    for $i in cts:search(//beef,cts:word-query("tip"))
-</span><span class='line'>      return fn:base-uri($i)
-</span><span class='line'>  )
-</span><span class='line'>return
-</span><span class='line'>  for $i in $docs return
-</span><span class='line'>    xdmp:document-add-collections(
-</span><span class='line'>      $i,
-</span><span class='line'>      '/marc/favorites'
-</span><span class='line'>    )
-</span><span class='line'>(: 781 documents affected - Profile 2105 Expressions PT57.822894S :)
-</span><span class='line'> 
-</span><span class='line'>let $remove-from-collections :=
-</span><span class='line'>  for $i in fn:collection('/marc/favorites')
-</span><span class='line'>    return xdmp:document-remove-collections(fn:base-uri($i),'/beef/tips')
-</span><span class='line'>    
-</span><span class='line'>let $docs := 
-</span><span class='line'>  fn:distinct-values(
-</span><span class='line'>    for $i in cts:search(//pork,cts:word-query("ham"))
-</span><span class='line'>      return fn:base-uri($i)
-</span><span class='line'>  )
-</span><span class='line'> 
-</span><span class='line'>return
-</span><span class='line'>  for $i in $docs return
-</span><span class='line'>    xdmp:document-add-collections(
-</span><span class='line'>      $i,
-</span><span class='line'>      '/marc/favorites'
-</span><span class='line'>    )
-</span><span class='line'> 
-</span><span class='line'>(: 1051 documents affected - Profile 4245 Expressions PT48.439176S  :)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So what&#8217;s the best way to do it? Create a new document of URI&#8217;s to the documents, and store that! Don&#8217;t believe me? Look at the performance without indexes!</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>let $docs := 
-</span><span class='line'>  fn:distinct-values(
-</span><span class='line'>    for $i in cts:search(//beef,cts:word-query("tip")) return
-</span><span class='line'>      fn:base-uri($i)
-</span><span class='line'>  )
-</span><span class='line'>  
-</span><span class='line'>let $favorites :=
-</span><span class='line'>  &lt;favorites&gt;{
-</span><span class='line'>    for $i in $docs return
-</span><span class='line'>      &lt;doc&gt;{$i}&lt;/doc&gt;
-</span><span class='line'>  }&lt;/favorites&gt;
-</span><span class='line'>  
-</span><span class='line'>return
-</span><span class='line'>  xdmp:document-insert(
-</span><span class='line'>    '/marc/favorites',
-</span><span class='line'>    $favorites
-</span><span class='line'>  )
-</span><span class='line'>(: 1 document affected - Profile 2643 Expressions PT0.326612S :)
-</span><span class='line'> 
-</span><span class='line'>let $docs := 
-</span><span class='line'>  fn:distinct-values(
-</span><span class='line'>    for $i in cts:search(//pork,cts:word-query("ham")) return
-</span><span class='line'>      fn:base-uri($i)
-</span><span class='line'>  )
-</span><span class='line'>  
-</span><span class='line'>let $favorites :=
-</span><span class='line'>  &lt;favorites&gt;{
-</span><span class='line'>    for $i in $docs return
-</span><span class='line'>      &lt;doc&gt;{$i}&lt;/doc&gt;
-</span><span class='line'>  }&lt;/favorites&gt;
-</span><span class='line'>  
-</span><span class='line'>return xdmp:node-replace(fn:doc('/marc/favorites')/favorites,$favorites)
-</span><span class='line'>(: 1 document affected - Profile 2144 Expressions PT0.67532S :)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And to improve your search, you could use something like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cts:search(/,
-</span><span class='line'>  cts:document-query(
-</span><span class='line'>    fn:doc('/marc/favorites')/favorites//doc/text()
-</span><span class='line'>  )
-</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[KegDuino AKA HomeBrew and Arduinos&#8217; Love Child]]></title>
-    <link href="http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
-    <updated>2012-07-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
-    <content type="html"><![CDATA[<!--more-->
-
-
-<p>I finished work on my new site: <a href="http://www.kegduino.org">www.kegduino.org</a> . Go check it out! It&#8217;s a micro-controlled Keg!</p>
-
-<div id="attachment_62" class="wp-caption alignnone" style="width: 810px">
-  <a href="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
-    The kegduino in action
-  </p>
-</div>
-
-
-
 ]]></content>
   </entry>
   
