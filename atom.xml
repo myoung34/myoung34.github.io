@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2015-08-24T14:15:49-05:00</updated>
+  <updated>2015-08-25T14:47:15-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Purging old beanstalk versions]]></title>
+    <link href="http://marcyoung.us/post/beanstalk-purge"/>
+    <updated>2015-08-25T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/beanstalk-purge</id>
+    <content type="html"><![CDATA[<p>I recently found out that you can have at most 500 application versions across beanstalk. I wrote a small script to purge it of old ones<!-- more --></p>
+
+<p>I&rsquo;m a big fan of micro-deployments, however that seems to have caused a headache lately (and it turns out you don&rsquo;t want to find this out when you absolutely need to deploy).</p>
+
+<p>My first attempt was to just browse to the S3 folder for our applications and purge them from S3 by the oldest ones, but that could cause a problem if you delete the archive for a currently deployed version. Also, as it turns out, Beanstalk caches this object list, so you still have to go to the EB console and click &lsquo;Refresh&rsquo; in the application versions list.</p>
+
+<p>The better solution was to write a small ruby snippet to run on cron. It will get all application versions, subtract currently deployed ones, sort by date created, and purge all except &lsquo;x&rsquo; many.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;aws-sdk&#39;</span>
+
+<span class="no">MAX_VERSIONS</span><span class="o">=</span><span class="mi">50</span>
+<span class="n">elasticbeanstalk</span> <span class="o">=</span> <span class="no">Aws</span><span class="o">::</span><span class="no">ElasticBeanstalk</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">region</span><span class="p">:</span> <span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+
+<span class="n">short_versions_to_keep</span> <span class="o">=</span> <span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">describe_environments</span><span class="o">.</span><span class="n">environments</span><span class="o">.</span><span class="n">each</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">v</span><span class="o">.</span><span class="n">application_name</span><span class="si">}</span><span class="s2">+</span><span class="si">#{</span><span class="n">v</span><span class="o">.</span><span class="n">version_label</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+
+<span class="n">version_eligible_for_delete</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">describe_application_versions</span><span class="o">.</span><span class="n">application_versions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">av</span><span class="o">|</span>
+  <span class="n">short_version</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="si">}</span><span class="s2">+</span><span class="si">#{</span><span class="n">av</span><span class="o">.</span><span class="n">version_label</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">next</span> <span class="k">if</span> <span class="n">short_versions_to_keep</span><span class="o">.</span><span class="n">include?</span> <span class="n">short_version</span>
+  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="o">]</span> <span class="o">||=</span> <span class="p">{}</span>
+  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="o">][</span><span class="n">av</span><span class="o">.</span><span class="n">version_label</span><span class="o">]</span> <span class="o">=</span> <span class="n">av</span>
+<span class="k">end</span>
+
+<span class="n">version_eligible_for_delete</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">sort</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">date_created</span> <span class="o">&lt;=&gt;</span> <span class="n">b</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">date_created</span> <span class="p">}</span>
+  <span class="k">if</span> <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">].</span><span class="n">size</span> <span class="o">&lt;=</span><span class="no">MAX_VERSIONS</span>
+    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2"> has only </span><span class="si">#{</span><span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">].</span><span class="n">size</span><span class="si">}</span><span class="s2"> versions. Skipping&quot;</span>
+    <span class="k">next</span>
+  <span class="k">end</span>
+  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">].</span><span class="n">size</span><span class="o">-</span><span class="no">MAX_VERSIONS</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Deleting </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">application_name</span><span class="si">}</span><span class="s2">: </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">version_label</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">delete_application_version</span><span class="p">(</span><span class="ss">application_name</span><span class="p">:</span> <span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">application_name</span><span class="p">,</span> <span class="ss">version_label</span><span class="p">:</span> <span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">version_label</span><span class="p">)</span>
+    <span class="nb">sleep</span> <span class="mi">1</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Adafruit PiGrrl Pocket Build]]></title>
@@ -1262,33 +1308,6 @@ As always: there were issues. First, the support for this sucked. I was thankful
 
 <p>I spent quite a while trying to figure this out on my set-up, and it turned out the igmp fix was all I needed.
 Days of work for 1 line in my /etc/sysconfig/iptables file.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[(FIX) GTablet NVFlash Freezing During Upload]]></title>
-    <link href="http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/"/>
-    <updated>2012-11-27T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload</id>
-    <content type="html"><![CDATA[<p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
-
-<p>My GTablet runs <a href="http://forum.xda-developers.com/showthread.php?t=1084573" title="Beasty Clemsysn (Froyo)"></a> which I prefer since it&#8217;s freaking fast, however with the performance, there are a few bugs, all of which I seemed to hit in a single move&#8230;.so this is a &#8220;Don&#8217;t do&#8221;:</p>
-
-<ul>
-<li>Putting it in airplane mode goes ape-shit. There was no way to get it out, including reboots and settings changes.</li>
-<li>To fix this, I hit &#8216;Restore to factory defaults&#8217;&#8230; <strong>Don&#8217;t ever do this!</strong></li>
-<li>This fubared everything, which means restore old Rom&#8230;yay for my free time tonight.</li>
-</ul>
-
-
-<p>So far, whatever&#8230;easy fix right?<br/>
-Well if you&#8217;ve made it to this page, you see the title, and that&#8217;s what I&#8217;m here to fix.<br/>
-If for some reason you&#8217;re trying to NVFlash your gtablet (probably with gtab.nvflash.1.2.branch.20110508 with cwm5504 or gtab.nvflash.1.2.branch.20110508 with cwmv3028.zip), and it&#8217;s freezing on the flash, here&#8217;s what I did.</p>
-
-<p>Ready?<br/>
-In the <em>gtablet.cfg</em> file, swap the partition in question (the one freezing) with the previous one, but swap it on the filesystem level.<br/>
-For example, my Partition 7 froze on upload, so the diff between the original and my fix: <a href="https://gist.github.com/4152380" title="https://gist.github.com/4152380" target="_blank">gtablet.cfg-diff</a><br/>
-If you want my full fixed file (assuming yours broke on partition 7 as well): <a href="https://gist.github.com/4152387" title="https://gist.github.com/4152387" target="_blank">gtablet.cfg/4152387</a></p>
 ]]></content>
   </entry>
   

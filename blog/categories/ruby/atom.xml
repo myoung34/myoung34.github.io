@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ruby | Marcus Young]]></title>
+  <link href="http://marcyoung.us/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2015-08-25T14:47:15-05:00</updated>
+  <id>http://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Purging old beanstalk versions]]></title>
+    <link href="http://marcyoung.us/post/beanstalk-purge"/>
+    <updated>2015-08-25T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/beanstalk-purge</id>
+    <content type="html"><![CDATA[<p>I recently found out that you can have at most 500 application versions across beanstalk. I wrote a small script to purge it of old ones<!-- more --></p>
+
+<p>I&rsquo;m a big fan of micro-deployments, however that seems to have caused a headache lately (and it turns out you don&rsquo;t want to find this out when you absolutely need to deploy).</p>
+
+<p>My first attempt was to just browse to the S3 folder for our applications and purge them from S3 by the oldest ones, but that could cause a problem if you delete the archive for a currently deployed version. Also, as it turns out, Beanstalk caches this object list, so you still have to go to the EB console and click &lsquo;Refresh&rsquo; in the application versions list.</p>
+
+<p>The better solution was to write a small ruby snippet to run on cron. It will get all application versions, subtract currently deployed ones, sort by date created, and purge all except &lsquo;x&rsquo; many.</p>
+
+<p><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">aws</span><span class="o">-</span><span class="n">sdk</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;p&gt;MAX_VERSIONS=50</span>
+<span class="sr">elasticbeanstalk = Aws::ElasticBeanstalk::Client.new(region: &amp;lsquo;us-east-1&amp;rsquo;)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">short_versions_to_keep</span> <span class="o">=</span> <span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">describe_environments</span><span class="o">.</span><span class="n">environments</span><span class="o">.</span><span class="n">each</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="c1">#{v.application_name}+#{v.version_label}&amp;rdquo; }&lt;/p&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">version_eligible_for_delete</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">describe_application_versions</span><span class="o">.</span><span class="n">application_versions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">av</span><span class="o">|</span>
+  <span class="n">short_version</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="c1">#{av.application_name}+#{av.version_label}&amp;rdquo;</span>
+  <span class="k">next</span> <span class="k">if</span> <span class="n">short_versions_to_keep</span><span class="o">.</span><span class="n">include?</span> <span class="n">short_version</span>
+  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="o">]</span> <span class="o">||=</span> <span class="p">{}</span>
+  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="o">][</span><span class="n">av</span><span class="o">.</span><span class="n">version_label</span><span class="o">]</span> <span class="o">=</span> <span class="n">av</span>
+<span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;p&gt;version_eligible_for_delete.each do |key, value|</span>
+<span class="sr">  version_eligible_for_delete[key] = value.sort { |a,b| a[1].date_created &amp;lt;=&gt; b[1].date_created }</span>
+<span class="sr">  if version_eligible_for_delete[key].size &amp;lt;=MAX_VERSIONS</span>
+<span class="sr">    puts &amp;ldquo;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="sr"> has only </span><span class="si">#{</span><span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">].</span><span class="n">size</span><span class="si">}</span><span class="sr"> versions. Skipping&amp;rdquo;</span>
+<span class="sr">    next</span>
+<span class="sr">  end</span>
+<span class="sr">  version_eligible_for_delete[key][0..version_eligible_for_delete[key].size-MAX_VERSIONS].each do |a|</span>
+<span class="sr">    puts &amp;ldquo;Deleting </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">application_name</span><span class="si">}</span><span class="sr">: </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">version_label</span><span class="si">}</span><span class="sr">&amp;rdquo;</span>
+<span class="sr">    elasticbeanstalk.delete_application_version(application_name: a[1].application_name, version_label: a[1].version_label)</span>
+<span class="sr">    sleep 1</span>
+<span class="sr">  end</span>
+<span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span></code></pre></div></p>
+]]></content>
+  </entry>
+  
+</feed>
