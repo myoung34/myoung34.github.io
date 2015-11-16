@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: performance - Marcus Young</title>
+  <title>Fighting a nasty AWS bug for Beanstalk Leader Election - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="Category: performance">
+  <meta name="description" content="In the last few months I&rsquo;ve been working to move my latest employer to AWS from Heroku and discovered a very nasty bug. The move was due to a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://marcyoung.us/blog/categories/performance/">
+  <link rel="canonical" href="http://marcyoung.us/post/beanstalk-leader">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -88,50 +88,118 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Performance</h1>
+    
+      
+        <h1 class="entry-title">Fighting a Nasty AWS Bug for Beanstalk Leader Election</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-20T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>In the last few months I&rsquo;ve been working to move my latest employer to AWS from Heroku and discovered a very nasty bug. <!-- more -->
+The move was due to a lot of issues, the least of which being the cost of heroku compared to using what they implement.</p>
 
-  
-  <h2>2012</h2>
+<p>None-the-less, everything went smoothly and the API went from roughly 80% uptime to 99.9%.
+The cool thing: we used timed auto-scaling to shut down our dev/test instances at night time and on weekends. This saved <em>alot</em> of money. (remember this part).</p>
 
-<article>
-  
-<h1><a href="/post/fix-gtablet-nvflash-freezing-upload/">(FIX) GTablet NVFlash Freezing During Upload</a></h1>
-<time datetime="2012-11-27T00:00:00-06:00" pubdate><span class='month'>Nov</span> <span class='day'>27</span> <span class='year'>2012</span></time>
+<p>After about two months, we discovered migrations in our rails application stopped. The code would deploy fine, but migrations just didn&rsquo;t. After much trial and error
+it turned out to only happen on dev and test (not production). Parsing the web of beanstalks deployment framework, it turns out they have the concept of a leader. This is good. With the concept of a leader, you ensure that you can deploy to fleets in bulk and things that are stateful will only be run once (on the leader). One of these things is rails migrations, which makes perfect sense.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/fix/'>fix</a>, <a class='category' href='/blog/categories/performance/'>performance</a></span>
-</footer>
+<p>Somehow, the idea of our leader was lost. Out of all of our instances (2 in dev), neither one was considered a leader. Dropping that to a single instance, you would think: there&rsquo;s your leader right there. Nope.</p>
 
+<p>Through much debugging with AWS support, we discovered that the implementation is based somewhat loosely <a href="https://github.com/blake-education/aws-cfn-bootstrap/blob/master/cfnbootstrap/cfn_client.py">on this</a>.</p>
 
-</article>
+<p>Turns out that a leader is elected once in the lifecycle of a beanstalk <em>application</em> and is passed around as the instances scale. If all instances are lost simaeltaneously, that leader is gone, and that&rsquo;s the bug. This could be problematic if you&rsquo;re not careful, but beanstalk makes it stupid simple to make sure instances are almost always available. It would take something crazy to lose all at once.</p>
 
+<p>Like shutting down all instances at night.</p>
 
+<p>As of now, the workaround has been to set an environment variable <code>EB_IS_COMMAND_LEADER</code> to <code>true</code>, and set our deployment to 1 at a time. While it works, it ties us back to beanstalks&#8217; internalness and makes our deployment much slower. Not only because it deploys to one at a time, but because each instance is going to run migrations even when not necessary.</p>
 
-<article>
-  
-<h1><a href="/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/">MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!</a></h1>
-<time datetime="2012-09-25T00:00:00-05:00" pubdate><span class='month'>Sep</span> <span class='day'>25</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
+<p>Update: they&rsquo;ve fixed it with their latest update as of 11/15/2015. I removed the environment variable and deployed to a fleet, and it behaved as expected</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-20T00:00:00-05:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/beanstalk/'>beanstalk</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/beanstalk-purge" title="Previous Post: Purging old beanstalk versions">&laquo; Purging old beanstalk versions</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/six-months-of-beanstalk" title="Next Post: My Thoughts after six months of Elastic Beanstalk.">My Thoughts after six months of Elastic Beanstalk. &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -222,7 +290,10 @@
       var disqus_shortname = 'marcyoung';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://marcyoung.us/post/beanstalk-leader';
+        var disqus_url = 'http://marcyoung.us/post/beanstalk-leader';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: performance - Marcus Young</title>
+  <title>My Thoughts after six months of Elastic Beanstalk. - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="Category: performance">
+  <meta name="description" content="We&rsquo;ve been using pure beanstalk at my current gig for six months and here are my thoughts. I&rsquo;ll start off with the tl;dr: I like &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://marcyoung.us/blog/categories/performance/">
+  <link rel="canonical" href="http://marcyoung.us/post/six-months-of-beanstalk">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -88,50 +88,128 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Performance</h1>
+    
+      
+        <h1 class="entry-title">My Thoughts After Six Months of Elastic Beanstalk.</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-16T00:00:00-06:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>We&rsquo;ve been using pure beanstalk at my current gig for six months and here are my thoughts. <!-- more --></p>
 
-  
-  <h2>2012</h2>
+<p>I&rsquo;ll start off with the tl;dr: I like beanstalk a lot. When it fits.</p>
 
-<article>
-  
-<h1><a href="/post/fix-gtablet-nvflash-freezing-upload/">(FIX) GTablet NVFlash Freezing During Upload</a></h1>
-<time datetime="2012-11-27T00:00:00-06:00" pubdate><span class='month'>Nov</span> <span class='day'>27</span> <span class='year'>2012</span></time>
+<p>I&rsquo;ve written enought deployment mechanisms to go a little crazy in my time. From tagging code in SVN and pushing it to a central store, to purely puppet provisioned instances, to microservices with ad-hoc AMIs to beanstalk. And beanstalk works. If you have a <em>traditional</em> application (by that I mean some consumers, some APIs, and a database of some sort), beanstalk is the (insert here).</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/fix/'>fix</a>, <a class='category' href='/blog/categories/performance/'>performance</a></span>
-</footer>
+<p>Our current stack includes:</p>
 
-
-</article>
-
+<ul>
+<li>A backend rails API.</li>
+<li>A front-end javascript CMS.</li>
+<li>An ad-hoc CRUD API written in rails.</li>
+<li>A javascript web-embed written in node.</li>
+</ul>
 
 
-<article>
-  
-<h1><a href="/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/">MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!</a></h1>
-<time datetime="2012-09-25T00:00:00-05:00" pubdate><span class='month'>Sep</span> <span class='day'>25</span> <span class='year'>2012</span></time>
+<p>We use jenkins to deploy code changes once tests pass.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
+<p>And I&rsquo;ve got to say: I&rsquo;m not unhappy. There are very very few tweaks to make any more.</p>
+
+<ul>
+<li>All of these have multiple environments (dev/uat/prod), of which dev and uat shut down at night and on weekends.</li>
+<li>Deployment includes rollbacks and notifications on failure.</li>
+<li>Things auto-scale as expected.</li>
+<li>You get all the metrics you really care about out of the box.</li>
+</ul>
 
 
-</article>
+<p>That said: if it doesn&rsquo;t fit your stack, don&rsquo;t hamstring it. There are many good deployment mechanisms out there, and if your application does not easily fit into the peg that is beanstalk: find something else. We attempted to use it as a deployment mechanism for our cache layer and it failed horribly. Was it because there is no built in support in beanstalk? Yes. But It would be really nice to see beanstalk provide a boiler plate type set up like a template. Basically you just use their default AWS Linux image with no framework on it, provide the deployment scripts, and be able to manage it via beanstalk. That would be fantastic.</p>
 
+<p>The only downside that I have found is that I would really like to re-do our base architecture at AWS to be code-based.
+I&rsquo;m pretty much sold on Terraform, but that is my personal choice, and I would really love to see first-hand beanstalk support there. While not a criticism of beanstalk, I&rsquo;ll just be happy and watch <a href="https://github.com/hashicorp/terraform/issues/2799">this issue on terraform about the topic</a>.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-16T00:00:00-06:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/beanstalk/'>beanstalk</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/beanstalk-leader" title="Previous Post: Fighting a nasty AWS bug for Beanstalk Leader Election">&laquo; Fighting a nasty AWS bug for Beanstalk Leader Election</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -222,7 +300,10 @@
       var disqus_shortname = 'marcyoung';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://marcyoung.us/post/six-months-of-beanstalk';
+        var disqus_url = 'http://marcyoung.us/post/six-months-of-beanstalk';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

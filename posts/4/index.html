@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: performance - Marcus Young</title>
+  <title>Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="Category: performance">
+  <meta name="description" content="My first post is going to be some fun coersion issues I have found lately while touching up on my JavaScript == '' // returns true == '0' //returns &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://marcyoung.us/blog/categories/performance/">
+  <link rel="canonical" href="http://marcyoung.us/posts/4/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -87,54 +87,98 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
-    <h1 class="entry-title">Category: Performance</h1>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/javascript-like-to-play-dumb/">JavaScript Likes to Play Dumb</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-03T00:00:00-06:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/javascript-like-to-play-dumb/#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+  <div class="entry-content"><p>My first post is going to be some fun coersion issues I have found lately while touching up on my JavaScript</p>
 
-  
-  <h2>2012</h2>
-
-<article>
-  
-<h1><a href="/post/fix-gtablet-nvflash-freezing-upload/">(FIX) GTablet NVFlash Freezing During Upload</a></h1>
-<time datetime="2012-11-27T00:00:00-06:00" pubdate><span class='month'>Nov</span> <span class='day'>27</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/fix/'>fix</a>, <a class='category' href='/blog/categories/performance/'>performance</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/">MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!</a></h1>
-<time datetime="2012-09-25T00:00:00-05:00" pubdate><span class='month'>Sep</span> <span class='day'>25</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
+<div class="wp_syntax">
+  <table>
+    <tr>
+      <td class="code">
+        <pre class="javascript" style="font-family:monospace;"><span style="color: #CC0000;"></span> <span style="color: #339933;">==</span> <span style="color: #3366CC;">''</span>   <span style="color: #006600; font-style: italic;">// returns true</span>
+<span style="color: #CC0000;"></span> <span style="color: #339933;">==</span> <span style="color: #3366CC;">'0'</span> <span style="color: #006600; font-style: italic;">//returns true (odd since false == 'false' returns false)</span></pre>
+      </td>
+    </tr>
+  </table>
 </div>
 
-  
-</article>
 
+<p>&#8230;And&#8230;</p>
+
+<div class="wp_syntax">
+  <table>
+    <tr>
+      <td class="code">
+        <pre class="javascript" style="font-family:monospace;"><span style="color: #3366CC;">' '</span> <span style="color: #339933;">==</span> <span style="color: #CC0000;"></span> <span style="color: #006600; font-style: italic;">// returns true</span></pre>
+      </td>
+    </tr>
+  </table>
 </div>
 
+
+<p>Also my favorite (thanks to destroyallsoftware)</p>
+
+<div class="wp_syntax">
+  <table>
+    <tr>
+      <td class="code">
+        <pre class="javascript" style="font-family:monospace;"><span style="">Array</span><span style="color: #009900;">&#40;</span><span style="color: #CC0000;">5</span><span style="color: #009900;">&#41;</span>.<span style="color: #660066;">join</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'wat'</span><span style="color: #339933;">+</span><span style="color: #CC0000;">1</span><span style="color: #009900;">&#41;</span><span style="color: #006600; font-style: italic;">//returns wat1wat1wat1wat1wat1</span>
+<span style="">Array</span><span style="color: #009900;">&#40;</span><span style="color: #CC0000;">5</span><span style="color: #009900;">&#41;</span>.<span style="color: #660066;">join</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'wat'</span><span style="color: #339933;">-</span><span style="color: #CC0000;">1</span><span style="color: #009900;">&#41;</span><span style="color: #006600; font-style: italic;">//returns NaNNaNNaNNaNNaN</span></pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+      
+      <a class="next" href="/posts/3">Newer &rarr;</a>
+      
+    
+  </div>
+</div>
 <aside class="sidebar">
   
     <section>
@@ -206,7 +250,6 @@
 
   
 </aside>
-
 
     </div>
   </div>
