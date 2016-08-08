@@ -1,220 +1,248 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://marcyoung.us/post/six-months-of-beanstalk</loc>
-    <lastmod>2015-11-16T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/beanstalk-leader</loc>
-    <lastmod>2015-10-20T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/beanstalk-purge</loc>
-    <lastmod>2015-08-25T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/pigrrl-pocket</loc>
-    <lastmod>2015-08-20T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/mame-cabinet</loc>
-    <lastmod>2015-08-19T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/azure-github-proxy</loc>
-    <lastmod>2015-05-18T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/book</loc>
-    <lastmod>2015-04-08T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/hbase-puppet-module</loc>
-    <lastmod>2014-10-28T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d</loc>
-    <lastmod>2014-07-26T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/mirth-puppet-module</loc>
-    <lastmod>2014-05-14T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins</loc>
-    <lastmod>2014-03-22T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet</loc>
-    <lastmod>2014-03-21T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app</loc>
-    <lastmod>2014-03-20T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines</loc>
-    <lastmod>2014-03-19T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-overview</loc>
-    <lastmod>2014-03-18T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/udoo-and-an-arduino-lcd</loc>
-    <lastmod>2014-03-03T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/udoo-and-sata</loc>
-    <lastmod>2014-02-23T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/puppet-and-marklogic</loc>
-    <lastmod>2013-12-14T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/puppetconf2013</loc>
-    <lastmod>2013-10-30T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/automatically-deploy-git-code-windows-puppet/</loc>
-    <lastmod>2013-05-24T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/</loc>
-    <lastmod>2013-03-12T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/</loc>
-    <lastmod>2012-11-28T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/</loc>
-    <lastmod>2012-11-27T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/</loc>
-    <lastmod>2012-09-25T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/</loc>
-    <lastmod>2012-07-25T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/i-made-beer/</loc>
-    <lastmod>2012-05-11T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/</loc>
-    <lastmod>2012-04-25T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/seriously-mysql/</loc>
-    <lastmod>2012-03-28T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/hl7-and-node-js/</loc>
-    <lastmod>2012-03-12T00:00:00-05:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/ship-now-patch-later/</loc>
-    <lastmod>2011-02-05T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/post/javascript-like-to-play-dumb/</loc>
-    <lastmod>2011-02-03T00:00:00-06:00</lastmod>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/archives/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/javascript/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/programming/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/hl7/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/node-dot-js/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/mysql/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/mongodb/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/beer/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/marklogic/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/performance/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/android/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/fix/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/linux/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/media/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/deployment/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/puppet/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/uncategorized/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/windows/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/udoo/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/arduino/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/cloud/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/amazon/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/azure/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/dot-net/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/raspberrypi/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/mame/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/adafruit/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/aws/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/beanstalk/</loc>
-  </url>
-  <url>
-    <loc>http://marcyoung.us/blog/categories/ruby/</loc>
-  </url>
+<url>
+<loc>http://marcyoung.us/post/dockerized-elk-part-4</loc>
+<lastmod>2016-08-08T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/dockerized-elk-part-3</loc>
+<lastmod>2016-08-08T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/dockerized-elk-part-2</loc>
+<lastmod>2016-08-08T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/dockerized-elk-part-1</loc>
+<lastmod>2016-08-08T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/six-months-of-beanstalk</loc>
+<lastmod>2015-11-16T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/beanstalk-leader</loc>
+<lastmod>2015-10-20T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/beanstalk-purge</loc>
+<lastmod>2015-08-25T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/pigrrl-pocket</loc>
+<lastmod>2015-08-20T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/mame-cabinet</loc>
+<lastmod>2015-08-19T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/azure-github-proxy</loc>
+<lastmod>2015-05-18T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/book</loc>
+<lastmod>2015-04-08T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/hbase-puppet-module</loc>
+<lastmod>2014-10-28T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d</loc>
+<lastmod>2014-07-26T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/mirth-puppet-module</loc>
+<lastmod>2014-05-14T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins</loc>
+<lastmod>2014-03-22T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet</loc>
+<lastmod>2014-03-21T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app</loc>
+<lastmod>2014-03-20T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines</loc>
+<lastmod>2014-03-19T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-overview</loc>
+<lastmod>2014-03-18T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/udoo-and-an-arduino-lcd</loc>
+<lastmod>2014-03-03T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/udoo-and-sata</loc>
+<lastmod>2014-02-23T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/puppet-and-marklogic</loc>
+<lastmod>2013-12-14T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/puppetconf2013</loc>
+<lastmod>2013-10-30T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/automatically-deploy-git-code-windows-puppet/</loc>
+<lastmod>2013-05-24T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/</loc>
+<lastmod>2013-03-12T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/</loc>
+<lastmod>2012-11-28T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/</loc>
+<lastmod>2012-11-27T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/</loc>
+<lastmod>2012-09-25T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/</loc>
+<lastmod>2012-07-25T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/i-made-beer/</loc>
+<lastmod>2012-05-11T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/</loc>
+<lastmod>2012-04-25T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/seriously-mysql/</loc>
+<lastmod>2012-03-28T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/hl7-and-node-js/</loc>
+<lastmod>2012-03-12T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/ship-now-patch-later/</loc>
+<lastmod>2011-02-05T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/javascript-like-to-play-dumb/</loc>
+<lastmod>2011-02-03T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/archives/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/javascript/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/programming/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/hl7/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/node-dot-js/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/mysql/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/mongodb/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/beer/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/marklogic/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/performance/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/android/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/fix/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/linux/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/media/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/deployment/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/puppet/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/uncategorized/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/windows/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/udoo/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/arduino/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/cloud/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/amazon/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/azure/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/dot-net/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/raspberrypi/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/mame/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/adafruit/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/aws/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/beanstalk/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/ruby/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/docker/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/ecs/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/lambda/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/elk/</loc>
+</url>
 </urlset>
