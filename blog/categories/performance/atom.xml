@@ -4,7 +4,7 @@
   <title><![CDATA[Category: performance | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/performance/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2016-08-09T16:01:24-05:00</updated>
+  <updated>2017-01-18T03:28:51+00:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[(FIX) GTablet NVFlash Freezing During Upload]]></title>
     <link href="http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/"/>
-    <updated>2012-11-27T00:00:00-06:00</updated>
+    <updated>2012-11-27T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload</id>
     <content type="html"><![CDATA[<p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
 
@@ -43,7 +43,7 @@ If you want my full fixed file (assuming yours broke on partition 7 as well): <a
   <entry>
     <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
     <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
-    <updated>2012-09-25T00:00:00-05:00</updated>
+    <updated>2012-09-25T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
     <content type="html"><![CDATA[<!--more-->
 

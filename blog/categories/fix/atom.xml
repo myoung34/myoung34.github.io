@@ -4,7 +4,7 @@
   <title><![CDATA[Category: fix | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/fix/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2016-08-09T16:01:24-05:00</updated>
+  <updated>2017-01-18T03:28:51+00:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP]]></title>
     <link href="http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
-    <updated>2012-11-28T00:00:00-06:00</updated>
+    <updated>2012-11-28T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
     <content type="html"><![CDATA[<p>If you&#8217;re running Mediatomb or uShare and your xbox, ps3, tv, or whatever other UPnP/DNLA device doesn&#8217;t see the server, here&#8217;s a few fixes I&#8217;ve discovered.<!--more--></p>
 
@@ -56,7 +56,7 @@ Days of work for 1 line in my /etc/sysconfig/iptables file.</p>
   <entry>
     <title type="html"><![CDATA[(FIX) GTablet NVFlash Freezing During Upload]]></title>
     <link href="http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/"/>
-    <updated>2012-11-27T00:00:00-06:00</updated>
+    <updated>2012-11-27T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload</id>
     <content type="html"><![CDATA[<p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
 

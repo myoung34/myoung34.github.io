@@ -4,7 +4,7 @@
   <title><![CDATA[Category: beanstalk | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/beanstalk/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2016-08-09T16:01:24-05:00</updated>
+  <updated>2017-01-18T03:28:51+00:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[My Thoughts after six months of Elastic Beanstalk.]]></title>
     <link href="http://marcyoung.us/post/six-months-of-beanstalk"/>
-    <updated>2015-11-16T00:00:00-06:00</updated>
+    <updated>2015-11-16T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/six-months-of-beanstalk</id>
     <content type="html"><![CDATA[<p>We&rsquo;ve been using pure beanstalk at my current gig for six months and here are my thoughts. <!-- more --></p>
 
@@ -56,7 +56,7 @@ I&rsquo;m pretty much sold on Terraform, but that is my personal choice, and I w
   <entry>
     <title type="html"><![CDATA[Fighting a nasty AWS bug for Beanstalk Leader Election]]></title>
     <link href="http://marcyoung.us/post/beanstalk-leader"/>
-    <updated>2015-10-20T00:00:00-05:00</updated>
+    <updated>2015-10-20T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/beanstalk-leader</id>
     <content type="html"><![CDATA[<p>In the last few months I&rsquo;ve been working to move my latest employer to AWS from Heroku and discovered a very nasty bug. <!-- more -->
 The move was due to a lot of issues, the least of which being the cost of heroku compared to using what they implement.</p>
@@ -84,7 +84,7 @@ it turned out to only happen on dev and test (not production). Parsing the web o
   <entry>
     <title type="html"><![CDATA[Purging old beanstalk versions]]></title>
     <link href="http://marcyoung.us/post/beanstalk-purge"/>
-    <updated>2015-08-25T00:00:00-05:00</updated>
+    <updated>2015-08-25T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/beanstalk-purge</id>
     <content type="html"><![CDATA[<p>I recently found out that you can have at most 500 application versions across beanstalk. I wrote a small script to purge it of old ones<!-- more --></p>
 

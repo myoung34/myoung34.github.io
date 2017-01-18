@@ -4,7 +4,7 @@
   <title><![CDATA[Category: marklogic | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/marklogic/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2016-08-09T16:01:24-05:00</updated>
+  <updated>2017-01-18T03:28:51+00:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
     <link href="http://marcyoung.us/post/puppet-and-marklogic"/>
-    <updated>2013-12-14T00:00:00-06:00</updated>
+    <updated>2013-12-14T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/puppet-and-marklogic</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="http://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="http://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
 
@@ -33,7 +33,7 @@
   <entry>
     <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
     <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
-    <updated>2012-09-25T00:00:00-05:00</updated>
+    <updated>2012-09-25T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
     <content type="html"><![CDATA[<!--more-->
 

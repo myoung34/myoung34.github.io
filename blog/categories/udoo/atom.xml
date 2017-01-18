@@ -4,7 +4,7 @@
   <title><![CDATA[Category: udoo | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/udoo/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2016-08-09T16:01:24-05:00</updated>
+  <updated>2017-01-18T03:28:51+00:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
     <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d"/>
-    <updated>2014-07-26T00:00:00-05:00</updated>
+    <updated>2014-07-26T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/udoo-3d</id>
     <content type="html"><![CDATA[<p>I finally broke down and bought a <a href="http://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
 
@@ -31,7 +31,7 @@
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD]]></title>
     <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd"/>
-    <updated>2014-03-03T00:00:00-06:00</updated>
+    <updated>2014-03-03T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/udoo-lcd</id>
     <content type="html"><![CDATA[<p>I have continued to want more out of my UDOO, so I decided to make use of a cracked LCD I had sitting around from Adafruit, by having the UDOO display system information to it.<!--more-->
 A side note: the linux distro I&rsquo;m using is Ubuntu 12.04 LTS for ARM, and by a cracked LCD I mean the digitizer doesn&rsquo;t work. You can modify this code to use the touchscreen functionality of the screen
@@ -100,7 +100,7 @@ if you wish.</p>
   <entry>
     <title type="html"><![CDATA[UDOO and SATA - The Definitive Guide]]></title>
     <link href="http://marcyoung.us/post/udoo-and-sata"/>
-    <updated>2014-02-23T00:00:00-06:00</updated>
+    <updated>2014-02-23T00:00:00+00:00</updated>
     <id>http://marcyoung.us/post/udoo-sata</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently purchase a <a href="http://www.udoo.org">udoo</a>. I am in love with it, however I had issues trying to boot from SATA.<!--more--></p>
 
