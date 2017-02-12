@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: vagrant | Marcus Young]]></title>
+  <link href="http://marcyoung.us/blog/categories/vagrant/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2017-02-11T19:20:04-06:00</updated>
+  <id>http://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[oVirt and Vagrant]]></title>
+    <link href="http://marcyoung.us/post/ovirt4-vagrant"/>
+    <updated>2017-02-10T00:00:00-06:00</updated>
+    <id>http://marcyoung.us/post/ovirt-vagrant</id>
+    <content type="html"><![CDATA[<p>I wrote a <a href="https://www.ovirt.org/blog/2017/02/using-oVirt-vagrant/">blog post</a> over on oVirt about how to use the most recent release of my new vagrant oVirt v4 provider.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mame | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/mame/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-01-18T03:28:51+00:00</updated>
+  <updated>2017-02-11T19:20:04-06:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Adafruit PiGrrl Pocket Build]]></title>
     <link href="http://marcyoung.us/post/pigrrl-pocket"/>
-    <updated>2015-08-20T00:00:00+00:00</updated>
+    <updated>2015-08-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/pigrrl</id>
     <content type="html"><![CDATA[<p>After building the arcade cabinet I saw the PiGrrl Pocket and unfortunately for my pocket: I made one as well. <!-- more --></p>
 
@@ -39,7 +39,7 @@
   <entry>
     <title type="html"><![CDATA[My First (and likely last) MAME cabinet build]]></title>
     <link href="http://marcyoung.us/post/mame-cabinet"/>
-    <updated>2015-08-19T00:00:00+00:00</updated>
+    <updated>2015-08-19T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/cabinet</id>
     <content type="html"><![CDATA[<p>I decided many months ago to build a bar-top cabinet. After many frustrations and failed attempts: it&rsquo;s done.<!-- more --></p>
 

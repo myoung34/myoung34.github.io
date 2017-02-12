@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-01-18T03:28:51+00:00</updated>
+  <updated>2017-02-11T19:20:04-06:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -14,14 +14,22 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Homemade Planck]]></title>
+    <title type="html"><![CDATA[oVirt and Vagrant]]></title>
+    <link href="http://marcyoung.us/post/ovirt4-vagrant"/>
+    <updated>2017-02-10T00:00:00-06:00</updated>
+    <id>http://marcyoung.us/post/ovirt-vagrant</id>
+    <content type="html"><![CDATA[<p>I wrote a <a href="https://www.ovirt.org/blog/2017/02/using-oVirt-vagrant/">blog post</a> over on oVirt about how to use the most recent release of my new vagrant oVirt v4 provider.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Homemade planck]]></title>
     <link href="http://marcyoung.us/post/planck"/>
-    <updated>2017-01-17T00:00:00+00:00</updated>
-    <id>http://marcyoung.us/post/keyboard</id>
+    <updated>2017-01-18T00:00:00-06:00</updated>
+    <id>http://marcyoung.us/post/planck</id>
     <content type="html"><![CDATA[<p>I made a super tedious keyboard.<!-- more --></p>
 
-<p>I&rsquo;ve owned a Das Keyboard Model S Ultimate for about 3 years now. It was mostly to get into keyboards and try out a nice mechanical one.
-I still love it, but after getting more interested in them, I decided to build a planck.</p>
+<p>I’ve owned a Das Keyboard Model S Ultimate for about 3 years now. It was mostly to get into keyboards and try out a nice mechanical one. I still love it, but after getting more interested in them, I decided to build a planck.</p>
 
 <p>A planck is basically an ortholinear keyboard (meaning the keys are in perfect columns and rows) and has 47-48 keys (4x12 called a 40%).</p>
 
@@ -29,19 +37,19 @@ I still love it, but after getting more interested in them, I decided to build a
 
 <p>I 3d printed the case, then wired up the columns and rows using 1N4148 diodes to a teensy. My first iteration used what looked like a really awesome 3d printed base, but it ended up overwhelming me because the wires had to be routed through very very tiny spaces, and my soldering iron: a) needed some love and b) kept melting the 3d printed base (because of all the tight spots). I then printed a much different and standard base and things went smoother.</p>
 
-<p>I also got overwhelmed with the <a href="https://github.com/tmk/tmk_keyboard">TMK firmware</a>. Everyone says it&rsquo;s easy, and you&rsquo;d think as a programmer I&rsquo;d have some ease with it, but it&rsquo;s super confusing and talks about bit shifting like it&rsquo;s just adding numbers and you should be able to do it in your sleep. Then I found <a href="http://kb.sized.io/">this site</a> and was done in under an hour. Obligatory pictures.</p>
+<p>I also got overwhelmed with the <a href="https://github.com/tmk/tmk_keyboard">TMK firmware</a>. Everyone says it’s easy, and you’d think as a programmer I’d have some ease with it, but it’s super confusing and talks about bit shifting like it’s just adding numbers and you should be able to do it in your sleep. Then I found <a href="http://kb.sized.io/">this site</a> and was done in under an hour. Obligatory pictures.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/IMG_20161224_143647.jpg" title="keyboard 1" >
-<img class="left" src="http://marcyoung.us/images/IMG_20160927_062158.jpg" title="keyboard 2" >
-<img class="left" src="http://marcyoung.us/images/IMG_20161225_050545.jpg" title="keyboard 3" >
-<img class="left" src="http://marcyoung.us/images/IMG_20170104_145354.jpg" title="keyboard 4" ></p>
+<p><img class="left" src="http://marcyoung.us/images/IMG_20160927_062158.jpg" title="keyboard 1" >
+<img class="left" src="http://marcyoung.us/images/IMG_20161224_143647.jpg" title="keyboard 1" >
+<img class="left" src="http://marcyoung.us/images/IMG_20161225_050545.jpg" title="keyboard 1" >
+<img class="left" src="http://marcyoung.us/images/IMG_20170104_145354.jpg" title="keyboard 1" ></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 4 - Curator]]></title>
     <link href="http://marcyoung.us/post/dockerized-elk-part-4"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/dockerized-elk-part4</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting Kibana up. This one focuses on getting Curator <!-- more --></p>
 
@@ -111,7 +119,7 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana]]></title>
     <link href="http://marcyoung.us/post/dockerized-elk-part-3"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/dockerized-elk-part3</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting logstash up. This one focuses on getting Kibana <!-- more --></p>
 
@@ -164,7 +172,7 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash]]></title>
     <link href="http://marcyoung.us/post/dockerized-elk-part-2"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/dockerized-elk-part2</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting the ECS cluster, ECR repos, and Elasticsearch up. This one focuses on getting Logstash <!-- more --></p>
 
@@ -247,7 +255,7 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch]]></title>
     <link href="http://marcyoung.us/post/dockerized-elk-part-1"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/dockerized-elk-part1</id>
     <content type="html"><![CDATA[<p>This will be a write-up on how to get a self-healing and self-curating SSL-enabled Hot/Warm ELK stack using ECS and lambda <!-- more --></p>
 
@@ -324,7 +332,7 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   <entry>
     <title type="html"><![CDATA[My Thoughts after six months of Elastic Beanstalk.]]></title>
     <link href="http://marcyoung.us/post/six-months-of-beanstalk"/>
-    <updated>2015-11-16T00:00:00+00:00</updated>
+    <updated>2015-11-16T00:00:00-06:00</updated>
     <id>http://marcyoung.us/post/six-months-of-beanstalk</id>
     <content type="html"><![CDATA[<p>We&rsquo;ve been using pure beanstalk at my current gig for six months and here are my thoughts. <!-- more --></p>
 
@@ -364,7 +372,7 @@ I&rsquo;m pretty much sold on Terraform, but that is my personal choice, and I w
   <entry>
     <title type="html"><![CDATA[Fighting a nasty AWS bug for Beanstalk Leader Election]]></title>
     <link href="http://marcyoung.us/post/beanstalk-leader"/>
-    <updated>2015-10-20T00:00:00+00:00</updated>
+    <updated>2015-10-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/beanstalk-leader</id>
     <content type="html"><![CDATA[<p>In the last few months I&rsquo;ve been working to move my latest employer to AWS from Heroku and discovered a very nasty bug. <!-- more -->
 The move was due to a lot of issues, the least of which being the cost of heroku compared to using what they implement.</p>
@@ -392,7 +400,7 @@ it turned out to only happen on dev and test (not production). Parsing the web o
   <entry>
     <title type="html"><![CDATA[Purging old beanstalk versions]]></title>
     <link href="http://marcyoung.us/post/beanstalk-purge"/>
-    <updated>2015-08-25T00:00:00+00:00</updated>
+    <updated>2015-08-25T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/beanstalk-purge</id>
     <content type="html"><![CDATA[<p>I recently found out that you can have at most 500 application versions across beanstalk. I wrote a small script to purge it of old ones<!-- more --></p>
 
@@ -438,7 +446,7 @@ it turned out to only happen on dev and test (not production). Parsing the web o
   <entry>
     <title type="html"><![CDATA[Adafruit PiGrrl Pocket Build]]></title>
     <link href="http://marcyoung.us/post/pigrrl-pocket"/>
-    <updated>2015-08-20T00:00:00+00:00</updated>
+    <updated>2015-08-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/pigrrl</id>
     <content type="html"><![CDATA[<p>After building the arcade cabinet I saw the PiGrrl Pocket and unfortunately for my pocket: I made one as well. <!-- more --></p>
 
@@ -461,7 +469,7 @@ it turned out to only happen on dev and test (not production). Parsing the web o
   <entry>
     <title type="html"><![CDATA[My First (and likely last) MAME cabinet build]]></title>
     <link href="http://marcyoung.us/post/mame-cabinet"/>
-    <updated>2015-08-19T00:00:00+00:00</updated>
+    <updated>2015-08-19T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/cabinet</id>
     <content type="html"><![CDATA[<p>I decided many months ago to build a bar-top cabinet. After many frustrations and failed attempts: it&rsquo;s done.<!-- more --></p>
 
@@ -495,7 +503,7 @@ Basically it was a fly-by-your seat design with some generic parts.</p>
   <entry>
     <title type="html"><![CDATA[Azure, Github, and a Corporate Proxy]]></title>
     <link href="http://marcyoung.us/post/azure-github-proxy"/>
-    <updated>2015-05-18T00:00:00+00:00</updated>
+    <updated>2015-05-18T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/aspnet-github</id>
     <content type="html"><![CDATA[<p>Recently I started playing around with Azure and deploying an ASP.NET MVC site via its Github linkage. I had some strange issues.<!-- more --></p>
 
@@ -558,7 +566,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[Well, I wrote a book]]></title>
     <link href="http://marcyoung.us/post/book"/>
-    <updated>2015-04-08T00:00:00+00:00</updated>
+    <updated>2015-04-08T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/book</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been quite a while since my last post, but I promise I have somewhat of a decent reason. I wrote a book on AWS design patterns!<!-- more --></p>
 
@@ -581,7 +589,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
     <link href="http://marcyoung.us/post/hbase-puppet-module"/>
-    <updated>2014-10-28T00:00:00+00:00</updated>
+    <updated>2014-10-28T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/hbase-puppet-module</id>
     <content type="html"><![CDATA[<p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
 
@@ -606,7 +614,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
     <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d"/>
-    <updated>2014-07-26T00:00:00+00:00</updated>
+    <updated>2014-07-26T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/udoo-3d</id>
     <content type="html"><![CDATA[<p>I finally broke down and bought a <a href="http://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
 
@@ -621,7 +629,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
     <link href="http://marcyoung.us/post/mirth-puppet-module"/>
-    <updated>2014-05-14T00:00:00+00:00</updated>
+    <updated>2014-05-14T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/mirth-puppet-module</id>
     <content type="html"><![CDATA[<p>I released a new Puppet module to the forge out of another work necessity. Mirth is used pretty heavily for HL7 ETL, and has a ton of other uses. <!-- more --></p>
 
@@ -658,7 +666,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins]]></title>
     <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
-    <updated>2014-03-22T00:00:00+00:00</updated>
+    <updated>2014-03-22T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/continuous-deployment-part-4-puppet-and-jenkins</id>
     <content type="html"><![CDATA[<p>So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy this application and keep it up to date, and we even have r10k handling the deployment of those puppet modules so that we don&rsquo;t have to worry about dependencies, and we can even stage them! What we don&rsquo;t have is a way of getting changes to that puppet module to the puppet master without remoting in and running r10k. That&rsquo;s easy to fix with jenkins!<!--more--></p>
 
@@ -783,7 +791,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet]]></title>
     <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
-    <updated>2014-03-21T00:00:00+00:00</updated>
+    <updated>2014-03-21T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/continuous-deployment-part-3-enter-puppet</id>
     <content type="html"><![CDATA[<p>Now that we have a package, we need a way of installing it amirite? We&rsquo;re going to write a puppet module for this package complete with rspec tests<!--more--></p>
 
@@ -923,7 +931,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application]]></title>
     <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
-    <updated>2014-03-20T00:00:00+00:00</updated>
+    <updated>2014-03-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/continuous-deployment-part-2-the-application</id>
     <content type="html"><![CDATA[<p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.<!--more--></p>
 
@@ -1020,7 +1028,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 1 - The Machines]]></title>
     <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
-    <updated>2014-03-19T00:00:00+00:00</updated>
+    <updated>2014-03-19T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/continuous-deployment-part-1-the-machines</id>
     <content type="html"><![CDATA[<p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64<!--more--></p>
 
@@ -1128,83 +1136,6 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
 </span><span class='line'>enabled=1
 </span><span class='line'>gpgcheck=0
 </span><span class='line'>metadata_expire=10</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Overview]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-overview"/>
-    <updated>2014-03-18T00:00:00+00:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-overview</id>
-    <content type="html"><![CDATA[<p>This will be by far my biggest post to date. I&rsquo;ve been asked from multiple sources about the system I&rsquo;ve set up at my current company, so this is a very small version of it. By the end of this, assuming you follow along, you&rsquo;ll have a multiple node system set up that will deploy a linux service, packaged as an RPM, to internal Yum feeds, with Puppet along the way to keep this continuously deployed. The puppet module I&rsquo;ll write to do this will also be continuous, with all changes to it causing tests to run, and r10k to redeploy them if successful.<!--more--></p>
-
-<p>This series will be in this layout:</p>
-
-<ul>
-<li>Overview (this page)</li>
-<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines/">Part 1 - The Nodes and their purpose in this stack</a></li>
-<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app/">Part 2 - Creating a small linux service that causes new RPM builds when changes are seen via Jenkins</a></li>
-<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet/">Part 3 - Creating a puppet manifest to deploy and maintain the previous package</a></li>
-<li><a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins/">Part 4 - Managing the puppet manifests so that changes also run tests and re-deploy to the ENC (foreman)</a>
-<!--* [Part 5 - Simplifying your life with vagrant to develop and maintain this setup without worrying about nodes that are subscribed to the packages/puppet manifests]() - not available yet--></li>
-</ul>
-
-
-<h5>Note</h5>
-
-<p>This is by NO MEANS a copy/pasta guide. I&rsquo;m going based on the assumption you just want to see the high level, some code, and the flow. I&rsquo;ll link to guides on how to set up the nodes such as the Pulp server, Foreman server, etc by I won&rsquo;t go into details that don&rsquo;t tie into the end-goal.</p>
-
-<h3>Workflows</h3>
-
-<ol>
-<li>Developer workflow
-
-<ul>
-<li>Continuous integration of puppet modules
-
-<ul>
-<li>Make a change to a puppet module</li>
-<li>Jenkins deetects the change and runs tests</li>
-<li>Jenkins tells the ENC (puppet master) to re-deploy its modules</li>
-</ul>
-</li>
-<li>Continious Deployment of an application
-
-<ul>
-<li>Make a change to your git repository (the package code base)</li>
-<li>Jenkins detects the change and runs tests</li>
-<li>Jenkins builds an RPM</li>
-<li>Jenkins uploads that RPM to a Pulp repository
-
-<ul>
-<li>These can be &lsquo;feeds&rsquo;, such as a change to <em>dev</em> branch creating an RPM in an <em>unstable</em> repository. A change to <em>master</em> branch would create an RPM in a <em>stable</em> repository*</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Server workflow (puppet agents)
-
-<ul>
-<li>Servers subscribe to a repository (stable or unstable)</li>
-<li>A Cron job continuously checks for changes to the package in this Yum feed</li>
-<li>A new package is detected and is bootstrapped to the server</li>
-</ul>
-</li>
-</ol>
-
-
-<h3>Glossary</h3>
-
-<ul>
-<li>Pulp - a Yum repository client/server similar to Spacewalk, but much more light weight. Think aptly for Redhat</li>
-<li>Jenkins - A continuous integration server written in java</li>
-<li>Puppet - A client/server configuration  management suite</li>
-<li>Foreman - An ENC for puppet. Allows you to do things such as reports, monitoring etc for Puppet nodes, similar to Puppet Dashboard</li>
-<li>Vagrant - A suite that allows you to bootstrap virtual machines, hiding the implementation. Think a CLI that lets you build a base VM, share it, and swap it out for different providers such as vmware, virtualbox, AWS, etc</li>
-</ul>
 
 ]]></content>
   </entry>

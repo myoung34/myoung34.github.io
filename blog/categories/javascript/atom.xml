@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-01-18T03:28:51+00:00</updated>
+  <updated>2017-02-11T19:20:04-06:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Creating an MVC Blog with Node.js and MongoDB]]></title>
     <link href="http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
-    <updated>2012-04-25T00:00:00+00:00</updated>
+    <updated>2012-04-25T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
     <content type="html"><![CDATA[<p>This is going to be my first big tutorial. This is a simple tutorial to show how to build the worlds most basic blog with comment system in Node.js with Express for the MVC Routing, MongoDB as the storage engine, and Jade as the html shorthand. <!--more--></p>
 
@@ -353,7 +353,7 @@ block content
   <entry>
     <title type="html"><![CDATA[JavaScript Likes To Play Dumb]]></title>
     <link href="http://marcyoung.us/post/javascript-like-to-play-dumb/"/>
-    <updated>2011-02-03T00:00:00+00:00</updated>
+    <updated>2011-02-03T00:00:00-06:00</updated>
     <id>http://marcyoung.us/post/javascript-like-to-play-dumb</id>
     <content type="html"><![CDATA[<p>My first post is going to be some fun coersion issues I have found lately while touching up on my JavaScript</p>
 

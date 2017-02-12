@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mysql | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/mysql/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-01-18T03:28:51+00:00</updated>
+  <updated>2017-02-11T19:20:04-06:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Seriously MySQL?]]></title>
     <link href="http://marcyoung.us/post/seriously-mysql/"/>
-    <updated>2012-03-28T00:00:00+00:00</updated>
+    <updated>2012-03-28T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/seriously-mysql</id>
     <content type="html"><![CDATA[<p>I recently discovered one of the most confusing things I&#8217;ve seen in MySQL.<!--more-->. Lets start with this table:</p>
 
