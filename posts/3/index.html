@@ -9,7 +9,7 @@
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="This will be by far my biggest post to date. I&rsquo;ve been asked from multiple sources about the system I&rsquo;ve set up at my current company, so &hellip;">
+  <meta name="description" content="Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +89,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app">Complete Continuous Deployment Using Puppet and Pulp - Part 2 - the Application</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-20T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines">Complete Continuous Deployment Using Puppet and Pulp - Part 1 - the Machines</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-19T00:00:00-05:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -434,92 +520,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/post/fix-gtablet-nvflash-freezing-upload/">(FIX) GTablet NVFlash Freezing During Upload</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-27T00:00:00-06:00" pubdate data-updated="true"></time>
-        
-         | <a href="/post/fix-gtablet-nvflash-freezing-upload/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/post/fix-gtablet-nvflash-freezing-upload/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/">MarkLogic Collections &#8211; Performance Issues and Why You Should Denormalize!</a></h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-25T00:00:00-05:00" pubdate data-updated="true"></time>
-        
-         | <a href="/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"></div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -539,6 +539,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/bless-part2">Up and Running With Bless and Enforced MFA - Part 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/bless-part1">Up and Running With Bless and Enforced MFA - Part 1</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/ovirt4-vagrant">oVirt and Vagrant</a>
       </li>
     
@@ -548,14 +556,6 @@
     
       <li class="post">
         <a href="/post/dockerized-elk-part-4">AWS ECS Hot/Warm ELK + Curator Part 4 - Curator</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/dockerized-elk-part-3">AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/dockerized-elk-part-2">AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash</a>
       </li>
     
   </ul>

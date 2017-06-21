@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-02-11T19:20:04-06:00</updated>
+  <updated>2017-06-21T12:22:27-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,854 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Up and running with Bless and enforced MFA - Part 2]]></title>
+    <link href="http://marcyoung.us/post/bless-part2"/>
+    <updated>2017-06-21T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/bless-part2</id>
+    <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft&rsquo;s <a href="https://github.com/lyft/python-blessclient">client</a>. <!-- more --></p>
+
+<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there&rsquo;s no <em>enforcement</em> of MFA. ie you can still call the netflix client and bounce right in.</p>
+
+<p>The other issue is that Netflix&rsquo;s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC&rsquo;s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft&rsquo;s doesn&rsquo;t enforce the bastion concept, which is nice.</p>
+
+<h1>Prerequisites</h1>
+
+<p>In the IAM console in AWS, enable an MFA device for your user.</p>
+
+<h1>Setting up the client</h1>
+
+<p>I wrote a wrapper to simplify this. Feel free to not like it, but I put this in my <code>~/.bash_aliases</code> to make it easier:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function bounce() {
+</span><span class='line'>  if [[ ! -d ~/.blessclient ]]; then
+</span><span class='line'>    pushd . &gt;/dev/null
+</span><span class='line'>    git clone https://github.com/lyft/python-blessclient.git ~/.blessclient
+</span><span class='line'>    cd $_
+</span><span class='line'>    make
+</span><span class='line'>    popd &gt;/dev/null
+</span><span class='line'>  fi
+</span><span class='line'>  INTERNAL_IP=$(ifconfig | grep inet | grep 192 | awk '{ print $2}')
+</span><span class='line'>  # This gets weird if you have wired and wifi hooked up (sometimes i do). It might allow the wrong IP and give you a crap error messsage.
+</span><span class='line'>  if [[ $(ifconfig | grep inet | grep 192 | awk '{ print $2}' | wc -l) -gt 1 ]] && [[ -z ${BLESSFIXEDIP} ]]; then
+</span><span class='line'>    echo "More than one internal ip found. Disable a network interface or provide it manually via env var 'BLESSFIXEDIP'"
+</span><span class='line'>  else
+</span><span class='line'>    FILE="$(mktemp)"
+</span><span class='line'>    rm -rf ${FILE}*
+</span><span class='line'>    ssh-keygen -f ${FILE} -N ""
+</span><span class='line'>    BLESS_IDENTITYFILE=${FILE} BLESSFIXEDIP=${BLESSFIXEDIP:-${INTERNAL_IP}} ~/.blessclient/blessclient.run --host $1 --nocache --config ~/.blessclient/blessclient.cfg --region EAST && ssh -i ${FILE} ec2-user@$1
+</span><span class='line'>  fi
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can bounce with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ bounce 10.0.3.7
+</span><span class='line'>Generating public/private rsa key pair.
+</span><span class='line'>Your identification has been saved in /var/folders/5j/n9trdvbn3qqdtkshkpvnrkhh0000gp/T/tmp.s2ZdeuJD.
+</span><span class='line'>Your public key has been saved in /var/folders/5j/n9trdvbn3qqdtkshkpvnrkhh0000gp/T/tmp.s2ZdeuJD.pub.
+</span><span class='line'>The key fingerprint is:
+</span><span class='line'>SHA256:CizQBI/ROY8QIeiRjt7rY65jPc/oJDL3MA marcyoung@Admins-MacBook-Pro.local
+</span><span class='line'>The key's randomart image is:
+</span><span class='line'>+---[RSA 2048]----+
+</span><span class='line'>|B*+.             |
+</span><span class='line'>|++o              |
+</span><span class='line'>|=..              |
+</span><span class='line'>|.o.*.            |
+</span><span class='line'>|. o  S           |
+</span><span class='line'>|...+ . .         |
+</span><span class='line'>| E .o.           |
+</span><span class='line'>|oo= + .          |
+</span><span class='line'>|.=*              |
+</span><span class='line'>+----[SHA256]-----+
+</span><span class='line'>Enter your AWS MFA code: 477821
+</span><span class='line'>Requesting certificate for your public key (set BLESSQUIET=1 to suppress these messages)
+</span><span class='line'>Finished getting certificate.
+</span><span class='line'>Last login: Fri Jun 16 20:14:52 2017 from ip-192-168-1-124.ec2.internal
+</span><span class='line'>
+</span><span class='line'>       __|  __|_  )
+</span><span class='line'>       _|  (     /   Amazon Linux AMI
+</span><span class='line'>      ___|\___|___|
+</span><span class='line'>
+</span><span class='line'>https://aws.amazon.com/amazon-linux-ami/2017.03-release-notes/
+</span><span class='line'>No packages needed for security; 2 packages available
+</span><span class='line'>Run "sudo yum update" to apply all updates.
+</span><span class='line'>[marc@server ~]$</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nice! But again, MFA is used, not enforced. Lets change that.</p>
+
+<p>I hinted at my group policy in part 1 for <code>ops</code> that looked like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_group_policy" "bless-client" {
+</span><span class='line'>    name = "bless-client_iam_policy"
+</span><span class='line'>    group = "${aws_iam_group.ops.id}"
+</span><span class='line'>    policy = &lt;&lt;EOF
+</span><span class='line'>{
+</span><span class='line'>    "Version": "2012-10-17",
+</span><span class='line'>    "Statement": [
+</span><span class='line'>      {
+</span><span class='line'>        "Effect": "Allow",
+</span><span class='line'>        "Action": "sts:AssumeRole",
+</span><span class='line'>        "Resource": [
+</span><span class='line'>          "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
+</span><span class='line'>        ]
+</span><span class='line'>      },
+</span><span class='line'>      {
+</span><span class='line'>        "Action": "kms:Encrypt",
+</span><span class='line'>        "Effect": "Allow",
+</span><span class='line'>        "Resource": [
+</span><span class='line'>          "${data.terraform_remote_state.kms.ops_bless_arn}"
+</span><span class='line'>        ],
+</span><span class='line'>        "Condition": {
+</span><span class='line'>          "StringEquals": {
+</span><span class='line'>            "kms:EncryptionContext:user_type": "user",
+</span><span class='line'>            "kms:EncryptionContext:from": "$${aws:username}"
+</span><span class='line'>          }
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    ]
+</span><span class='line'>}
+</span><span class='line'>EOF
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But in actuality, it should look more like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_group_policy" "bless-client" {
+</span><span class='line'>    name = "assume-bless-role"
+</span><span class='line'>    group = "${aws_iam_group.ops.id}"
+</span><span class='line'>    policy = &lt;&lt;EOF
+</span><span class='line'>{
+</span><span class='line'>  "Version": "2012-10-17",
+</span><span class='line'>  "Statement": [
+</span><span class='line'>    {
+</span><span class='line'>      "Effect": "Allow",
+</span><span class='line'>      "Action": "sts:AssumeRole",
+</span><span class='line'>      "Resource": [
+</span><span class='line'>        "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
+</span><span class='line'>      ],
+</span><span class='line'>      "Condition": {
+</span><span class='line'>        "Bool": {
+</span><span class='line'>          "aws:MultiFactorAuthPresent": "true"
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "Effect": "Deny",
+</span><span class='line'>      "Action": "sts:AssumeRole",
+</span><span class='line'>      "Resource": [
+</span><span class='line'>        "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
+</span><span class='line'>      ],
+</span><span class='line'>      "Condition": {"BoolIfExists": {"aws:MultiFactorAuthPresent": false}}
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "Action": "kms:Encrypt",
+</span><span class='line'>      "Effect": "Allow",
+</span><span class='line'>      "Resource": [
+</span><span class='line'>        "${data.terraform_remote_state.kms.ops_bless_arn}"
+</span><span class='line'>      ],
+</span><span class='line'>      "Condition": {
+</span><span class='line'>        "StringEquals": {
+</span><span class='line'>          "kms:EncryptionContext:user_type": "user",
+</span><span class='line'>          "kms:EncryptionContext:from": "$${aws:username}"
+</span><span class='line'>        },
+</span><span class='line'>        "Bool": {
+</span><span class='line'>          "aws:MultiFactorAuthPresent": "true"
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "Action": "kms:Encrypt",
+</span><span class='line'>      "Effect": "Deny",
+</span><span class='line'>      "Resource": [
+</span><span class='line'>        "${data.terraform_remote_state.kms.ops_bless_arn}"
+</span><span class='line'>      ],
+</span><span class='line'>      "Condition": {
+</span><span class='line'>        "StringEquals": {
+</span><span class='line'>          "kms:EncryptionContext:user_type": "user",
+</span><span class='line'>          "kms:EncryptionContext:from": "$${aws:username}"
+</span><span class='line'>        },
+</span><span class='line'>        "BoolIfExists": {
+</span><span class='line'>          "aws:MultiFactorAuthPresent": false
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    }
+</span><span class='line'>  ]
+</span><span class='line'>}
+</span><span class='line'>EOF
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What did we do? We basically said <code>ops</code> users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Up and running with Bless and enforced MFA - Part 1]]></title>
+    <link href="http://marcyoung.us/post/bless-part1"/>
+    <updated>2017-06-21T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/bless-part1</id>
+    <content type="html"><![CDATA[<p>I finally got Netflix&rsquo;s <a href="github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft&rsquo;s <a href="https://github.com/lyft/python-blessclient">client</a>. <!-- more --></p>
+
+<p>This post will focus on the first and easier portion: Bless in Lambda</p>
+
+<h1>Prerequisites</h1>
+
+<p>Time and terraform. I like terraform because I dislike cloudformation. Feel free to adapt.</p>
+
+<h1>Installing Bless</h1>
+
+<p>This is actually the easiest part, because it&rsquo;s straight forward. Side note: I like bless because of its simplicity. It uses lambda + KMS and nothing more. The permissions are stupid simple. The purpose, after talking to one of the guys behind it, was to make it feel native and un-intrusive. It works.</p>
+
+<h2>Setup Config</h2>
+
+<p>This was the hardest to get going, because configuration always is. The <a href="https://github.com/Netflix/bless/blob/master/README.md">readme</a> says to paste in a function to lambda to generate your password. But thats not needed with the super awesome <a href="https://github.com/lambci/docker-lambda">lambda container from lambci</a>. To do this, create a file <code>function.py</code> with the contents:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import boto3
+</span><span class='line'>import base64
+</span><span class='line'>import os
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>def lambda_handler(event, context):
+</span><span class='line'>    region = os.environ['AWS_REGION']
+</span><span class='line'>    client = boto3.client('kms', region_name=region)
+</span><span class='line'>    response = client.encrypt(
+</span><span class='line'>    KeyId='kms_key_id',
+</span><span class='line'>    Plaintext='totallysecure'
+</span><span class='line'>    )
+</span><span class='line'>
+</span><span class='line'>    ciphertext = response['CiphertextBlob']
+</span><span class='line'>    return base64.b64encode(ciphertext)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now lets run that without using the real lambda. Make sure your access key/id have the required permissions to do <code>kms:Encrypt</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY -e AWS_REGION=us-east-1 -v "$PWD":/var/task lambci/lambda:python2.7 function.lambda_handler
+</span><span class='line'>START RequestId: 42f85048-91e1-4b48-9376-0563722616f0 Version: $LATEST
+</span><span class='line'>END RequestId: 42f85048-91e1-4b48-9376-0563722616f0
+</span><span class='line'>REPORT RequestId: 42f85048-91e1-4b48-9376-0563722616f0 Duration: 733 ms Billed Duration: 800 ms Memory Size: 1536 MB Max Memory Used: 25 MB
+</span><span class='line'>"some base64 encoded key"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now lets generate a PEM encoded key with a password of &lsquo;totallysecure&rsquo; (to match the password we encrypted/base64 encoded in KMS):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ssh-keygen -t rsa -b 4096 -f foo1 -C "SSH CA Key 1"
+</span><span class='line'>$ ssh-keygen -t rsa -b 4096 -f foo2 -C "SSH CA Key 2" #2nd CA for good measure
+</span><span class='line'>$ mv foo1 lambda_configs/foo1.pem && chmod 444 $_
+</span><span class='line'>$ mv foo2 lambda_configs/foo2.pem && chmod 444 $_
+</span><span class='line'>$ cat foo1.pub # This will need to go onto your servers into a file /etc/ssh/cas.pub
+</span><span class='line'>$ cat foo2.pub # This will need to go onto your servers into a file /etc/ssh/cas.pub</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The Config</h2>
+
+<p>This is an example of a finished config. Save it as <code>lambda_configs/bless_deploy.cfg</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[Bless Options]
+</span><span class='line'>certificate_validity_after_seconds = 120
+</span><span class='line'>certificate_validity_before_seconds = 120
+</span><span class='line'>entropy_minimum_bits = 2048
+</span><span class='line'>random_seed_bytes = 256
+</span><span class='line'>logging_level = INFO
+</span><span class='line'>
+</span><span class='line'>[Bless CA]
+</span><span class='line'>
+</span><span class='line'>us-east-1_password = some base64 encoded key from lambci/lambda
+</span><span class='line'>ca_private_key_file = foo1.pem
+</span><span class='line'>
+</span><span class='line'>[KMS Auth]</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Build</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ virtualenv venv
+</span><span class='line'>$ . venv/bin/activate
+</span><span class='line'>$ pip install -r requirements.txt
+</span><span class='line'>$ make publish</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Deploy</h1>
+
+<h2>IAM</h2>
+
+<p>The first piece is the IAM portion for Bless. I need to allow it to:</p>
+
+<ol>
+<li>Generate random keys from KMS (obvious)</li>
+<li>Decrypt the KMS key that&rsquo;s the password for Bless. This is generated and</li>
+<li>Create the log group (maybe not necesary since Lambda does that for you?)</li>
+<li>Push logs</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_role" "bless_lambda" {
+</span><span class='line'>    name = "bless_lambda"
+</span><span class='line'>    assume_role_policy = &lt;&lt;EOF
+</span><span class='line'>{
+</span><span class='line'>  "Version": "2012-10-17",
+</span><span class='line'>  "Statement": [
+</span><span class='line'>    {
+</span><span class='line'>      "Action": "sts:AssumeRole",
+</span><span class='line'>      "Principal": {
+</span><span class='line'>        "Service": "lambda.amazonaws.com"
+</span><span class='line'>      },
+</span><span class='line'>      "Effect": "Allow",
+</span><span class='line'>      "Sid": ""
+</span><span class='line'>    }
+</span><span class='line'>  ]
+</span><span class='line'>}
+</span><span class='line'>EOF
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>resource "aws_iam_role_policy" "bless_lambda" {
+</span><span class='line'>    name = "bless_lambda"
+</span><span class='line'>    role = "${aws_iam_role.bless_lambda.id}"
+</span><span class='line'>    policy = &lt;&lt;EOF
+</span><span class='line'>{
+</span><span class='line'>    "Version": "2012-10-17",
+</span><span class='line'>    "Statement": [
+</span><span class='line'>        {
+</span><span class='line'>          "Sid": "Stmt1443036478000",
+</span><span class='line'>          "Effect": "Allow",
+</span><span class='line'>          "Action": [
+</span><span class='line'>              "kms:GenerateRandom",
+</span><span class='line'>              "kms:Decrypt"
+</span><span class='line'>          ],
+</span><span class='line'>          "Resource": [
+</span><span class='line'>              "${data.terraform_remote_state.kms.ops_bless_arn}"
+</span><span class='line'>          ]
+</span><span class='line'>        },
+</span><span class='line'>        {
+</span><span class='line'>            "Effect": "Allow",
+</span><span class='line'>            "Action": "logs:CreateLogGroup",
+</span><span class='line'>            "Resource": "arn:aws:logs:us-east-1:*:*"
+</span><span class='line'>        },
+</span><span class='line'>        {
+</span><span class='line'>            "Effect": "Allow",
+</span><span class='line'>            "Action": [
+</span><span class='line'>                "logs:CreateLogStream",
+</span><span class='line'>                "logs:PutLogEvents"
+</span><span class='line'>            ],
+</span><span class='line'>            "Resource": [
+</span><span class='line'>                "arn:aws:logs:us-east-1:*:log-group:/aws/lambda/*"
+</span><span class='line'>            ]
+</span><span class='line'>        }
+</span><span class='line'>    ]
+</span><span class='line'>}
+</span><span class='line'>EOF
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>KMS</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_kms_key" "ops-bless" {
+</span><span class='line'>    description             = "KMS key for Bless"
+</span><span class='line'>    deletion_window_in_days = 7
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>resource "aws_kms_alias" "ops-bless" {
+</span><span class='line'>    name          = "alias/ops/bless"
+</span><span class='line'>    target_key_id = "${aws_kms_key.ops-bless.key_id}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>output "ops_bless_arn" {
+</span><span class='line'>  value = "${aws_kms_key.ops-bless.arn}"
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The lambda</h2>
+
+<p>Assuming the .zip is in the cwd as <code>bless_lambda.zip</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_lambda_function" "bless" {
+</span><span class='line'>  filename         = "bless_lambda.zip"
+</span><span class='line'>  function_name    = "bless"
+</span><span class='line'>  role             = "${aws_iam_role.bless_lambda.arn}"
+</span><span class='line'>  handler          = "bless_lambda.lambda_handler"
+</span><span class='line'>  source_code_hash = "${base64sha256(file("bless_lambda.zip"))}"
+</span><span class='line'>  runtime          = "python2.7"
+</span><span class='line'>  timeout          = "300"
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Client</h1>
+
+<h2>Client IAM role to assume</h2>
+
+<p>It basically just allows the invocation of our deployed function:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_role" "bless-client" {
+</span><span class='line'>    name               = "bless-client"
+</span><span class='line'>    path               = "/"
+</span><span class='line'>    assume_role_policy = &lt;&lt;EOF
+</span><span class='line'>{
+</span><span class='line'>    "Version": "2012-10-17",
+</span><span class='line'>    "Statement": [
+</span><span class='line'>        {
+</span><span class='line'>            "Action": "lambda:InvokeFunction",
+</span><span class='line'>            "Effect": "Allow",
+</span><span class='line'>            "Resource": [
+</span><span class='line'>                "${data.terraform_remote_state.lambda-bless.bless_arn}"
+</span><span class='line'>            ]
+</span><span class='line'>        }
+</span><span class='line'>    ]
+</span><span class='line'>}
+</span><span class='line'>EOF
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I added this to our <code>ops</code> IAM group so that any ops person can assume the role or use kms:Encrypt from the bless KMS key:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_group_policy" "bless-client" {
+</span><span class='line'>    name = "bless-client_iam_policy"
+</span><span class='line'>    group = "${aws_iam_group.ops.id}"
+</span><span class='line'>    policy = &lt;&lt;EOF
+</span><span class='line'>{
+</span><span class='line'>    "Version": "2012-10-17",
+</span><span class='line'>    "Statement": [
+</span><span class='line'>      {
+</span><span class='line'>        "Effect": "Allow",
+</span><span class='line'>        "Action": "sts:AssumeRole",
+</span><span class='line'>        "Resource": [
+</span><span class='line'>          "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
+</span><span class='line'>        ]
+</span><span class='line'>      },
+</span><span class='line'>      {
+</span><span class='line'>        "Action": "kms:Encrypt",
+</span><span class='line'>        "Effect": "Allow",
+</span><span class='line'>        "Resource": [
+</span><span class='line'>          "${data.terraform_remote_state.kms.ops_bless_arn}"
+</span><span class='line'>        ],
+</span><span class='line'>        "Condition": {
+</span><span class='line'>          "StringEquals": {
+</span><span class='line'>            "kms:EncryptionContext:user_type": "user",
+</span><span class='line'>            "kms:EncryptionContext:from": "$${aws:username}"
+</span><span class='line'>          }
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    ]
+</span><span class='line'>}
+</span><span class='line'>EOF
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Client config</h2>
+
+<p>This is an example of what my client config looks like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[MAIN]
+</span><span class='line'>region_aliases: east
+</span><span class='line'>kms_service_name: bless
+</span><span class='line'>bastion_ips: 192.168.1.6
+</span><span class='line'>remote_user: ec2-user
+</span><span class='line'>
+</span><span class='line'>[CLIENT]
+</span><span class='line'>domain_regex: (.*\.mycompany\.com|.*\.example\.net|\A10\.[0-9](?:\.[0-9]{1,3}){2}\Z)$
+</span><span class='line'>cache_dir: .bless/session
+</span><span class='line'>cache_file: bless_cache.json
+</span><span class='line'>mfa_cache_dir: .aws/session
+</span><span class='line'>mfa_cache_file: token_cache.json
+</span><span class='line'>ip_urls: http://api.ipify.org, http://canihazip.com
+</span><span class='line'>update_script: update_blessclient.sh
+</span><span class='line'>
+</span><span class='line'>[LAMBDA]
+</span><span class='line'>user_role: bless-client
+</span><span class='line'>account_id: my account id
+</span><span class='line'>functionname: bless
+</span><span class='line'>functionversion: $LATEST
+</span><span class='line'>certlifetime: 120
+</span><span class='line'>ipcachelifetime: 120
+</span><span class='line'>timeout_connect: 30
+</span><span class='line'>timeout_read: 30
+</span><span class='line'>
+</span><span class='line'>[REGION_EAST]
+</span><span class='line'>awsregion: us-east-1
+</span><span class='line'>kmsauthkey: my kms id that i used for the original password encrypt</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Test</h1>
+
+<p>You should now have a lambda that can generate certificates to use.
+You&rsquo;ll need to put the public keys from <code>foo1.pub</code> and <code>foo2.pub</code> into your servers at <code>/etc/ssh/cas.pub</code> and add <code>TrustedUserCAKeys /etc/ssh/cas.pub</code> to <code>/etc/ssh/sshd_config</code>
+You can test this with their client:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bounce () {
+</span><span class='line'>  FILE="$(mktemp)"
+</span><span class='line'>  rm -rf ${FILE}
+</span><span class='line'>  ssh-keygen -f ${FILE} -N ""
+</span><span class='line'>  ./bless_client.py \
+</span><span class='line'>    us-east-1 \
+</span><span class='line'>    bless \
+</span><span class='line'>    testdev $(curl --silent http://ipecho.net/plain) \
+</span><span class='line'>    ec2-user $(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1') \
+</span><span class='line'>    "" \
+</span><span class='line'>    ${FILE}.pub ${FILE}-cert.pub
+</span><span class='line'>  ssh -i ${FILE} ec2-user@$1 "${@:2}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>bounce 10.0.0.19</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[oVirt and Vagrant]]></title>
@@ -925,218 +1773,6 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
 <h2>What you have at this point in this blog post</h2>
 
 <p>Right now, you have a Jenkins box that generates new RPMs of your application whenever you make changes to it. You also have a manifest that can manage it. However, this is a one-off. If you have to modify your manifest, you have to redeploy it via r10k to the ENC (foreman). It would be nice if you could utilize Jenkins for this. That&rsquo;s in the next post.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
-    <updated>2014-03-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-2-the-application</id>
-    <content type="html"><![CDATA[<p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.<!--more--></p>
-
-<h1>The Application</h1>
-
-<p>Like I said, it&rsquo;s simple. It&rsquo;s going to be a shell script that runs the <em>python SimpleHTTPServer</em> on port 8000, but it brings up some real life issues:</p>
-
-<ul>
-<li>How can we package it</li>
-<li>How can we ensure the port is open</li>
-<li>How can we test it</li>
-</ul>
-
-
-<p>The code is on <a href="https://github.com/myoung34/blog-exampleservice">this github page</a>.</p>
-
-<p>You&rsquo;ll notice the layout mimics its place on the filesystem. This may not be a realistic case, but it sure make sthe POC easy. You&rsquo;ll notice a <strong>Rakefile</strong> in the repository. This is the heart of our packaging for this. If you look into it, you&rsquo;ll see it&rsquo;s essentially a Makefile (see what I did there???). There are many other ways to approach this, but it&rsquo;s the simplest for now. Basically the rake file will parse the <em>version</em> file (which is <a href="http://semver.org/">semantically versioned</a>), and tries to build an RPM via FPM based on it.</p>
-
-<ol>
-<li>The <strong>unstable</strong> build will happen as <code>bundle exec rake unstable</code>
-
-<ul>
-<li>This will create an rpm such as: <strong>myapp-0.0.1-beta.1.{timestamp}.x86_64.rpm</strong></li>
-<li>This is timestamped because many merges to dev can happen before a version bump.</li>
-</ul>
-</li>
-<li>The <strong>stable</strong> build will happen as <code>bundle exec rake stable</code>
-
-<ul>
-<li>This will create an rpm such as <strong>myapp-0.0.1-1.x86_64.rpm</strong></li>
-<li>There should be no timestamping here, master merges should always be tagged and versioned appropriately.</li>
-</ul>
-</li>
-<li>Both of the previous builds will attempt to upload to the pulp repository we set up.</li>
-</ol>
-
-
-<h1>The Jenkins set up</h1>
-
-<h3>There is a pre-requisite.</h3>
-
-<p>If you look at the Rakefile closely, you&rsquo;ll see (or have wondered already) that pulp-admin requires a username and password. You wouldn&rsquo;t want to put this in the git repository, so the Rakefile has an implicit requirement for a file <strong>.pulp.yml</strong> in the home directory (for Jenkins this should be <em>/usr/lib/jenkins</em>.</p>
-
-<h3>The Jobs</h3>
-
-<ol>
-<li>Unstable Job
-
-<ul>
-<li>Create a job that watches that git repository&rsquo;s <strong>dev</strong> branch</li>
-<li>The git repository is <a href="https://github.com/myoung34/blog-exampleservice.git">https://github.com/myoung34/blog-exampleservice.git</a></li>
-<li>Poll SCM every 3 minutes <code>H/3 * * * *</code></li>
-<li>Run under rvm. I chose <strong>2.0.0</strong></li>
-<li>Run a build script:</li>
-</ul>
-</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install
-</span><span class='line'>bundle exec rake</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>Stable Job
-
-<ul>
-<li>Create a job that watches that git repository&rsquo;s <strong>master</strong> branch</li>
-<li>The git repository is <a href="https://github.com/myoung34/blog-exampleservice.git">https://github.com/myoung34/blog-exampleservice.git</a></li>
-<li>Poll SCM every 3 minutes <code>H/3 * * * *</code></li>
-<li>Run under rvm. I chose <strong>2.0.0</strong></li>
-<li>Run a build script:</li>
-</ul>
-</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install
-</span><span class='line'>bundle exec rake stable</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Profit</h1>
-
-<p>You&rsquo;ll notice that each time you make a change to the git repository, it will build an RPM for it and upload it to the Pulp server. That means that if you&rsquo;re subscribed to that Yum repository, you could do a <code>yum update myapp</code> and you&rsquo;d get a new version. We&rsquo;re getting very close to done =)</p>
-
-<p><img class="left" src="http://marcyoung.us/images/jenkinsbuild.png" title="jenkins" ></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 1 - The Machines]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
-    <updated>2014-03-19T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-1-the-machines</id>
-    <content type="html"><![CDATA[<p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64<!--more--></p>
-
-<h1>Servers</h1>
-
-<h2>Git server</h2>
-
-<p>For this you don&rsquo;t really need to set this one up, but most likely you&rsquo;ll have an internal git server. I&rsquo;ll be using Github for this demo. Use whatever you like.</p>
-
-<h2>Pulp</h2>
-
-<p>Set up the server and client via <a href="http://pulp-user-guide.readthedocs.org/en/pulp-2.3/installation.html">this guide</a>.</p>
-
-<p>When done, go ahead and create an <em>unstable</em> feed via:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>pulp-admin login -uadmin -padmin
-</span><span class='line'>pulp-admin rpm repo create --repo-id=unstable \
-</span><span class='line'>  --relative-url=unstable --serve-http=true \
-</span><span class='line'>  --display-name='Unstable Packages'
-</span><span class='line'>pulp-admin logout</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Jenkins</h2>
-
-<p>Follow <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+RedHat+distributions">this guide</a> to set up jenkins.</p>
-
-<p>Install the jenkins plugins:</p>
-
-<ul>
-<li>git scm</li>
-<li>ssh plugin</li>
-<li>rvm</li>
-<li>warnings</li>
-</ul>
-
-
-<p>Install these extra Yum packages:</p>
-
-<p><code>yum install -y rpm-build rpm ruby ruby-devel rubygems git automake autoconf gcc gcc-c++</code></p>
-
-<p><a href="http://rvm.io">Set up RVM</a></p>
-
-<p>Install <a href="https://github.com/jordansissel/fpm">FPM</a> via gem: <code>gem install fpm</code></p>
-
-<p>Install the pulp-admin tools the same way you did on the pulp server <strong>Not the server, just the admin tools!</strong></p>
-
-<p>Go ahead an ensure all these bits and pieces work, such as connecting to pulp via the login command, using rvm, etc. Jenkins is the heavy lifter in this stack.</p>
-
-<h2>Foreman</h2>
-
-<p><a href="http://theforeman.org/manuals/1.4/quickstart_guide.html#Installation">The guide for 1.4.1 is here</a></p>
-
-<p>Install <strong>r10k</strong> via gem: <code>gem install r10k</code></p>
-
-<p>Also, install the Puppetlabs yum repository and update puppet to 3.4.2 or higher.</p>
-
-<p>Updating Puppet from 2 to 3 on Foreman requires some configuration changes. To get these, just re-run the <code># foreman-installer</code> command.</p>
-
-<p>Make these changes to <strong>/etc/puppet/puppet.conf</strong> for now:</p>
-
-<ul>
-<li>Under the <strong>[master]</strong> section add: <code>hiera_config   = $confdir/hiera/master/hiera.yaml</code></li>
-<li>Replace the <strong>[development]</strong> and <strong>[production]</strong> elements at the bottom with:</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[development]
-</span><span class='line'>    modulepath     = /etc/puppet/environments/dev/modules:/etc/puppet/modules
-</span><span class='line'>    config_version =
-</span><span class='line'>[production]
-</span><span class='line'>    modulepath     = /etc/puppet/environments/master/modules:/etc/puppet/modules
-</span><span class='line'>    config_version =</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>A puppet node</h2>
-
-<p>Because why not. Install the puppet yum repository and install Puppet 3.4.2 or higher.</p>
-
-<p>Make sure you have <code>pluginsync = true</code> in the <strong>/etc/puppet/puppet.conf</strong> file under <strong>[main]</strong></p>
-
-<p>My assumption before you move on, if you&rsquo;re following along, is that this node can connect to the puppet master (foreman) and generates all green when you run <code># puppet agent -t</code></p>
-
-<p>Lastly, make sure you&rsquo;re subscribed to the Yum repository for the <strong>myapp</strong> package we&rsquo;ve been building so that puppet can install it when we get to that point. To do that, create the file <strong>/etc/yum.repos.d/mypulp.repo</strong> with the contents:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[mypulp]
-</span><span class='line'>name=My Pulp Provider - Unstable
-</span><span class='line'>baseurl=http://pulp.blindrage.local/pulp/repos/unstable/
-</span><span class='line'>enabled=1
-</span><span class='line'>gpgcheck=0
-</span><span class='line'>metadata_expire=10</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

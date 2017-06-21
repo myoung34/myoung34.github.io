@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>(FIX) GTablet NVFlash Freezing During Upload - Marcus Young</title>
+  <title>Category: bless - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you tamper break things you own. My GTablet &hellip;">
+  <meta name="description" content="Category: bless">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/">
+  <link rel="canonical" href="http://marcyoung.us/blog/categories/bless/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -88,117 +88,50 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      
-        <h1 class="entry-title">(FIX) GTablet NVFlash Freezing During Upload</h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-27T00:00:00-06:00" pubdate data-updated="true"></time>
-        
-         | <a href="#disqus_thread">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Bless</h1>
     
   </header>
-
-
-<div class="entry-content"><p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
-
-<p>My GTablet runs <a href="http://forum.xda-developers.com/showthread.php?t=1084573" title="Beasty Clemsysn (Froyo)"></a> which I prefer since it&#8217;s freaking fast, however with the performance, there are a few bugs, all of which I seemed to hit in a single move&#8230;.so this is a &#8220;Don&#8217;t do&#8221;:</p>
-
-<ul>
-<li>Putting it in airplane mode goes ape-shit. There was no way to get it out, including reboots and settings changes.</li>
-<li>To fix this, I hit &#8216;Restore to factory defaults&#8217;&#8230; <strong>Don&#8217;t ever do this!</strong></li>
-<li>This fubared everything, which means restore old Rom&#8230;yay for my free time tonight.</li>
-</ul>
-
-
-<p>So far, whatever&#8230;easy fix right?<br/>
-Well if you&#8217;ve made it to this page, you see the title, and that&#8217;s what I&#8217;m here to fix.<br/>
-If for some reason you&#8217;re trying to NVFlash your gtablet (probably with gtab.nvflash.1.2.branch.20110508 with cwm5504 or gtab.nvflash.1.2.branch.20110508 with cwmv3028.zip), and it&#8217;s freezing on the flash, here&#8217;s what I did.</p>
-
-<p>Ready?<br/>
-In the <em>gtablet.cfg</em> file, swap the partition in question (the one freezing) with the previous one, but swap it on the filesystem level.<br/>
-For example, my Partition 7 froze on upload, so the diff between the original and my fix: <a href="https://gist.github.com/4152380" title="https://gist.github.com/4152380" target="_blank">gtablet.cfg-diff</a><br/>
-If you want my full fixed file (assuming yours broke on partition 7 as well): <a href="https://gist.github.com/4152387" title="https://gist.github.com/4152387" target="_blank">gtablet.cfg/4152387</a></p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2017</h2>
+
+<article>
+  
+<h1><a href="/post/bless-part2">Up and running with Bless and enforced MFA - Part 2</a></h1>
+<time datetime="2017-06-21T00:00:00-05:00" pubdate><span class='month'>Jun</span> <span class='day'>21</span> <span class='year'>2017</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/bless/'>bless</a>, <a class='category' href='/blog/categories/cloud/'>cloud</a></span>
+</footer>
 
 
-<time datetime="2012-11-27T00:00:00-06:00" pubdate data-updated="true"></time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/fix/'>fix</a>, <a class='category' href='/blog/categories/performance/'>performance</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left articlenav" href="/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/" title="Previous Post: MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!">&laquo; MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!</a>
-      
-      
-        <a class="basic-alignment right articlenav" href="/post/fix-mediatombushare-broadcast-ssdp/" title="Next Post: (FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP">(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<article>
+  
+<h1><a href="/post/bless-part1">Up and running with Bless and enforced MFA - Part 1</a></h1>
+<time datetime="2017-06-21T00:00:00-05:00" pubdate><span class='month'>Jun</span> <span class='day'>21</span> <span class='year'>2017</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/bless/'>bless</a>, <a class='category' href='/blog/categories/cloud/'>cloud</a></span>
+</footer>
+
+
+</article>
+
 </div>
-  </section>
+
+  
+</article>
 
 </div>
 
@@ -289,10 +222,7 @@ If you want my full fixed file (assuming yours broke on partition 7 as well): <a
       var disqus_shortname = 'marcyoung';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/';
-        var disqus_url = 'http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
