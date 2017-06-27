@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-06-21T12:22:27-05:00</updated>
+  <updated>2017-06-26T21:21:32-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -14,21 +14,91 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Up and running with Bless and enforced MFA - Part 2]]></title>
+    <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
+    <link href="http://marcyoung.us/post/ergo-mouse-review"/>
+    <updated>2017-06-26T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/ergo-mouse-review</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve Recently been really into ergonomic mice, and wanted to give my thoughts on a few after going all in. <!-- more --></p>
+
+<p>In the last few months, I&rsquo;ve been pretty into mechanical keyboards and form factor. I&rsquo;ve been using an original (very old) Rollermouse for about 2 years now and was looking to upgrade it (the thing is huge).</p>
+
+<p>My current home setup is a Contour Rollermouse free2 and a pok3r (Cherry MX Clears) and a Logitech G700s for gaming.
+<img class="left" src="http://marcyoung.us/images/free1.jpg"></p>
+
+<p>My work set up is a TechKeys JD40 on a 1up case (80g Cherry MX browns) and a Contour Rollermouse Red.
+<img class="left" src="http://marcyoung.us/images/red1.jpg"></p>
+
+<p>While shopping around, I came upon the <a href="http://amzn.to/2tguHYQ">Penclic NiceTouch t2</a>. It caught my eye because it&rsquo;s <em>exactly</em> the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that&rsquo;s a huge draw.
+They sent me one to sample, so I decided to do a pro/con of my setups.</p>
+
+<h2>Contourmouse Red</h2>
+
+<p>This is by far the most sturdy of all of the mice. It&rsquo;s made of stainless steel, and could be used as a bludgeon. It doesnt move, and the rollerbar at the top is very thick with a grippy surface area to it.
+My biggest complaint with the original contourmouse was that you ran out of horizontal space. You&rsquo;d have to hold it far left to let the mouse slowly track over, or right because there was no physical space for the mouse to go left or right anymore.
+I got adjusted to it but it happened often enough to notice. With the red, this is gone. I&rsquo;m not sure if it&rsquo;s smarter or if the acceleration takes care of it, but it never happens, or just happens far less.</p>
+
+<p>All the buttons are 100% programmable in OSX/Windows via their driver. I havent tried on linux, but I&rsquo;m sure it is. The bar itself has a physical tensioner as well which is nice to add resistance. And as far as usability: it&rsquo;s great. The roller bar
+is a physical left click if you press, and everything is in the right place. I dont have to move my hands <em>at all</em> to use it.</p>
+
+<p><img class="left" src="http://marcyoung.us/images/red1.jpg">
+<img class="left" src="http://marcyoung.us/images/red2.jpg"></p>
+
+<p>The drawback is price. It&rsquo;s crazy expensive, and I got lucky to find it on ebay after months of searching/bidding for a low price. I&rsquo;m not sure it&rsquo;s worth the original MSRP, but I love it.</p>
+
+<h2>Contourmouse Free2</h2>
+
+<p>This one has most of the same pros as the Red, but I find myself getting annoyed at the physical bar occasionally. It&rsquo;s smaller than the red in terms of diameter, it&rsquo;s closer to the original contourmouse. It makes it a little harder to get your thumb on
+and move freely just because it&rsquo;s thinner. The tensioner isnt that great, so sometimes after a long coding session when my hands get a little stiff the mouse shows my thumb shakiness a little on &ldquo;exact&rdquo; clicks like on small buttons. That&rsquo;s when I can tell
+I&rsquo;ve been at it too long. And the original complaint about physical left/right exists here. I find myself out of space to go left or right and have to break focus to move the mouse over. If I were trying to do exact work like CAD/3d modelling I&rsquo;d probably
+throw it out the window by this point. It&rsquo;s great, but it&rsquo;s not worth the price considering how much nicer the Red is. Also, after only a few weeks, the palm rest started coming apart, and I used a sticker to prevent it from spreading. I can tell you right
+now though, the sticker is functionally part of it now. If I pull it off, the padding will come with it. They  call the pads replaceable, but that assumes you can find it. I can&rsquo;t find replacement pads that dont come with a full keyboard.</p>
+
+<p><img class="left" src="http://marcyoung.us/images/free1.jpg">
+<img class="left" src="http://marcyoung.us/images/free2.jpg"></p>
+
+<p>This one is not worth the price, but I&rsquo;d buy it again if it were &lt; $60.</p>
+
+<h2>Penclic NiceTouce T2</h2>
+
+<p>This is the one I was iffy about. Functionally, it&rsquo;s great. They sent me the matching keyboard, the Penclic NiceTouch C2, which is a chiclet key style keyboard. Together they work fine. If you like chiclets it types and works great.
+However, my biggest problem is not with the keyboard, but with the trackpad. As a trackpad, it&rsquo;s fine, but it doesn&rsquo;t support gestures or multi-finger. I&rsquo;ve become so used to being able to do two-finger scroll that it&rsquo;s frustrating to not have it.
+There is a physical rotating key that lets you scroll left right, but the right side of my palm kept touching it and making my cursor jump in vim.</p>
+
+<p><img class="left" src="http://marcyoung.us/images/t2_1.jpg">
+<img class="left" src="http://marcyoung.us/images/t2_4.jpg">
+<img class="left" src="http://marcyoung.us/images/t2_5.jpg">
+<img class="left" src="http://marcyoung.us/images/t2_6.jpg"></p>
+
+<p>My other complaint is with the buttons. They&rsquo;re not labeled or programmable so you <em>have</em> to read the booklet to know what buttons &frac34; do. They&rsquo;re also impossible to reach. The draw to the contourmouse design is that the bar clicks but also those buttons
+are very reachable by your thumbs. You can put your hands on the Home keys and not  have to move your hands at all to be efficient. With the T2 the buttons are so far down that they&rsquo;re not reachable, meaning I have to move my hands to click them. At that
+point I&rsquo;d rather have a mouse. Without two-finger scroll it means that I cant do anything except move my mouse up/down/left/right without moving my hands around.</p>
+
+<p><img class="left" src="http://marcyoung.us/images/t2_3.jpg"></p>
+
+<p>The only other complaint I have is that if you use the trackpad with a different keyboard (like my pok3r), it&rsquo;s too low and leave a huge gap vertically. There are no risers (like on most keyboard) to raise the trackpad, so I stuffed a piece of cardboard
+under it, but that made it a bit wobbly. I could probably 3d print something, but that&rsquo;s pretty intense for an out-of-the-box experience. Lastly, the trackpad is <em>very</em> light. So light that it moves around while using it.  It probably only weighs a few
+ounces which gives it a flemsy breakable feel. Having something that light on top of a  piece of cardboard created a very unstable setup.</p>
+
+<p><img class="left" src="http://marcyoung.us/images/t2_2.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
     <link href="http://marcyoung.us/post/bless-part2"/>
-    <updated>2017-06-21T00:00:00-05:00</updated>
+    <updated>2017-06-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/bless-part2</id>
-    <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft&rsquo;s <a href="https://github.com/lyft/python-blessclient">client</a>. <!-- more --></p>
+    <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
-<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there&rsquo;s no <em>enforcement</em> of MFA. ie you can still call the netflix client and bounce right in.</p>
+<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there’s no enforcement of MFA. ie you can still call the netflix client and bounce right in.</p>
 
-<p>The other issue is that Netflix&rsquo;s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC&rsquo;s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft&rsquo;s doesn&rsquo;t enforce the bastion concept, which is nice.</p>
+<p>The other issue is that Netflix’s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC’s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft’s doesn’t enforce the bastion concept, which is nice.</p>
 
 <h1>Prerequisites</h1>
 
 <p>In the IAM console in AWS, enable an MFA device for your user.</p>
 
-<h1>Setting up the client</h1>
+<h2>Setting up the client</h2>
 
 <p>I wrote a wrapper to simplify this. Feel free to not like it, but I put this in my <code>~/.bash_aliases</code> to make it easier:</p>
 
@@ -336,30 +406,28 @@
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>What did we do? We basically said <code>ops</code> users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
+<p>What did we do? We basically said ops users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Up and running with Bless and enforced MFA - Part 1]]></title>
+    <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
     <link href="http://marcyoung.us/post/bless-part1"/>
-    <updated>2017-06-21T00:00:00-05:00</updated>
+    <updated>2017-06-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/bless-part1</id>
-    <content type="html"><![CDATA[<p>I finally got Netflix&rsquo;s <a href="github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft&rsquo;s <a href="https://github.com/lyft/python-blessclient">client</a>. <!-- more --></p>
-
-<p>This post will focus on the first and easier portion: Bless in Lambda</p>
+    <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="http://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
 
 <h1>Prerequisites</h1>
 
 <p>Time and terraform. I like terraform because I dislike cloudformation. Feel free to adapt.</p>
 
-<h1>Installing Bless</h1>
+<h2>Installing Bless</h2>
 
-<p>This is actually the easiest part, because it&rsquo;s straight forward. Side note: I like bless because of its simplicity. It uses lambda + KMS and nothing more. The permissions are stupid simple. The purpose, after talking to one of the guys behind it, was to make it feel native and un-intrusive. It works.</p>
+<p>This is actually the easiest part, because it’s straight forward. Side note: I like bless because of its simplicity. It uses lambda + KMS and nothing more. The permissions are stupid simple. The purpose, after talking to one of the guys behind it, was to make it feel native and un-intrusive. It works.</p>
 
 <h2>Setup Config</h2>
 
-<p>This was the hardest to get going, because configuration always is. The <a href="https://github.com/Netflix/bless/blob/master/README.md">readme</a> says to paste in a function to lambda to generate your password. But thats not needed with the super awesome <a href="https://github.com/lambci/docker-lambda">lambda container from lambci</a>. To do this, create a file <code>function.py</code> with the contents:</p>
+<p>This was the hardest to get going, because configuration always is. The readme says to paste in a function to lambda to generate your password. But thats not needed with the super awesome lambda container from <a href="https://github.com/lambci/docker-lambda">lambci</a>. To do this, create a file function.py with the contents:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -407,22 +475,6 @@
 </span><span class='line'>"some base64 encoded key"</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now lets generate a PEM encoded key with a password of &lsquo;totallysecure&rsquo; (to match the password we encrypted/base64 encoded in KMS):</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ ssh-keygen -t rsa -b 4096 -f foo1 -C "SSH CA Key 1"
-</span><span class='line'>$ ssh-keygen -t rsa -b 4096 -f foo2 -C "SSH CA Key 2" #2nd CA for good measure
-</span><span class='line'>$ mv foo1 lambda_configs/foo1.pem && chmod 444 $_
-</span><span class='line'>$ mv foo2 lambda_configs/foo2.pem && chmod 444 $_
-</span><span class='line'>$ cat foo1.pub # This will need to go onto your servers into a file /etc/ssh/cas.pub
-</span><span class='line'>$ cat foo2.pub # This will need to go onto your servers into a file /etc/ssh/cas.pub</span></code></pre></td></tr></table></div></figure>
-
-
 <h2>The Config</h2>
 
 <p>This is an example of a finished config. Save it as <code>lambda_configs/bless_deploy.cfg</code>:</p>
@@ -464,7 +516,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>$ virtualenv venv
 </span><span class='line'>$ . venv/bin/activate
 </span><span class='line'>$ pip install -r requirements.txt
-</span><span class='line'>$ make publish</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>$ make publish </span></code></pre></td></tr></table></div></figure>
 
 
 <h1>Deploy</h1>
@@ -475,7 +527,7 @@
 
 <ol>
 <li>Generate random keys from KMS (obvious)</li>
-<li>Decrypt the KMS key that&rsquo;s the password for Bless. This is generated and</li>
+<li>Decrypt the KMS key that’s the password for Bless. This is generated and</li>
 <li>Create the log group (maybe not necesary since Lambda does that for you?)</li>
 <li>Push logs</li>
 </ol>
@@ -625,30 +677,6 @@
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>The lambda</h2>
-
-<p>Assuming the .zip is in the cwd as <code>bless_lambda.zip</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_lambda_function" "bless" {
-</span><span class='line'>  filename         = "bless_lambda.zip"
-</span><span class='line'>  function_name    = "bless"
-</span><span class='line'>  role             = "${aws_iam_role.bless_lambda.arn}"
-</span><span class='line'>  handler          = "bless_lambda.lambda_handler"
-</span><span class='line'>  source_code_hash = "${base64sha256(file("bless_lambda.zip"))}"
-</span><span class='line'>  runtime          = "python2.7"
-</span><span class='line'>  timeout          = "300"
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
 <h1>Client</h1>
 
 <h2>Client IAM role to assume</h2>
@@ -693,7 +721,7 @@
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>I added this to our <code>ops</code> IAM group so that any ops person can assume the role or use kms:Encrypt from the bless KMS key:</p>
+<p>I added this to our <code>ops</code> IAM group so that any ops person can assume the role or use <code>kms:Encrypt</code> from the bless KMS key:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -823,9 +851,7 @@
 
 <h1>Test</h1>
 
-<p>You should now have a lambda that can generate certificates to use.
-You&rsquo;ll need to put the public keys from <code>foo1.pub</code> and <code>foo2.pub</code> into your servers at <code>/etc/ssh/cas.pub</code> and add <code>TrustedUserCAKeys /etc/ssh/cas.pub</code> to <code>/etc/ssh/sshd_config</code>
-You can test this with their client:</p>
+<p>You should now have a lambda that can generate certificates to use. You’ll need to put the public keys from <code>foo1.pub</code> and <code>foo2.pub</code> into your servers at <code>/etc/ssh/cas.pub</code> and add <code>TrustedUserCAKeys /etc/ssh/cas.pub</code> to <code>/etc/ssh/sshd_config</code> You can test this with their client:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -842,7 +868,7 @@ You can test this with their client:</p>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bounce () {
+</pre></td><td class='code'><pre><code class=''><span class='line'>function bounce () {
 </span><span class='line'>  FILE="$(mktemp)"
 </span><span class='line'>  rm -rf ${FILE}
 </span><span class='line'>  ssh-keygen -f ${FILE} -N ""
@@ -856,7 +882,9 @@ You can test this with their client:</p>
 </span><span class='line'>  ssh -i ${FILE} ec2-user@$1 "${@:2}"
 </span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'>bounce 10.0.0.19</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>$ bounce 10.0.0.19</span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
@@ -1633,146 +1661,6 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
 <h3>You&rsquo;re Done!!1one</h3>
 
 <p>Now build your puppet module. When it goes green, it will notify the <strong>Redeploy Puppet Modules</strong> job and give it the git branch (<em>dev</em> or <em>master</em>). That build will now parse the git branch, and on the Foreman ENC will run the r10k deployer. Don&rsquo;t you have that fuzzy feeling inside because you can now redeploy your modules to the server by just making a commit? I do and I don&rsquo;t even know you!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
-    <updated>2014-03-21T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-3-enter-puppet</id>
-    <content type="html"><![CDATA[<p>Now that we have a package, we need a way of installing it amirite? We&rsquo;re going to write a puppet module for this package complete with rspec tests<!--more--></p>
-
-<h1>The Module</h1>
-
-<p>The module for this is going to be simple. The application as it is right now is an HTTP server in python. So our module needs to do these things:</p>
-
-<ol>
-<li>Manage the package and make sure it&rsquo;s always the latest
-
-<ul>
-<li>This ensures that new builds will be reinstalled</li>
-</ul>
-</li>
-<li>Open the firewall for TCP port 8000</li>
-<li>Make sure dependencies are installed
-
-<ul>
-<li>The RPM has a dependency set for <em>python</em>, so yum would take care of this, but I like to be explicit and not assume that the RPM knows edge cases.</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>puppet-exampleservice breakdown</h2>
-
-<h3>Files</h3>
-
-<ul>
-<li><em>manifests/init.pp</em>
-
-<ul>
-<li>This just kickstarts the puppet catalog for this module. It will call our <em>exampleservice.pp</em> class</li>
-</ul>
-</li>
-<li><em>manifests/exampleservice.pp</em>
-
-<ul>
-<li>This is the hard worker. It will make sure the service is running, the package is the latest, and that the firewall is open. This implies a dependency on the puppetlabs-firewall module.</li>
-</ul>
-</li>
-<li><em>Puppetfile</em>
-
-<ul>
-<li>This will let you know dependencies, such as the <em>puppetlabs-firewall</em> module</li>
-</ul>
-</li>
-<li><em>.travis.yml</em> and <em>.fixtures.yml</em>
-
-<ul>
-<li>These are specific to <a href="http://travis-ci.org">travis-ci</a>. If your module will be internal, and not at github, you won&rsquo;t need this. I did so because it&rsquo;s at github. I&rsquo;ll be duplicating this CI at jenkins, and you&rsquo;ll see why later.</li>
-</ul>
-</li>
-<li><em>Rakefile</em>, <em>Gemfile</em>, and <em>spec/</em>
-
-<ul>
-<li>These are all part of the testing framework. The tests included for this module are <strong>Puppetlint</strong> (with some disabled checks) and <strong>Rspec-Puppet</strong></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Tests</h3>
-
-<ol>
-<li>Puppetlint
-
-<ul>
-<li>Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you&rsquo;ll want to take a look at <a href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/">this guide</a></li>
-</ul>
-</li>
-<li>RSpec-Puppet
-
-<ul>
-<li>Let&rsquo;s you write assertions for the catalog. Examples would include testing manifest logic, like not doing something if a flag was true or false, etc. See <a href="rspec-puppet.com/tutorial/">the rspec-puppet pages</a></li>
-</ul>
-</li>
-</ol>
-
-
-<h1>Making your module work via r10k</h1>
-
-<p>You have a module. How do you get it on foreman, or any Puppet master to actually work? Are you going to remote into it, check it out to some repository folder, symlink it to <strong>/etc/puppet/modules</strong> and call it good? That&rsquo;ll work, but how do you manage dependencies? Remember, you need the <em>puppetlabs-firewall</em> module there too for this to work. You&rsquo;ll probably need others. What happens when you have to fix this module? Fix it, see the tests are green (or dear god fix it on the ENC), and call that your process? The point of continous deployment, devops, etc etc is to have <strong>consistency</strong>. Having a one-off process for deploying your configuration management violates what you&rsquo;re trying to solve! Enter <strong>r10k</strong>. Essentially all you need is a new git repository (call this one <a href="https://github.com/myoung34/blog-r10k">blog-r10k</a> that holds information about what modules you need, where they came from, and what versions you want of them and where. This also adds the ability to <strong>stage</strong> modules. You can have a <em>dev</em> branch for your module, deploy it to <em>development</em> nodes, and vice versa. This means you can stop hoping your fix works and prove it before it hits production boxes.</p>
-
-<p>In the <a href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines/">Part 1</a> I hinted at modifying the <em>[development]</em> and <em>[production]</em> labels in the puppet configuration file. Now is when you find out why.</p>
-
-<h3>Set up r10k</h3>
-
-<p>On your ENC, create a file <strong>/etc/r10k.yaml</strong> with this content:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:cachedir: '/var/cache/r10k'
-</span><span class='line'>:sources:
-</span><span class='line'>  :puppet:
-</span><span class='line'>    remote: "https://github.com/myoung34/blog-r10k.git"
-</span><span class='line'>    basedir: '/etc/puppet/environments'
-</span><span class='line'>:purgedirs:
-</span><span class='line'>  - /etc/puppet/environments</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Deploy your modules the &lsquo;hot&rsquo; way</h3>
-
-<p>How? On the ENC type: <code># r10k deploy environment -v -p</code></p>
-
-<h3>What wizardry is this?!</h3>
-
-<p>That r10k file tells you to purge <em>/etc/puppet/environments</em> and deploy the <em>Puppetfile</em> from the <a href="https://github.com/myoung34/blog-r10k/blob/master/Puppetfile">r10k repo</a> in a similar fashion to Gem, NuGet, etc. You told it to deploy all environments it knew about to that directory. The output showed a <strong>dev</strong> environment and a <strong>master</strong> environment. These are git branches! Each branch in the <a href="https://github.com/myoung34/blog-r10k/blob/master/Puppetfile">r10k repo</a> has a Puppetfile. You&rsquo;ll notice that in the master branch, it said to deploy <em>puppetlabs-firewall</em> and <em>puppet-exampleservice</em>. Look in the dev branch of the <a href="https://github.com/myoung34/blog-r10k/blob/master/Puppetfile">r10k repo</a>. The Puppetfile says to use <code>:ref =&gt; 'dev'</code> for your <em>puppet-exampleservice</em>. You just staged your code. Your <strong>dev</strong> code now deploys to <strong>/etc/puppet/environments/dev/modules</strong> and your <strong>master</strong> code now deploys to <strong>/etc/puppet/environments/master/modules</strong> ! Remember the change you made to your puppet.conf? Any node that has <code>environment = development</code> will generate its catalog using <strong>/etc/puppet/environment/dev/modules</strong> and <code>environment = production</code> will generate its catalog using <strong>/etc/puppet/environment/master/modules</strong>.</p>
-
-<h3>Why you care even if you think you don&rsquo;t</h3>
-
-<p>That passive aggressive statement I had criticizing your workflow above is now null. If you make a change to your module in <strong>dev</strong>, all you have to do is remote into your puppet master where <em>r10k</em> is, and type <code># r10k deploy environment dev -v -p</code>. No more missing dependencies, it&rsquo;s hands off!</p>
-
-<h3>What&rsquo;s missing</h3>
-
-<ol>
-<li>Acceptance tests
-
-<ul>
-<li>Before this would have been <strong>rspec-system-puppet</strong> but it&rsquo;s deprecated for <a href="https://github.com/puppetlabs/beaker">Beaker</a>. Note that both of these use Vagrant to spin up a siloed Virtual Machine to test the module in isolation. If you&rsquo;re wanting to do this, make sure your jenkins can spin up a virtual machine. If your jenkins is at AWS for example, you&rsquo;d probably want to look at having it spin up an AMI to run this. My current setup does not allow the creation of VMs from a VM (My jenkins is a VM).</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>What you have at this point in this blog post</h2>
-
-<p>Right now, you have a Jenkins box that generates new RPMs of your application whenever you make changes to it. You also have a manifest that can manage it. However, this is a one-off. If you have to modify your manifest, you have to redeploy it via r10k to the ENC (foreman). It would be nice if you could utilize Jenkins for this. That&rsquo;s in the next post.</p>
 ]]></content>
   </entry>
   

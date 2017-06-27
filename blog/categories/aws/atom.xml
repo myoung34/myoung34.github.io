@@ -4,7 +4,7 @@
   <title><![CDATA[Category: aws | Marcus Young]]></title>
   <link href="http://marcyoung.us/blog/categories/aws/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-06-21T12:22:27-05:00</updated>
+  <updated>2017-06-26T21:21:32-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -14,21 +14,21 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Up and running with Bless and enforced MFA - Part 2]]></title>
+    <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
     <link href="http://marcyoung.us/post/bless-part2"/>
-    <updated>2017-06-21T00:00:00-05:00</updated>
+    <updated>2017-06-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/bless-part2</id>
-    <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft&rsquo;s <a href="https://github.com/lyft/python-blessclient">client</a>. <!-- more --></p>
+    <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
-<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there&rsquo;s no <em>enforcement</em> of MFA. ie you can still call the netflix client and bounce right in.</p>
+<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there’s no enforcement of MFA. ie you can still call the netflix client and bounce right in.</p>
 
-<p>The other issue is that Netflix&rsquo;s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC&rsquo;s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft&rsquo;s doesn&rsquo;t enforce the bastion concept, which is nice.</p>
+<p>The other issue is that Netflix’s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC’s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft’s doesn’t enforce the bastion concept, which is nice.</p>
 
 <h1>Prerequisites</h1>
 
 <p>In the IAM console in AWS, enable an MFA device for your user.</p>
 
-<h1>Setting up the client</h1>
+<h2>Setting up the client</h2>
 
 <p>I wrote a wrapper to simplify this. Feel free to not like it, but I put this in my <code>~/.bash_aliases</code> to make it easier:</p>
 
@@ -192,30 +192,28 @@ EOF
 }
 </code></pre>
 
-<p>What did we do? We basically said <code>ops</code> users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
+<p>What did we do? We basically said ops users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Up and running with Bless and enforced MFA - Part 1]]></title>
+    <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
     <link href="http://marcyoung.us/post/bless-part1"/>
-    <updated>2017-06-21T00:00:00-05:00</updated>
+    <updated>2017-06-20T00:00:00-05:00</updated>
     <id>http://marcyoung.us/post/bless-part1</id>
-    <content type="html"><![CDATA[<p>I finally got Netflix&rsquo;s <a href="github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft&rsquo;s <a href="https://github.com/lyft/python-blessclient">client</a>. <!-- more --></p>
-
-<p>This post will focus on the first and easier portion: Bless in Lambda</p>
+    <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="http://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
 
 <h1>Prerequisites</h1>
 
 <p>Time and terraform. I like terraform because I dislike cloudformation. Feel free to adapt.</p>
 
-<h1>Installing Bless</h1>
+<h2>Installing Bless</h2>
 
-<p>This is actually the easiest part, because it&rsquo;s straight forward. Side note: I like bless because of its simplicity. It uses lambda + KMS and nothing more. The permissions are stupid simple. The purpose, after talking to one of the guys behind it, was to make it feel native and un-intrusive. It works.</p>
+<p>This is actually the easiest part, because it’s straight forward. Side note: I like bless because of its simplicity. It uses lambda + KMS and nothing more. The permissions are stupid simple. The purpose, after talking to one of the guys behind it, was to make it feel native and un-intrusive. It works.</p>
 
 <h2>Setup Config</h2>
 
-<p>This was the hardest to get going, because configuration always is. The <a href="https://github.com/Netflix/bless/blob/master/README.md">readme</a> says to paste in a function to lambda to generate your password. But thats not needed with the super awesome <a href="https://github.com/lambci/docker-lambda">lambda container from lambci</a>. To do this, create a file <code>function.py</code> with the contents:</p>
+<p>This was the hardest to get going, because configuration always is. The readme says to paste in a function to lambda to generate your password. But thats not needed with the super awesome lambda container from <a href="https://github.com/lambci/docker-lambda">lambci</a>. To do this, create a file function.py with the contents:</p>
 
 <pre><code>import boto3
 import base64
@@ -243,16 +241,6 @@ REPORT RequestId: 42f85048-91e1-4b48-9376-0563722616f0 Duration: 733 ms Billed D
 "some base64 encoded key"
 </code></pre>
 
-<p>Now lets generate a PEM encoded key with a password of &lsquo;totallysecure&rsquo; (to match the password we encrypted/base64 encoded in KMS):</p>
-
-<pre><code>$ ssh-keygen -t rsa -b 4096 -f foo1 -C "SSH CA Key 1"
-$ ssh-keygen -t rsa -b 4096 -f foo2 -C "SSH CA Key 2" #2nd CA for good measure
-$ mv foo1 lambda_configs/foo1.pem &amp;&amp; chmod 444 $_
-$ mv foo2 lambda_configs/foo2.pem &amp;&amp; chmod 444 $_
-$ cat foo1.pub # This will need to go onto your servers into a file /etc/ssh/cas.pub
-$ cat foo2.pub # This will need to go onto your servers into a file /etc/ssh/cas.pub
-</code></pre>
-
 <h2>The Config</h2>
 
 <p>This is an example of a finished config. Save it as <code>lambda_configs/bless_deploy.cfg</code>:</p>
@@ -277,7 +265,7 @@ ca_private_key_file = foo1.pem
 <pre><code>$ virtualenv venv
 $ . venv/bin/activate
 $ pip install -r requirements.txt
-$ make publish
+$ make publish 
 </code></pre>
 
 <h1>Deploy</h1>
@@ -288,7 +276,7 @@ $ make publish
 
 <ol>
 <li>Generate random keys from KMS (obvious)</li>
-<li>Decrypt the KMS key that&rsquo;s the password for Bless. This is generated and</li>
+<li>Decrypt the KMS key that’s the password for Bless. This is generated and</li>
 <li>Create the log group (maybe not necesary since Lambda does that for you?)</li>
 <li>Push logs</li>
 </ol>
@@ -369,21 +357,6 @@ output "ops_bless_arn" {
 }
 </code></pre>
 
-<h2>The lambda</h2>
-
-<p>Assuming the .zip is in the cwd as <code>bless_lambda.zip</code>:</p>
-
-<pre><code>resource "aws_lambda_function" "bless" {
-  filename         = "bless_lambda.zip"
-  function_name    = "bless"
-  role             = "${aws_iam_role.bless_lambda.arn}"
-  handler          = "bless_lambda.lambda_handler"
-  source_code_hash = "${base64sha256(file("bless_lambda.zip"))}"
-  runtime          = "python2.7"
-  timeout          = "300"
-}
-</code></pre>
-
 <h1>Client</h1>
 
 <h2>Client IAM role to assume</h2>
@@ -410,7 +383,7 @@ EOF
 }
 </code></pre>
 
-<p>I added this to our <code>ops</code> IAM group so that any ops person can assume the role or use kms:Encrypt from the bless KMS key:</p>
+<p>I added this to our <code>ops</code> IAM group so that any ops person can assume the role or use <code>kms:Encrypt</code> from the bless KMS key:</p>
 
 <pre><code>resource "aws_iam_group_policy" "bless-client" {
     name = "bless-client_iam_policy"
@@ -481,11 +454,9 @@ kmsauthkey: my kms id that i used for the original password encrypt
 
 <h1>Test</h1>
 
-<p>You should now have a lambda that can generate certificates to use.
-You&rsquo;ll need to put the public keys from <code>foo1.pub</code> and <code>foo2.pub</code> into your servers at <code>/etc/ssh/cas.pub</code> and add <code>TrustedUserCAKeys /etc/ssh/cas.pub</code> to <code>/etc/ssh/sshd_config</code>
-You can test this with their client:</p>
+<p>You should now have a lambda that can generate certificates to use. You’ll need to put the public keys from <code>foo1.pub</code> and <code>foo2.pub</code> into your servers at <code>/etc/ssh/cas.pub</code> and add <code>TrustedUserCAKeys /etc/ssh/cas.pub</code> to <code>/etc/ssh/sshd_config</code> You can test this with their client:</p>
 
-<pre><code>bounce () {
+<pre><code>function bounce () {
   FILE="$(mktemp)"
   rm -rf ${FILE}
   ssh-keygen -f ${FILE} -N ""
@@ -499,7 +470,7 @@ You can test this with their client:</p>
   ssh -i ${FILE} ec2-user@$1 "${@:2}"
 }
 
-bounce 10.0.0.19
+$ bounce 10.0.0.19
 </code></pre>
 ]]></content>
   </entry>

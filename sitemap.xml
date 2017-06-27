@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://marcyoung.us/post/ergo-mouse-review</loc>
+<lastmod>2017-06-26T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>http://marcyoung.us/post/bless-part2</loc>
-<lastmod>2017-06-21T00:00:00-05:00</lastmod>
+<lastmod>2017-06-20T00:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>http://marcyoung.us/post/bless-part1</loc>
-<lastmod>2017-06-21T00:00:00-05:00</lastmod>
+<lastmod>2017-06-20T00:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>http://marcyoung.us/post/ovirt4-vagrant</loc>
@@ -275,5 +279,20 @@
 </url>
 <url>
 <loc>http://marcyoung.us/blog/categories/bless/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/ssh/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/ergo/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/review/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/rollermouse/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/penclic/</loc>
 </url>
 </urlset>

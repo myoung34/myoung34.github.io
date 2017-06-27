@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Up and running with Bless and enforced MFA - Part 2 - Marcus Young</title>
+  <title>Up and Running With Bless and Enforced MFA - Part 2 - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="Part 2 of deploying Bless will focus on enforcing MFA and using Lyft&rsquo;s client. The problem at this point is that anyone in the ops group can &hellip;">
+  <meta name="description" content="Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. The problem at this point is that anyone in the ops group can bounce &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,7 +110,7 @@
   
 
 
-<time datetime="2017-06-21T00:00:00-05:00" pubdate data-updated="true"></time>
+<time datetime="2017-06-20T00:00:00-05:00" pubdate data-updated="true"></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,17 +119,17 @@
   </header>
 
 
-<div class="entry-content"><p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft&rsquo;s <a href="https://github.com/lyft/python-blessclient">client</a>. <!-- more --></p>
+<div class="entry-content"><p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
-<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there&rsquo;s no <em>enforcement</em> of MFA. ie you can still call the netflix client and bounce right in.</p>
+<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there’s no enforcement of MFA. ie you can still call the netflix client and bounce right in.</p>
 
-<p>The other issue is that Netflix&rsquo;s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC&rsquo;s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft&rsquo;s doesn&rsquo;t enforce the bastion concept, which is nice.</p>
+<p>The other issue is that Netflix’s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC’s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft’s doesn’t enforce the bastion concept, which is nice.</p>
 
 <h1>Prerequisites</h1>
 
 <p>In the IAM console in AWS, enable an MFA device for your user.</p>
 
-<h1>Setting up the client</h1>
+<h2>Setting up the client</h2>
 
 <p>I wrote a wrapper to simplify this. Feel free to not like it, but I put this in my <code>~/.bash_aliases</code> to make it easier:</p>
 
@@ -437,7 +437,7 @@
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>What did we do? We basically said <code>ops</code> users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
+<p>What did we do? We basically said ops users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
 </div>
 
 
@@ -460,12 +460,12 @@
   
 
 
-<time datetime="2017-06-21T00:00:00-05:00" pubdate data-updated="true"></time>
+<time datetime="2017-06-20T00:00:00-05:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/bless/'>bless</a>, <a class='category' href='/blog/categories/cloud/'>cloud</a>
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/bless/'>bless</a>, <a class='category' href='/blog/categories/ssh/'>ssh</a>
   
 </span>
 
@@ -485,8 +485,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left articlenav" href="/post/bless-part1" title="Previous Post: Up and running with Bless and enforced MFA - Part 1">&laquo; Up and running with Bless and enforced MFA - Part 1</a>
+        <a class="basic-alignment left articlenav" href="/post/bless-part1" title="Previous Post: Up and Running With Bless and Enforced MFA - Part 1">&laquo; Up and Running With Bless and Enforced MFA - Part 1</a>
       
+      
+        <a class="basic-alignment right articlenav" href="/post/ergo-mouse-review" title="Next Post: Ergonomic Mouse Review">Ergonomic Mouse Review &raquo;</a>
       
     </p>
   </footer>
@@ -507,6 +509,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/ergo-mouse-review">Ergonomic Mouse Review</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/bless-part2">Up and Running With Bless and Enforced MFA - Part 2</a>
       </li>
     
@@ -520,10 +526,6 @@
     
       <li class="post">
         <a href="/post/planck">Homemade Planck</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/dockerized-elk-part-4">AWS ECS Hot/Warm ELK + Curator Part 4 - Curator</a>
       </li>
     
   </ul>
