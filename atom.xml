@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-06-26T21:21:32-05:00</updated>
+  <updated>2017-10-09T21:40:22-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ergoslider Review]]></title>
+    <link href="http://marcyoung.us/post/ergoslider-review"/>
+    <updated>2017-10-09T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/ergoslider-review</id>
+    <content type="html"><![CDATA[<p>Another ergonomic mouse review I gone and did <!-- more --></p>
+
+<p>Recently I&rsquo;ve been on an ergo kick (no pain, just realized how much more efficient I am).</p>
+
+<p>I reached out to a company selling a product much like the ContourMouse ergo mice but at a <a href="https://www.amazon.com/Ergoslider-Plus-Ergonomic-Roller-Bar-Tendinitis/dp/B071JNSD9Z/ref=sr_1_1?ie=UTF8&amp;qid=1507601165&amp;sr=8-1&amp;keywords=ergoslider">much lower price</a>.</p>
+
+<p>My assumption was that it would be ergo&#8217;ish but clunky. I was wrong. This thing is great!</p>
+
+<p>The first thing I realized, and drove me crazy for a few minutes, is that the roller bar is not attached. The documents don&rsquo;t say much, so I first thought I was missing a part. It says it&rsquo;s detached, but it didnt make sense to my brain. So after finding nothing in the booklet I just dropped it in its place and it was working. Strange. The contourmouse ones have it on a metal bar, this doenst pretend that. If you&rsquo;ve cleaned a contourmouse bar, its pretty awful. Requires bending metal, etc. This thing is cool, just remove it and rub it down with an alcohol wipe, done. I did wish it locked into place somehow though, because the drive to work involved it getting wedged under something in my backpack.</p>
+
+<p>In terms of usage, this thing is very much what I expected, plus some. Its very fluid, feels solid, and works great. The OS (mac + windows) worked immediately with it and didn&rsquo;t require pulling any software/drivers down.</p>
+
+<p>After using it for about 30 days now, I can say that if you&rsquo;re looking for an ergo mouse at a small price, look no further. This has been my go-to and will likely stay that way. It&rsquo;s been at our &ldquo;standing desk&rdquo; area for about two weeks and has prompted quite a few questions and quite a bit of usage.</p>
+
+<p>My only cons:</p>
+
+<ol>
+<li>The detachable mouse is both a pro and a con. It&rsquo;s great because it&rsquo;s detachable, but it&rsquo;s not because it&rsquo;s detached. It&rsquo;s not actually detachable, because it&rsquo;s literally always loose. Can probably get lost easily.</li>
+<li>The drivers are non-customizable. You can&rsquo;t map the buttons  to anything else, they are what they say they are. The biggest plus to contour mouse is that the keys are 100% mappable through software.</li>
+</ol>
+
+
+<p>The pros:</p>
+
+<ol>
+<li>Pretty much anything you can imagine about an ergo mouse: comfort, quality, usage, ease.</li>
+</ol>
+
+
+<p>Overall: buy this if you want to save a bit of cash.</p>
+
+<p>Pics below</p>
+
+<p><img class="left" src="http://marcyoung.us/images/ergoslider1.jpg">
+<img class="left" src="http://marcyoung.us/images/ergoslider2.jpg"></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
@@ -1536,131 +1579,6 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
 </span><span class='line'>  provider =&gt; 'yum', #default is 'rpm'
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
-    <updated>2014-03-22T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-4-puppet-and-jenkins</id>
-    <content type="html"><![CDATA[<p>So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy this application and keep it up to date, and we even have r10k handling the deployment of those puppet modules so that we don&rsquo;t have to worry about dependencies, and we can even stage them! What we don&rsquo;t have is a way of getting changes to that puppet module to the puppet master without remoting in and running r10k. That&rsquo;s easy to fix with jenkins!<!--more--></p>
-
-<p>If you were to stop right now, you&rsquo;re pretty close. But&hellip;remoting into the server to redeploy isn&rsquo;t scalable. What if you forget? What if you have a new guy that made a super awesome bugfix to your puppet module and forgot how to get it up to the servers? Enter jenkins. Note: I have travis-ci set up for the one here, but we&rsquo;re going to duplicate that logic. Travis-CI is nice if your module is on github, but it may not be. Or you may need it to do something else, such as trigger an r10k deployment, so that&rsquo;s why we&rsquo;re still implementing Jenkins.</p>
-
-<h3>The Jenkins job for puppet-exampleservice</h3>
-
-<ol>
-<li>Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
-<li>Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
-<li>Have it run in rvm 2.0.0</li>
-<li>Create an <strong>execute shell</strong> build step with:</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install
-</span><span class='line'>bundle exec rake</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
-
-<ul>
-<li>set <em>scan console log</em> to <strong>puppet-lint</strong></li>
-</ul>
-</li>
-</ol>
-
-
-<p>From here, you now have something similar to Travis-Ci. Hit Build, and it should go green. Congrats, you now have automated testing. What you need now is that automated deployment I&rsquo;ve been hinting at. But that&rsquo;s easy!</p>
-
-<h3>The Jenkins job to re-deploy puppet modules on the ENC</h3>
-
-<ol>
-<li>Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
-<li>Add a string parameter <strong>git_branch</strong></li>
-<li>Add a build step <strong>execute shell script on remote host using ssh</strong>
-
-<ul>
-<li>Select your ENC (set one up in the <strong>Manage jenkins</strong> portion first and make sure your private/public keys work) with:</li>
-</ul>
-</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># Validate the build param. Should be 'dev' or 'master'
-</span><span class='line'># This corresponds to the r10k setup.
-</span><span class='line'>environment=$(echo "$git_branch" | awk '{split($0,a,"/"); print a[2]}')
-</span><span class='line'>if [[ "$environment" == "master" ]]; then
-</span><span class='line'>  rm -rf /var/cache/r10k/* # Sometimes r10k won't deploy and acts like it's up to date.
-</span><span class='line'>  /usr/bin/r10k deploy environment master -v -p
-</span><span class='line'>  exit 0
-</span><span class='line'>elif [[ "$environment" == "dev" ]]; then
-</span><span class='line'>  rm -rf /var/cache/r10k/* # Sometimes r10k won't deploy and acts like it's up to date.
-</span><span class='line'>  /usr/bin/r10k deploy environment dev -v -p
-</span><span class='line'>  exit 0
-</span><span class='line'>else
-</span><span class='line'>  echo "Invalid environment parameter [$environment] passed to build."
-</span><span class='line'>  echo "  Should be one of 'dev' or 'master'."
-</span><span class='line'>  exit 1
-</span><span class='line'>fi</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You&rsquo;re now ready for your previous module to notify this build.</p>
-
-<ol>
-<li>Go back to your puppet module job and:
-
-<ol>
-<li>Create a post-build action <strong>trigger parameterized build on other projects</strong></li>
-<li>Set &lsquo;projects to build&rsquo; to <strong>Redeploy Puppet Modules</strong></li>
-<li>Set &lsquo;Trigger when build is&rsquo; to <strong>Stable or unstable but not failed</strong></li>
-<li>Add a parameter &lsquo;Predefined parameters&rsquo; and give it: <code>git_branch=$GIT_BRANCH</code></li>
-</ol>
-</li>
-</ol>
-
-
-<h3>You&rsquo;re missing a Jenkins job</h3>
-
-<p>Technically you&rsquo;re close, but you might want to redeploy if your r10k changes. You can do that right now!</p>
-
-<ol>
-<li>Create a new free-style joba and call it <em>puppet-r10k</em></li>
-<li>There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
-<li>Make it poll SCM every x minutes</li>
-<li>Create a post-build action <strong>trigger parameterized build on other projects</strong>
-
-<ul>
-<li>Set &lsquo;projects to build&rsquo; to <strong>Redeploy Puppet Modules</strong></li>
-<li>Set &lsquo;Trigger when build is&rsquo; to <strong>Stable or unstable but not failed</strong></li>
-<li>Add a parameter &lsquo;Predefined parameters&rsquo; and give it:</li>
-</ul>
-</li>
-</ol>
-
-
-<h3>You&rsquo;re Done!!1one</h3>
-
-<p>Now build your puppet module. When it goes green, it will notify the <strong>Redeploy Puppet Modules</strong> job and give it the git branch (<em>dev</em> or <em>master</em>). That build will now parse the git branch, and on the Foreman ENC will run the r10k deployer. Don&rsquo;t you have that fuzzy feeling inside because you can now redeploy your modules to the server by just making a commit? I do and I don&rsquo;t even know you!</p>
 ]]></content>
   </entry>
   
