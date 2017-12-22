@@ -127,35 +127,60 @@
 
 <p>The better solution was to write a small ruby snippet to run on cron. It will get all application versions, subtract currently deployed ones, sort by date created, and purge all except &lsquo;x&rsquo; many.</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;aws-sdk&#39;</span>
-
-<span class="no">MAX_VERSIONS</span><span class="o">=</span><span class="mi">50</span>
-<span class="n">elasticbeanstalk</span> <span class="o">=</span> <span class="no">Aws</span><span class="o">::</span><span class="no">ElasticBeanstalk</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">region</span><span class="p">:</span> <span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
-
-<span class="n">short_versions_to_keep</span> <span class="o">=</span> <span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">describe_environments</span><span class="o">.</span><span class="n">environments</span><span class="o">.</span><span class="n">each</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">v</span><span class="o">.</span><span class="n">application_name</span><span class="si">}</span><span class="s2">+</span><span class="si">#{</span><span class="n">v</span><span class="o">.</span><span class="n">version_label</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
-
-<span class="n">version_eligible_for_delete</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">describe_application_versions</span><span class="o">.</span><span class="n">application_versions</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">av</span><span class="o">|</span>
-  <span class="n">short_version</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="si">}</span><span class="s2">+</span><span class="si">#{</span><span class="n">av</span><span class="o">.</span><span class="n">version_label</span><span class="si">}</span><span class="s2">&quot;</span>
-  <span class="k">next</span> <span class="k">if</span> <span class="n">short_versions_to_keep</span><span class="o">.</span><span class="n">include?</span> <span class="n">short_version</span>
-  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="o">]</span> <span class="o">||=</span> <span class="p">{}</span>
-  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">av</span><span class="o">.</span><span class="n">application_name</span><span class="o">][</span><span class="n">av</span><span class="o">.</span><span class="n">version_label</span><span class="o">]</span> <span class="o">=</span> <span class="n">av</span>
-<span class="k">end</span>
-
-<span class="n">version_eligible_for_delete</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">sort</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">date_created</span> <span class="o">&lt;=&gt;</span> <span class="n">b</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">date_created</span> <span class="p">}</span>
-  <span class="k">if</span> <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">].</span><span class="n">size</span> <span class="o">&lt;=</span><span class="no">MAX_VERSIONS</span>
-    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2"> has only </span><span class="si">#{</span><span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">].</span><span class="n">size</span><span class="si">}</span><span class="s2"> versions. Skipping&quot;</span>
-    <span class="k">next</span>
-  <span class="k">end</span>
-  <span class="n">version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.version_eligible_for_delete</span><span class="o">[</span><span class="n">key</span><span class="o">].</span><span class="n">size</span><span class="o">-</span><span class="no">MAX_VERSIONS</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
-    <span class="nb">puts</span> <span class="s2">&quot;Deleting </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">application_name</span><span class="si">}</span><span class="s2">: </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">version_label</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">elasticbeanstalk</span><span class="o">.</span><span class="n">delete_application_version</span><span class="p">(</span><span class="ss">application_name</span><span class="p">:</span> <span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">application_name</span><span class="p">,</span> <span class="ss">version_label</span><span class="p">:</span> <span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">version_label</span><span class="p">)</span>
-    <span class="nb">sleep</span> <span class="mi">1</span>
-  <span class="k">end</span>
-<span class="k">end</span></code></pre></div>
-
-
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'aws-sdk'
+</span><span class='line'>
+</span><span class='line'>MAX_VERSIONS=50
+</span><span class='line'>elasticbeanstalk = Aws::ElasticBeanstalk::Client.new(region: 'us-east-1')
+</span><span class='line'>
+</span><span class='line'>short_versions_to_keep = elasticbeanstalk.describe_environments.environments.each.map { |v| "#{v.application_name}+#{v.version_label}" }
+</span><span class='line'>
+</span><span class='line'>version_eligible_for_delete = {}
+</span><span class='line'>elasticbeanstalk.describe_application_versions.application_versions.each do |av|
+</span><span class='line'>  short_version = "#{av.application_name}+#{av.version_label}"
+</span><span class='line'>  next if short_versions_to_keep.include? short_version
+</span><span class='line'>  version_eligible_for_delete[av.application_name] ||= {}
+</span><span class='line'>  version_eligible_for_delete[av.application_name][av.version_label] = av
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>version_eligible_for_delete.each do |key, value|
+</span><span class='line'>  version_eligible_for_delete[key] = value.sort { |a,b| a[1].date_created &lt;=&gt; b[1].date_created }
+</span><span class='line'>  if version_eligible_for_delete[key].size &lt;=MAX_VERSIONS
+</span><span class='line'>    puts "#{key} has only #{version_eligible_for_delete[key].size} versions. Skipping"
+</span><span class='line'>    next
+</span><span class='line'>  end
+</span><span class='line'>  version_eligible_for_delete[key][0..version_eligible_for_delete[key].size-MAX_VERSIONS].each do |a|
+</span><span class='line'>    puts "Deleting #{a[1].application_name}: #{a[1].version_label}"
+</span><span class='line'>    elasticbeanstalk.delete_application_version(application_name: a[1].application_name, version_label: a[1].version_label)
+</span><span class='line'>    sleep 1
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
@@ -228,7 +253,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/post/ergoslider-review">Ergoslider Review</a>
+        <a href="/post/reinvent-2017">re:Invent 2017 (Never Again)</a>
       </li>
     
       <li class="post">
