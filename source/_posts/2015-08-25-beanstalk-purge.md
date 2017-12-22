@@ -28,7 +28,7 @@ My first attempt was to just browse to the S3 folder for our applications and pu
 
 The better solution was to write a small ruby snippet to run on cron. It will get all application versions, subtract currently deployed ones, sort by date created, and purge all except 'x' many.
 
-{% highlight ruby %}
+```
 require 'aws-sdk'
 
 MAX_VERSIONS=50
@@ -56,5 +56,4 @@ version_eligible_for_delete.each do |key, value|
     sleep 1
   end
 end
-
-{% endhighlight %}
+```
