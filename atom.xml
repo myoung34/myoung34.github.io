@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2017-12-22T13:32:04-06:00</updated>
+  <updated>2017-12-23T13:55:58-06:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,613 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 2)]]></title>
+    <link href="http://marcyoung.us/post/docker-vault-ca-part2"/>
+    <updated>2017-12-24T00:00:00-06:00</updated>
+    <id>http://marcyoung.us/post/docker-vault-ca-part2</id>
+    <content type="html"><![CDATA[<p>Now for some cool snippets on how to automatically request certs from the Intermediary we created in Part 1<!-- more --></p>
+
+<h2>Dockerfile</h2>
+
+<p>An example of how I typically get Vault into my base Container:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>FROM debian:jessie
+</span><span class='line'>ENV VAULT_VERSION 0.8.1
+</span><span class='line'>ENV DUMBINIT_VERSION 1.2.0
+</span><span class='line'>
+</span><span class='line'>RUN apt-get update && apt-get install -y \
+</span><span class='line'>      apt-transport-https \
+</span><span class='line'>      ca-certificates \
+</span><span class='line'>      wget \
+</span><span class='line'>      unzip \
+</span><span class='line'>      jq \
+</span><span class='line'>      curl \
+</span><span class='line'>    nginx \
+</span><span class='line'>  --no-install-recommends && rm -rf /var/lib/apt/lists/*
+</span><span class='line'>
+</span><span class='line'>RUN curl -L --silent -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+</span><span class='line'>  unzip vault.zip && \
+</span><span class='line'>  mv vault /usr/local/bin/vault && \
+</span><span class='line'>  chmod +x /usr/local/bin/vault
+</span><span class='line'>
+</span><span class='line'>RUN curl -L --silent -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v${DUMBINIT_VERSION}/dumb-init_${DUMBINIT_VERSION}_amd64 && \
+</span><span class='line'>  chmod +x /usr/local/bin/dumb-init
+</span><span class='line'>
+</span><span class='line'>RUN mkdir -p /opt/ssl
+</span><span class='line'>COPY docker-entrypoint.sh /
+</span><span class='line'>RUN chmod +x /docker-entrypoint.sh
+</span><span class='line'>ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+</span><span class='line'>CMD ["/docker-entrypoint.sh"]</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The Entrypoint</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
+</span><span class='line'>
+</span><span class='line'>export SSL_PATH=/opt/ssl
+</span><span class='line'>
+</span><span class='line'>EC2_AVAIL_ZONE=$(curl -s --max-time 5 http://169.254.169.254/latest/meta-data/placement/availability-zone)
+</span><span class='line'>if [[ $? -eq 0 ]]; then
+</span><span class='line'>  # shellcheck disable=SC2001,SC2006
+</span><span class='line'>  EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
+</span><span class='line'>  export AWS_DEFAULT_REGION=$EC2_REGION
+</span><span class='line'>  export AWS_REGION=$EC2_REGION
+</span><span class='line'>fi
+</span><span class='line'>
+</span><span class='line'>[[ -z "${VAULT_TOKEN}" ]] && vault auth -method=aws &gt;/dev/null
+</span><span class='line'>
+</span><span class='line'>VAULT_JSON="$(vault write -format=json cuddletech_ops/issue/jenkins common_name=jenkins ttl=15551999)"
+</span><span class='line'>
+</span><span class='line'>echo "$VAULT_JSON" | jq -r .data.private_key &gt; ${SSL_PATH}/key.pem
+</span><span class='line'>echo "$VAULT_JSON" | jq -r .data.certificate &gt; ${SSL_PATH}/cert.pem
+</span><span class='line'>echo "$VAULT_JSON" | jq -r .data.issuing_ca  &gt; ${SSL_PATH}/ca.pem
+</span><span class='line'>cat ${SSL_PATH}/cert.pem ${SSL_PATH}/ca.pem  &gt; ${SSL_PATH}/bundle.pem
+</span><span class='line'>
+</span><span class='line'># run your command and point to the certs generated above. Example in nginx:
+</span><span class='line'>#        ssl                  on;
+</span><span class='line'>#        ssl_certificate      /opt/ssl/bundle.pem;
+</span><span class='line'>#        ssl_certificate_key  /opt/ssl/key.pem;</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Terraforming the certificate issuer</h2>
+
+<p>If you somehow get the previous part to run, it will fail because you have to create the role in Vault before you can just start generating certs off it. In the <a href="http://cuddletech.com/?p=959">cuddletech guide</a> this is under <code>Requesting a Certificate for a Web Server</code> as:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/roles/web_server \
+</span><span class='line'>&gt; key_bits=2048 \
+</span><span class='line'>&gt; max_ttl=8760h \
+</span><span class='line'>&gt; allow_any_name=true
+</span><span class='line'>Success! Data written to: cuddletech_ops/roles/web_server</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But what if I told you, you could do that in terraform?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>variable "role" {
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>resource "vault_generic_secret" "pki_role" {
+</span><span class='line'>  path = "cuddletech_ops/roles/${var.role}"
+</span><span class='line'>
+</span><span class='line'>  data_json = &lt;&lt;EOT
+</span><span class='line'>{
+</span><span class='line'>  "key_bits": "2048",
+</span><span class='line'>  "max_ttl": "8760h",
+</span><span class='line'>  "allow_any_name": "true"
+</span><span class='line'>}
+</span><span class='line'>EOT
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you add that with your ECS task along with the vault role and policy from the previous post about Vault Anything in Terraform, all your dependencies are met and kept in code!</p>
+
+<p>You can now generate certificates off your PKI backend and grab secrets all in one go!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
+    <link href="http://marcyoung.us/post/docker-vault-ca-part1"/>
+    <updated>2017-12-24T00:00:00-06:00</updated>
+    <id>http://marcyoung.us/post/docker-vault-ca-part1</id>
+    <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
+
+<h2>Prerequisites</h2>
+
+<ol>
+<li>Vault running as a server</li>
+<li>Vault CLI to match the server</li>
+</ol>
+
+
+<h2>Create the Root cert/key</h2>
+
+<p>(This is actually mostly a clone from <a href="http://cuddletech.com/?p=959">here</a> but I want to make sure it never disappears)</p>
+
+<p><em>Note</em>: You should not let the vault server generate the root CA, you should generate it and import it. I just havent figured out how to do that yet. I will update this post when I get around to it. <a href="https://en.wikipedia.org/wiki/Offline_root_certificate_authority">More info on that here</a></p>
+
+<ol>
+<li>Mount the PKI backend for the root</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault mount -path=cuddletech -description="Cuddletech Root CA" -max-lease-ttl=87600h pki
+</span><span class='line'>Successfully mounted 'pki' at 'cuddletech'!
+</span><span class='line'>$ vault mounts
+</span><span class='line'>Path         Type       Default TTL  Max TTL    Description
+</span><span class='line'>cubbyhole/   cubbyhole  n/a          n/a        per-token private secret storage
+</span><span class='line'>cuddletech/  pki        system       315360000  Cuddletech Root CA
+</span><span class='line'>secret/      generic    system       system     generic secret storage
+</span><span class='line'>sys/         system     n/a          n/a        system endpoints used for control, policy and debugging </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/root/generate/internal \
+</span><span class='line'>&gt; common_name="Cuddletech Root CA" \
+</span><span class='line'>&gt; ttl=87600h \
+</span><span class='line'>&gt; key_bits=4096 \
+</span><span class='line'>&gt; exclude_cn_from_sans=true
+</span><span class='line'>Key             Value
+</span><span class='line'>---             -----
+</span><span class='line'>certificate     -----BEGIN CERTIFICATE-----
+</span><span class='line'>MIIFKzCCAxOgAwIBAgIUDXiI3GDzP2IbQ9IatFSCv9Pq/lgwDQYJKoZIhvcNAQEL
+</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4MTIz
+</span><span class='line'>..
+</span><span class='line'>axscmLdVE2HTB87W1H77iKKN8n9Xne//LUidxVX0Kg==
+</span><span class='line'>-----END CERTIFICATE-----
+</span><span class='line'>expiration      1783411981
+</span><span class='line'>issuing_ca      -----BEGIN CERTIFICATE-----
+</span><span class='line'>MIIFKzCCAxOgAwIBAgIUDXiI3GDzP2IbQ9IatFSCv9Pq/lgwDQYJKoZIhvcNAQEL
+</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4MTIz
+</span><span class='line'>...
+</span><span class='line'>axscmLdVE2HTB87W1H77iKKN8n9Xne//LUidxVX0Kg==
+</span><span class='line'>-----END CERTIFICATE-----
+</span><span class='line'>serial_number   0d:78:88:dc:60:f3:3f:62:1b:43:d2:1a:b4:54:82:bf:d3:ea:fe:58</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Verify</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s http://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
+</span><span class='line'>Certificate:
+</span><span class='line'>    Data:
+</span><span class='line'>        Version: 3 (0x2)
+</span><span class='line'>        Serial Number:
+</span><span class='line'>            0d:78:88:dc:60:f3:3f:62:1b:43:d2:1a:b4:54:82:bf:d3:ea:fe:58
+</span><span class='line'>    Signature Algorithm: sha256WithRSAEncryption
+</span><span class='line'>        Issuer: CN=Cuddletech Root CA
+</span><span class='line'>        Validity
+</span><span class='line'>            Not Before: Jul  9 08:12:31 2016 GMT
+</span><span class='line'>            Not After : Jul  7 08:13:01 2026 GMT
+</span><span class='line'>        Subject: CN=Cuddletech Root CA
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Fix the URL for accessing the CA/CRL URLs</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/config/urls issuing_certificates="http://10.0.0.22:8200/v1/cuddletech
+</span><span class='line'>Success! Data written to: cuddletech/config/urls</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Create the Intermediate cert/key</h2>
+
+<p>Mount the PKI for the Intermediate (similar to root)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vault mount -path=cuddletech_ops -description="Cuddletech Ops Intermediate CA" -max-lease-ttl=26280h pki
+</span><span class='line'>Successfully mounted 'pki' at 'cuddletech_ops'!
+</span><span class='line'>
+</span><span class='line'>$ vault mounts
+</span><span class='line'>Path             Type       Default TTL  Max TTL    Description
+</span><span class='line'>cubbyhole/       cubbyhole  n/a          n/a        per-token private secret storage
+</span><span class='line'>cuddletech/      pki        system       315360000  Cuddletech Root CA
+</span><span class='line'>cuddletech_ops/  pki        system       94608000   Cuddletech Ops Intermediate CA</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Generate the intermediate CSR</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/intermediate/generate/internal \
+</span><span class='line'>&gt;  common_name="Cuddletech Operations Intermediate CA"
+</span><span class='line'>&gt;  ttl=26280h \
+</span><span class='line'>&gt;  key_bits=4096 \
+</span><span class='line'>&gt;  exclude_cn_from_sans=true
+</span><span class='line'>Key     Value
+</span><span class='line'>---     -----
+</span><span class='line'>csr     -----BEGIN CERTIFICATE REQUEST-----
+</span><span class='line'>MIICuDCCAaACAQAwMDEuMCwGA1UEAxMlQ3VkZGxldGVjaCBPcGVyYXRpb25zIElu
+</span><span class='line'>dGVybWVkaWF0ZSBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALt8
+</span><span class='line'>...
+</span><span class='line'>hD8cpHTXqjKExYWKc/rQDgjw9+RNDdb45xszDagrgFgNPqI9i0fNh9jViMmjUiTc
+</span><span class='line'>PQTZS4XxIoRrx1/xVHJ4Qm++ntLPVCvzjMZafg==
+</span><span class='line'>-----END CERTIFICATE REQUEST-----</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cut and paste that CSR into a new file cuddletech_ops.csr. The reason we output the file here is so we can get it out of one backend and into another and then back out.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/root/sign-intermediate \
+</span><span class='line'>&gt;  csr=@cuddletech_ops.csr \
+</span><span class='line'>&gt;  common_name="Cuddletech Ops Intermediate CA" \
+</span><span class='line'>&gt;  ttl=8760h
+</span><span class='line'>Key             Value
+</span><span class='line'>---             -----
+</span><span class='line'>certificate     -----BEGIN CERTIFICATE-----
+</span><span class='line'>MIIEZDCCAkygAwIBAgIUHuIhRF3tYtfoZiAFdjcCtQpMR+cwDQYJKoZIhvcNAQEL
+</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4Mjkz
+</span><span class='line'>...
+</span><span class='line'>UtI2b/AamAqf340eRKmSdEh4WypB4JR+t259YA45w2j4mS+rxREycEk4YosR/vUs
+</span><span class='line'>jekMiq57yNq7h8eOTrnOulJxazbVrYGb
+</span><span class='line'>-----END CERTIFICATE-----
+</span><span class='line'>expiration      1470645002
+</span><span class='line'>issuing_ca      -----BEGIN CERTIFICATE-----
+</span><span class='line'>MIIFKzCCAxOgAwIBAgIUDXiI3GDzP2IbQ9IatFSCv9Pq/lgwDQYJKoZIhvcNAQEL
+</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4MTIz
+</span><span class='line'>..
+</span><span class='line'>1FRGlwHUg+6IIZBVIapzivLc6pAvLFPxQlQvT5CNHPk91zwyNQ9ZX2PzatdajUnd
+</span><span class='line'>axscmLdVE2HTB87W1H77iKKN8n9Xne//LUidxVX0Kg==
+</span><span class='line'>-----END CERTIFICATE-----
+</span><span class='line'>serial_number   1e:e2:21:44:5d:ed:62:d7:e8:66:20:05:76:37:02:b5:0a:4c:47:e7</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that we have a Root CA signed cert, we’ll need to cut-n-paste this certificate into a file we’ll name cuddletech_ops.crt and then import it into our Intermediate CA backend:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/intermediate/set-signed \
+</span><span class='line'>&gt; certificate=@cuddletech_ops.crt
+</span><span class='line'>Success! Data written to: cuddletech_ops/intermediate/set-signed</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Awesome! Lets verify:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s http://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
+</span><span class='line'>Certificate:
+</span><span class='line'>    Data:
+</span><span class='line'>        Version: 3 (0x2)
+</span><span class='line'>        Serial Number:
+</span><span class='line'>            76:12:53:41:be:18:98:2c:a1:51:4a:f8:f0:bd:b4:a3:44:7e:74:59
+</span><span class='line'>    Signature Algorithm: sha256WithRSAEncryption
+</span><span class='line'>        Issuer: CN=Cuddletech Root CA
+</span><span class='line'>        Validity
+</span><span class='line'>            Not Before: Jul  9 09:23:39 2016 GMT
+</span><span class='line'>            Not After : Jul  9 09:24:09 2017 GMT
+</span><span class='line'>        Subject: CN=Cuddletech Ops Intermediate CA
+</span><span class='line'> ...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The last thing we need to do is set the CA &amp; CRL URL’s for accessing the CA:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/config/urls \
+</span><span class='line'>&gt; issuing_certificates="http://10.0.0.22:8200/v1/cuddletech_ops/ca" \
+</span><span class='line'>&gt; crl_distribution_points="http://10.0.0.22:8200/v1/cuddletech_ops/crl"
+</span><span class='line'>Success! Data written to: cuddletech_ops/config/urls</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
+    <link href="http://marcyoung.us/post/vault-anything-in-terraform"/>
+    <updated>2017-12-23T00:00:00-06:00</updated>
+    <id>http://marcyoung.us/post/vault-anything-in-terraform</id>
+    <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
+
+<p>If you&rsquo;ve used ECS and Vault with the <a href="https://www.vaultproject.io/docs/auth/aws.html">aws auth backend</a> you may have found a bit of a snag in terms of automation.</p>
+
+<p>Lets say you want to create a new ECS container to run. You want that task to get specific secrets in vault by role. You write the code, terraform, etc and when it runs you get:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>URL: GET http://server:8200/v1/auth/aws-ec2/role/somerole
+</span><span class='line'>Code: 400. Errors:
+</span><span class='line'>
+</span><span class='line'>* entry for role somerole not found</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So you deployed something but now you have to create a policy, a role, etc in vault via the CLI, all the while your task is throttling.</p>
+
+<p>Little known fact: the terribly-named <code>vault_generic_secret</code> from the <a href="https://www.terraform.io/docs/providers/vault/index.html">provider docs</a> can do create roles/policies in addition to secrets (hence the bad name).</p>
+
+<p>In this part 2 I&rsquo;ll show you how to automate the next step of your ECS task into terraform so there&rsquo;s no race condition.</p>
+
+<h2>Prerequisites</h2>
+
+<ol>
+<li>Vault running as a server</li>
+<li>Vault CLI to match the server</li>
+<li>Terraform</li>
+</ol>
+
+
+<h2>Create a vault policy in terraform</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "vault_generic_secret" "policy" {
+</span><span class='line'>  path = "sys/policy/${aws_iam_role.neutrona_wand.name}"
+</span><span class='line'>
+</span><span class='line'>  data_json = &lt;&lt;EOT
+</span><span class='line'>{
+</span><span class='line'>  "name": "${aws_iam_role.neutrona_wand.name}",
+</span><span class='line'>  "rules": "path \"secret/ops/*\" {\n  policy = \"read\"\n}\n\npath \"secret/common/*\" {\n  policy = \"read\"\n}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>EOT
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Create an AWS auth role in terraform</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>provider "vault" {}
+</span><span class='line'>
+</span><span class='line'>resource "aws_iam_role" "neutrona_wand" {
+</span><span class='line'>  name = "neutrona_wand"
+</span><span class='line'>  path = "/lambda/"
+</span><span class='line'>
+</span><span class='line'>  assume_role_policy = &lt;&lt;POLICY
+</span><span class='line'>{
+</span><span class='line'>  "Version": "2012-10-17",
+</span><span class='line'>  "Statement": [
+</span><span class='line'>    {
+</span><span class='line'>      "Sid": "",
+</span><span class='line'>      "Effect": "Allow",
+</span><span class='line'>      "Principal": {
+</span><span class='line'>        "Service": [
+</span><span class='line'>          "lambda.amazonaws.com"
+</span><span class='line'>        ]
+</span><span class='line'>      },
+</span><span class='line'>      "Action": "sts:AssumeRole"
+</span><span class='line'>    }
+</span><span class='line'>  ]
+</span><span class='line'>}
+</span><span class='line'>POLICY
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'># The ugly replace in 'bound_iam_principal_arn' is to account for removing the path from the role. 
+</span><span class='line'># If you look, my IAM role is /lambda/, so the arn would be 'arn:aws:iam::1234567890:role/lambda/neutrona_wand'
+</span><span class='line'># While the 'bound_iam_principal_arn' wants the non-path version: 'arn:aws:iam::1234567890:role/neutrona_wand'
+</span><span class='line'>resource "vault_generic_secret" "role" {
+</span><span class='line'>  path = "auth/aws/role/${aws_iam_role.neutrona_wand.name}"
+</span><span class='line'>
+</span><span class='line'>  data_json = &lt;&lt;EOT
+</span><span class='line'>{
+</span><span class='line'>  "bound_iam_principal_arn": "${replace(aws_iam_role.neutrona_wand.arn, "/:role\\/[a-zA-Z\\/]*\\//", ":role\\/")}",
+</span><span class='line'>  "policies": "default,${aws_iam_role.neutrona_wand.name},slack",
+</span><span class='line'>  "max_ttl":"300",
+</span><span class='line'>  "resolve_aws_unique_ids": "false"
+</span><span class='line'>}
+</span><span class='line'>EOT
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[re:Invent 2017 (never again)]]></title>
@@ -1519,83 +2126,6 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
 <p><img src="http://marcyoung.us/images/book.jpg"/><img src="http://marcyoung.us/images/book-alt.jpg"/></p>
 
 <p>Update 4/29/2015: <a href="http://amzn.to/1zrxpZx">It&rsquo;s back up for sale at amazon</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
-    <link href="http://marcyoung.us/post/hbase-puppet-module"/>
-    <updated>2014-10-28T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/hbase-puppet-module</id>
-    <content type="html"><![CDATA[<p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
-
-<p>I present yet another HBase module. Unlike the ones on the forge, however, this one works.</p>
-
-<p>The RPMs are provided by a yum repo from <a href="http://hortonworks.com/hdp/">horton works data platform</a> which are very well made, contain well-catered configuration files, and even uses zookeeper out of the box. If you have made it this far and wish to try it out, it is very simple and works exremely well. While I would NOT use it in production in favor of a clustered set up with Thrift, Region Servers, or even YARN, it will work for most dev set ups. If you use it in production, drop me a line on how well it performs under load.</p>
-
-<p>If you are interested in something more suitable for production I recommand <a href="http://ambari.apache.org/">Ambari</a>. It&rsquo;s extremely awesome. Otherwise, just check out my current module at <a href="https://github.com/myoung34/puppet-hbase">my github</a> or on the <a href="https://forge.puppetlabs.com/myoung34/hbase">puppet forge</a>.</p>
-
-<p>Basic Usage:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>class { 'hbase':
-</span><span class='line'>  port =&gt; '8080', #default is '8000'
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
-    <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d"/>
-    <updated>2014-07-26T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/udoo-3d</id>
-    <content type="html"><![CDATA[<p>I finally broke down and bought a <a href="http://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
-
-<p>I expanded it horizontally a little to allow some cord room, and laid the sata drive below it, with a 3d printed spacer. Then mounted the UDOO inside. After much trial and error on the lid, I got snap fit, and some holes cut out for the button and LCD. I added screw mounts, but that didn&rsquo;t work out too well, so I ended up supergluing my home-made PCB&rsquo;s to the underside of it. One is the clock battery, the other is a push button and resistor, attached to an Arduino riser shield just below the screen. Bam.</p>
-
-<p>Also, excuse the not-so-perfect printing and mounting. I&rsquo;ve literally not printed out anything else. Go big or go home folks. Related: I love 3d printing.</p>
-
-<p>For pics, checkout <a href="http://marcyoung.us/post/udoo-and-an-arduino-lcd">the updated page</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
-    <link href="http://marcyoung.us/post/mirth-puppet-module"/>
-    <updated>2014-05-14T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/mirth-puppet-module</id>
-    <content type="html"><![CDATA[<p>I released a new Puppet module to the forge out of another work necessity. Mirth is used pretty heavily for HL7 ETL, and has a ton of other uses. <!-- more --></p>
-
-<p>I started out at my current gig doing this, so it hurt a little to have to automate it, mostly out of fear of getting back into that engine =).</p>
-
-<p>It can be found <a href="https://github.com/myoung34/puppet-mirthconnect">on my github</a> or at the <a href="https://forge.puppetlabs.com/myoung34/mirthconnect">Puppet forge</a>.</p>
-
-<p>Basic Usage:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yumrepo { "my mirth repo":
-</span><span class='line'>  baseurl  =&gt; "http://server/pulp/repos/mirthconnect/",
-</span><span class='line'>  descr    =&gt; "My Mirth Connect Repository",
-</span><span class='line'>  enabled  =&gt; 1,
-</span><span class='line'>  gpgcheck =&gt; 0,
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>class { 'mirthconnect':
-</span><span class='line'>  provider =&gt; 'yum', #default is 'rpm'
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

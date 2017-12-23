@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://marcyoung.us/post/docker-vault-ca-part2</loc>
+<lastmod>2017-12-24T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/docker-vault-ca-part1</loc>
+<lastmod>2017-12-24T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/vault-anything-in-terraform</loc>
+<lastmod>2017-12-23T00:00:00-06:00</lastmod>
+</url>
+<url>
 <loc>http://marcyoung.us/post/reinvent-2017</loc>
 <lastmod>2017-12-22T00:00:00-06:00</lastmod>
 </url>
@@ -301,5 +313,14 @@
 </url>
 <url>
 <loc>http://marcyoung.us/blog/categories/reinvent/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/vault/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/terraform/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/certificates/</loc>
 </url>
 </urlset>
