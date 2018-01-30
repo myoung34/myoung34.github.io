@@ -70,12 +70,12 @@ My hypothesis: #(@$ that. Lets use a real database and artifact store for the da
 I've [got some demo code](https://github.com/myoung34/docker-jenkins) to prove to you how easy it is. It's 100% groovy. No job dsl, no nothing. Just groovy and java methods.
 The one I posted shows how I automated groovy to set up:
 
- 1. [Active directory](https://github.com/myoung34/docker-jenkins/blob/master/ad.groovy)
- 1. [AWS ECS agents](https://github.com/myoung34/docker-jenkins/blob/master/ecs.groovy)
- 1. [Github organizations (includes webhooks!)](https://github.com/myoung34/docker-jenkins/blob/master/github.groovy)
- 1. [Slack](https://github.com/myoung34/docker-jenkins/blob/master/slack.groovy)
+ 1. [Active directory](https://github.com/myoung34/docker-jenkins/blob/master/jenkins/ad.groovy)
+ 1. [AWS ECS agents](https://github.com/myoung34/docker-jenkins/blob/master/jenkins/ecs.groovy)
+ 1. [Github organizations (includes webhooks!)](https://github.com/myoung34/docker-jenkins/blob/master/jenkins/github.groovy)
+ 1. [Slack](https://github.com/myoung34/docker-jenkins/blob/master/jenkins/slack.groovy)
  1. [Libraries like better slack messages and jobs defined in a java properties file](https://github.com/myoung34/docker-jenkins/blob/master/jenkins.properties)
- 1. [Logstash for the real meat of this post](https://github.com/myoung34/docker-jenkins/blob/master/logstash.groovy)
+ 1. [Logstash for the real meat of this post](https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy)
 
 ## The real reason youre here
 
@@ -85,7 +85,7 @@ So how do I do it? In production my docker hosts listen to UDP port 555 with Log
 [In my example the logstash plugin just sends directly to elasticsearch](https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy).
 All the env vars are pulled from [vault](http://www.vaultproject.io) at run time and I get to manage the data like my other data from ELK.
 
-My artifacts go to someting like [artifactory](http://www.jfrog.io).
+My artifacts go to someting like [artifactory](http://www.jfrog.com/artifactory).
 
 And guess what? It's fantastic. Automation is dead simple. And I put the data in a real database. which lets me do things like see build times across projects, see deployments, etc.
 
