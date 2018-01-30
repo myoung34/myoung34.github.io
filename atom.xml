@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2018-01-29T20:29:29-06:00</updated>
+  <updated>2018-01-29T20:54:00-06:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -82,12 +82,12 @@ I&rsquo;ve worked with small jenkins at multiple shops.</p>
 The one I posted shows how I automated groovy to set up:</p>
 
 <ol>
-<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/ad.groovy">Active directory</a></li>
-<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/ecs.groovy">AWS ECS agents</a></li>
-<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/github.groovy">Github organizations (includes webhooks!)</a></li>
-<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/slack.groovy">Slack</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/ad.groovy">Active directory</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/ecs.groovy">AWS ECS agents</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/github.groovy">Github organizations (includes webhooks!)</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/slack.groovy">Slack</a></li>
 <li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins.properties">Libraries like better slack messages and jobs defined in a java properties file</a></li>
-<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/logstash.groovy">Logstash for the real meat of this post</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy">Logstash for the real meat of this post</a></li>
 </ol>
 
 
@@ -99,7 +99,7 @@ The one I posted shows how I automated groovy to set up:</p>
 <a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy">In my example the logstash plugin just sends directly to elasticsearch</a>.
 All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> at run time and I get to manage the data like my other data from ELK.</p>
 
-<p>My artifacts go to someting like <a href="http://www.jfrog.io">artifactory</a>.</p>
+<p>My artifacts go to someting like <a href="http://www.jfrog.com/artifactory">artifactory</a>.</p>
 
 <p>And guess what? It&rsquo;s fantastic. Automation is dead simple. And I put the data in a real database. which lets me do things like see build times across projects, see deployments, etc.</p>
 
