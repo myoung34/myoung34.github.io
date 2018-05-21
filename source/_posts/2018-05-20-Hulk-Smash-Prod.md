@@ -3,7 +3,7 @@ title: Hulk-Smash Production
 author: myoung
 layout: post
 comments: true
-permalink: /post/deploy-production-button
+permalink: /post/hulk-smash
 image:
   -
 seo_follow:
