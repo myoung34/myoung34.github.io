@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2018-01-29T20:54:00-06:00</updated>
+  <updated>2018-05-20T21:31:21-05:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,156 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hulk-Smash Production]]></title>
+    <link href="http://marcyoung.us/post/hulk-smash"/>
+    <updated>2018-05-20T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/Hulk-Smash-Prod</id>
+    <content type="html"><![CDATA[<p>I one-upped my own bad idea with more badness. Don&rsquo;t do this.  <!-- more --></p>
+
+<p>I, uh. Yeah.</p>
+
+<p>I assume you <a href="http://marcyoung.us/post/deploy-production-button">read my previous post about my physical deploy button</a>. Well: I one-upped it.</p>
+
+<p>Let me explain. Nah let&rsquo;s cut to it. I wanted to play with <a href="https://aws.amazon.com/iot-core/">AWS IoT</a> and I did so shamelessly with much architecture.</p>
+
+<h3>The architecture</h3>
+
+<p>I had a spare Raspberry Pi Zero W with a camera. So I did what any reasonable person would do. Used it with no end-goal.</p>
+
+<p>I hooked it up to AWS IoT and made it <a href="https://docs.aws.amazon.com/iot/latest/developerguide/using-device-shadows.html">listen to the shadow delta MQTT queue</a></p>
+
+<p>Basically whenever it saw a change to the shadow it would:</p>
+
+<ol>
+<li>Spin a <a href="https://www.amazon.com/Stepper-Bipolar-4-lead-Connector-Printer/dp/B00PNEQKC0">stepper motor</a> that landed a <a href="https://www.amazon.com/Marvel-Avengers-Gamma-Grip-Fists/dp/B072QMZTZ4">hulk hand</a> on my deploy production button.</li>
+<li>Thanks to py3 <a href="https://docs.python.org/3/library/threading.html">threads</a> it would also start the rasp pi camera to watch the hulk smash and send it to <a href="https://www.giphy.com">giphy</a>.</li>
+<li>After the gif is done uploading it would send a gif of the hulk smash back to the user in slack.</li>
+</ol>
+
+
+<h3>The finale</h3>
+
+<p>Without further ado I give you: Hulk Smash Production.</p>
+
+<p><img src="http://marcyoung.us/images/hulksmash.png" title="hulksmash" ></p>
+
+<p>The <a href="https://giphy.com/embed/xuW89v9kQXMeQ">initial gif</a></p>
+
+<p>And the final gif (yes the hulk hand is duct taped to a bamboo skewer to a stepper motor):</p>
+
+<p><img src="http://marcyoung.us/images/hulksmash.gif" title="hulksmash" ></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A Physical Deploy-Production Button]]></title>
+    <link href="http://marcyoung.us/post/deploy-production-button"/>
+    <updated>2018-05-19T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/deploy-production-button</id>
+    <content type="html"><![CDATA[<p>I made a physical button to deploy production and regret nothing.  <!-- more --></p>
+
+<p>Over the last few weeks I&rsquo;ve been looking for a project.</p>
+
+<p>I currently work for a python shop and have really taken a liking to it. Simultaneously, I keep seeing new hardware <a href="https://micropython.org">supporting micropython</a>. I&rsquo;m not against the C&#8217;ish language that the arduino type stuff pushes for, but it&rsquo;s nice to get the best of both worlds: an abstracted language with nice syntax and the ability to do dumb stuff with voltage. So: I did just that.</p>
+
+<h3>The Controller</h3>
+
+<p>I&rsquo;ve really wanted to play with the ESP8266 after seeing some cool projects cross over my feeds. I decided also to kill two birds with one stone and try the Huzzah board <a href="https://www.adafruit.com/product/2821">from adafruit</a> that includes onboard wifi because I hate money. The board itself was fantastic out of the box.</p>
+
+<h3>The Learning Curve</h3>
+
+<p>Without doing any whatsoever much research my brain really thought that micropython was going to be a &ldquo;drop in replacement&rdquo; for the UX of programming a board in the arduino IDE. It&rsquo;s not. This is actually my biggest complaint about micropython. The code itself was very very very straightforward. Write a <code>main.py</code> that does your stuff, and profit. You can load libraries that support micropython, etc.</p>
+
+<p>Getting there? Meh.</p>
+
+<p>First: you have to flash your esp with <a href="http://micropython.org/download">the micropython firmware</a>.</p>
+
+<p>Next: you have to get your code onto the board. The feedback loop for this is the annoying part. The first time you flash the firmware you have to <a href="https://learn.adafruit.com/micropython-basics-esp8266-webrepl/access-webrepl">enable WebREPL</a>. It&rsquo;s a one-time cost but it&rsquo;s smelly. This enables a wifi broadcast from the board that you can then access from webrepl with a password.</p>
+
+<p>If you make it past the previous step you can make <code>main.py</code> join your wireless network (note: 5ghz is not supported) with something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import network
+</span><span class='line'>
+</span><span class='line'>sta_if = network.WLAN(network.STA_IF)
+</span><span class='line'>
+</span><span class='line'>def do_connect():
+</span><span class='line'>    if not sta_if.isconnected():
+</span><span class='line'>        print('connecting to network...')
+</span><span class='line'>        sta_if.active(True)
+</span><span class='line'>        sta_if.connect('The LAN Before Time', 'hunter2')
+</span><span class='line'>        while not sta_if.isconnected():
+</span><span class='line'>            print('waiting to connect...')
+</span><span class='line'>            sleep(5)
+</span><span class='line'>            pass
+</span><span class='line'>
+</span><span class='line'>print('connecting...')
+</span><span class='line'>do_connect()
+</span><span class='line'>print('network config:', sta_if.ifconfig())</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that it&rsquo;s on the network you can use webrepl to the local address of the huzzah. But it still sucks compared to the typical UX of: select board, click compile.</p>
+
+<h3>What You Came To See</h3>
+
+<p>If you&rsquo;re still reading I&rsquo;m sure you want to see what I did. Basically I took 4 mechanical keyboard switches (I have a lot OK?!), wired them to the huzzah, and made it send a slack command to our internal slack bot to <em>force</em> deploy production (ignore all locks, send a message to yours truly).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>while True:
+</span><span class='line'>    buttons = [
+</span><span class='line'>        machine.Pin(4,  machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>        machine.Pin(5,  machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>        machine.Pin(2,  machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>        machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>    ]
+</span><span class='line'>
+</span><span class='line'>    _sum = 0
+</span><span class='line'>    for button in buttons:
+</span><span class='line'>        _sum += button.value()
+</span><span class='line'>    if (_sum == 0):
+</span><span class='line'>        print('generating request')
+</span><span class='line'>        print(urequests.post(webhook_url, json={'text': ":alert: DEPLOY BUTTON PRESSED. KLAXON: ACTIVATED :alert:"}, headers={'Content-Type': 'application/json'}).status_code)
+</span><span class='line'>        print(urequests.post(webhook_url, json={'text': "!deploy prod master -f"}, headers={'Content-Type': 'application/json'}).status_code)</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://marcyoung.us/images/huzzah1.jpg" title="huzzah1" >
+<img src="http://marcyoung.us/images/huzzah2.png" title="huzzah2" ></p>
+
+<p>It works and it&rsquo;s pretty empowering to smash. We deployed to production a record number of times that day.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Let's Rethink Jenkins]]></title>
@@ -2101,103 +2251,6 @@ it turned out to only happen on dev and test (not production). Parsing the web o
 <img class="left" src="http://marcyoung.us/images/pigrrl9.jpg" title="cabinet 9" >
 <img class="left" src="http://marcyoung.us/images/pigrrl10.jpg" title="cabinet 10" >
 <img class="left" src="http://marcyoung.us/images/pigrrl11.jpg" title="cabinet 11" ></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My First (and likely last) MAME cabinet build]]></title>
-    <link href="http://marcyoung.us/post/mame-cabinet"/>
-    <updated>2015-08-19T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/cabinet</id>
-    <content type="html"><![CDATA[<p>I decided many months ago to build a bar-top cabinet. After many frustrations and failed attempts: it&rsquo;s done.<!-- more --></p>
-
-<p>It was fairly simple after getting the table saw I needed and some parts later on.
-Basically it was a fly-by-your seat design with some generic parts.</p>
-
-<ul>
-<li>Raspberry Pi running PiPlay</li>
-<li>A super cheap <a href="http://www.panelook.com/EJ080NA-04C_Innolux_8.0_LCM_overview_12715.html">8&#8221; LCD with LVDS to HDMI/Composite out</a></li>
-<li>Wood.</li>
-<li>Arcade buttons and a USB controller for them.</li>
-</ul>
-
-
-<p>After giving up and restarting a few times, lo&#8217; and behold.</p>
-
-<p><img class="left" src="http://marcyoung.us/images/cabinet1.jpg" title="cabinet 1" >
-<img class="left" src="http://marcyoung.us/images/cabinet2.jpg" title="cabinet 2" >
-<img class="left" src="http://marcyoung.us/images/cabinet3.jpg" title="cabinet 3" >
-<img class="left" src="http://marcyoung.us/images/cabinet4.jpg" title="cabinet 4" >
-<img class="left" src="http://marcyoung.us/images/cabinet5.jpg" title="cabinet 5" >
-<img class="left" src="http://marcyoung.us/images/cabinet6.jpg" title="cabinet 6" >
-<img class="left" src="http://marcyoung.us/images/cabinet7.jpg" title="cabinet 7" >
-<img class="left" src="http://marcyoung.us/images/cabinet8.jpg" title="cabinet 8" >
-<img class="left" src="http://marcyoung.us/images/cabinet9.jpg" title="cabinet 9" >
-<img class="left" src="http://marcyoung.us/images/cabinet10.jpg" title="cabinet 10" >
-<img class="left" src="http://marcyoung.us/images/cabinet11.jpg" title="cabinet 11" ></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Azure, Github, and a Corporate Proxy]]></title>
-    <link href="http://marcyoung.us/post/azure-github-proxy"/>
-    <updated>2015-05-18T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/aspnet-github</id>
-    <content type="html"><![CDATA[<p>Recently I started playing around with Azure and deploying an ASP.NET MVC site via its Github linkage. I had some strange issues.<!-- more --></p>
-
-<h1>Problem 1: I am a masochist</h1>
-
-<p>Under the strange suspicion that I had no idea how to actually build NuGet packages and deploy an ASP.NET site via CI/CD I decided to take on the masochistic task upon myself.
-If you <a href="https://github.com/myoung34/HelloWorldASP">take a look at my very basic MVC site</a>, you won&rsquo;t see much of interest. None actually, I&rsquo;m not sure why you possibly clicked that link.</p>
-
-<p>It&rsquo;s a basic MVC app using a terrible NuGet package I&rsquo;ve been deploying that adds some string extension methods. If you run that in Visual Studio, all is well.</p>
-
-<h1>Problem 2: The work proxy</h1>
-
-<p>I tried to publish it to Azure using <a href="http://blogs.technet.com/b/cbernier/archive/2013/09/24/deploy-your-web-application-to-windows-azure-from-with-visual-studio.aspx">the publish feature from VS2013 into Azure</a> but immediately ran into a &lsquo;me&rsquo; problem.</p>
-
-<p>You see, I was deploying from my work PC, which is absolutely blocked from doing anything. All of the traffic from my work PC <strong>must</strong> be published through a web proxy on-site.</p>
-
-<p>This is fine for things like Chrome, which pick those settings up automatically. For cygwin (see problem 1) there are a lot of steps to take.</p>
-
-<ul>
-<li>wget/Vagrant: I had to export <code>http_proxy</code>, <code>https_proxy</code>, and <code>ftp_proxy</code> (after pulling down the proxy PAC and finding which proxy address to use).</li>
-<li>cURL: I had to write a wrapper <code>/usr/local/bin/curl</code>(higher in the PATH) that basically said <code>/usr/bin/curl --proxy 'http://proxyaddress:80' "$@"</code>.</li>
-<li>subversion: I had to add <code>http-proxy-host = proxyaddress</code> into <code>~/.subversion/servers</code> in the <code>[global]</code> section.</li>
-<li>git: OMG GIT. So here&rsquo;s the thing. git behind a corporate firewall is hard. It can&rsquo;t resolve through DNS and it can&rsquo;t do anything it needs to do.
-
-<ul>
-<li>First I installed <a href="http://ntlmaps.sourceforge.net/">ntmlaps</a> into <code>~/software/ntlmaps</code></li>
-<li>Next I set my <code>~.bash_profile</code> to start up a command in screen if it hasn&rsquo;t already to start ntlmaps.
-
-<ul>
-<li><code>[[ -n $(screen -ls | grep -E 'git-proxy.\*\((A|De)tached\)$') ]] || screen -d -S git-proxy -m python ~/software/ntlmaps/main.py</code></li>
-</ul>
-</li>
-<li>Next I set git to use this proxy: <code>for i in http https; do git config --global $i.proxy http://localhost:5865</code></li>
-</ul>
-</li>
-</ul>
-
-
-<h1>Problem 3: Visual Studio and Azure Deploy</h1>
-
-<p><a href="http://blog.kloud.com.au/2014/11/13/publish-to-a-new-azure-website-from-behind-a-proxy/">Visual studio cannot deploy to Azure behind a PAC proxy</a>.</p>
-
-<p>Sites like this one claim you can make changes to the VS2013 executable config but I had zero luck.</p>
-
-<p>So little luck in fact that it just plain failed with an unconnectable error.</p>
-
-<p>From then I said nevermind and decided to just link my Azure app to my github repo using the web UI. All went great and it immediately deployed however when I browsed to my website I was <a href="http://www.dotnetthoughts.net/azure-system-methodaccessexception-attempt-by-security-transparent-method/">greeted with this error.</a>.</p>
-
-<p>All of the blog posts and stack overflow questions say to install the WebHelpers NuGet package via <code>Install-Package -Id  Microsoft.AspNet.WebHelpers</code>, but that didn&rsquo;t solve it. It redeployed and had the same error.</p>
-
-<p>The posts also say to just select the <code>Remove additional files at destination</code> checkbox on Visual Studio deploy. Well that&rsquo;s useless because I cannot deploy via visual studio. After fighting long and hard and redeploying via Github repeatedly, I found the answer.</p>
-
-<h1>Answer: Select the <code>Remove additional files at destination</code> no matter what.</h1>
-
-<p>Yup. I changed to the guest network, selected the checkbox, published successfully and all went well. My app was now live.
-I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been working fine since.</p>
 ]]></content>
   </entry>
   

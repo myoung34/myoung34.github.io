@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: production | Marcus Young]]></title>
+  <link href="http://marcyoung.us/blog/categories/production/atom.xml" rel="self"/>
+  <link href="http://marcyoung.us/"/>
+  <updated>2018-05-20T21:31:21-05:00</updated>
+  <id>http://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hulk-Smash Production]]></title>
+    <link href="http://marcyoung.us/post/hulk-smash"/>
+    <updated>2018-05-20T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/Hulk-Smash-Prod</id>
+    <content type="html"><![CDATA[<p>I one-upped my own bad idea with more badness. Don&rsquo;t do this.  <!-- more --></p>
+
+<p>I, uh. Yeah.</p>
+
+<p>I assume you <a href="/post/deploy-production-button">read my previous post about my physical deploy button</a>. Well: I one-upped it.</p>
+
+<p>Let me explain. Nah let&rsquo;s cut to it. I wanted to play with <a href="https://aws.amazon.com/iot-core/">AWS IoT</a> and I did so shamelessly with much architecture.</p>
+
+<h3>The architecture</h3>
+
+<p>I had a spare Raspberry Pi Zero W with a camera. So I did what any reasonable person would do. Used it with no end-goal.</p>
+
+<p>I hooked it up to AWS IoT and made it <a href="https://docs.aws.amazon.com/iot/latest/developerguide/using-device-shadows.html">listen to the shadow delta MQTT queue</a></p>
+
+<p>Basically whenever it saw a change to the shadow it would:</p>
+
+<ol>
+<li>Spin a <a href="https://www.amazon.com/Stepper-Bipolar-4-lead-Connector-Printer/dp/B00PNEQKC0">stepper motor</a> that landed a <a href="https://www.amazon.com/Marvel-Avengers-Gamma-Grip-Fists/dp/B072QMZTZ4">hulk hand</a> on my deploy production button.</li>
+<li>Thanks to py3 <a href="https://docs.python.org/3/library/threading.html">threads</a> it would also start the rasp pi camera to watch the hulk smash and send it to <a href="https://www.giphy.com">giphy</a>.</li>
+<li>After the gif is done uploading it would send a gif of the hulk smash back to the user in slack.</li>
+</ol>
+
+
+<h3>The finale</h3>
+
+<p>Without further ado I give you: Hulk Smash Production.</p>
+
+<p><img src="/images/hulksmash.png" title="hulksmash" ></p>
+
+<p>The <a href="https://giphy.com/embed/xuW89v9kQXMeQ">initial gif</a></p>
+
+<p>And the final gif (yes the hulk hand is duct taped to a bamboo skewer to a stepper motor):</p>
+
+<p><img src="/images/hulksmash.gif" title="hulksmash" ></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A Physical Deploy-Production Button]]></title>
+    <link href="http://marcyoung.us/post/deploy-production-button"/>
+    <updated>2018-05-19T00:00:00-05:00</updated>
+    <id>http://marcyoung.us/post/deploy-production-button</id>
+    <content type="html"><![CDATA[<p>I made a physical button to deploy production and regret nothing.  <!-- more --></p>
+
+<p>Over the last few weeks I&rsquo;ve been looking for a project.</p>
+
+<p>I currently work for a python shop and have really taken a liking to it. Simultaneously, I keep seeing new hardware <a href="https://micropython.org">supporting micropython</a>. I&rsquo;m not against the C&#8217;ish language that the arduino type stuff pushes for, but it&rsquo;s nice to get the best of both worlds: an abstracted language with nice syntax and the ability to do dumb stuff with voltage. So: I did just that.</p>
+
+<h3>The Controller</h3>
+
+<p>I&rsquo;ve really wanted to play with the ESP8266 after seeing some cool projects cross over my feeds. I decided also to kill two birds with one stone and try the Huzzah board <a href="https://www.adafruit.com/product/2821">from adafruit</a> that includes onboard wifi because I hate money. The board itself was fantastic out of the box.</p>
+
+<h3>The Learning Curve</h3>
+
+<p>Without doing any whatsoever much research my brain really thought that micropython was going to be a &ldquo;drop in replacement&rdquo; for the UX of programming a board in the arduino IDE. It&rsquo;s not. This is actually my biggest complaint about micropython. The code itself was very very very straightforward. Write a <code>main.py</code> that does your stuff, and profit. You can load libraries that support micropython, etc.</p>
+
+<p>Getting there? Meh.</p>
+
+<p>First: you have to flash your esp with <a href="http://micropython.org/download">the micropython firmware</a>.</p>
+
+<p>Next: you have to get your code onto the board. The feedback loop for this is the annoying part. The first time you flash the firmware you have to <a href="https://learn.adafruit.com/micropython-basics-esp8266-webrepl/access-webrepl">enable WebREPL</a>. It&rsquo;s a one-time cost but it&rsquo;s smelly. This enables a wifi broadcast from the board that you can then access from webrepl with a password.</p>
+
+<p>If you make it past the previous step you can make <code>main.py</code> join your wireless network (note: 5ghz is not supported) with something like:</p>
+
+<pre><code>import network
+
+sta_if = network.WLAN(network.STA_IF)
+
+def do_connect():
+    if not sta_if.isconnected():
+        print('connecting to network...')
+        sta_if.active(True)
+        sta_if.connect('The LAN Before Time', 'hunter2')
+        while not sta_if.isconnected():
+            print('waiting to connect...')
+            sleep(5)
+            pass
+
+print('connecting...')
+do_connect()
+print('network config:', sta_if.ifconfig())
+</code></pre>
+
+<p>Now that it&rsquo;s on the network you can use webrepl to the local address of the huzzah. But it still sucks compared to the typical UX of: select board, click compile.</p>
+
+<h3>What You Came To See</h3>
+
+<p>If you&rsquo;re still reading I&rsquo;m sure you want to see what I did. Basically I took 4 mechanical keyboard switches (I have a lot OK?!), wired them to the huzzah, and made it send a slack command to our internal slack bot to <em>force</em> deploy production (ignore all locks, send a message to yours truly).</p>
+
+<pre><code>while True:
+    buttons = [
+        machine.Pin(4,  machine.Pin.IN, machine.Pin.PULL_UP),
+        machine.Pin(5,  machine.Pin.IN, machine.Pin.PULL_UP),
+        machine.Pin(2,  machine.Pin.IN, machine.Pin.PULL_UP),
+        machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP),
+    ]
+
+    _sum = 0
+    for button in buttons:
+        _sum += button.value()
+    if (_sum == 0):
+        print('generating request')
+        print(urequests.post(webhook_url, json={'text': ":alert: DEPLOY BUTTON PRESSED. KLAXON: ACTIVATED :alert:"}, headers={'Content-Type': 'application/json'}).status_code)
+        print(urequests.post(webhook_url, json={'text': "!deploy prod master -f"}, headers={'Content-Type': 'application/json'}).status_code)
+</code></pre>
+
+<p><img src="/images/huzzah1.jpg" title="huzzah1" >
+<img src="/images/huzzah2.png" title="huzzah2" ></p>
+
+<p>It works and it&rsquo;s pretty empowering to smash. We deployed to production a record number of times that day.</p>
+]]></content>
+  </entry>
+  
+</feed>
