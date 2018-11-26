@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="http://marcyoung.us/atom.xml" rel="self"/>
   <link href="http://marcyoung.us/"/>
-  <updated>2018-05-20T21:31:21-05:00</updated>
+  <updated>2018-11-26T11:14:42-06:00</updated>
   <id>http://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Slack Is Not Your Bash Prompt]]></title>
+    <link href="http://marcyoung.us/post/slack-not-bash"/>
+    <updated>2018-11-26T00:00:00-06:00</updated>
+    <id>http://marcyoung.us/post/Slack-Bash</id>
+    <content type="html"><![CDATA[<p>A video of my first and likely last conference talk (lightning talk) about chatops  <!-- more --></p>
+
+<p><a href="https://www.youtube.com/watch?v=Z6LrwUchRaE&amp;list=PLte_zIBj3fx6gNyC_8sleIFAYOvQhXemC&amp;index=7">Video here</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hulk-Smash Production]]></title>
@@ -2228,29 +2239,6 @@ it turned out to only happen on dev and test (not production). Parsing the web o
 </span><span class='line'>  end
 </span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Adafruit PiGrrl Pocket Build]]></title>
-    <link href="http://marcyoung.us/post/pigrrl-pocket"/>
-    <updated>2015-08-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/pigrrl</id>
-    <content type="html"><![CDATA[<p>After building the arcade cabinet I saw the PiGrrl Pocket and unfortunately for my pocket: I made one as well. <!-- more --></p>
-
-<p>The Adafruit guide was pretty straight forward and I only blew one raspberry pi in the process (make sure you don&rsquo;t skip the part about disabling the TFT backlight or you&rsquo;ll cross wires during the troubleshooting phase).</p>
-
-<p><img class="left" src="http://marcyoung.us/images/pigrrl1.jpg" title="cabinet 1" >
-<img class="left" src="http://marcyoung.us/images/pigrrl2.jpg" title="cabinet 2" >
-<img class="left" src="http://marcyoung.us/images/pigrrl3.jpg" title="cabinet 3" >
-<img class="left" src="http://marcyoung.us/images/pigrrl4.jpg" title="cabinet 4" >
-<img class="left" src="http://marcyoung.us/images/pigrrl5.jpg" title="cabinet 5" >
-<img class="left" src="http://marcyoung.us/images/pigrrl6.jpg" title="cabinet 6" >
-<img class="left" src="http://marcyoung.us/images/pigrrl7.jpg" title="cabinet 7" >
-<img class="left" src="http://marcyoung.us/images/pigrrl8.jpg" title="cabinet 8" >
-<img class="left" src="http://marcyoung.us/images/pigrrl9.jpg" title="cabinet 9" >
-<img class="left" src="http://marcyoung.us/images/pigrrl10.jpg" title="cabinet 10" >
-<img class="left" src="http://marcyoung.us/images/pigrrl11.jpg" title="cabinet 11" ></p>
 ]]></content>
   </entry>
   

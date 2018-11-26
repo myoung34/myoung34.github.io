@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://marcyoung.us/post/slack-not-bash</loc>
+<lastmod>2018-11-26T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/hulk-smash</loc>
+<lastmod>2018-05-20T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://marcyoung.us/post/deploy-production-button</loc>
+<lastmod>2018-05-19T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>http://marcyoung.us/post/lets-rethink-jenkins</loc>
 <lastmod>2018-01-29T00:00:00-06:00</lastmod>
 </url>
@@ -332,5 +344,20 @@
 </url>
 <url>
 <loc>http://marcyoung.us/blog/categories/ci/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/production/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/hardware/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/python/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/mechanical-keyboard/</loc>
+</url>
+<url>
+<loc>http://marcyoung.us/blog/categories/video/</loc>
 </url>
 </urlset>
