@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: programming | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/programming/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Raspberry Pi-Automated Bluetooth Audio Player !]]></title>
-    <link href="http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/"/>
+    <link href="https://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/"/>
     <updated>2013-03-12T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player</id>
+    <id>https://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -64,21 +64,21 @@ root@raspberrypi:~/bluetoothradio# reboot
 
 <p>After the reboot, you can now pair your device using &#8217;1234&#8242; (unless you modified the bluetoothPin file), and play yo&#8217; music!</p>
 
-<p>If for some reason it&#8217;s not connection, visit <a title="KMonkey711" href="http://kmonkey711.blogspot.com/" target="_blank">KMonkey711&#8242;s tutorial</a> and follow the steps to connect and trust the device, and reboot the pi.</p>
+<p>If for some reason it&#8217;s not connection, visit <a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711&#8242;s tutorial</a> and follow the steps to connect and trust the device, and reboot the pi.</p>
 
 <h2>Acknowledgements</h2>
 
 <p>Thanks to:<br/>
 <a title="johnhamelink" href="https://github.com/johnhamelink" target="_blank">johnhamelink</a><br/>
-<a title="KMonkey711" href="http://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a></p>
+<a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
-    <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
+    <link href="https://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
     <updated>2012-09-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
+    <id>https://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -206,26 +206,26 @@ return xdmp:node-replace(fn:doc('/marc/favorites')/favorites,$favorites)
   
   <entry>
     <title type="html"><![CDATA[KegDuino AKA HomeBrew and Arduinos&#8217; Love Child]]></title>
-    <link href="http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
+    <link href="https://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
     <updated>2012-07-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
+    <id>https://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
     <content type="html"><![CDATA[<p><!--more-->I finished work on my new site: [www.kegduino.org][1] . Go check it out! It&#8217;s a micro-controlled Keg!</p>
 
 <p><div id="attachment_62" class="wp-caption alignnone" style="width: 810px">
-  <a href="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
+  <a href="https://marcyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="https://marcyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
     The kegduino in action
   </p>
 </div></p>
 
-<p> [1]: <a href="http://www.kegduino.org">http://www.kegduino.org</a></p>
+<p> [1]: <a href="https://www.kegduino.org">https://www.kegduino.org</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Creating an MVC Blog with Node.js and MongoDB]]></title>
-    <link href="http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
+    <link href="https://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
     <updated>2012-04-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
+    <id>https://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
     <content type="html"><![CDATA[<p>This is going to be my first big tutorial. This is a simple tutorial to show how to build the worlds most basic blog with comment system in Node.js with Express for the MVC Routing, MongoDB as the storage engine, and Jade as the html shorthand. <!--more--></p>
 
 <p>I&#8217;m going to assume you know how to install the base packages for Node.js, npm (node package manager), and mongodb. First, let&#8217;s set up the database to hold some articles. The mongo collection will be a basic object with an id, article_title, and article_body:</p>
@@ -560,9 +560,9 @@ block content
   
   <entry>
     <title type="html"><![CDATA[HL7 And Node.js]]></title>
-    <link href="http://marcyoung.us/post/hl7-and-node-js/"/>
+    <link href="https://marcyoung.us/post/hl7-and-node-js/"/>
     <updated>2012-03-12T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/hl7-and-node-js</id>
+    <id>https://marcyoung.us/post/hl7-and-node-js</id>
     <content type="html"><![CDATA[<p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
 
 <!--more-->

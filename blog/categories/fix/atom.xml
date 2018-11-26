@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: fix | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/fix/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/fix/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP]]></title>
-    <link href="http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
+    <link href="https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
     <updated>2012-11-28T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
+    <id>https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
     <content type="html"><![CDATA[<p>If you&#8217;re running Mediatomb or uShare and your xbox, ps3, tv, or whatever other UPnP/DNLA device doesn&#8217;t see the server, here&#8217;s a few fixes I&#8217;ve discovered.<!--more--></p>
 
 <ul>
@@ -55,12 +55,12 @@ Days of work for 1 line in my /etc/sysconfig/iptables file.</p>
   
   <entry>
     <title type="html"><![CDATA[(FIX) GTablet NVFlash Freezing During Upload]]></title>
-    <link href="http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/"/>
+    <link href="https://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload/"/>
     <updated>2012-11-27T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload</id>
+    <id>https://marcyoung.us/post/fix-gtablet-nvflash-freezing-upload</id>
     <content type="html"><![CDATA[<p>I currently own a ViewSonic GTablet, which I do love the few times I use it, but if you&#8217;re like me, you <del datetime="2012-11-27T04:17:03+00:00">tamper</del> break things you own.<!--more--></p>
 
-<p>My GTablet runs <a href="http://forum.xda-developers.com/showthread.php?t=1084573" title="Beasty Clemsysn (Froyo)"></a> which I prefer since it&#8217;s freaking fast, however with the performance, there are a few bugs, all of which I seemed to hit in a single move&#8230;.so this is a &#8220;Don&#8217;t do&#8221;:</p>
+<p>My GTablet runs <a href="https://forum.xda-developers.com/showthread.php?t=1084573" title="Beasty Clemsysn (Froyo)"></a> which I prefer since it&#8217;s freaking fast, however with the performance, there are a few bugs, all of which I seemed to hit in a single move&#8230;.so this is a &#8220;Don&#8217;t do&#8221;:</p>
 
 <ul>
 <li>Putting it in airplane mode goes ape-shit. There was no way to get it out, including reboots and settings changes.</li>

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: media | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/media/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/media/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Raspberry Pi-Automated Bluetooth Audio Player !]]></title>
-    <link href="http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/"/>
+    <link href="https://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/"/>
     <updated>2013-03-12T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player</id>
+    <id>https://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player</id>
     <content type="html"><![CDATA[<!--more-->
 
 
@@ -64,21 +64,21 @@ root@raspberrypi:~/bluetoothradio# reboot
 
 <p>After the reboot, you can now pair your device using &#8217;1234&#8242; (unless you modified the bluetoothPin file), and play yo&#8217; music!</p>
 
-<p>If for some reason it&#8217;s not connection, visit <a title="KMonkey711" href="http://kmonkey711.blogspot.com/" target="_blank">KMonkey711&#8242;s tutorial</a> and follow the steps to connect and trust the device, and reboot the pi.</p>
+<p>If for some reason it&#8217;s not connection, visit <a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711&#8242;s tutorial</a> and follow the steps to connect and trust the device, and reboot the pi.</p>
 
 <h2>Acknowledgements</h2>
 
 <p>Thanks to:<br/>
 <a title="johnhamelink" href="https://github.com/johnhamelink" target="_blank">johnhamelink</a><br/>
-<a title="KMonkey711" href="http://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a></p>
+<a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP]]></title>
-    <link href="http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
+    <link href="https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
     <updated>2012-11-28T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
+    <id>https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
     <content type="html"><![CDATA[<p>If you&#8217;re running Mediatomb or uShare and your xbox, ps3, tv, or whatever other UPnP/DNLA device doesn&#8217;t see the server, here&#8217;s a few fixes I&#8217;ve discovered.<!--more--></p>
 
 <ul>

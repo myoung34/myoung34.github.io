@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: raspberrypi | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/raspberrypi/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/raspberrypi/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Adafruit PiGrrl Pocket Build]]></title>
-    <link href="http://marcyoung.us/post/pigrrl-pocket"/>
+    <link href="https://marcyoung.us/post/pigrrl-pocket"/>
     <updated>2015-08-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/pigrrl</id>
+    <id>https://marcyoung.us/post/pigrrl</id>
     <content type="html"><![CDATA[<p>After building the arcade cabinet I saw the PiGrrl Pocket and unfortunately for my pocket: I made one as well. <!-- more --></p>
 
 <p>The Adafruit guide was pretty straight forward and I only blew one raspberry pi in the process (make sure you don&rsquo;t skip the part about disabling the TFT backlight or you&rsquo;ll cross wires during the troubleshooting phase).</p>
@@ -38,9 +38,9 @@
   
   <entry>
     <title type="html"><![CDATA[My First (and likely last) MAME cabinet build]]></title>
-    <link href="http://marcyoung.us/post/mame-cabinet"/>
+    <link href="https://marcyoung.us/post/mame-cabinet"/>
     <updated>2015-08-19T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/cabinet</id>
+    <id>https://marcyoung.us/post/cabinet</id>
     <content type="html"><![CDATA[<p>I decided many months ago to build a bar-top cabinet. After many frustrations and failed attempts: it&rsquo;s done.<!-- more --></p>
 
 <p>It was fairly simple after getting the table saw I needed and some parts later on.
@@ -48,7 +48,7 @@ Basically it was a fly-by-your seat design with some generic parts.</p>
 
 <ul>
 <li>Raspberry Pi running PiPlay</li>
-<li>A super cheap <a href="http://www.panelook.com/EJ080NA-04C_Innolux_8.0_LCM_overview_12715.html">8&#8221; LCD with LVDS to HDMI/Composite out</a></li>
+<li>A super cheap <a href="https://www.panelook.com/EJ080NA-04C_Innolux_8.0_LCM_overview_12715.html">8&#8221; LCD with LVDS to HDMI/Composite out</a></li>
 <li>Wood.</li>
 <li>Arcade buttons and a USB controller for them.</li>
 </ul>

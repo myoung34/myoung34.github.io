@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: marklogic | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/marklogic/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/marklogic/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
-    <link href="http://marcyoung.us/post/puppet-and-marklogic"/>
+    <link href="https://marcyoung.us/post/puppet-and-marklogic"/>
     <updated>2013-12-14T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/puppet-and-marklogic</id>
-    <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="http://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="http://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
+    <id>https://marcyoung.us/post/puppet-and-marklogic</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="https://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="https://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
 
 <p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
 
@@ -26,15 +26,15 @@
 
 <p>Did I mention the software also requires activation? That affects testing too, because I can&rsquo;t just hardcode my license information even though it&rsquo;s free and easily obtainable. My solution was to force the user to have a <code>~/.marklogic.yml</code> file that contains the information. None of this means anything to the normal use who wishes to install marklogic, they just need a Yum repository set up that holds the MarkLogic version. It does mean something to me in terms of making something that&rsquo;s easy to fork and fix if there are issues.</p>
 
-<p>TL;DR: <a href="http://www.puppetforge.com/myoung34/marklogic">My module is here.</a></p>
+<p>TL;DR: <a href="https://www.puppetforge.com/myoung34/marklogic">My module is here.</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[MarkLogic Collections &#8211; Performance Issues And Why You Should Denormalize!]]></title>
-    <link href="http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
+    <link href="https://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize/"/>
     <updated>2012-09-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
+    <id>https://marcyoung.us/post/marklogic-collections-performance-issues-and-why-you-should-denormalize</id>
     <content type="html"><![CDATA[<!--more-->
 
 

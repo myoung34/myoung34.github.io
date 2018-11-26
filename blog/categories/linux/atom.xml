@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: linux | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/linux/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
-    <link href="http://marcyoung.us/post/hbase-puppet-module"/>
+    <link href="https://marcyoung.us/post/hbase-puppet-module"/>
     <updated>2014-10-28T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/hbase-puppet-module</id>
+    <id>https://marcyoung.us/post/hbase-puppet-module</id>
     <content type="html"><![CDATA[<p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
 
 <p>I present yet another HBase module. Unlike the ones on the forge, however, this one works.</p>
 
-<p>The RPMs are provided by a yum repo from <a href="http://hortonworks.com/hdp/">horton works data platform</a> which are very well made, contain well-catered configuration files, and even uses zookeeper out of the box. If you have made it this far and wish to try it out, it is very simple and works exremely well. While I would NOT use it in production in favor of a clustered set up with Thrift, Region Servers, or even YARN, it will work for most dev set ups. If you use it in production, drop me a line on how well it performs under load.</p>
+<p>The RPMs are provided by a yum repo from <a href="https://hortonworks.com/hdp/">horton works data platform</a> which are very well made, contain well-catered configuration files, and even uses zookeeper out of the box. If you have made it this far and wish to try it out, it is very simple and works exremely well. While I would NOT use it in production in favor of a clustered set up with Thrift, Region Servers, or even YARN, it will work for most dev set ups. If you use it in production, drop me a line on how well it performs under load.</p>
 
-<p>If you are interested in something more suitable for production I recommand <a href="http://ambari.apache.org/">Ambari</a>. It&rsquo;s extremely awesome. Otherwise, just check out my current module at <a href="https://github.com/myoung34/puppet-hbase">my github</a> or on the <a href="https://forge.puppetlabs.com/myoung34/hbase">puppet forge</a>.</p>
+<p>If you are interested in something more suitable for production I recommand <a href="https://ambari.apache.org/">Ambari</a>. It&rsquo;s extremely awesome. Otherwise, just check out my current module at <a href="https://github.com/myoung34/puppet-hbase">my github</a> or on the <a href="https://forge.puppetlabs.com/myoung34/hbase">puppet forge</a>.</p>
 
 <p>Basic Usage:</p>
 
@@ -37,10 +37,10 @@
   
   <entry>
     <title type="html"><![CDATA[UDOO and an Arduino LCD Part 2 - 3d Printer]]></title>
-    <link href="http://marcyoung.us/post/udoo-and-an-arduino-lcd-3d"/>
+    <link href="https://marcyoung.us/post/udoo-and-an-arduino-lcd-3d"/>
     <updated>2014-07-26T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/udoo-3d</id>
-    <content type="html"><![CDATA[<p>I finally broke down and bought a <a href="http://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
+    <id>https://marcyoung.us/post/udoo-3d</id>
+    <content type="html"><![CDATA[<p>I finally broke down and bought a <a href="https://www.bukobot.com/bukito">3d printer</a>. <!--more--> It&rsquo;s from Deezmaker, which I got off kickstarter. I took a pre-made udoo case off thingiverse, and modified it to fit my needs. Thankfully, I still remember how to use Blender, which has native STL support.</p>
 
 <p>I expanded it horizontally a little to allow some cord room, and laid the sata drive below it, with a 3d printed spacer. Then mounted the UDOO inside. After much trial and error on the lid, I got snap fit, and some holes cut out for the button and LCD. I added screw mounts, but that didn&rsquo;t work out too well, so I ended up supergluing my home-made PCB&rsquo;s to the underside of it. One is the clock battery, the other is a push button and resistor, attached to an Arduino riser shield just below the screen. Bam.</p>
 
@@ -52,9 +52,9 @@
   
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
-    <link href="http://marcyoung.us/post/mirth-puppet-module"/>
+    <link href="https://marcyoung.us/post/mirth-puppet-module"/>
     <updated>2014-05-14T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/mirth-puppet-module</id>
+    <id>https://marcyoung.us/post/mirth-puppet-module</id>
     <content type="html"><![CDATA[<p>I released a new Puppet module to the forge out of another work necessity. Mirth is used pretty heavily for HL7 ETL, and has a ton of other uses. <!-- more --></p>
 
 <p>I started out at my current gig doing this, so it hurt a little to have to automate it, mostly out of fear of getting back into that engine =).</p>
@@ -64,7 +64,7 @@
 <p>Basic Usage:</p>
 
 <pre><code>yumrepo { "my mirth repo":
-  baseurl  =&gt; "http://server/pulp/repos/mirthconnect/",
+  baseurl  =&gt; "https://server/pulp/repos/mirthconnect/",
   descr    =&gt; "My Mirth Connect Repository",
   enabled  =&gt; 1,
   gpgcheck =&gt; 0,
@@ -79,9 +79,9 @@ class { 'mirthconnect':
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
+    <link href="https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
     <updated>2014-03-22T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-4-puppet-and-jenkins</id>
+    <id>https://marcyoung.us/post/continuous-deployment-part-4-puppet-and-jenkins</id>
     <content type="html"><![CDATA[<p>So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy this application and keep it up to date, and we even have r10k handling the deployment of those puppet modules so that we don&rsquo;t have to worry about dependencies, and we can even stage them! What we don&rsquo;t have is a way of getting changes to that puppet module to the puppet master without remoting in and running r10k. That&rsquo;s easy to fix with jenkins!<!--more--></p>
 
 <p>If you were to stop right now, you&rsquo;re pretty close. But&hellip;remoting into the server to redeploy isn&rsquo;t scalable. What if you forget? What if you have a new guy that made a super awesome bugfix to your puppet module and forgot how to get it up to the servers? Enter jenkins. Note: I have travis-ci set up for the one here, but we&rsquo;re going to duplicate that logic. Travis-CI is nice if your module is on github, but it may not be. Or you may need it to do something else, such as trigger an r10k deployment, so that&rsquo;s why we&rsquo;re still implementing Jenkins.</p>
@@ -202,9 +202,9 @@ bundle exec rake
   
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet]]></title>
-    <link href="http://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
+    <link href="https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
     <updated>2014-03-21T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/continuous-deployment-part-3-enter-puppet</id>
+    <id>https://marcyoung.us/post/continuous-deployment-part-3-enter-puppet</id>
     <content type="html"><![CDATA[<p>Now that we have a package, we need a way of installing it amirite? We&rsquo;re going to write a puppet module for this package complete with rspec tests<!--more--></p>
 
 <h1>The Module</h1>
@@ -254,7 +254,7 @@ bundle exec rake
 <li><em>.travis.yml</em> and <em>.fixtures.yml</em>
 
 <ul>
-<li>These are specific to <a href="http://travis-ci.org">travis-ci</a>. If your module will be internal, and not at github, you won&rsquo;t need this. I did so because it&rsquo;s at github. I&rsquo;ll be duplicating this CI at jenkins, and you&rsquo;ll see why later.</li>
+<li>These are specific to <a href="https://travis-ci.org">travis-ci</a>. If your module will be internal, and not at github, you won&rsquo;t need this. I did so because it&rsquo;s at github. I&rsquo;ll be duplicating this CI at jenkins, and you&rsquo;ll see why later.</li>
 </ul>
 </li>
 <li><em>Rakefile</em>, <em>Gemfile</em>, and <em>spec/</em>
@@ -272,7 +272,7 @@ bundle exec rake
 <li>Puppetlint
 
 <ul>
-<li>Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you&rsquo;ll want to take a look at <a href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/">this guide</a></li>
+<li>Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you&rsquo;ll want to take a look at <a href="https://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/">this guide</a></li>
 </ul>
 </li>
 <li>RSpec-Puppet

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ssh | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/ssh/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/ssh/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
-    <link href="http://marcyoung.us/post/bless-part2"/>
+    <link href="https://marcyoung.us/post/bless-part2"/>
     <updated>2017-06-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/bless-part2</id>
+    <id>https://marcyoung.us/post/bless-part2</id>
     <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
 <p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there’s no enforcement of MFA. ie you can still call the netflix client and bounce right in.</p>
@@ -198,10 +198,10 @@ EOF
   
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
-    <link href="http://marcyoung.us/post/bless-part1"/>
+    <link href="https://marcyoung.us/post/bless-part1"/>
     <updated>2017-06-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/bless-part1</id>
-    <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="http://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
+    <id>https://marcyoung.us/post/bless-part1</id>
+    <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="https://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
 
 <h1>Prerequisites</h1>
 
@@ -434,7 +434,7 @@ cache_dir: .bless/session
 cache_file: bless_cache.json
 mfa_cache_dir: .aws/session
 mfa_cache_file: token_cache.json
-ip_urls: http://api.ipify.org, http://canihazip.com
+ip_urls: https://api.ipify.org, https://canihazip.com
 update_script: update_blessclient.sh
 
 [LAMBDA]
@@ -463,7 +463,7 @@ kmsauthkey: my kms id that i used for the original password encrypt
   ./bless_client.py \
     us-east-1 \
     bless \
-    testdev $(curl --silent http://ipecho.net/plain) \
+    testdev $(curl --silent https://ipecho.net/plain) \
     ec2-user $(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1') \
     "" \
     ${FILE}.pub ${FILE}-cert.pub

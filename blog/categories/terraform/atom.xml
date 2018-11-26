@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: terraform | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/terraform/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/terraform/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
-    <link href="http://marcyoung.us/post/vault-anything-in-terraform"/>
+    <link href="https://marcyoung.us/post/vault-anything-in-terraform"/>
     <updated>2017-12-23T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/vault-anything-in-terraform</id>
+    <id>https://marcyoung.us/post/vault-anything-in-terraform</id>
     <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
 
 <p>If you&rsquo;ve used ECS and Vault with the <a href="https://www.vaultproject.io/docs/auth/aws.html">aws auth backend</a> you may have found a bit of a snag in terms of automation.</p>
 
 <p>Lets say you want to create a new ECS container to run. You want that task to get specific secrets in vault by role. You write the code, terraform, etc and when it runs you get:</p>
 
-<pre><code>URL: GET http://server:8200/v1/auth/aws-ec2/role/somerole
+<pre><code>URL: GET https://server:8200/v1/auth/aws-ec2/role/somerole
 Code: 400. Errors:
 
 * entry for role somerole not found

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Marcus Young]]></title>
-  <link href="http://marcyoung.us/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Slack Is Not Your Bash Prompt]]></title>
-    <link href="http://marcyoung.us/post/slack-not-bash"/>
+    <link href="https://marcyoung.us/post/slack-not-bash"/>
     <updated>2018-11-26T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/Slack-Bash</id>
+    <id>https://marcyoung.us/post/Slack-Bash</id>
     <content type="html"><![CDATA[<p>A video of my first and likely last conference talk (lightning talk) about chatops  <!-- more --></p>
 
 <p><a href="https://www.youtube.com/watch?v=Z6LrwUchRaE&amp;list=PLte_zIBj3fx6gNyC_8sleIFAYOvQhXemC&amp;index=7">Video here</a></p>
@@ -26,14 +26,14 @@
   
   <entry>
     <title type="html"><![CDATA[Hulk-Smash Production]]></title>
-    <link href="http://marcyoung.us/post/hulk-smash"/>
+    <link href="https://marcyoung.us/post/hulk-smash"/>
     <updated>2018-05-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/Hulk-Smash-Prod</id>
+    <id>https://marcyoung.us/post/Hulk-Smash-Prod</id>
     <content type="html"><![CDATA[<p>I one-upped my own bad idea with more badness. Don&rsquo;t do this.  <!-- more --></p>
 
 <p>I, uh. Yeah.</p>
 
-<p>I assume you <a href="http://marcyoung.us/post/deploy-production-button">read my previous post about my physical deploy button</a>. Well: I one-upped it.</p>
+<p>I assume you <a href="https://marcyoung.us/post/deploy-production-button">read my previous post about my physical deploy button</a>. Well: I one-upped it.</p>
 
 <p>Let me explain. Nah let&rsquo;s cut to it. I wanted to play with <a href="https://aws.amazon.com/iot-core/">AWS IoT</a> and I did so shamelessly with much architecture.</p>
 
@@ -56,21 +56,21 @@
 
 <p>Without further ado I give you: Hulk Smash Production.</p>
 
-<p><img src="http://marcyoung.us/images/hulksmash.png" title="hulksmash" ></p>
+<p><img src="https://marcyoung.us/images/hulksmash.png" title="hulksmash" ></p>
 
 <p>The <a href="https://giphy.com/embed/xuW89v9kQXMeQ">initial gif</a></p>
 
 <p>And the final gif (yes the hulk hand is duct taped to a bamboo skewer to a stepper motor):</p>
 
-<p><img src="http://marcyoung.us/images/hulksmash.gif" title="hulksmash" ></p>
+<p><img src="https://marcyoung.us/images/hulksmash.gif" title="hulksmash" ></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[A Physical Deploy-Production Button]]></title>
-    <link href="http://marcyoung.us/post/deploy-production-button"/>
+    <link href="https://marcyoung.us/post/deploy-production-button"/>
     <updated>2018-05-19T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/deploy-production-button</id>
+    <id>https://marcyoung.us/post/deploy-production-button</id>
     <content type="html"><![CDATA[<p>I made a physical button to deploy production and regret nothing.  <!-- more --></p>
 
 <p>Over the last few weeks I&rsquo;ve been looking for a project.</p>
@@ -87,7 +87,7 @@
 
 <p>Getting there? Meh.</p>
 
-<p>First: you have to flash your esp with <a href="http://micropython.org/download">the micropython firmware</a>.</p>
+<p>First: you have to flash your esp with <a href="https://micropython.org/download">the micropython firmware</a>.</p>
 
 <p>Next: you have to get your code onto the board. The feedback loop for this is the annoying part. The first time you flash the firmware you have to <a href="https://learn.adafruit.com/micropython-basics-esp8266-webrepl/access-webrepl">enable WebREPL</a>. It&rsquo;s a one-time cost but it&rsquo;s smelly. This enables a wifi broadcast from the board that you can then access from webrepl with a password.</p>
 
@@ -167,8 +167,8 @@
 </span><span class='line'>        print(urequests.post(webhook_url, json={'text': "!deploy prod master -f"}, headers={'Content-Type': 'application/json'}).status_code)</span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="http://marcyoung.us/images/huzzah1.jpg" title="huzzah1" >
-<img src="http://marcyoung.us/images/huzzah2.png" title="huzzah2" ></p>
+<p><img src="https://marcyoung.us/images/huzzah1.jpg" title="huzzah1" >
+<img src="https://marcyoung.us/images/huzzah2.png" title="huzzah2" ></p>
 
 <p>It works and it&rsquo;s pretty empowering to smash. We deployed to production a record number of times that day.</p>
 ]]></content>
@@ -176,9 +176,9 @@
   
   <entry>
     <title type="html"><![CDATA[Let's Rethink Jenkins]]></title>
-    <link href="http://marcyoung.us/post/lets-rethink-jenkins"/>
+    <link href="https://marcyoung.us/post/lets-rethink-jenkins"/>
     <updated>2018-01-29T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/lets-rethink-jenkins</id>
+    <id>https://marcyoung.us/post/lets-rethink-jenkins</id>
     <content type="html"><![CDATA[<p>I lose all data from jenkins every time I deploy it. And that&rsquo;s OK.  <!-- more --></p>
 
 <h2>Background: a rant</h2>
@@ -186,13 +186,13 @@
 <p>Let me start off by saying: I&rsquo;ve done <em>a lot</em> of Jenkins.</p>
 
 <ul>
-<li>Exhibit A (super old jenkins with fake pipelines): <img class="right" src="http://marcyoung.us/images/jenkins-old.png" title="jenkins 1.4" ></li>
+<li>Exhibit A (super old jenkins with fake pipelines): <img class="right" src="https://marcyoung.us/images/jenkins-old.png" title="jenkins 1.4" ></li>
 </ul>
 
 
 <p>I&rsquo;ve done new Jenkins (I love 2.0 and love Jenkinsfile&rsquo;s).</p>
 
-<p>I&rsquo;ve worked with <a href="http://jenkins.ovirt.org">large jenkins installs</a>.
+<p>I&rsquo;ve worked with <a href="https://jenkins.ovirt.org">large jenkins installs</a>.
 I&rsquo;ve worked with small jenkins at multiple shops.</p>
 
 <p>I&rsquo;ve automated backups with S3 tarballs:</p>
@@ -258,22 +258,22 @@ The one I posted shows how I automated groovy to set up:</p>
 
 <p>So how do I do it? In production my docker hosts listen to UDP port 555 with Logstash for syslog and forward them to ELK (because SSL, and other reasons).
 <a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy">In my example the logstash plugin just sends directly to elasticsearch</a>.
-All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> at run time and I get to manage the data like my other data from ELK.</p>
+All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a> at run time and I get to manage the data like my other data from ELK.</p>
 
-<p>My artifacts go to someting like <a href="http://www.jfrog.com/artifactory">artifactory</a>.</p>
+<p>My artifacts go to someting like <a href="https://www.jfrog.com/artifactory">artifactory</a>.</p>
 
 <p>And guess what? It&rsquo;s fantastic. Automation is dead simple. And I put the data in a real database. which lets me do things like see build times across projects, see deployments, etc.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/jenkins1.png" title="jenkins" >
-<img class="left" src="http://marcyoung.us/images/jenkins3.png" title="jenkins" ></p>
+<p><img class="left" src="https://marcyoung.us/images/jenkins1.png" title="jenkins" >
+<img class="left" src="https://marcyoung.us/images/jenkins3.png" title="jenkins" ></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 2)]]></title>
-    <link href="http://marcyoung.us/post/docker-vault-ca-part2"/>
+    <link href="https://marcyoung.us/post/docker-vault-ca-part2"/>
     <updated>2017-12-24T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/docker-vault-ca-part2</id>
+    <id>https://marcyoung.us/post/docker-vault-ca-part2</id>
     <content type="html"><![CDATA[<p>Now for some cool snippets on how to automatically request certs from the Intermediary we created in Part 1<!-- more --></p>
 
 <h2>Dockerfile</h2>
@@ -367,7 +367,7 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 </span><span class='line'>
 </span><span class='line'>export SSL_PATH=/opt/ssl
 </span><span class='line'>
-</span><span class='line'>EC2_AVAIL_ZONE=$(curl -s --max-time 5 http://169.254.169.254/latest/meta-data/placement/availability-zone)
+</span><span class='line'>EC2_AVAIL_ZONE=$(curl -s --max-time 5 https://169.254.169.254/latest/meta-data/placement/availability-zone)
 </span><span class='line'>if [[ $? -eq 0 ]]; then
 </span><span class='line'>  # shellcheck disable=SC2001,SC2006
 </span><span class='line'>  EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
@@ -392,7 +392,7 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 
 <h2>Terraforming the certificate issuer</h2>
 
-<p>If you somehow get the previous part to run, it will fail because you have to create the role in Vault before you can just start generating certs off it. In the <a href="http://cuddletech.com/?p=959">cuddletech guide</a> this is under <code>Requesting a Certificate for a Web Server</code> as:</p>
+<p>If you somehow get the previous part to run, it will fail because you have to create the role in Vault before you can just start generating certs off it. In the <a href="https://cuddletech.com/?p=959">cuddletech guide</a> this is under <code>Requesting a Certificate for a Web Server</code> as:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -446,9 +446,9 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
   
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
-    <link href="http://marcyoung.us/post/docker-vault-ca-part1"/>
+    <link href="https://marcyoung.us/post/docker-vault-ca-part1"/>
     <updated>2017-12-24T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/docker-vault-ca-part1</id>
+    <id>https://marcyoung.us/post/docker-vault-ca-part1</id>
     <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
 
 <h2>Prerequisites</h2>
@@ -461,7 +461,7 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 
 <h2>Create the Root cert/key</h2>
 
-<p>(This is actually mostly a clone from <a href="http://cuddletech.com/?p=959">here</a> but I want to make sure it never disappears)</p>
+<p>(This is actually mostly a clone from <a href="https://cuddletech.com/?p=959">here</a> but I want to make sure it never disappears)</p>
 
 <p><em>Note</em>: You should not let the vault server generate the root CA, you should generate it and import it. I just havent figured out how to do that yet. I will update this post when I get around to it. <a href="https://en.wikipedia.org/wiki/Offline_root_certificate_authority">More info on that here</a></p>
 
@@ -549,7 +549,7 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s http://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s https://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
 </span><span class='line'>Certificate:
 </span><span class='line'>    Data:
 </span><span class='line'>        Version: 3 (0x2)
@@ -568,7 +568,7 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/config/urls issuing_certificates="http://10.0.0.22:8200/v1/cuddletech
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/config/urls issuing_certificates="https://10.0.0.22:8200/v1/cuddletech
 </span><span class='line'>Success! Data written to: cuddletech/config/urls</span></code></pre></td></tr></table></div></figure>
 
 
@@ -699,7 +699,7 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s http://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s https://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
 </span><span class='line'>Certificate:
 </span><span class='line'>    Data:
 </span><span class='line'>        Version: 3 (0x2)
@@ -721,8 +721,8 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/config/urls \
-</span><span class='line'>&gt; issuing_certificates="http://10.0.0.22:8200/v1/cuddletech_ops/ca" \
-</span><span class='line'>&gt; crl_distribution_points="http://10.0.0.22:8200/v1/cuddletech_ops/crl"
+</span><span class='line'>&gt; issuing_certificates="https://10.0.0.22:8200/v1/cuddletech_ops/ca" \
+</span><span class='line'>&gt; crl_distribution_points="https://10.0.0.22:8200/v1/cuddletech_ops/crl"
 </span><span class='line'>Success! Data written to: cuddletech_ops/config/urls</span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
@@ -730,9 +730,9 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
   
   <entry>
     <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
-    <link href="http://marcyoung.us/post/vault-anything-in-terraform"/>
+    <link href="https://marcyoung.us/post/vault-anything-in-terraform"/>
     <updated>2017-12-23T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/vault-anything-in-terraform</id>
+    <id>https://marcyoung.us/post/vault-anything-in-terraform</id>
     <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
 
 <p>If you&rsquo;ve used ECS and Vault with the <a href="https://www.vaultproject.io/docs/auth/aws.html">aws auth backend</a> you may have found a bit of a snag in terms of automation.</p>
@@ -743,7 +743,7 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>URL: GET http://server:8200/v1/auth/aws-ec2/role/somerole
+</pre></td><td class='code'><pre><code class=''><span class='line'>URL: GET https://server:8200/v1/auth/aws-ec2/role/somerole
 </span><span class='line'>Code: 400. Errors:
 </span><span class='line'>
 </span><span class='line'>* entry for role somerole not found</span></code></pre></td></tr></table></div></figure>
@@ -878,9 +878,9 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
   
   <entry>
     <title type="html"><![CDATA[re:Invent 2017 (never again)]]></title>
-    <link href="http://marcyoung.us/post/reinvent-2017"/>
+    <link href="https://marcyoung.us/post/reinvent-2017"/>
     <updated>2017-12-22T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/reinvent-2017</id>
+    <id>https://marcyoung.us/post/reinvent-2017</id>
     <content type="html"><![CDATA[<p>This was my worst overall conference experience to date. <!-- more --></p>
 
 <p>Along with many others, I had my share of complaints, but this one takes the cake.</p>
@@ -913,20 +913,20 @@ All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> 
   
   <entry>
     <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
-    <link href="http://marcyoung.us/post/ergo-mouse-review"/>
+    <link href="https://marcyoung.us/post/ergo-mouse-review"/>
     <updated>2017-06-26T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/ergo-mouse-review</id>
+    <id>https://marcyoung.us/post/ergo-mouse-review</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve Recently been really into ergonomic mice, and wanted to give my thoughts on a few after going all in. <!-- more --></p>
 
 <p>In the last few months, I&rsquo;ve been pretty into mechanical keyboards and form factor. I&rsquo;ve been using an original (very old) Rollermouse for about 2 years now and was looking to upgrade it (the thing is huge).</p>
 
 <p>My current home setup is a Contour Rollermouse free2 and a pok3r (Cherry MX Clears) and a Logitech G700s for gaming.
-<img class="left" src="http://marcyoung.us/images/free1.jpg"></p>
+<img class="left" src="https://marcyoung.us/images/free1.jpg"></p>
 
 <p>My work set up is a TechKeys JD40 on a 1up case (80g Cherry MX browns) and a Contour Rollermouse Red.
-<img class="left" src="http://marcyoung.us/images/red1.jpg"></p>
+<img class="left" src="https://marcyoung.us/images/red1.jpg"></p>
 
-<p>While shopping around, I came upon the <a href="http://amzn.to/2tguHYQ">Penclic NiceTouch t2</a>. It caught my eye because it&rsquo;s <em>exactly</em> the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that&rsquo;s a huge draw.
+<p>While shopping around, I came upon the <a href="https://amzn.to/2tguHYQ">Penclic NiceTouch t2</a>. It caught my eye because it&rsquo;s <em>exactly</em> the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that&rsquo;s a huge draw.
 They sent me one to sample, so I decided to do a pro/con of my setups.</p>
 
 <h2>Contourmouse Red</h2>
@@ -938,8 +938,8 @@ I got adjusted to it but it happened often enough to notice. With the red, this 
 <p>All the buttons are 100% programmable in OSX/Windows via their driver. I havent tried on linux, but I&rsquo;m sure it is. The bar itself has a physical tensioner as well which is nice to add resistance. And as far as usability: it&rsquo;s great. The roller bar
 is a physical left click if you press, and everything is in the right place. I dont have to move my hands <em>at all</em> to use it.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/red1.jpg">
-<img class="left" src="http://marcyoung.us/images/red2.jpg"></p>
+<p><img class="left" src="https://marcyoung.us/images/red1.jpg">
+<img class="left" src="https://marcyoung.us/images/red2.jpg"></p>
 
 <p>The drawback is price. It&rsquo;s crazy expensive, and I got lucky to find it on ebay after months of searching/bidding for a low price. I&rsquo;m not sure it&rsquo;s worth the original MSRP, but I love it.</p>
 
@@ -951,8 +951,8 @@ I&rsquo;ve been at it too long. And the original complaint about physical left/r
 throw it out the window by this point. It&rsquo;s great, but it&rsquo;s not worth the price considering how much nicer the Red is. Also, after only a few weeks, the palm rest started coming apart, and I used a sticker to prevent it from spreading. I can tell you right
 now though, the sticker is functionally part of it now. If I pull it off, the padding will come with it. They  call the pads replaceable, but that assumes you can find it. I can&rsquo;t find replacement pads that dont come with a full keyboard.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/free1.jpg">
-<img class="left" src="http://marcyoung.us/images/free2.jpg"></p>
+<p><img class="left" src="https://marcyoung.us/images/free1.jpg">
+<img class="left" src="https://marcyoung.us/images/free2.jpg"></p>
 
 <p>This one is not worth the price, but I&rsquo;d buy it again if it were &lt; $60.</p>
 
@@ -962,30 +962,30 @@ now though, the sticker is functionally part of it now. If I pull it off, the pa
 However, my biggest problem is not with the keyboard, but with the trackpad. As a trackpad, it&rsquo;s fine, but it doesn&rsquo;t support gestures or multi-finger. I&rsquo;ve become so used to being able to do two-finger scroll that it&rsquo;s frustrating to not have it.
 There is a physical rotating key that lets you scroll left right, but the right side of my palm kept touching it and making my cursor jump in vim.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/t2_1.jpg">
-<img class="left" src="http://marcyoung.us/images/t2_4.jpg">
-<img class="left" src="http://marcyoung.us/images/t2_5.jpg">
-<img class="left" src="http://marcyoung.us/images/t2_6.jpg"></p>
+<p><img class="left" src="https://marcyoung.us/images/t2_1.jpg">
+<img class="left" src="https://marcyoung.us/images/t2_4.jpg">
+<img class="left" src="https://marcyoung.us/images/t2_5.jpg">
+<img class="left" src="https://marcyoung.us/images/t2_6.jpg"></p>
 
 <p>My other complaint is with the buttons. They&rsquo;re not labeled or programmable so you <em>have</em> to read the booklet to know what buttons &frac34; do. They&rsquo;re also impossible to reach. The draw to the contourmouse design is that the bar clicks but also those buttons
 are very reachable by your thumbs. You can put your hands on the Home keys and not  have to move your hands at all to be efficient. With the T2 the buttons are so far down that they&rsquo;re not reachable, meaning I have to move my hands to click them. At that
 point I&rsquo;d rather have a mouse. Without two-finger scroll it means that I cant do anything except move my mouse up/down/left/right without moving my hands around.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/t2_3.jpg"></p>
+<p><img class="left" src="https://marcyoung.us/images/t2_3.jpg"></p>
 
 <p>The only other complaint I have is that if you use the trackpad with a different keyboard (like my pok3r), it&rsquo;s too low and leave a huge gap vertically. There are no risers (like on most keyboard) to raise the trackpad, so I stuffed a piece of cardboard
 under it, but that made it a bit wobbly. I could probably 3d print something, but that&rsquo;s pretty intense for an out-of-the-box experience. Lastly, the trackpad is <em>very</em> light. So light that it moves around while using it.  It probably only weighs a few
 ounces which gives it a flemsy breakable feel. Having something that light on top of a  piece of cardboard created a very unstable setup.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/t2_2.jpg"></p>
+<p><img class="left" src="https://marcyoung.us/images/t2_2.jpg"></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
-    <link href="http://marcyoung.us/post/bless-part2"/>
+    <link href="https://marcyoung.us/post/bless-part2"/>
     <updated>2017-06-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/bless-part2</id>
+    <id>https://marcyoung.us/post/bless-part2</id>
     <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
 <p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there’s no enforcement of MFA. ie you can still call the netflix client and bounce right in.</p>
@@ -1310,10 +1310,10 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
   
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
-    <link href="http://marcyoung.us/post/bless-part1"/>
+    <link href="https://marcyoung.us/post/bless-part1"/>
     <updated>2017-06-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/bless-part1</id>
-    <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="http://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
+    <id>https://marcyoung.us/post/bless-part1</id>
+    <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="https://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
 
 <h1>Prerequisites</h1>
 
@@ -1729,7 +1729,7 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
 </span><span class='line'>cache_file: bless_cache.json
 </span><span class='line'>mfa_cache_dir: .aws/session
 </span><span class='line'>mfa_cache_file: token_cache.json
-</span><span class='line'>ip_urls: http://api.ipify.org, http://canihazip.com
+</span><span class='line'>ip_urls: https://api.ipify.org, https://canihazip.com
 </span><span class='line'>update_script: update_blessclient.sh
 </span><span class='line'>
 </span><span class='line'>[LAMBDA]
@@ -1773,7 +1773,7 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
 </span><span class='line'>  ./bless_client.py \
 </span><span class='line'>    us-east-1 \
 </span><span class='line'>    bless \
-</span><span class='line'>    testdev $(curl --silent http://ipecho.net/plain) \
+</span><span class='line'>    testdev $(curl --silent https://ipecho.net/plain) \
 </span><span class='line'>    ec2-user $(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1') \
 </span><span class='line'>    "" \
 </span><span class='line'>    ${FILE}.pub ${FILE}-cert.pub
@@ -1789,18 +1789,18 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
   
   <entry>
     <title type="html"><![CDATA[oVirt and Vagrant]]></title>
-    <link href="http://marcyoung.us/post/ovirt4-vagrant"/>
+    <link href="https://marcyoung.us/post/ovirt4-vagrant"/>
     <updated>2017-02-10T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/ovirt-vagrant</id>
+    <id>https://marcyoung.us/post/ovirt-vagrant</id>
     <content type="html"><![CDATA[<p>I wrote a <a href="https://www.ovirt.org/blog/2017/02/using-oVirt-vagrant/">blog post</a> over on oVirt about how to use the most recent release of my new vagrant oVirt v4 provider.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Homemade planck]]></title>
-    <link href="http://marcyoung.us/post/planck"/>
+    <link href="https://marcyoung.us/post/planck"/>
     <updated>2017-01-18T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/planck</id>
+    <id>https://marcyoung.us/post/planck</id>
     <content type="html"><![CDATA[<p>I made a super tedious keyboard.<!-- more --></p>
 
 <p>I’ve owned a Das Keyboard Model S Ultimate for about 3 years now. It was mostly to get into keyboards and try out a nice mechanical one. I still love it, but after getting more interested in them, I decided to build a planck.</p>
@@ -1811,20 +1811,20 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
 
 <p>I 3d printed the case, then wired up the columns and rows using 1N4148 diodes to a teensy. My first iteration used what looked like a really awesome 3d printed base, but it ended up overwhelming me because the wires had to be routed through very very tiny spaces, and my soldering iron: a) needed some love and b) kept melting the 3d printed base (because of all the tight spots). I then printed a much different and standard base and things went smoother.</p>
 
-<p>I also got overwhelmed with the <a href="https://github.com/tmk/tmk_keyboard">TMK firmware</a>. Everyone says it’s easy, and you’d think as a programmer I’d have some ease with it, but it’s super confusing and talks about bit shifting like it’s just adding numbers and you should be able to do it in your sleep. Then I found <a href="http://kb.sized.io/">this site</a> and was done in under an hour. Obligatory pictures.</p>
+<p>I also got overwhelmed with the <a href="https://github.com/tmk/tmk_keyboard">TMK firmware</a>. Everyone says it’s easy, and you’d think as a programmer I’d have some ease with it, but it’s super confusing and talks about bit shifting like it’s just adding numbers and you should be able to do it in your sleep. Then I found <a href="https://kb.sized.io/">this site</a> and was done in under an hour. Obligatory pictures.</p>
 
-<p><img class="left" src="http://marcyoung.us/images/IMG_20160927_062158.jpg" title="keyboard 1" >
-<img class="left" src="http://marcyoung.us/images/IMG_20161224_143647.jpg" title="keyboard 1" >
-<img class="left" src="http://marcyoung.us/images/IMG_20161225_050545.jpg" title="keyboard 1" >
-<img class="left" src="http://marcyoung.us/images/IMG_20170104_145354.jpg" title="keyboard 1" ></p>
+<p><img class="left" src="https://marcyoung.us/images/IMG_20160927_062158.jpg" title="keyboard 1" >
+<img class="left" src="https://marcyoung.us/images/IMG_20161224_143647.jpg" title="keyboard 1" >
+<img class="left" src="https://marcyoung.us/images/IMG_20161225_050545.jpg" title="keyboard 1" >
+<img class="left" src="https://marcyoung.us/images/IMG_20170104_145354.jpg" title="keyboard 1" ></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 4 - Curator]]></title>
-    <link href="http://marcyoung.us/post/dockerized-elk-part-4"/>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-4"/>
     <updated>2016-08-08T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/dockerized-elk-part4</id>
+    <id>https://marcyoung.us/post/dockerized-elk-part4</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting Kibana up. This one focuses on getting Curator <!-- more --></p>
 
 <h1>Disclaimer</h1>
@@ -1892,9 +1892,9 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana]]></title>
-    <link href="http://marcyoung.us/post/dockerized-elk-part-3"/>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-3"/>
     <updated>2016-08-08T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/dockerized-elk-part3</id>
+    <id>https://marcyoung.us/post/dockerized-elk-part3</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting logstash up. This one focuses on getting Kibana <!-- more --></p>
 
 <h1>Disclaimer</h1>
@@ -1945,9 +1945,9 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash]]></title>
-    <link href="http://marcyoung.us/post/dockerized-elk-part-2"/>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-2"/>
     <updated>2016-08-08T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/dockerized-elk-part2</id>
+    <id>https://marcyoung.us/post/dockerized-elk-part2</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting the ECS cluster, ECR repos, and Elasticsearch up. This one focuses on getting Logstash <!-- more --></p>
 
 <h1>Disclaimer</h1>
@@ -2028,9 +2028,9 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch]]></title>
-    <link href="http://marcyoung.us/post/dockerized-elk-part-1"/>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-1"/>
     <updated>2016-08-08T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/dockerized-elk-part1</id>
+    <id>https://marcyoung.us/post/dockerized-elk-part1</id>
     <content type="html"><![CDATA[<p>This will be a write-up on how to get a self-healing and self-curating SSL-enabled Hot/Warm ELK stack using ECS and lambda <!-- more --></p>
 
 <h1>Disclaimer</h1>
@@ -2105,9 +2105,9 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   
   <entry>
     <title type="html"><![CDATA[My Thoughts after six months of Elastic Beanstalk.]]></title>
-    <link href="http://marcyoung.us/post/six-months-of-beanstalk"/>
+    <link href="https://marcyoung.us/post/six-months-of-beanstalk"/>
     <updated>2015-11-16T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/six-months-of-beanstalk</id>
+    <id>https://marcyoung.us/post/six-months-of-beanstalk</id>
     <content type="html"><![CDATA[<p>We&rsquo;ve been using pure beanstalk at my current gig for six months and here are my thoughts. <!-- more --></p>
 
 <p>I&rsquo;ll start off with the tl;dr: I like beanstalk a lot. When it fits.</p>
@@ -2145,9 +2145,9 @@ I&rsquo;m pretty much sold on Terraform, but that is my personal choice, and I w
   
   <entry>
     <title type="html"><![CDATA[Fighting a nasty AWS bug for Beanstalk Leader Election]]></title>
-    <link href="http://marcyoung.us/post/beanstalk-leader"/>
+    <link href="https://marcyoung.us/post/beanstalk-leader"/>
     <updated>2015-10-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/beanstalk-leader</id>
+    <id>https://marcyoung.us/post/beanstalk-leader</id>
     <content type="html"><![CDATA[<p>In the last few months I&rsquo;ve been working to move my latest employer to AWS from Heroku and discovered a very nasty bug. <!-- more -->
 The move was due to a lot of issues, the least of which being the cost of heroku compared to using what they implement.</p>
 
@@ -2173,9 +2173,9 @@ it turned out to only happen on dev and test (not production). Parsing the web o
   
   <entry>
     <title type="html"><![CDATA[Purging old beanstalk versions]]></title>
-    <link href="http://marcyoung.us/post/beanstalk-purge"/>
+    <link href="https://marcyoung.us/post/beanstalk-purge"/>
     <updated>2015-08-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/beanstalk-purge</id>
+    <id>https://marcyoung.us/post/beanstalk-purge</id>
     <content type="html"><![CDATA[<p>I recently found out that you can have at most 500 application versions across beanstalk. I wrote a small script to purge it of old ones<!-- more --></p>
 
 <p>I&rsquo;m a big fan of micro-deployments, however that seems to have caused a headache lately (and it turns out you don&rsquo;t want to find this out when you absolutely need to deploy).</p>

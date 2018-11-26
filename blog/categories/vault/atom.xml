@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: vault | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/vault/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/vault/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 2)]]></title>
-    <link href="http://marcyoung.us/post/docker-vault-ca-part2"/>
+    <link href="https://marcyoung.us/post/docker-vault-ca-part2"/>
     <updated>2017-12-24T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/docker-vault-ca-part2</id>
+    <id>https://marcyoung.us/post/docker-vault-ca-part2</id>
     <content type="html"><![CDATA[<p>Now for some cool snippets on how to automatically request certs from the Intermediary we created in Part 1<!-- more --></p>
 
 <h2>Dockerfile</h2>
@@ -59,7 +59,7 @@ CMD ["/docker-entrypoint.sh"]
 
 export SSL_PATH=/opt/ssl
 
-EC2_AVAIL_ZONE=$(curl -s --max-time 5 http://169.254.169.254/latest/meta-data/placement/availability-zone)
+EC2_AVAIL_ZONE=$(curl -s --max-time 5 https://169.254.169.254/latest/meta-data/placement/availability-zone)
 if [[ $? -eq 0 ]]; then
   # shellcheck disable=SC2001,SC2006
   EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
@@ -84,7 +84,7 @@ cat ${SSL_PATH}/cert.pem ${SSL_PATH}/ca.pem  &gt; ${SSL_PATH}/bundle.pem
 
 <h2>Terraforming the certificate issuer</h2>
 
-<p>If you somehow get the previous part to run, it will fail because you have to create the role in Vault before you can just start generating certs off it. In the <a href="http://cuddletech.com/?p=959">cuddletech guide</a> this is under <code>Requesting a Certificate for a Web Server</code> as:</p>
+<p>If you somehow get the previous part to run, it will fail because you have to create the role in Vault before you can just start generating certs off it. In the <a href="https://cuddletech.com/?p=959">cuddletech guide</a> this is under <code>Requesting a Certificate for a Web Server</code> as:</p>
 
 <pre><code>$ vault write cuddletech_ops/roles/web_server \
 &gt; key_bits=2048 \
@@ -119,9 +119,9 @@ EOT
   
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
-    <link href="http://marcyoung.us/post/docker-vault-ca-part1"/>
+    <link href="https://marcyoung.us/post/docker-vault-ca-part1"/>
     <updated>2017-12-24T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/docker-vault-ca-part1</id>
+    <id>https://marcyoung.us/post/docker-vault-ca-part1</id>
     <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
 
 <h2>Prerequisites</h2>
@@ -134,7 +134,7 @@ EOT
 
 <h2>Create the Root cert/key</h2>
 
-<p>(This is actually mostly a clone from <a href="http://cuddletech.com/?p=959">here</a> but I want to make sure it never disappears)</p>
+<p>(This is actually mostly a clone from <a href="https://cuddletech.com/?p=959">here</a> but I want to make sure it never disappears)</p>
 
 <p><em>Note</em>: You should not let the vault server generate the root CA, you should generate it and import it. I just havent figured out how to do that yet. I will update this post when I get around to it. <a href="https://en.wikipedia.org/wiki/Offline_root_certificate_authority">More info on that here</a></p>
 
@@ -178,7 +178,7 @@ serial_number   0d:78:88:dc:60:f3:3f:62:1b:43:d2:1a:b4:54:82:bf:d3:ea:fe:58
 
 <p>Verify</p>
 
-<pre><code>$ curl -s http://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
+<pre><code>$ curl -s https://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -195,7 +195,7 @@ Certificate:
 
 <p>Fix the URL for accessing the CA/CRL URLs</p>
 
-<pre><code>$ vault write cuddletech/config/urls issuing_certificates="http://10.0.0.22:8200/v1/cuddletech
+<pre><code>$ vault write cuddletech/config/urls issuing_certificates="https://10.0.0.22:8200/v1/cuddletech
 Success! Data written to: cuddletech/config/urls
 </code></pre>
 
@@ -266,7 +266,7 @@ Success! Data written to: cuddletech_ops/intermediate/set-signed
 
 <p>Awesome! Lets verify:</p>
 
-<pre><code>$ curl -s http://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
+<pre><code>$ curl -s https://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -284,8 +284,8 @@ Certificate:
 <p>The last thing we need to do is set the CA &amp; CRL URL’s for accessing the CA:</p>
 
 <pre><code>$ vault write cuddletech_ops/config/urls \
-&gt; issuing_certificates="http://10.0.0.22:8200/v1/cuddletech_ops/ca" \
-&gt; crl_distribution_points="http://10.0.0.22:8200/v1/cuddletech_ops/crl"
+&gt; issuing_certificates="https://10.0.0.22:8200/v1/cuddletech_ops/ca" \
+&gt; crl_distribution_points="https://10.0.0.22:8200/v1/cuddletech_ops/crl"
 Success! Data written to: cuddletech_ops/config/urls
 </code></pre>
 ]]></content>
@@ -293,16 +293,16 @@ Success! Data written to: cuddletech_ops/config/urls
   
   <entry>
     <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
-    <link href="http://marcyoung.us/post/vault-anything-in-terraform"/>
+    <link href="https://marcyoung.us/post/vault-anything-in-terraform"/>
     <updated>2017-12-23T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/vault-anything-in-terraform</id>
+    <id>https://marcyoung.us/post/vault-anything-in-terraform</id>
     <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
 
 <p>If you&rsquo;ve used ECS and Vault with the <a href="https://www.vaultproject.io/docs/auth/aws.html">aws auth backend</a> you may have found a bit of a snag in terms of automation.</p>
 
 <p>Lets say you want to create a new ECS container to run. You want that task to get specific secrets in vault by role. You write the code, terraform, etc and when it runs you get:</p>
 
-<pre><code>URL: GET http://server:8200/v1/auth/aws-ec2/role/somerole
+<pre><code>URL: GET https://server:8200/v1/auth/aws-ec2/role/somerole
 Code: 400. Errors:
 
 * entry for role somerole not found

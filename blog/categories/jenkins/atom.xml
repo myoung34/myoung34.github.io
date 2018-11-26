@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jenkins | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/jenkins/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/jenkins/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Let's Rethink Jenkins]]></title>
-    <link href="http://marcyoung.us/post/lets-rethink-jenkins"/>
+    <link href="https://marcyoung.us/post/lets-rethink-jenkins"/>
     <updated>2018-01-29T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/lets-rethink-jenkins</id>
+    <id>https://marcyoung.us/post/lets-rethink-jenkins</id>
     <content type="html"><![CDATA[<p>I lose all data from jenkins every time I deploy it. And that&rsquo;s OK.  <!-- more --></p>
 
 <h2>Background: a rant</h2>
@@ -31,7 +31,7 @@
 
 <p>I&rsquo;ve done new Jenkins (I love 2.0 and love Jenkinsfile&rsquo;s).</p>
 
-<p>I&rsquo;ve worked with <a href="http://jenkins.ovirt.org">large jenkins installs</a>.
+<p>I&rsquo;ve worked with <a href="https://jenkins.ovirt.org">large jenkins installs</a>.
 I&rsquo;ve worked with small jenkins at multiple shops.</p>
 
 <p>I&rsquo;ve automated backups with S3 tarballs:</p>
@@ -87,9 +87,9 @@ The one I posted shows how I automated groovy to set up:</p>
 
 <p>So how do I do it? In production my docker hosts listen to UDP port 555 with Logstash for syslog and forward them to ELK (because SSL, and other reasons).
 <a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy">In my example the logstash plugin just sends directly to elasticsearch</a>.
-All the env vars are pulled from <a href="http://www.vaultproject.io">vault</a> at run time and I get to manage the data like my other data from ELK.</p>
+All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a> at run time and I get to manage the data like my other data from ELK.</p>
 
-<p>My artifacts go to someting like <a href="http://www.jfrog.com/artifactory">artifactory</a>.</p>
+<p>My artifacts go to someting like <a href="https://www.jfrog.com/artifactory">artifactory</a>.</p>
 
 <p>And guess what? It&rsquo;s fantastic. Automation is dead simple. And I put the data in a real database. which lets me do things like see build times across projects, see deployments, etc.</p>
 

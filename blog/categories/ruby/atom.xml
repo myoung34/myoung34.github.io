@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ruby | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/ruby/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[oVirt and Vagrant]]></title>
-    <link href="http://marcyoung.us/post/ovirt4-vagrant"/>
+    <link href="https://marcyoung.us/post/ovirt4-vagrant"/>
     <updated>2017-02-10T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/ovirt-vagrant</id>
+    <id>https://marcyoung.us/post/ovirt-vagrant</id>
     <content type="html"><![CDATA[<p>I wrote a <a href="https://www.ovirt.org/blog/2017/02/using-oVirt-vagrant/">blog post</a> over on oVirt about how to use the most recent release of my new vagrant oVirt v4 provider.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[My Thoughts after six months of Elastic Beanstalk.]]></title>
-    <link href="http://marcyoung.us/post/six-months-of-beanstalk"/>
+    <link href="https://marcyoung.us/post/six-months-of-beanstalk"/>
     <updated>2015-11-16T00:00:00-06:00</updated>
-    <id>http://marcyoung.us/post/six-months-of-beanstalk</id>
+    <id>https://marcyoung.us/post/six-months-of-beanstalk</id>
     <content type="html"><![CDATA[<p>We&rsquo;ve been using pure beanstalk at my current gig for six months and here are my thoughts. <!-- more --></p>
 
 <p>I&rsquo;ll start off with the tl;dr: I like beanstalk a lot. When it fits.</p>
@@ -64,9 +64,9 @@ I&rsquo;m pretty much sold on Terraform, but that is my personal choice, and I w
   
   <entry>
     <title type="html"><![CDATA[Fighting a nasty AWS bug for Beanstalk Leader Election]]></title>
-    <link href="http://marcyoung.us/post/beanstalk-leader"/>
+    <link href="https://marcyoung.us/post/beanstalk-leader"/>
     <updated>2015-10-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/beanstalk-leader</id>
+    <id>https://marcyoung.us/post/beanstalk-leader</id>
     <content type="html"><![CDATA[<p>In the last few months I&rsquo;ve been working to move my latest employer to AWS from Heroku and discovered a very nasty bug. <!-- more -->
 The move was due to a lot of issues, the least of which being the cost of heroku compared to using what they implement.</p>
 
@@ -92,9 +92,9 @@ it turned out to only happen on dev and test (not production). Parsing the web o
   
   <entry>
     <title type="html"><![CDATA[Purging old beanstalk versions]]></title>
-    <link href="http://marcyoung.us/post/beanstalk-purge"/>
+    <link href="https://marcyoung.us/post/beanstalk-purge"/>
     <updated>2015-08-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/beanstalk-purge</id>
+    <id>https://marcyoung.us/post/beanstalk-purge</id>
     <content type="html"><![CDATA[<p>I recently found out that you can have at most 500 application versions across beanstalk. I wrote a small script to purge it of old ones<!-- more --></p>
 
 <p>I&rsquo;m a big fan of micro-deployments, however that seems to have caused a headache lately (and it turns out you don&rsquo;t want to find this out when you absolutely need to deploy).</p>

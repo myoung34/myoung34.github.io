@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: node.js | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/node-dot-js/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/node-dot-js/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Creating an MVC Blog with Node.js and MongoDB]]></title>
-    <link href="http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
+    <link href="https://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
     <updated>2012-04-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
+    <id>https://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
     <content type="html"><![CDATA[<p>This is going to be my first big tutorial. This is a simple tutorial to show how to build the worlds most basic blog with comment system in Node.js with Express for the MVC Routing, MongoDB as the storage engine, and Jade as the html shorthand. <!--more--></p>
 
 <p>I&#8217;m going to assume you know how to install the base packages for Node.js, npm (node package manager), and mongodb. First, let&#8217;s set up the database to hold some articles. The mongo collection will be a basic object with an id, article_title, and article_body:</p>
@@ -352,9 +352,9 @@ block content
   
   <entry>
     <title type="html"><![CDATA[HL7 And Node.js]]></title>
-    <link href="http://marcyoung.us/post/hl7-and-node-js/"/>
+    <link href="https://marcyoung.us/post/hl7-and-node-js/"/>
     <updated>2012-03-12T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/hl7-and-node-js</id>
+    <id>https://marcyoung.us/post/hl7-and-node-js</id>
     <content type="html"><![CDATA[<p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
 
 <!--more-->

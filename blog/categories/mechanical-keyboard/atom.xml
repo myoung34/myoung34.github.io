@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: mechanical keyboard | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/mechanical-keyboard/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/mechanical-keyboard/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Hulk-Smash Production]]></title>
-    <link href="http://marcyoung.us/post/hulk-smash"/>
+    <link href="https://marcyoung.us/post/hulk-smash"/>
     <updated>2018-05-20T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/Hulk-Smash-Prod</id>
+    <id>https://marcyoung.us/post/Hulk-Smash-Prod</id>
     <content type="html"><![CDATA[<p>I one-upped my own bad idea with more badness. Don&rsquo;t do this.  <!-- more --></p>
 
 <p>I, uh. Yeah.</p>
@@ -57,9 +57,9 @@
   
   <entry>
     <title type="html"><![CDATA[A Physical Deploy-Production Button]]></title>
-    <link href="http://marcyoung.us/post/deploy-production-button"/>
+    <link href="https://marcyoung.us/post/deploy-production-button"/>
     <updated>2018-05-19T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/deploy-production-button</id>
+    <id>https://marcyoung.us/post/deploy-production-button</id>
     <content type="html"><![CDATA[<p>I made a physical button to deploy production and regret nothing.  <!-- more --></p>
 
 <p>Over the last few weeks I&rsquo;ve been looking for a project.</p>
@@ -76,7 +76,7 @@
 
 <p>Getting there? Meh.</p>
 
-<p>First: you have to flash your esp with <a href="http://micropython.org/download">the micropython firmware</a>.</p>
+<p>First: you have to flash your esp with <a href="https://micropython.org/download">the micropython firmware</a>.</p>
 
 <p>Next: you have to get your code onto the board. The feedback loop for this is the annoying part. The first time you flash the firmware you have to <a href="https://learn.adafruit.com/micropython-basics-esp8266-webrepl/access-webrepl">enable WebREPL</a>. It&rsquo;s a one-time cost but it&rsquo;s smelly. This enables a wifi broadcast from the board that you can then access from webrepl with a password.</p>
 

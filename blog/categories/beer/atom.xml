@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="https://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: beer | Marcus Young]]></title>
-  <link href="http://marcyoung.us/blog/categories/beer/atom.xml" rel="self"/>
-  <link href="http://marcyoung.us/"/>
-  <updated>2018-11-26T11:14:42-06:00</updated>
-  <id>http://marcyoung.us/</id>
+  <link href="https://marcyoung.us/blog/categories/beer/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2018-11-26T11:50:16-06:00</updated>
+  <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
     
   </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+  <generator uri="https://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[KegDuino AKA HomeBrew and Arduinos&#8217; Love Child]]></title>
-    <link href="http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
+    <link href="https://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
     <updated>2012-07-25T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
+    <id>https://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
     <content type="html"><![CDATA[<p><!--more-->I finished work on my new site: [www.kegduino.org][1] . Go check it out! It&#8217;s a micro-controlled Keg!</p>
 
 <p><div id="attachment_62" class="wp-caption alignnone" style="width: 810px">
-  <a href="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="http://marcyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
+  <a href="https://marcyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="https://marcyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
     The kegduino in action
   </p>
 </div></p>
 
-<p> [1]: <a href="http://www.kegduino.org">http://www.kegduino.org</a></p>
+<p> [1]: <a href="https://www.kegduino.org">https://www.kegduino.org</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[I Made Beer]]></title>
-    <link href="http://marcyoung.us/post/i-made-beer/"/>
+    <link href="https://marcyoung.us/post/i-made-beer/"/>
     <updated>2012-05-11T00:00:00-05:00</updated>
-    <id>http://marcyoung.us/post/i-made-beer</id>
+    <id>https://marcyoung.us/post/i-made-beer</id>
     <content type="html"><![CDATA[<!--more-->
 
 
 <p>This is going to mainly a picture post, but I&#8217;ll give a bit of background.<br/>
 For my birthday, my coworkers pitched in and bought me a starter kit from the local homebrew shop (Allseasons), which consisted of a fermenter, bottler, cleaning supplies, hydrometer, auto-siphon, and tubing.</p>
 
-<p><a href="http://marcyoung.us/wp-content/uploads/2012/07/setup.jpg"><img class="alignnone size-medium wp-image-27" title="setup" src="http://marcyoung.us/wp-content/uploads/2012/07/setup-300x199.jpg" alt="" width="300" height="199" /></a></p>
+<p><a href="https://marcyoung.us/wp-content/uploads/2012/07/setup.jpg"><img class="alignnone size-medium wp-image-27" title="setup" src="https://marcyoung.us/wp-content/uploads/2012/07/setup-300x199.jpg" alt="" width="300" height="199" /></a></p>
 
 <p>Through amazon I got the rest of what I thought I needed, which was a wort chiller, boil pot, and some keg stuff. This was my outcome.</p>
 
@@ -55,49 +55,49 @@ For my birthday, my coworkers pitched in and bought me a starter kit from the lo
 <div id='gallery-1' class='gallery galleryid-21 gallery-columns-3 gallery-size-thumbnail'>
   <dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/setup/' title='setup'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/setup-150x150.jpg" class="attachment-thumbnail" alt="setup" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/setup/' title='setup'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/setup-150x150.jpg" class="attachment-thumbnail" alt="setup" /></a>
     </dt>
   </dl>
   
   <dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/steeping/' title='steeping'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/steeping-150x150.jpg" class="attachment-thumbnail" alt="steeping" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/steeping/' title='steeping'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/steeping-150x150.jpg" class="attachment-thumbnail" alt="steeping" /></a>
     </dt>
   </dl>
   
   <dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/fermenting/' title='fermenting'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/fermenting-150x150.jpg" class="attachment-thumbnail" alt="fermenting" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/fermenting/' title='fermenting'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/fermenting-150x150.jpg" class="attachment-thumbnail" alt="fermenting" /></a>
     </dt>
   </dl>
   
   <br style="clear: both" /><dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/krausen/' title='krausen'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/krausen-150x150.jpg" class="attachment-thumbnail" alt="krausen" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/krausen/' title='krausen'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/krausen-150x150.jpg" class="attachment-thumbnail" alt="krausen" /></a>
     </dt>
   </dl>
   
   <dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/siphoning/' title='siphoning'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/siphoning-150x150.jpg" class="attachment-thumbnail" alt="siphoning" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/siphoning/' title='siphoning'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/siphoning-150x150.jpg" class="attachment-thumbnail" alt="siphoning" /></a>
     </dt>
   </dl>
   
   <dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/kegging/' title='kegging'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/kegging-150x150.jpg" class="attachment-thumbnail" alt="kegging" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/kegging/' title='kegging'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/kegging-150x150.jpg" class="attachment-thumbnail" alt="kegging" /></a>
     </dt>
   </dl>
   
   <br style="clear: both" /><dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/more-carbonating/' title='more carbonating'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/more-carbonating-150x150.jpg" class="attachment-thumbnail" alt="more carbonating" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/more-carbonating/' title='more carbonating'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/more-carbonating-150x150.jpg" class="attachment-thumbnail" alt="more carbonating" /></a>
     </dt>
   </dl>
   
   <dl class='gallery-item'>
     <dt class='gallery-icon'>
-      <a href='http://marcyoung.us/post/i-made-beer/carbonating/' title='carbonating'><img width="150" height="150" src="http://marcyoung.us/wp-content/uploads/2012/07/carbonating-150x150.jpg" class="attachment-thumbnail" alt="carbonating" /></a>
+      <a href='https://marcyoung.us/post/i-made-beer/carbonating/' title='carbonating'><img width="150" height="150" src="https://marcyoung.us/wp-content/uploads/2012/07/carbonating-150x150.jpg" class="attachment-thumbnail" alt="carbonating" /></a>
     </dt>
   </dl>
   
