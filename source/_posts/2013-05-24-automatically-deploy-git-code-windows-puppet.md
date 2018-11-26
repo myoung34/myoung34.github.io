@@ -31,8 +31,8 @@ Recently I&#8217;ve been looking for ways of keeping a box up-to-date as far as 
 The first thing we&#8217;ll need to do is install the EPEL and Puppet repositories with, then install the puppet software and start the master process: 
 
 ```
-# rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-# rpm -Uvh http://yum.puppetlabs.com/el/6/products/x86_64/puppetlabs-release-6-7.noarch.rpm
+# rpm -Uvh https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+# rpm -Uvh https://yum.puppetlabs.com/el/6/products/x86_64/puppetlabs-release-6-7.noarch.rpm
 # sudo yum install -y puppet-server && chkconfig puppetmaster on && service puppetmaster start
 ```
 
@@ -99,7 +99,7 @@ The first two steps are going to be to install cygwin, making sure to add git an
 
 When this is done, stop the windows puppet service and make sure it is not set for startup. We&#8217;re going to control this process with a custom task schedule. 
 
-Next, add the path to your cygwin bin folder to the PATH environment variable. If you don&#8217;t know how, it&#8217;s probably something similar to **C:\cygwin\bin**, and you&#8217;ll add it according to <a href="http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx" target="_blank">this guide</a>. You&#8217;re close now! 
+Next, add the path to your cygwin bin folder to the PATH environment variable. If you don&#8217;t know how, it&#8217;s probably something similar to **C:\cygwin\bin**, and you&#8217;ll add it according to <a href="https://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx" target="_blank">this guide</a>. You&#8217;re close now! 
 
 Using cygwin, generate a public/private key pair (if using git+ssh) **without a password** and give the public key to the master box. 
 

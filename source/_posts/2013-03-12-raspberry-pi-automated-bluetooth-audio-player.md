@@ -69,10 +69,10 @@ root@raspberrypi:~/bluetoothradio# reboot
 
 After the reboot, you can now pair your device using &#8217;1234&#8242; (unless you modified the bluetoothPin file), and play yo&#8217; music!
 
-If for some reason it&#8217;s not connection, visit <a title="KMonkey711" href="http://kmonkey711.blogspot.com/" target="_blank">KMonkey711&#8242;s tutorial</a> and follow the steps to connect and trust the device, and reboot the pi.
+If for some reason it&#8217;s not connection, visit <a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711&#8242;s tutorial</a> and follow the steps to connect and trust the device, and reboot the pi.
 
 ## Acknowledgements
 
 Thanks to:  
 <a title="johnhamelink" href="https://github.com/johnhamelink" target="_blank">johnhamelink</a>  
-<a title="KMonkey711" href="http://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a>
+<a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a>

@@ -31,7 +31,7 @@ In this I'll show some examples on how to leverage HashiCorp Vault as an awesome
 
 ## Create the Root cert/key
 
-(This is actually mostly a clone from [here](http://cuddletech.com/?p=959) but I want to make sure it never disappears)
+(This is actually mostly a clone from [here](https://cuddletech.com/?p=959) but I want to make sure it never disappears)
 
 *Note*: You should not let the vault server generate the root CA, you should generate it and import it. I just havent figured out how to do that yet. I will update this post when I get around to it. [More info on that here](https://en.wikipedia.org/wiki/Offline_root_certificate_authority)
 
@@ -75,7 +75,7 @@ serial_number   0d:78:88:dc:60:f3:3f:62:1b:43:d2:1a:b4:54:82:bf:d3:ea:fe:58
 Verify
 
 ```
-$ curl -s http://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
+$ curl -s https://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -93,7 +93,7 @@ Certificate:
 Fix the URL for accessing the CA/CRL URLs
 
 ```
-$ vault write cuddletech/config/urls issuing_certificates="http://10.0.0.22:8200/v1/cuddletech
+$ vault write cuddletech/config/urls issuing_certificates="https://10.0.0.22:8200/v1/cuddletech
 Success! Data written to: cuddletech/config/urls
 ```
 
@@ -169,7 +169,7 @@ Success! Data written to: cuddletech_ops/intermediate/set-signed
 Awesome! Lets verify:
 
 ```
-$ curl -s http://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
+$ curl -s https://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -188,7 +188,7 @@ The last thing we need to do is set the CA & CRL URL’s for accessing the CA:
 
 ```
 $ vault write cuddletech_ops/config/urls \
-> issuing_certificates="http://10.0.0.22:8200/v1/cuddletech_ops/ca" \
-> crl_distribution_points="http://10.0.0.22:8200/v1/cuddletech_ops/crl"
+> issuing_certificates="https://10.0.0.22:8200/v1/cuddletech_ops/ca" \
+> crl_distribution_points="https://10.0.0.22:8200/v1/cuddletech_ops/crl"
 Success! Data written to: cuddletech_ops/config/urls
 ```

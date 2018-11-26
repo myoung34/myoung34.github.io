@@ -38,7 +38,7 @@ Without doing any whatsoever much research my brain really thought that micropyt
 
 Getting there? Meh.
 
-First: you have to flash your esp with [the micropython firmware](http://micropython.org/download). 
+First: you have to flash your esp with [the micropython firmware](https://micropython.org/download). 
 
 Next: you have to get your code onto the board. The feedback loop for this is the annoying part. The first time you flash the firmware you have to [enable WebREPL](https://learn.adafruit.com/micropython-basics-esp8266-webrepl/access-webrepl). It's a one-time cost but it's smelly. This enables a wifi broadcast from the board that you can then access from webrepl with a password. 
 

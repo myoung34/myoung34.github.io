@@ -33,7 +33,7 @@ Like I said, it's simple. It's going to be a shell script that runs the *python 
 
 The code is on [this github page](https://github.com/myoung34/blog-exampleservice).
 
-You'll notice the layout mimics its place on the filesystem. This may not be a realistic case, but it sure make sthe POC easy. You'll notice a **Rakefile** in the repository. This is the heart of our packaging for this. If you look into it, you'll see it's essentially a Makefile (see what I did there???). There are many other ways to approach this, but it's the simplest for now. Basically the rake file will parse the *version* file (which is [semantically versioned](http://semver.org/)), and tries to build an RPM via FPM based on it.
+You'll notice the layout mimics its place on the filesystem. This may not be a realistic case, but it sure make sthe POC easy. You'll notice a **Rakefile** in the repository. This is the heart of our packaging for this. If you look into it, you'll see it's essentially a Makefile (see what I did there???). There are many other ways to approach this, but it's the simplest for now. Basically the rake file will parse the *version* file (which is [semantically versioned](https://semver.org/)), and tries to build an RPM via FPM based on it.
 
   1. The **unstable** build will happen as ``bundle exec rake unstable``
     * This will create an rpm such as: **myapp-0.0.1-beta.1.{timestamp}.x86_64.rpm**

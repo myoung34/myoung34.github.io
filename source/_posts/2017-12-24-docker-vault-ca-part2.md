@@ -65,7 +65,7 @@ CMD ["/docker-entrypoint.sh"]
 
 export SSL_PATH=/opt/ssl
 
-EC2_AVAIL_ZONE=$(curl -s --max-time 5 http://169.254.169.254/latest/meta-data/placement/availability-zone)
+EC2_AVAIL_ZONE=$(curl -s --max-time 5 https://169.254.169.254/latest/meta-data/placement/availability-zone)
 if [[ $? -eq 0 ]]; then
   # shellcheck disable=SC2001,SC2006
   EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
@@ -90,7 +90,7 @@ cat ${SSL_PATH}/cert.pem ${SSL_PATH}/ca.pem  > ${SSL_PATH}/bundle.pem
 
 ## Terraforming the certificate issuer
 
-If you somehow get the previous part to run, it will fail because you have to create the role in Vault before you can just start generating certs off it. In the [cuddletech guide](http://cuddletech.com/?p=959) this is under `Requesting a Certificate for a Web Server` as:
+If you somehow get the previous part to run, it will fail because you have to create the role in Vault before you can just start generating certs off it. In the [cuddletech guide](https://cuddletech.com/?p=959) this is under `Requesting a Certificate for a Web Server` as:
 
 ```
 $ vault write cuddletech_ops/roles/web_server \

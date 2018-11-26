@@ -28,7 +28,7 @@ You're going to need a minimum of 4 servers. Before you freak out, that's to kee
 For this you don't really need to set this one up, but most likely you'll have an internal git server. I'll be using Github for this demo. Use whatever you like.
 
 ## Pulp
-Set up the server and client via [this guide](http://pulp-user-guide.readthedocs.org/en/pulp-2.3/installation.html).
+Set up the server and client via [this guide](https://pulp-user-guide.readthedocs.org/en/pulp-2.3/installation.html).
 
 When done, go ahead and create an *unstable* feed via:
 
@@ -54,7 +54,7 @@ Install these extra Yum packages:
 
 `` yum install -y rpm-build rpm ruby ruby-devel rubygems git automake autoconf gcc gcc-c++``
 
-[Set up RVM](http://rvm.io)
+[Set up RVM](https://rvm.io)
 
 Install [FPM](https://github.com/jordansissel/fpm) via gem: ``gem install fpm``
 
@@ -63,7 +63,7 @@ Install the pulp-admin tools the same way you did on the pulp server **Not the s
 Go ahead an ensure all these bits and pieces work, such as connecting to pulp via the login command, using rvm, etc. Jenkins is the heavy lifter in this stack.
 
 ## Foreman
-[The guide for 1.4.1 is here](http://theforeman.org/manuals/1.4/quickstart_guide.html#Installation)
+[The guide for 1.4.1 is here](https://theforeman.org/manuals/1.4/quickstart_guide.html#Installation)
 
 Install **r10k** via gem: ``gem install r10k``
 
@@ -96,7 +96,7 @@ Lastly, make sure you're subscribed to the Yum repository for the **myapp** pack
 ```
 [mypulp]
 name=My Pulp Provider - Unstable
-baseurl=http://pulp.blindrage.local/pulp/repos/unstable/
+baseurl=https://pulp.blindrage.local/pulp/repos/unstable/
 enabled=1
 gpgcheck=0
 metadata_expire=10

@@ -31,7 +31,7 @@ Basic Usage:
 
 ```
 yumrepo { "my mirth repo":
-  baseurl  => "http://server/pulp/repos/mirthconnect/",
+  baseurl  => "https://server/pulp/repos/mirthconnect/",
   descr    => "My Mirth Connect Repository",
   enabled  => 1,
   gpgcheck => 0,

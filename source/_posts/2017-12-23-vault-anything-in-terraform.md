@@ -27,7 +27,7 @@ If you've used ECS and Vault with the [aws auth backend](https://www.vaultprojec
 Lets say you want to create a new ECS container to run. You want that task to get specific secrets in vault by role. You write the code, terraform, etc and when it runs you get:
 
 ```
-URL: GET http://server:8200/v1/auth/aws-ec2/role/somerole
+URL: GET https://server:8200/v1/auth/aws-ec2/role/somerole
 Code: 400. Errors:
 
 * entry for role somerole not found

@@ -29,7 +29,7 @@ Let me start off by saying: I've done *a lot* of Jenkins.
 
 I've done new Jenkins (I love 2.0 and love Jenkinsfile's).
 
-I've worked with [large jenkins installs](http://jenkins.ovirt.org).
+I've worked with [large jenkins installs](https://jenkins.ovirt.org).
 I've worked with small jenkins at multiple shops.
 
 I've automated backups with S3 tarballs:
@@ -83,9 +83,9 @@ My jenkins master is docker. Its volatile. And its stateless.
 
 So how do I do it? In production my docker hosts listen to UDP port 555 with Logstash for syslog and forward them to ELK (because SSL, and other reasons).
 [In my example the logstash plugin just sends directly to elasticsearch](https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy).
-All the env vars are pulled from [vault](http://www.vaultproject.io) at run time and I get to manage the data like my other data from ELK.
+All the env vars are pulled from [vault](https://www.vaultproject.io) at run time and I get to manage the data like my other data from ELK.
 
-My artifacts go to someting like [artifactory](http://www.jfrog.com/artifactory).
+My artifacts go to someting like [artifactory](https://www.jfrog.com/artifactory).
 
 And guess what? It's fantastic. Automation is dead simple. And I put the data in a real database. which lets me do things like see build times across projects, see deployments, etc.
 

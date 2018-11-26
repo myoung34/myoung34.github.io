@@ -32,7 +32,7 @@ My current home setup is a Contour Rollermouse free2 and a pok3r (Cherry MX Clea
 My work set up is a TechKeys JD40 on a 1up case (80g Cherry MX browns) and a Contour Rollermouse Red.
 {% img left /images/red1.jpg %}
 
-While shopping around, I came upon the [Penclic NiceTouch t2](http://amzn.to/2tguHYQ). It caught my eye because it's _exactly_ the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that's a huge draw.
+While shopping around, I came upon the [Penclic NiceTouch t2](https://amzn.to/2tguHYQ). It caught my eye because it's _exactly_ the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that's a huge draw.
 They sent me one to sample, so I decided to do a pro/con of my setups.
 
 ## Contourmouse Red
