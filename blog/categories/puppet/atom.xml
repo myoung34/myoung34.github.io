@@ -4,7 +4,7 @@
   <title><![CDATA[Category: puppet | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/puppet/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-11-26T11:50:16-06:00</updated>
+  <updated>2018-12-18T17:26:39+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
     <link href="https://marcyoung.us/post/hbase-puppet-module"/>
-    <updated>2014-10-28T00:00:00-05:00</updated>
+    <updated>2014-10-28T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/hbase-puppet-module</id>
     <content type="html"><![CDATA[<p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
 
@@ -38,7 +38,7 @@
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
     <link href="https://marcyoung.us/post/mirth-puppet-module"/>
-    <updated>2014-05-14T00:00:00-05:00</updated>
+    <updated>2014-05-14T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/mirth-puppet-module</id>
     <content type="html"><![CDATA[<p>I released a new Puppet module to the forge out of another work necessity. Mirth is used pretty heavily for HL7 ETL, and has a ton of other uses. <!-- more --></p>
 
@@ -65,7 +65,7 @@ class { 'mirthconnect':
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins]]></title>
     <link href="https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins"/>
-    <updated>2014-03-22T00:00:00-05:00</updated>
+    <updated>2014-03-22T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/continuous-deployment-part-4-puppet-and-jenkins</id>
     <content type="html"><![CDATA[<p>So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy this application and keep it up to date, and we even have r10k handling the deployment of those puppet modules so that we don&rsquo;t have to worry about dependencies, and we can even stage them! What we don&rsquo;t have is a way of getting changes to that puppet module to the puppet master without remoting in and running r10k. That&rsquo;s easy to fix with jenkins!<!--more--></p>
 
@@ -188,7 +188,7 @@ bundle exec rake
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet]]></title>
     <link href="https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet"/>
-    <updated>2014-03-21T00:00:00-05:00</updated>
+    <updated>2014-03-21T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/continuous-deployment-part-3-enter-puppet</id>
     <content type="html"><![CDATA[<p>Now that we have a package, we need a way of installing it amirite? We&rsquo;re going to write a puppet module for this package complete with rspec tests<!--more--></p>
 
@@ -321,7 +321,7 @@ bundle exec rake
   <entry>
     <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application]]></title>
     <link href="https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app"/>
-    <updated>2014-03-20T00:00:00-05:00</updated>
+    <updated>2014-03-20T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/continuous-deployment-part-2-the-application</id>
     <content type="html"><![CDATA[<p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.<!--more--></p>
 

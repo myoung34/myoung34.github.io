@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bless | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/bless/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-11-26T11:50:16-06:00</updated>
+  <updated>2018-12-18T17:26:39+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
     <link href="https://marcyoung.us/post/bless-part2"/>
-    <updated>2017-06-20T00:00:00-05:00</updated>
+    <updated>2017-06-20T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/bless-part2</id>
     <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
@@ -199,7 +199,7 @@ EOF
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
     <link href="https://marcyoung.us/post/bless-part1"/>
-    <updated>2017-06-20T00:00:00-05:00</updated>
+    <updated>2017-06-20T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/bless-part1</id>
     <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="https://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
 

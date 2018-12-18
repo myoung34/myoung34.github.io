@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vault | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/vault/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-11-26T11:50:16-06:00</updated>
+  <updated>2018-12-18T17:26:39+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 2)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part2"/>
-    <updated>2017-12-24T00:00:00-06:00</updated>
+    <updated>2017-12-24T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part2</id>
     <content type="html"><![CDATA[<p>Now for some cool snippets on how to automatically request certs from the Intermediary we created in Part 1<!-- more --></p>
 
@@ -120,7 +120,7 @@ EOT
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part1"/>
-    <updated>2017-12-24T00:00:00-06:00</updated>
+    <updated>2017-12-24T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part1</id>
     <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
 
@@ -294,7 +294,7 @@ Success! Data written to: cuddletech_ops/config/urls
   <entry>
     <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
     <link href="https://marcyoung.us/post/vault-anything-in-terraform"/>
-    <updated>2017-12-23T00:00:00-06:00</updated>
+    <updated>2017-12-23T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/vault-anything-in-terraform</id>
     <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
 

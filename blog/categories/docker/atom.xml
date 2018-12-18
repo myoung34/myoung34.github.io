@@ -4,7 +4,7 @@
   <title><![CDATA[Category: docker | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/docker/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-11-26T11:50:16-06:00</updated>
+  <updated>2018-12-18T17:26:39+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 2)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part2"/>
-    <updated>2017-12-24T00:00:00-06:00</updated>
+    <updated>2017-12-24T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part2</id>
     <content type="html"><![CDATA[<p>Now for some cool snippets on how to automatically request certs from the Intermediary we created in Part 1<!-- more --></p>
 
@@ -120,7 +120,7 @@ EOT
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part1"/>
-    <updated>2017-12-24T00:00:00-06:00</updated>
+    <updated>2017-12-24T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part1</id>
     <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
 
@@ -294,7 +294,7 @@ Success! Data written to: cuddletech_ops/config/urls
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 4 - Curator]]></title>
     <link href="https://marcyoung.us/post/dockerized-elk-part-4"/>
-    <updated>2016-08-08T00:00:00-05:00</updated>
+    <updated>2016-08-08T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/dockerized-elk-part4</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting Kibana up. This one focuses on getting Curator <!-- more --></p>
 
@@ -359,7 +359,7 @@ docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/curator:latest
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana]]></title>
     <link href="https://marcyoung.us/post/dockerized-elk-part-3"/>
-    <updated>2016-08-08T00:00:00-05:00</updated>
+    <updated>2016-08-08T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/dockerized-elk-part3</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting logstash up. This one focuses on getting Kibana <!-- more --></p>
 
@@ -407,7 +407,7 @@ docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/kibana:latest
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash]]></title>
     <link href="https://marcyoung.us/post/dockerized-elk-part-2"/>
-    <updated>2016-08-08T00:00:00-05:00</updated>
+    <updated>2016-08-08T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/dockerized-elk-part2</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting the ECS cluster, ECR repos, and Elasticsearch up. This one focuses on getting Logstash <!-- more --></p>
 
