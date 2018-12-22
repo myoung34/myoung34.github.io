@@ -44,14 +44,14 @@ The module for this is going to be simple. The application as it is right now is
   * *Puppetfile*
     * This will let you know dependencies, such as the *puppetlabs-firewall* module
   * *.travis.yml* and *.fixtures.yml*
-    * These are specific to [travis-ci](http://travis-ci.org). If your module will be internal, and not at github, you won't need this. I did so because it's at github. I'll be duplicating this CI at jenkins, and you'll see why later.
+    * These are specific to [travis-ci](https://travis-ci.org). If your module will be internal, and not at github, you won't need this. I did so because it's at github. I'll be duplicating this CI at jenkins, and you'll see why later.
   * *Rakefile*, *Gemfile*, and *spec/*
     * These are all part of the testing framework. The tests included for this module are **Puppetlint** (with some disabled checks) and **Rspec-Puppet**
  
 ### Tests
 
   1. Puppetlint
-    * Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you'll want to take a look at [this guide](http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/)
+    * Checks syntax and best practices for your modules. Highly recommended. To make use of this in jenkins, you'll want to take a look at [this guide](https://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/)
   1. RSpec-Puppet
     * Let's you write assertions for the catalog. Examples would include testing manifest logic, like not doing something if a flag was true or false, etc. See [the rspec-puppet pages](rspec-puppet.com/tutorial/)
 

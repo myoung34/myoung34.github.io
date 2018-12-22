@@ -1,9 +1,30 @@
 <ul class="main-navigation">
   <li><a href="{{ root_url }}/">Blog</a></li>
   <li><a href="{{ root_url }}/blog/archives">Archives</a></li>
-  <li><a href="http://github.com/{{ site.github_user }}">Github</a></li>
-  <li><a href="http://plus.google.com/{{ site.googleplus_user }}">Google+</a></li>
-  <li><a href="http://www.linkedin.com/pub/{{ site.linkedin_user }}">LinkedIn</a></li>
+  <li><a href="https://github.com/{{ site.github_user }}">Github</a></li>
+  <li><a href="https://www.linkedin.com/pub/{{ site.linkedin_user }}">LinkedIn</a></li>
   <li><a href="{{ site.public_resume }}">Resume</a></li>
-  <li><a href="{{ site.vizualize_me }}">Vizualize.me Resume</a></li>
+  <li><a onclick="openForm()">Message Me</a></li>
 </ul>
+<div class="form-popup" id="myForm">
+  <form action="https://pcagf163b0.execute-api.us-east-1.amazonaws.com/prod/email/send/formencoded" method="POST" class="form-container">
+    <h1>Message</h1>
+
+    <input type="text" placeholder="Email" name="email" required>
+    <input type="text" placeholder="Name" name="name" required>
+    <input type="textarea" placeholder="Write Me" name="content" required>
+
+    <button type="submit" class="btn">Send</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>

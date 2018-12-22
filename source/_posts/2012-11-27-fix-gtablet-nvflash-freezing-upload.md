@@ -42,4 +42,4 @@ In the *gtablet.cfg* file, swap the partition in question (the one freezing) wit
 For example, my Partition 7 froze on upload, so the diff between the original and my fix: <a href="https://gist.github.com/4152380" title="https://gist.github.com/4152380" target="_blank">gtablet.cfg-diff</a>  
 If you want my full fixed file (assuming yours broke on partition 7 as well): <a href="https://gist.github.com/4152387" title="https://gist.github.com/4152387" target="_blank">gtablet.cfg/4152387</a>
 
- [1]: http://forum.xda-developers.com/showthread.php?t=1084573 "Beasty Clemsysn (Froyo)"
+ [1]: https://forum.xda-developers.com/showthread.php?t=1084573 "Beasty Clemsysn (Froyo)"
