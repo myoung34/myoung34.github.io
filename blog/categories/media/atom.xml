@@ -4,7 +4,7 @@
   <title><![CDATA[Category: media | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/media/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-12-22T21:20:36+00:00</updated>
+  <updated>2019-11-20T11:01:25-08:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Raspberry Pi-Automated Bluetooth Audio Player !]]></title>
     <link href="https://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/"/>
-    <updated>2013-03-12T00:00:00+00:00</updated>
+    <updated>2013-03-12T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/raspberry-pi-automated-bluetooth-audio-player</id>
     <content type="html"><![CDATA[<!--more-->
 
@@ -77,7 +77,7 @@ root@raspberrypi:~/bluetoothradio# reboot
   <entry>
     <title type="html"><![CDATA[(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP]]></title>
     <link href="https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
-    <updated>2012-11-28T00:00:00+00:00</updated>
+    <updated>2012-11-28T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
     <content type="html"><![CDATA[<p>If you&#8217;re running Mediatomb or uShare and your xbox, ps3, tv, or whatever other UPnP/DNLA device doesn&#8217;t see the server, here&#8217;s a few fixes I&#8217;ve discovered.<!--more--></p>
 

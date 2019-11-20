@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-12-22T21:20:36+00:00</updated>
+  <updated>2019-11-20T11:01:25-08:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -14,9 +14,71 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Barcaderator - Building An Arcade Kegerator]]></title>
+    <link href="https://marcyoung.us/post/barcade"/>
+    <updated>2019-11-20T00:00:00-08:00</updated>
+    <id>https://marcyoung.us/post/Barcaderator</id>
+    <content type="html"><![CDATA[<p>Introducing a modular arcade kegerator  <!-- more --></p>
+
+<h3>The Backstory</h3>
+
+<p>I recenly got into doing random stuff with arcades.
+In October 2018 I got ahold of a completely ripped apart San Fransisco Rush cabinet.
+I redid some of the wood, built a computer into it, reversed all the controls into a teensy and made it play Rocket League.
+My tattoo shop is currently painting it (build log to come when I have it back).</p>
+
+<p>In trade, I&rsquo;m fixing their arcade machine.</p>
+
+<p>So now apparently I like real arcade machines <a href="https://marcyoung.us/post/mame-cabinet/">and not my now-broken table top</a>.</p>
+
+<p>I also brew beer. Why not combine the two?!</p>
+
+<p>So I introduce to you:</p>
+
+<p><img src="https://marcyoung.us/images/barcade1.jpg">
+<img src="https://marcyoung.us/images/barcade2.gif">
+<img src="https://marcyoung.us/images/marquee.gif"></p>
+
+<h3>The Hardware</h3>
+
+<ul>
+<li>The Marquee is a custom &ldquo;vintage style neon light&rdquo; from a company on alibaba.</li>
+<li>The Computer is a <a href="https://www.dfrobot.com/product-1727.html?search=lattepanda%20alpha&amp;description=true">lattepanda alpha</a></li>
+<li>The LED Buttons are <a href="https://groovygamegear.com/webstore/index.php?main_page=product_info&amp;products_id=408">spectra eclipse</a></li>
+<li>The LED controller is an <a href="https://www.arcaderenovations.com/ultimarc-pacled64.html">Ultimarc pacled64</a></li>
+<li>The Cabinet was custom cut on a CNC</li>
+<li>The &ldquo;split&rdquo; frame is based on <a href="https://cdn11.bigcommerce.com/s-ecrovlce13/images/stencil/500x659/products/10801/13177/pygcjgwqewky6od7qomr__54105.1563214651.png?c=2">this style of aluminum tongue/receiver</a> from TCH hardware</li>
+<li>The &ldquo;latches&rdquo; and the handles for the split top are from TCH Hardware</li>
+</ul>
+
+
+<h3>The Software</h3>
+
+<p>The lattepanda runs Ubuntu with MAME. I originally chose windows, but LEDBlinky is <em>awful</em>. Just awful.
+So instead I&rsquo;ve been working with <a href="https://sourceforge.net/p/ledspicer/wiki/Home/">LEDSpicer by Patricio Rossi</a>. The software worked nearly out of the box and he&rsquo;s been super helpful for getting me up and running.</p>
+
+<h3>Build Pics</h3>
+
+<p><img src="https://marcyoung.us/images/barcade/build2.jpg">
+<img src="https://marcyoung.us/images/barcade/build3.jpg">
+<img src="https://marcyoung.us/images/barcade/build4.jpg">
+<img src="https://marcyoung.us/images/barcade/build5.jpg">
+<img src="https://marcyoung.us/images/barcade/build6.jpg">
+<img src="https://marcyoung.us/images/barcade/build7.jpg">
+<img src="https://marcyoung.us/images/barcade/build8.jpg">
+<img src="https://marcyoung.us/images/barcade/build9.jpg">
+<img src="https://marcyoung.us/images/barcade/build10.jpg">
+<img src="https://marcyoung.us/images/barcade/build11.jpg">
+<img src="https://marcyoung.us/images/barcade/build12.jpg">
+<img src="https://marcyoung.us/images/barcade/build13.jpg">
+<img src="https://marcyoung.us/images/barcade/build14.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Hacking "Aviary" Scooters]]></title>
     <link href="https://marcyoung.us/post/scooters"/>
-    <updated>2018-12-22T00:00:00+00:00</updated>
+    <updated>2018-12-22T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/scooters</id>
     <content type="html"><![CDATA[<p>Hacking &ldquo;aviary&rdquo; scooters for fun.  <!-- more --></p>
 
@@ -75,7 +137,7 @@ Cost: ~$40</p>
   <entry>
     <title type="html"><![CDATA[Slack Is Not Your Bash Prompt]]></title>
     <link href="https://marcyoung.us/post/slack-not-bash"/>
-    <updated>2018-11-26T00:00:00+00:00</updated>
+    <updated>2018-11-26T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/Slack-Bash</id>
     <content type="html"><![CDATA[<p>A video of my first and likely last conference talk (lightning talk) about chatops  <!-- more --></p>
 
@@ -86,7 +148,7 @@ Cost: ~$40</p>
   <entry>
     <title type="html"><![CDATA[Hulk-Smash Production]]></title>
     <link href="https://marcyoung.us/post/hulk-smash"/>
-    <updated>2018-05-20T00:00:00+00:00</updated>
+    <updated>2018-05-20T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/Hulk-Smash-Prod</id>
     <content type="html"><![CDATA[<p>I one-upped my own bad idea with more badness. Don&rsquo;t do this.  <!-- more --></p>
 
@@ -128,7 +190,7 @@ Cost: ~$40</p>
   <entry>
     <title type="html"><![CDATA[A Physical Deploy-Production Button]]></title>
     <link href="https://marcyoung.us/post/deploy-production-button"/>
-    <updated>2018-05-19T00:00:00+00:00</updated>
+    <updated>2018-05-19T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/deploy-production-button</id>
     <content type="html"><![CDATA[<p>I made a physical button to deploy production and regret nothing.  <!-- more --></p>
 
@@ -236,7 +298,7 @@ Cost: ~$40</p>
   <entry>
     <title type="html"><![CDATA[Let's Rethink Jenkins]]></title>
     <link href="https://marcyoung.us/post/lets-rethink-jenkins"/>
-    <updated>2018-01-29T00:00:00+00:00</updated>
+    <updated>2018-01-29T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/lets-rethink-jenkins</id>
     <content type="html"><![CDATA[<p>I lose all data from jenkins every time I deploy it. And that&rsquo;s OK.  <!-- more --></p>
 
@@ -331,7 +393,7 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 2)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part2"/>
-    <updated>2017-12-24T00:00:00+00:00</updated>
+    <updated>2017-12-24T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part2</id>
     <content type="html"><![CDATA[<p>Now for some cool snippets on how to automatically request certs from the Intermediary we created in Part 1<!-- more --></p>
 
@@ -506,7 +568,7 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part1"/>
-    <updated>2017-12-24T00:00:00+00:00</updated>
+    <updated>2017-12-24T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part1</id>
     <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
 
@@ -790,7 +852,7 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
   <entry>
     <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
     <link href="https://marcyoung.us/post/vault-anything-in-terraform"/>
-    <updated>2017-12-23T00:00:00+00:00</updated>
+    <updated>2017-12-23T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/vault-anything-in-terraform</id>
     <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
 
@@ -938,7 +1000,7 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
   <entry>
     <title type="html"><![CDATA[re:Invent 2017 (never again)]]></title>
     <link href="https://marcyoung.us/post/reinvent-2017"/>
-    <updated>2017-12-22T00:00:00+00:00</updated>
+    <updated>2017-12-22T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/reinvent-2017</id>
     <content type="html"><![CDATA[<p>This was my worst overall conference experience to date. <!-- more --></p>
 
@@ -973,7 +1035,7 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
   <entry>
     <title type="html"><![CDATA[Ergoslider Review]]></title>
     <link href="https://marcyoung.us/post/ergoslider-review"/>
-    <updated>2017-10-09T00:00:00+00:00</updated>
+    <updated>2017-10-09T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/ergoslider-review</id>
     <content type="html"><![CDATA[<p>Another ergonomic mouse review I gone and did <!-- more --></p>
 
@@ -1016,7 +1078,7 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
   <entry>
     <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
     <link href="https://marcyoung.us/post/ergo-mouse-review"/>
-    <updated>2017-06-26T00:00:00+00:00</updated>
+    <updated>2017-06-26T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/ergo-mouse-review</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve Recently been really into ergonomic mice, and wanted to give my thoughts on a few after going all in. <!-- more --></p>
 
@@ -1086,7 +1148,7 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
     <link href="https://marcyoung.us/post/bless-part2"/>
-    <updated>2017-06-20T00:00:00+00:00</updated>
+    <updated>2017-06-20T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/bless-part2</id>
     <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
@@ -1413,7 +1475,7 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
     <link href="https://marcyoung.us/post/bless-part1"/>
-    <updated>2017-06-20T00:00:00+00:00</updated>
+    <updated>2017-06-20T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/bless-part1</id>
     <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="https://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
 
@@ -1892,7 +1954,7 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
   <entry>
     <title type="html"><![CDATA[oVirt and Vagrant]]></title>
     <link href="https://marcyoung.us/post/ovirt4-vagrant"/>
-    <updated>2017-02-10T00:00:00+00:00</updated>
+    <updated>2017-02-10T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/ovirt-vagrant</id>
     <content type="html"><![CDATA[<p>I wrote a <a href="https://www.ovirt.org/blog/2017/02/using-oVirt-vagrant/">blog post</a> over on oVirt about how to use the most recent release of my new vagrant oVirt v4 provider.</p>
 ]]></content>
@@ -1901,7 +1963,7 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
   <entry>
     <title type="html"><![CDATA[Homemade planck]]></title>
     <link href="https://marcyoung.us/post/planck"/>
-    <updated>2017-01-18T00:00:00+00:00</updated>
+    <updated>2017-01-18T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/planck</id>
     <content type="html"><![CDATA[<p>I made a super tedious keyboard.<!-- more --></p>
 
@@ -1925,7 +1987,7 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 4 - Curator]]></title>
     <link href="https://marcyoung.us/post/dockerized-elk-part-4"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/dockerized-elk-part4</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting Kibana up. This one focuses on getting Curator <!-- more --></p>
 
@@ -1995,7 +2057,7 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana]]></title>
     <link href="https://marcyoung.us/post/dockerized-elk-part-3"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/dockerized-elk-part3</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting logstash up. This one focuses on getting Kibana <!-- more --></p>
 
@@ -2048,7 +2110,7 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash]]></title>
     <link href="https://marcyoung.us/post/dockerized-elk-part-2"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/dockerized-elk-part2</id>
     <content type="html"><![CDATA[<p>The previous part focused on getting the ECS cluster, ECR repos, and Elasticsearch up. This one focuses on getting Logstash <!-- more --></p>
 
@@ -2131,7 +2193,7 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
   <entry>
     <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch]]></title>
     <link href="https://marcyoung.us/post/dockerized-elk-part-1"/>
-    <updated>2016-08-08T00:00:00+00:00</updated>
+    <updated>2016-08-08T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/dockerized-elk-part1</id>
     <content type="html"><![CDATA[<p>This will be a write-up on how to get a self-healing and self-curating SSL-enabled Hot/Warm ELK stack using ECS and lambda <!-- more --></p>
 
@@ -2202,46 +2264,6 @@ Task 2 is a delete task that tells Elasticsearch to delete any indexes older tha
 <p>The reason for doing this: things like to be able to verify the chain, and don&rsquo;t like self-signed certs. As you see in my screen shot, since I used route53 to point <code>es-test.dev.mydom.com</code> to the ELB (which uses a valid ACM cert), everything is encrypted but outward facing services will not have chain errors.</p>
 
 <p>Hot-warm could be better implemented, but for demonstration purposes, 50/50 is fine if you spin up 4+ nodes. If you only use 2 ECS tasks such as the screen shots, you might end up with both hot or both warm. If you&rsquo;re following along, you&rsquo;ll want at least one of each for curator to make sense.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My Thoughts after six months of Elastic Beanstalk.]]></title>
-    <link href="https://marcyoung.us/post/six-months-of-beanstalk"/>
-    <updated>2015-11-16T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/six-months-of-beanstalk</id>
-    <content type="html"><![CDATA[<p>We&rsquo;ve been using pure beanstalk at my current gig for six months and here are my thoughts. <!-- more --></p>
-
-<p>I&rsquo;ll start off with the tl;dr: I like beanstalk a lot. When it fits.</p>
-
-<p>I&rsquo;ve written enought deployment mechanisms to go a little crazy in my time. From tagging code in SVN and pushing it to a central store, to purely puppet provisioned instances, to microservices with ad-hoc AMIs to beanstalk. And beanstalk works. If you have a <em>traditional</em> application (by that I mean some consumers, some APIs, and a database of some sort), beanstalk is the (insert here).</p>
-
-<p>Our current stack includes:</p>
-
-<ul>
-<li>A backend rails API.</li>
-<li>A front-end javascript CMS.</li>
-<li>An ad-hoc CRUD API written in rails.</li>
-<li>A javascript web-embed written in node.</li>
-</ul>
-
-
-<p>We use jenkins to deploy code changes once tests pass.</p>
-
-<p>And I&rsquo;ve got to say: I&rsquo;m not unhappy. There are very very few tweaks to make any more.</p>
-
-<ul>
-<li>All of these have multiple environments (dev/uat/prod), of which dev and uat shut down at night and on weekends.</li>
-<li>Deployment includes rollbacks and notifications on failure.</li>
-<li>Things auto-scale as expected.</li>
-<li>You get all the metrics you really care about out of the box.</li>
-</ul>
-
-
-<p>That said: if it doesn&rsquo;t fit your stack, don&rsquo;t hamstring it. There are many good deployment mechanisms out there, and if your application does not easily fit into the peg that is beanstalk: find something else. We attempted to use it as a deployment mechanism for our cache layer and it failed horribly. Was it because there is no built in support in beanstalk? Yes. But It would be really nice to see beanstalk provide a boiler plate type set up like a template. Basically you just use their default AWS Linux image with no framework on it, provide the deployment scripts, and be able to manage it via beanstalk. That would be fantastic.</p>
-
-<p>The only downside that I have found is that I would really like to re-do our base architecture at AWS to be code-based.
-I&rsquo;m pretty much sold on Terraform, but that is my personal choice, and I would really love to see first-hand beanstalk support there. While not a criticism of beanstalk, I&rsquo;ll just be happy and watch <a href="https://github.com/hashicorp/terraform/issues/2799">this issue on terraform about the topic</a>.</p>
 ]]></content>
   </entry>
   

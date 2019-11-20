@@ -4,7 +4,7 @@
   <title><![CDATA[Category: windows | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/windows/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-12-22T21:20:36+00:00</updated>
+  <updated>2019-11-20T11:01:25-08:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
     <link href="https://marcyoung.us/post/puppet-and-marklogic"/>
-    <updated>2013-12-14T00:00:00+00:00</updated>
+    <updated>2013-12-14T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/puppet-and-marklogic</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="https://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="https://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
 
@@ -33,7 +33,7 @@
   <entry>
     <title type="html"><![CDATA[What I Learned From PuppetConf 2013]]></title>
     <link href="https://marcyoung.us/post/puppetconf2013"/>
-    <updated>2013-10-30T00:00:00+00:00</updated>
+    <updated>2013-10-30T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/puppetconf</id>
     <content type="html"><![CDATA[<p>Wow. Work has been crazy. Enough for me to have no activity here. Time to change that, but putting in a blog post that might resemble a cracked article.<!--more--></p>
 
@@ -107,7 +107,7 @@
   <entry>
     <title type="html"><![CDATA[Automatically deploy GIT code to Windows with Puppet]]></title>
     <link href="https://marcyoung.us/post/automatically-deploy-git-code-windows-puppet/"/>
-    <updated>2013-05-24T00:00:00+00:00</updated>
+    <updated>2013-05-24T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/automatically-deploy-git-code-windows-puppet</id>
     <content type="html"><![CDATA[<p>Recently I&#8217;ve been looking for ways of keeping a box up-to-date as far as git is concerned, and for windows the options are pretty limited. The vast majority of DevOps seem to like Puppet, so I decided to give it a try.<!--more--> The problem is windows isn&#8217;t very good without a few helper programs such as ssh, but we&#8217;ll get around that with Cygwin. The master box will be a Centos 6.4 x64 host.</p>
 

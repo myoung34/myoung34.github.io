@@ -4,7 +4,7 @@
   <title><![CDATA[Category: aws | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/aws/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-12-22T21:20:36+00:00</updated>
+  <updated>2019-11-20T11:01:25-08:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 2)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part2"/>
-    <updated>2017-12-24T00:00:00+00:00</updated>
+    <updated>2017-12-24T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part2</id>
     <content type="html"><![CDATA[<p>Now for some cool snippets on how to automatically request certs from the Intermediary we created in Part 1<!-- more --></p>
 
@@ -120,7 +120,7 @@ EOT
   <entry>
     <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
     <link href="https://marcyoung.us/post/docker-vault-ca-part1"/>
-    <updated>2017-12-24T00:00:00+00:00</updated>
+    <updated>2017-12-24T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/docker-vault-ca-part1</id>
     <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
 
@@ -294,7 +294,7 @@ Success! Data written to: cuddletech_ops/config/urls
   <entry>
     <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
     <link href="https://marcyoung.us/post/vault-anything-in-terraform"/>
-    <updated>2017-12-23T00:00:00+00:00</updated>
+    <updated>2017-12-23T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/vault-anything-in-terraform</id>
     <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
 
@@ -387,7 +387,7 @@ EOT
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
     <link href="https://marcyoung.us/post/bless-part2"/>
-    <updated>2017-06-20T00:00:00+00:00</updated>
+    <updated>2017-06-20T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/bless-part2</id>
     <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
 
@@ -570,7 +570,7 @@ EOF
   <entry>
     <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
     <link href="https://marcyoung.us/post/bless-part1"/>
-    <updated>2017-06-20T00:00:00+00:00</updated>
+    <updated>2017-06-20T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/bless-part1</id>
     <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="https://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
 

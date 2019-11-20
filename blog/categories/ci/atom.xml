@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ci | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/ci/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-12-22T21:20:36+00:00</updated>
+  <updated>2019-11-20T11:01:25-08:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Let's Rethink Jenkins]]></title>
     <link href="https://marcyoung.us/post/lets-rethink-jenkins"/>
-    <updated>2018-01-29T00:00:00+00:00</updated>
+    <updated>2018-01-29T00:00:00-08:00</updated>
     <id>https://marcyoung.us/post/lets-rethink-jenkins</id>
     <content type="html"><![CDATA[<p>I lose all data from jenkins every time I deploy it. And that&rsquo;s OK.  <!-- more --></p>
 

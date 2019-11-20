@@ -4,7 +4,7 @@
   <title><![CDATA[Category: production | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/production/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2018-12-22T21:20:36+00:00</updated>
+  <updated>2019-11-20T11:01:25-08:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Hulk-Smash Production]]></title>
     <link href="https://marcyoung.us/post/hulk-smash"/>
-    <updated>2018-05-20T00:00:00+00:00</updated>
+    <updated>2018-05-20T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/Hulk-Smash-Prod</id>
     <content type="html"><![CDATA[<p>I one-upped my own bad idea with more badness. Don&rsquo;t do this.  <!-- more --></p>
 
@@ -58,7 +58,7 @@
   <entry>
     <title type="html"><![CDATA[A Physical Deploy-Production Button]]></title>
     <link href="https://marcyoung.us/post/deploy-production-button"/>
-    <updated>2018-05-19T00:00:00+00:00</updated>
+    <updated>2018-05-19T00:00:00-07:00</updated>
     <id>https://marcyoung.us/post/deploy-production-button</id>
     <content type="html"><![CDATA[<p>I made a physical button to deploy production and regret nothing.  <!-- more --></p>
 
