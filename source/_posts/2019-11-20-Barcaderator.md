@@ -40,6 +40,8 @@ I also brew beer. Why not combine the two?!
 So I introduce to you: 
 
 {% img /images/barcade1.jpg %}
+{% img /images/barcade2.jpg %}
+{% img /images/barcade3.jpg %}
 {% img /images/barcade2.gif %}
 {% img /images/marquee.gif %}
 
