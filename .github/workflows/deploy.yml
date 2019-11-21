@@ -1,0 +1,22 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - source
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build & Deploy to GitHub Pages
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+        GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+      with:
+        GITHUB_BRANCH: master
+      uses: myoung34/jekyll-deploy-gh-pages@master
