@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: windows | Marcus Young]]></title>
+  <link href="https://marcyoung.us/blog/categories/windows/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2019-11-21T20:32:09+00:00</updated>
+  <id>https://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
+    <link href="https://marcyoung.us/post/puppet-and-marklogic"/>
+    <updated>2013-12-14T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/puppet-and-marklogic</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="https://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="https://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
+
+<p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
+
+<p>How does this suck for me? I like to test. It&rsquo;s my new thing. In order to test your module, you need consistency, and for this that&rsquo;s hard to do without violating their terms. My solution? I have a super secret vagrant .box file that has a local Yum repository with the versions I know it supports (everything over version 6). No big deal, sort of.</p>
+
+<p>Did I mention the software also requires activation? That affects testing too, because I can&rsquo;t just hardcode my license information even though it&rsquo;s free and easily obtainable. My solution was to force the user to have a <code>~/.marklogic.yml</code> file that contains the information. None of this means anything to the normal use who wishes to install marklogic, they just need a Yum repository set up that holds the MarkLogic version. It does mean something to me in terms of making something that&rsquo;s easy to fork and fix if there are issues.</p>
+
+<p>TL;DR: <a href="https://www.puppetforge.com/myoung34/marklogic">My module is here.</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[What I Learned From PuppetConf 2013]]></title>
+    <link href="https://marcyoung.us/post/puppetconf2013"/>
+    <updated>2013-10-30T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/puppetconf</id>
+    <content type="html"><![CDATA[<p>Wow. Work has been crazy. Enough for me to have no activity here. Time to change that, but putting in a blog post that might resemble a cracked article.<!--more--></p>
+
+<p>I recently attended Puppetconf 2013 in San Francisco, and it was amazing (except the food). I love that city now. Regardless, I went into this conference having written a few very incorrect modules that did work, although I&rsquo;m unsure how in hindsight. I decided to finally put in a post some of the takeaways I gathered. Ironically, almost all of my best information came from sitting down on developer day, which was a topic themed sit-down to talk to like minded people and puppet developers. The idea being to get them to look at your code, help you out, or just answer questions. This. Was. Awesome. Much thanks to Ashley Penney and Rob Reynolds for dealing with me.</p>
+
+<h1>Things To Take Away From My Conference Experience</h1>
+
+<ol>
+<li>Module best practices
+
+<ul>
+<li>The <a href="https://docs.puppetlabs.com/guides/style_guide.html">style guide</a> is your bff.</li>
+<li>Tests, tests tests.
+
+<ol>
+<li><a href="https://rspec-puppet.com/tutorial/">rspec-puppet</a> lets you write rspec tests for your manifests.</li>
+<li><a href="https://github.com/puppetlabs/rspec-system-puppet">rspec-system-puppet</a> lets you write system tests for a full stack (catalog)</li>
+</ol>
+</li>
+<li><a href="https://puppet-lint.com/">Puppet-lint</a>. Use it. Love it. Always run with <em>&ndash;no-80chars-check</em> flag (1990 called, it wants its&#8217; 1024x768 resolution back).</li>
+</ul>
+</li>
+<li>Things you should know if you&rsquo;re maintaining modules
+
+<ul>
+<li>Use a module deployment manager.
+
+<ol>
+<li><a href="https://github.com/adrienthebo/r10k">r10k</a>. I now use this everywhere. You can easily set it up to deploy your modules from <em>master</em> to <em>/etc/puppet/environments/production</em> and <em>dev</em> to <em>/etc/puppet/environments/development</em> , which is so awesome. This makes staggering environments a snap. I plan on writing a quick guide to this soon.</li>
+<li><a href="https://github.com/rodjek/librarian-puppet">Puppet libarian</a> is another I&rsquo;ve not yet used, but I&rsquo;ve heard good and bad.</li>
+</ol>
+</li>
+<li><a href="https://docs.puppetlabs.com/hiera/1/">Hiera</a> is fantastic. Separate your data from your modules.</li>
+<li>Use facts for advanced modules. Your modules should not try to determine how to run, but simply follow flow. For example, assume you have a module that should operate differently based on what&rsquo;s responding on an HTTP port. Your module should be as simple as possible, so it shouldn&rsquo;t try to determine this, but use it. You should write and package a <em>fact</em> that hits the server, and returns <em>my_http_server => &lsquo;nginx&rsquo;</em>. Now your module can just do something as simple as a switch on this <em>$::my_http_server</em> variable. Done.</li>
+<li>I love Craig Dunn&rsquo;s <a href="https://www.craigdunn.org/2012/05/239/">roles and profiles</a> architecture. It&rsquo;s so simple and it works quite well. Having a singular <em>role</em> that maps to multiple <em>profiles</em> provides a flexible and easily maintained set of modules.</li>
+<li>Puppet&rsquo;s <a href="https://github.com/puppetlabs/puppetlabs-stdlib">stdlib</a> is great. I&rsquo;m a huge fan of not reinventing the wheel, so having <em>str2bool()</em> available makes me happy. Along with a ton of other well written functions you need.</li>
+</ul>
+</li>
+<li>Buzzwords (things I can&rsquo;t believe I&rsquo;ve never heard of/used)
+
+<ul>
+<li><a href="https://www.pulpproject.org/">Pulp</a> is quite cool. For my modules, everything is RHEL/CentOS based, so publishing RPMs has become my &lsquo;thang&rsquo;. Pulp <em>seems</em> to be an attempt to get spacewalk-like functionality into the hands of people who don&rsquo;t want the overhead of the database, GUI, and a bunch of the bulk. Me? I just use it as a Yum repository. My jenkins builds RPM&rsquo;s and publishes them to a Pulp server, so it becomes available to anything that uses it as a repo.</li>
+<li>I&rsquo;ve heard of and scoffed vim package managers. Until <a href="https://github.com/Shougo/neobundle.vim">neobundle</a>. I&rsquo;ve been setting up so many servers lately, having a dotfiles repository with a .vimrc with all my Vim necessities has lowered my blood pressure.</li>
+<li><a href="https://wiki.openstack.org/wiki/Packstack">Packstack</a>. This could be a rant in and of itself. I really want to like this. I really do. What is it? It&rsquo;s a fully automated puppet setup of Openstack. What?! IaaS at your fingertips? Too good to be true you say? Yes. Great idea, but it needs a lot of work. I didn&rsquo;t sleep for 2 days trying to set this up. And gave up.
+
+<ul>
+<li>tl;dr <em>What is it</em>: Puppet based installer for a single instance version of Openstack. Openstack really requires 3 nodes (compute, data, network), but this gives you a &lsquo;trial version&rsquo;, meaning all 3 nodes on one instance with some limitations on Ram, storage, etc that you can&rsquo;t change (because why on earth would you actually want IaaS on a single instance).</li>
+<li>tl;dr <em>My issues</em>: Failed on Fedora 19. And Fedora 20, although both are officially supported. Discovered bugs on each install such as the GUI sending only 500 ISE&rsquo;s, missing the x86_64 Qemu 1.4 emulator, and removing <em>/var/lock/subsys</em> in an install.</li>
+</ul>
+</li>
+<li><a href="https://openstack.redhat.com/Main_Page">RDO</a> is <em>Red Hat</em>&rsquo;s <em>D</em>eployment of <em>O</em>penstack - see what I did there? This is what I used to fail miserably at installing packstack.</li>
+<li><a href="https://theforeman.org">Foreman</a> is a great and simple way to keep track of your hosts. Works flawlessly with your set up, whether you use an ENC, Hiera, both, neither. I use it and swear by it. A coworker loves the <a href="https://puppetlabs.com/dashboard">puppet dashboard</a> although it seems to have the same functionality. I don&rsquo;t use either one for its provisioning, solely its puppet management.</li>
+<li><a href="https://www.openshift.com/products/origin">openshift</a> seems to be red hats solution to heroku. PaaS still eludes me, but my understanding is it&rsquo;s an answer to developing without deploying. Push the code to their system with some metadata on how to execute and be done with it.</li>
+</ul>
+</li>
+</ol>
+
+
+<h1>Random Things I Learned About Puppet Pre/Post Conference</h1>
+
+<ol>
+<li>Puppet is the greatest thing I&rsquo;ve found for linux system configuration and package maintenance&hellip;.Windows? Not so much. Puppet is obviously intended for the linux community, seeing as the master HAS to be linux. This is fine if you&rsquo;re just wanting to set up and maintain a windows box. Where am I going with this? <em>Continuous deployment</em>. If you&rsquo;re looking to deploy code, continuously or not, on a Windows system, if it&rsquo;s not msi or exe, Puppet isn&rsquo;t your thing. I&rsquo;ve found <a href="https://octopusdeploy.com/">octopus deploy</a> and it works great from a CI/NuGet deployment standpoint.</li>
+<li><a href="https://lmgtfy.com/?q=puppet+without+root">Puppet without root</a> is a pipe dream. It&rsquo;s a hot topic, but the biggest failure? Linux packages will most likely require root for a very long time. Oops.</li>
+<li>Write facts, use hiera, and stop making complicated modules.</li>
+<li>I love <a href="https://vagrantup.com/">vagrant</a>. So much.</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Automatically deploy GIT code to Windows with Puppet]]></title>
+    <link href="https://marcyoung.us/post/automatically-deploy-git-code-windows-puppet/"/>
+    <updated>2013-05-24T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/automatically-deploy-git-code-windows-puppet</id>
+    <content type="html"><![CDATA[<p>Recently I&#8217;ve been looking for ways of keeping a box up-to-date as far as git is concerned, and for windows the options are pretty limited. The vast majority of DevOps seem to like Puppet, so I decided to give it a try.<!--more--> The problem is windows isn&#8217;t very good without a few helper programs such as ssh, but we&#8217;ll get around that with Cygwin. The master box will be a Centos 6.4 x64 host.</p>
+
+<h2>Puppet Master</h2>
+
+<p>The first thing we&#8217;ll need to do is install the EPEL and Puppet repositories with, then install the puppet software and start the master process:</p>
+
+<pre><code># rpm -Uvh https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+# rpm -Uvh https://yum.puppetlabs.com/el/6/products/x86_64/puppetlabs-release-6-7.noarch.rpm
+# sudo yum install -y puppet-server &amp;&amp; chkconfig puppetmaster on &amp;&amp; service puppetmaster start
+</code></pre>
+
+<p>Let&#8217;s go ahead and get some files prepared. Create a git repo in <strong>/opt</strong> called <strong>test</strong> with a file in it (<strong>test.txt</strong>), committed to master:</p>
+
+<pre><code>$ cd /opt
+$ sudo mkdir test &amp;&amp; chmod 766 test
+$ cd test
+$ git init
+$ touch test.txt
+$ git add test.txt
+$ git commit -a -m "Adding empty file"
+</code></pre>
+
+<p>One last thing we&#8217;ll need for puppet to work with git is VCSRepo, so let&#8217;s get that:</p>
+
+<pre><code># puppet module install puppetlabs/vcsrepo
+</code></pre>
+
+<p>Now that puppet is ready to serve it out, we have to create some files.</p>
+
+<ul>
+<li><strong>/etc/puppet/manifests/site.pp</strong></li>
+</ul>
+
+
+<pre><code>node 'server-vm.blindrage.ad' {
+  include git
+}}
+</code></pre>
+
+<ul>
+<li><strong>/etc/puppet/modules/git/manifests/init.pp</strong></li>
+</ul>
+
+
+<pre><code>class git {
+  class { git::clone: }
+}
+</code></pre>
+
+<ul>
+<li><strong>/etc/puppet/modules/git/manifests/clone.pp</strong></li>
+</ul>
+
+
+<pre><code>class git::clone ($repo='dev', $username='marcus.young') {
+  vcsrepo { "C:/${repo}":
+    ensure   =&gt; latest,
+    owner    =&gt; $owner,
+    provider =&gt; git,
+    source   =&gt; "git+ssh://${username}@foreman/~/repos/test",
+    revision =&gt; $repo,
+  }
+}
+</code></pre>
+
+<h2>Puppet Client</h2>
+
+<p>The first two steps are going to be to install cygwin, making sure to add git and openssh, then the puppet client software (making sure to point to your linux host as the master).</p>
+
+<p>When this is done, stop the windows puppet service and make sure it is not set for startup. We&#8217;re going to control this process with a custom task schedule.</p>
+
+<p>Next, add the path to your cygwin bin folder to the PATH environment variable. If you don&#8217;t know how, it&#8217;s probably something similar to <strong>C:\cygwin\bin</strong>, and you&#8217;ll add it according to <a href="https://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx" target="_blank">this guide</a>. You&#8217;re close now!</p>
+
+<p>Using cygwin, generate a public/private key pair (if using git+ssh) <strong>without a password</strong> and give the public key to the master box.</p>
+
+<p>If you&#8217;ve done it right, you can clone the repo in cygwin without a password using this line:</p>
+
+<pre><code>$ git clone git+ssh://{username}@{master}/opt/test
+</code></pre>
+
+<p>The last step is to generate a cert and sign it.</p>
+
+<p>From the client:</p>
+
+<pre><code>puppet agent -t --waitforcert 60
+</code></pre>
+
+<p>Then on the master:</p>
+
+<pre><code># puppet cert sign --all
+</code></pre>
+
+<p>The client should now finish and download your git code! Congrats!</p>
+
+<p>However, this isn&#8217;t automagic yet. To do that, create a scheduled task that runs every 2 minutes (or whenever) that runs a daemon file.<br/>
+The easiest way is to create<strong> C:\Program Files\Puppet Labs\Puppet\bin\puppet_daemon.bat</strong> which contains:</p>
+
+<pre><code>@echo off
+echo Running Puppet agent on demand ...
+cd "%~dp0"
+call puppet.bat agent --test %*
+</code></pre>
+
+<p>Congrats. You&#8217;re done! To test, make a change to the git repo and wait two minutes!</p>
+]]></content>
+  </entry>
+  
+</feed>

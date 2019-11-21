@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins - Marcus Young</title>
+  <meta name="author" content="Marcus Young">
+
+  
+  <meta name="description" content="So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcus Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Marcus Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marcyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+  <li><a href="https://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
+  <li><a href="https://www.dropbox.com/s/3dnv34v27xrnawb/Resume-Marcus.Young%20-%20Public.doc">Resume</a></li>
+  <li><a onclick="openForm()">Message Me</a></li>
+</ul>
+<div class="form-popup" id="myForm">
+  <form action="https://pcagf163b0.execute-api.us-east-1.amazonaws.com/prod/email/send/formencoded" method="POST" class="form-container">
+    <h1>Message</h1>
+
+    <input type="text" placeholder="Email" name="email" required>
+    <input type="text" placeholder="Name" name="name" required>
+    <input type="textarea" placeholder="Write Me" name="content" required>
+
+    <button type="submit" class="btn">Send</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Complete Continuous Deployment Using Puppet and Pulp - Part 4 - Puppet and Jenkins</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-22T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>So. We have an application that it&rsquo;s constantly pushed to Yum when it&rsquo;s modified. We have a puppet manifest (with tests) that can deploy this application and keep it up to date, and we even have r10k handling the deployment of those puppet modules so that we don&rsquo;t have to worry about dependencies, and we can even stage them! What we don&rsquo;t have is a way of getting changes to that puppet module to the puppet master without remoting in and running r10k. That&rsquo;s easy to fix with jenkins!<!--more--></p>
+
+<p>If you were to stop right now, you&rsquo;re pretty close. But&hellip;remoting into the server to redeploy isn&rsquo;t scalable. What if you forget? What if you have a new guy that made a super awesome bugfix to your puppet module and forgot how to get it up to the servers? Enter jenkins. Note: I have travis-ci set up for the one here, but we&rsquo;re going to duplicate that logic. Travis-CI is nice if your module is on github, but it may not be. Or you may need it to do something else, such as trigger an r10k deployment, so that&rsquo;s why we&rsquo;re still implementing Jenkins.</p>
+
+<h3>The Jenkins job for puppet-exampleservice</h3>
+
+<ol>
+<li>Create a free-style job and name it something like <em>puppet-exampleservice</em></li>
+<li>Point it to your git repo for the <em>puppet-exampleservice</em> module and have it poll SCM every x minutes.</li>
+<li>Have it run in rvm 2.0.0</li>
+<li>Create an <strong>execute shell</strong> build step with:</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install
+</span><span class='line'>bundle exec rake</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>From the <em>warnings</em> plugin, add a <strong>post-build action</strong> to <em>scan for compiler warnings</em>
+
+<ul>
+<li>set <em>scan console log</em> to <strong>puppet-lint</strong></li>
+</ul>
+</li>
+</ol>
+
+
+<p>From here, you now have something similar to Travis-Ci. Hit Build, and it should go green. Congrats, you now have automated testing. What you need now is that automated deployment I&rsquo;ve been hinting at. But that&rsquo;s easy!</p>
+
+<h3>The Jenkins job to re-deploy puppet modules on the ENC</h3>
+
+<ol>
+<li>Create a free-style job and name it something like <em>Redeploy Puppet Modules</em></li>
+<li>Add a string parameter <strong>git_branch</strong></li>
+<li>Add a build step <strong>execute shell script on remote host using ssh</strong>
+
+<ul>
+<li>Select your ENC (set one up in the <strong>Manage jenkins</strong> portion first and make sure your private/public keys work) with:</li>
+</ul>
+</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Validate the build param. Should be 'dev' or 'master'
+</span><span class='line'># This corresponds to the r10k setup.
+</span><span class='line'>environment=$(echo "$git_branch" | awk '{split($0,a,"/"); print a[2]}')
+</span><span class='line'>if [[ "$environment" == "master" ]]; then
+</span><span class='line'>  rm -rf /var/cache/r10k/* # Sometimes r10k won't deploy and acts like it's up to date.
+</span><span class='line'>  /usr/bin/r10k deploy environment master -v -p
+</span><span class='line'>  exit 0
+</span><span class='line'>elif [[ "$environment" == "dev" ]]; then
+</span><span class='line'>  rm -rf /var/cache/r10k/* # Sometimes r10k won't deploy and acts like it's up to date.
+</span><span class='line'>  /usr/bin/r10k deploy environment dev -v -p
+</span><span class='line'>  exit 0
+</span><span class='line'>else
+</span><span class='line'>  echo "Invalid environment parameter [$environment] passed to build."
+</span><span class='line'>  echo "  Should be one of 'dev' or 'master'."
+</span><span class='line'>  exit 1
+</span><span class='line'>fi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You&rsquo;re now ready for your previous module to notify this build.</p>
+
+<ol>
+<li>Go back to your puppet module job and:
+
+<ol>
+<li>Create a post-build action <strong>trigger parameterized build on other projects</strong></li>
+<li>Set &lsquo;projects to build&rsquo; to <strong>Redeploy Puppet Modules</strong></li>
+<li>Set &lsquo;Trigger when build is&rsquo; to <strong>Stable or unstable but not failed</strong></li>
+<li>Add a parameter &lsquo;Predefined parameters&rsquo; and give it: <code>git_branch=$GIT_BRANCH</code></li>
+</ol>
+</li>
+</ol>
+
+
+<h3>You&rsquo;re missing a Jenkins job</h3>
+
+<p>Technically you&rsquo;re close, but you might want to redeploy if your r10k changes. You can do that right now!</p>
+
+<ol>
+<li>Create a new free-style joba and call it <em>puppet-r10k</em></li>
+<li>There are no tests, so just point it at your r10k git repo and watch <em>dev</em> and <em>master</em> branches</li>
+<li>Make it poll SCM every x minutes</li>
+<li>Create a post-build action <strong>trigger parameterized build on other projects</strong>
+
+<ul>
+<li>Set &lsquo;projects to build&rsquo; to <strong>Redeploy Puppet Modules</strong></li>
+<li>Set &lsquo;Trigger when build is&rsquo; to <strong>Stable or unstable but not failed</strong></li>
+<li>Add a parameter &lsquo;Predefined parameters&rsquo; and give it:</li>
+</ul>
+</li>
+</ol>
+
+
+<h3>You&rsquo;re Done!!1one</h3>
+
+<p>Now build your puppet module. When it goes green, it will notify the <strong>Redeploy Puppet Modules</strong> job and give it the git branch (<em>dev</em> or <em>master</em>). That build will now parse the git branch, and on the Foreman ENC will run the r10k deployer. Don&rsquo;t you have that fuzzy feeling inside because you can now redeploy your modules to the server by just making a commit? I do and I don&rsquo;t even know you!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-22T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/continuous-deployment-using-puppet-and-pulp-pt-3-enter-puppet" title="Previous Post: Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet">&laquo; Complete Continuous Deployment Using Puppet and Pulp - Part 3 - Enter Puppet</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/mirth-puppet-module" title="Next Post: New Puppet Module - MirthConnect">New Puppet Module - MirthConnect &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/barcade">Barcaderator - Building an Arcade Kegerator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/scooters">Hacking &#8220;Aviary&#8221; Scooters</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/slack-not-bash">Slack Is Not Your Bash Prompt</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/hulk-smash">Hulk-Smash Production</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/deploy-production-button">A Physical Deploy-Production Button</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2019 - Marcus Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'marcyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins';
+        var disqus_url = 'https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-4-puppet-jenkins';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

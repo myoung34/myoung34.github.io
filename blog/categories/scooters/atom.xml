@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: scooters | Marcus Young]]></title>
+  <link href="https://marcyoung.us/blog/categories/scooters/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2019-11-21T20:32:09+00:00</updated>
+  <id>https://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hacking "Aviary" Scooters]]></title>
+    <link href="https://marcyoung.us/post/scooters"/>
+    <updated>2018-12-22T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/scooters</id>
+    <content type="html"><![CDATA[<p>Hacking &ldquo;aviary&rdquo; scooters for fun.  <!-- more --></p>
+
+<p><img src="/images/scooters.jpg" title="scooters" ></p>
+
+<p>I recently came across some neglected and forgotten &ldquo;Aviary&rdquo; scooters and wanted to see what could be done.</p>
+
+<h2>Segway ES2/4</h2>
+
+<p><img src="/images/es4.jpg" title="es4" ></p>
+
+<p>This was the easiest hack I&rsquo;ve ever done. Remove the top panel with security bits, and replace the board with one from ebay similar <a href="https://i.ebayimg.com/images/g/EUUAAOSwH2Vb7453/s-l300.jpg">to this</a></p>
+
+<p>Plug it in and go. Done.
+Cost: ~$40</p>
+
+<h2>Xiaomi Mijia M365</h2>
+
+<p>This one was much more fun.</p>
+
+<p><img src="/images/m365_1.jpg" title="m365" >
+<img src="/images/m365_2.jpg" title="m365" >
+<img src="/images/m365_3.jpg" title="m365" >
+<img src="/images/m365_4.jpg" title="m365" >
+<img src="/images/m365_5.png" title="m365" >
+<img src="/images/m365_6.jpg" title="m365" ></p>
+
+<h3>Firmware</h3>
+
+<p>This one was easy. Apparently the Xiaomi Mijia m365 is very commonly hacked already. They&rsquo;re extremely popular overseas, and people have already dedicated their time to reverse engineering the firmware. So much so that you can just use a <a href="https://m365.botox.bz/">webpage to change the settings and download a binary file to upload</a>.</p>
+
+<p>Just download your bin file there, upload <a href="https://m365.botox.bz/static/com.m365downgrade-v7_PATCHED.apk?q=1531494897">with the android app</a> connect to your scooter and go.</p>
+
+<h3>Display</h3>
+
+<p>This one was also slightly trivial.</p>
+
+<p>First thing I did was 3D printed one of <a href="https://www.thingiverse.com/thing:3064321">these bad boys</a>.</p>
+
+<p>Then I ordered a <a href="https://www.amazon.com/Dorhea-Display-3-3V-5V-Arduino-Raspberry/dp/B07FK8GB8T">0.96&#8221; screen (4 pin i2C <em>not</em> 7 pin SPI)</a></p>
+
+<p>Next you&rsquo;ll need an <a href="https://www.amazon.com/HiLetgo-Atmega32U4-Bootloadered-Development-Microcontroller/dp/B01MTU9GOB">arduino micro pro</a> and an <a href="https://www.amazon.com/HiLetgo-FT232RL-Converter-Adapter-Breakout/dp/B00IJXZQ7C">FTD1232 flasher</a> as well as a <a href="https://www.amazon.com/100-Pieces-1N4148-Switching-High-Speed/dp/B079KJ91JZ">diode</a>.</p>
+
+<p>Using <a href="https://github.com/augisbud/m365_dashboard">this code</a> flash the arduino, wire it according to his guides below.</p>
+
+<p>Note: I modified the <a href="https://github.com/augisbud/m365_dashboard/blob/master/M365/language.h">locale files with some maths</a> along with other tweaks I&rsquo;m not publishing to do miles instead of kilometers, change the intro logo and colors.</p>
+
+<p>Cover it using any m365 button cover via ebay.</p>
+
+<p>Done.</p>
+
+<p><img src="/images/m365_7.jpg" title="m365" ></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Vault Roles/Policies in Terraform - Marcus Young</title>
+  <meta name="author" content="Marcus Young">
+
+  
+  <meta name="description" content="Now we get to the fun part and put everything we need from Vault in terraform. If you&rsquo;ve used ECS and Vault with the aws auth backend you may &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://marcyoung.us/post/vault-anything-in-terraform">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcus Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Marcus Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marcyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+  <li><a href="https://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
+  <li><a href="https://www.dropbox.com/s/3dnv34v27xrnawb/Resume-Marcus.Young%20-%20Public.doc">Resume</a></li>
+  <li><a onclick="openForm()">Message Me</a></li>
+</ul>
+<div class="form-popup" id="myForm">
+  <form action="https://pcagf163b0.execute-api.us-east-1.amazonaws.com/prod/email/send/formencoded" method="POST" class="form-container">
+    <h1>Message</h1>
+
+    <input type="text" placeholder="Email" name="email" required>
+    <input type="text" placeholder="Name" name="name" required>
+    <input type="textarea" placeholder="Write Me" name="content" required>
+
+    <button type="submit" class="btn">Send</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Vault Roles/Policies in Terraform</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-12-23T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
+
+<p>If you&rsquo;ve used ECS and Vault with the <a href="https://www.vaultproject.io/docs/auth/aws.html">aws auth backend</a> you may have found a bit of a snag in terms of automation.</p>
+
+<p>Lets say you want to create a new ECS container to run. You want that task to get specific secrets in vault by role. You write the code, terraform, etc and when it runs you get:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>URL: GET https://server:8200/v1/auth/aws-ec2/role/somerole
+</span><span class='line'>Code: 400. Errors:
+</span><span class='line'>
+</span><span class='line'>* entry for role somerole not found</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So you deployed something but now you have to create a policy, a role, etc in vault via the CLI, all the while your task is throttling.</p>
+
+<p>Little known fact: the terribly-named <code>vault_generic_secret</code> from the <a href="https://www.terraform.io/docs/providers/vault/index.html">provider docs</a> can do create roles/policies in addition to secrets (hence the bad name).</p>
+
+<p>In this part 2 I&rsquo;ll show you how to automate the next step of your ECS task into terraform so there&rsquo;s no race condition.</p>
+
+<h2>Prerequisites</h2>
+
+<ol>
+<li>Vault running as a server</li>
+<li>Vault CLI to match the server</li>
+<li>Terraform</li>
+</ol>
+
+
+<h2>Create a vault policy in terraform</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "vault_generic_secret" "policy" {
+</span><span class='line'>  path = "sys/policy/${aws_iam_role.neutrona_wand.name}"
+</span><span class='line'>
+</span><span class='line'>  data_json = &lt;&lt;EOT
+</span><span class='line'>{
+</span><span class='line'>  "name": "${aws_iam_role.neutrona_wand.name}",
+</span><span class='line'>  "rules": "path \"secret/ops/*\" {\n  policy = \"read\"\n}\n\npath \"secret/common/*\" {\n  policy = \"read\"\n}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>EOT
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Create an AWS auth role in terraform</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>provider "vault" {}
+</span><span class='line'>
+</span><span class='line'>resource "aws_iam_role" "neutrona_wand" {
+</span><span class='line'>  name = "neutrona_wand"
+</span><span class='line'>  path = "/lambda/"
+</span><span class='line'>
+</span><span class='line'>  assume_role_policy = &lt;&lt;POLICY
+</span><span class='line'>{
+</span><span class='line'>  "Version": "2012-10-17",
+</span><span class='line'>  "Statement": [
+</span><span class='line'>    {
+</span><span class='line'>      "Sid": "",
+</span><span class='line'>      "Effect": "Allow",
+</span><span class='line'>      "Principal": {
+</span><span class='line'>        "Service": [
+</span><span class='line'>          "lambda.amazonaws.com"
+</span><span class='line'>        ]
+</span><span class='line'>      },
+</span><span class='line'>      "Action": "sts:AssumeRole"
+</span><span class='line'>    }
+</span><span class='line'>  ]
+</span><span class='line'>}
+</span><span class='line'>POLICY
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'># The ugly replace in 'bound_iam_principal_arn' is to account for removing the path from the role. 
+</span><span class='line'># If you look, my IAM role is /lambda/, so the arn would be 'arn:aws:iam::1234567890:role/lambda/neutrona_wand'
+</span><span class='line'># While the 'bound_iam_principal_arn' wants the non-path version: 'arn:aws:iam::1234567890:role/neutrona_wand'
+</span><span class='line'>resource "vault_generic_secret" "role" {
+</span><span class='line'>  path = "auth/aws/role/${aws_iam_role.neutrona_wand.name}"
+</span><span class='line'>
+</span><span class='line'>  data_json = &lt;&lt;EOT
+</span><span class='line'>{
+</span><span class='line'>  "bound_iam_principal_arn": "${replace(aws_iam_role.neutrona_wand.arn, "/:role\\/[a-zA-Z\\/]*\\//", ":role\\/")}",
+</span><span class='line'>  "policies": "default,${aws_iam_role.neutrona_wand.name},slack",
+</span><span class='line'>  "max_ttl":"300",
+</span><span class='line'>  "resolve_aws_unique_ids": "false"
+</span><span class='line'>}
+</span><span class='line'>EOT
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-12-23T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/terraform/'>terraform</a>, <a class='category' href='/blog/categories/vault/'>vault</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/reinvent-2017" title="Previous Post: re:Invent 2017 (never again)">&laquo; re:Invent 2017 (never again)</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/docker-vault-ca-part1" title="Next Post: Vault as a CA for ECS containers using Terraform (Part 1)">Vault as a CA for ECS containers using Terraform (Part 1) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/barcade">Barcaderator - Building an Arcade Kegerator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/scooters">Hacking &#8220;Aviary&#8221; Scooters</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/slack-not-bash">Slack Is Not Your Bash Prompt</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/hulk-smash">Hulk-Smash Production</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/deploy-production-button">A Physical Deploy-Production Button</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2019 - Marcus Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'marcyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marcyoung.us/post/vault-anything-in-terraform';
+        var disqus_url = 'https://marcyoung.us/post/vault-anything-in-terraform';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
