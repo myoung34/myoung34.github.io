@@ -4,7 +4,7 @@
   <title><![CDATA[Category: .net | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/dot-net/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2019-11-20T12:15:17-08:00</updated>
+  <updated>2019-11-21T21:27:59+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Azure, Github, and a Corporate Proxy]]></title>
     <link href="https://marcyoung.us/post/azure-github-proxy"/>
-    <updated>2015-05-18T00:00:00-07:00</updated>
+    <updated>2015-05-18T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/aspnet-github</id>
     <content type="html"><![CDATA[<p>Recently I started playing around with Azure and deploying an ASP.NET MVC site via its Github linkage. I had some strange issues.<!-- more --></p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cloud | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/cloud/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2019-11-20T12:15:17-08:00</updated>
+  <updated>2019-11-21T21:27:59+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[re:Invent 2017 (never again)]]></title>
     <link href="https://marcyoung.us/post/reinvent-2017"/>
-    <updated>2017-12-22T00:00:00-08:00</updated>
+    <updated>2017-12-22T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/reinvent-2017</id>
     <content type="html"><![CDATA[<p>This was my worst overall conference experience to date. <!-- more --></p>
 
@@ -51,7 +51,7 @@
   <entry>
     <title type="html"><![CDATA[Azure, Github, and a Corporate Proxy]]></title>
     <link href="https://marcyoung.us/post/azure-github-proxy"/>
-    <updated>2015-05-18T00:00:00-07:00</updated>
+    <updated>2015-05-18T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/aspnet-github</id>
     <content type="html"><![CDATA[<p>Recently I started playing around with Azure and deploying an ASP.NET MVC site via its Github linkage. I had some strange issues.<!-- more --></p>
 
@@ -114,7 +114,7 @@ I then pushed multiple changes/rebases into the github repo, and it&rsquo;s been
   <entry>
     <title type="html"><![CDATA[Well, I wrote a book]]></title>
     <link href="https://marcyoung.us/post/book"/>
-    <updated>2015-04-08T00:00:00-07:00</updated>
+    <updated>2015-04-08T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/book</id>
     <content type="html"><![CDATA[<p>It&rsquo;s been quite a while since my last post, but I promise I have somewhat of a decent reason. I wrote a book on AWS design patterns!<!-- more --></p>
 

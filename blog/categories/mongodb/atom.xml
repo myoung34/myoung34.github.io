@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mongodb | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/mongodb/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2019-11-20T12:15:17-08:00</updated>
+  <updated>2019-11-21T21:27:59+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Creating an MVC Blog with Node.js and MongoDB]]></title>
     <link href="https://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb/"/>
-    <updated>2012-04-25T00:00:00-07:00</updated>
+    <updated>2012-04-25T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/creating-an-mvc-blog-with-node-js-and-mongodb</id>
     <content type="html"><![CDATA[<p>This is going to be my first big tutorial. This is a simple tutorial to show how to build the worlds most basic blog with comment system in Node.js with Express for the MVC Routing, MongoDB as the storage engine, and Jade as the html shorthand. <!--more--></p>
 

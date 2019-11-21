@@ -4,7 +4,7 @@
   <title><![CDATA[Category: terraform | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/terraform/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2019-11-20T12:15:17-08:00</updated>
+  <updated>2019-11-21T21:27:59+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Vault Roles/Policies in Terraform]]></title>
     <link href="https://marcyoung.us/post/vault-anything-in-terraform"/>
-    <updated>2017-12-23T00:00:00-08:00</updated>
+    <updated>2017-12-23T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/vault-anything-in-terraform</id>
     <content type="html"><![CDATA[<p>Now we get to the fun part and put everything we need from Vault in terraform. <!-- more --></p>
 

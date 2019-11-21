@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hl7 | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/hl7/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2019-11-20T12:15:17-08:00</updated>
+  <updated>2019-11-21T21:27:59+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[HL7 And Node.js]]></title>
     <link href="https://marcyoung.us/post/hl7-and-node-js/"/>
-    <updated>2012-03-12T00:00:00-07:00</updated>
+    <updated>2012-03-12T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/hl7-and-node-js</id>
     <content type="html"><![CDATA[<p>This weekend I decided to play around with Node.js and see what was possible in terms of HL7 messaging.I&#8217;ve never touched Node.js, but I&#8217;ve been becoming quite fond of Javavscript, so I decided to pump out some custom code. It was surprisingly nice.</p>
 
