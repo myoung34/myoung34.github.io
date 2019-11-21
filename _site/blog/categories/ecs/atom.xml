@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ecs | Marcus Young]]></title>
+  <link href="https://marcyoung.us/blog/categories/ecs/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2019-11-21T20:32:09+00:00</updated>
+  <id>https://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 4 - Curator]]></title>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-4"/>
+    <updated>2016-08-08T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/dockerized-elk-part4</id>
+    <content type="html"><![CDATA[<p>The previous part focused on getting Kibana up. This one focuses on getting Curator <!-- more --></p>
+
+<h1>Disclaimer</h1>
+
+<p>I&rsquo;m redacting any information that might seem sensitive such as account numbers. Use your discretion and make sure you use values that make sense for things blacked out in images or in <code>{}</code> notation.</p>
+
+<h1>Part 2 - Curator</h1>
+
+<p>This is the coolest part of the whole stack.</p>
+
+<p>We&rsquo;re basically going to build/deploy a docker image for Curator, then upload a cloudformation template that creates a Lambda function to run it.</p>
+
+<p>The lambda function will have a trigger of your choice (probably a scheduled event for once a day if I had to guess) and will run two tasks.</p>
+
+<p>Task 1 is a rotate warm task that will tell Elasticsearch to move any indexes to warm that (in this case) are 0 days old (for demo purposes).
+Task 2 is a delete task that tells Elasticsearch to delete any indexes older than 14 days.</p>
+
+<p>You can expand this to stagger them, take snapshots, etc. This allows you to have schedules that define how the data moves from box to box or to backups!</p>
+
+<p>First thing we need to do is build the container and push it to ECR.</p>
+
+<p>In the ECR portion of the AWS console, create a new repository called <code>test/curator</code>.</p>
+
+<p>Then in your console for <a href="https://github.com/myoung34/elk-docker-aws/blob/master/curator/Dockerfile">the curator dockerfile</a> run:</p>
+
+<pre><code>docker build -t curator:local .
+docker tag curator:local \
+   {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/curator:latest
+$(aws ecr get-login)
+docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/curator:latest
+</code></pre>
+
+<p>Once this is pushed you can verify it by looking for a tag <code>latest</code> in your <code>test/curator</code> ECR repository.</p>
+
+<p>Next upload <a href="https://github.com/myoung34/elk-docker-aws/blob/master/curator/cloudformation.json">this cloudformation template</a> to Cloudformation (modifying the parameters as you need).</p>
+
+<p><img src="../../images/elk/curator_cft_params.png" alt="" /></p>
+
+<p>Once it is complete, go to the Lambda portion of AWS and click your function that was created. You can test it by clicking &ldquo;Test&rdquo; and just hitting &ldquo;submit&rdquo;.</p>
+
+<p>You will see some output such as:</p>
+
+<p><img src="../../images/elk/curator_lambda.png" alt="" /></p>
+
+<p>If you go to the ECS console quickly you will see two tasks have been created and are being run for the first time (will be in pending for a minute while the image is being pulled to the instance running it).</p>
+
+<p><img src="../../images/elk/curator_delete_task.png" alt="" /></p>
+
+<p><img src="../../images/elk/curator_rotate_warm_task.png" alt="" /></p>
+
+<p>And now if you look at your kopf plugin you will see the data move from the &ldquo;hot&rdquo; node:</p>
+
+<p><img src="../../images/elk/curator_before.png" alt="" /></p>
+
+<p>To eventually the &ldquo;warm&rdquo; node:</p>
+
+<p><img src="../../images/elk/curator_after.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana]]></title>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-3"/>
+    <updated>2016-08-08T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/dockerized-elk-part3</id>
+    <content type="html"><![CDATA[<p>The previous part focused on getting logstash up. This one focuses on getting Kibana <!-- more --></p>
+
+<h1>Disclaimer</h1>
+
+<p>I&rsquo;m redacting any information that might seem sensitive such as account numbers. Use your discretion and make sure you use values that make sense for things blacked out in images or in <code>{}</code> notation.</p>
+
+<h1>Part 2 - Kibana</h1>
+
+<p>First thing we need to do is build the container and push it to ECR.</p>
+
+<p>In the ECR portion of the AWS console, create a new repository called <code>test/kibana</code>.</p>
+
+<p>Then in your console for <a href="https://github.com/myoung34/elk-docker-aws/blob/master/kibana/Dockerfile">the kibana dockerfile</a> run:</p>
+
+<pre><code>docker build -t kibana:local .
+docker tag kibana:local \
+   {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/kibana:latest
+$(aws ecr get-login)
+docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/kibana:latest
+</code></pre>
+
+<p>Once this is pushed you can verify it by looking for a tag <code>latest</code> in your <code>test/kibana</code> ECR repository.</p>
+
+<p>Next upload <a href="https://github.com/myoung34/elk-docker-aws/blob/master/kibana/cloudformation.json">this cloudformation template</a> to Cloudformation (modifying the parameters as you need).</p>
+
+<p>It will look almost exactly like the logstash upload in terms of parameters.</p>
+
+<p>You now have a kibana instance! My next step would be to configure a Route53 domain name to point to the kibana load balancer so you can have real SSL without any chain issues.</p>
+
+<h1>Takeaways</h1>
+
+<p>Similar to what we did with elasticsearch and logstash, kibana is listening on port <code>5601</code> via HTTPS. It uses self-signed SSL certificates. The dockerfile is actually identical to the verified one on the Dockerhub, except I expanded the <code>docker-entrypoint.sh</code> to take more parameters since the base one doesn&rsquo;t allow much configurability: <a href="https://github.com/docker-library/kibana/pull/45">https://github.com/docker-library/kibana/pull/45</a></p>
+
+<p>If you browse to your ELB or route53 entry on port 443, you&rsquo;ll be greeted by kibana.</p>
+
+<p><img src="../../images/elk/kibana_first.png" alt="" /></p>
+
+<p>If you configure your index to <code>test-*</code> your dashboard will show the logs Logstash ingested!</p>
+
+<p><img src="../../images/elk/kibana_dash.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash]]></title>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-2"/>
+    <updated>2016-08-08T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/dockerized-elk-part2</id>
+    <content type="html"><![CDATA[<p>The previous part focused on getting the ECS cluster, ECR repos, and Elasticsearch up. This one focuses on getting Logstash <!-- more --></p>
+
+<h1>Disclaimer</h1>
+
+<p>I&rsquo;m redacting any information that might seem sensitive such as account numbers. Use your discretion and make sure you use values that make sense for things blacked out in images or in <code>{}</code> notation.</p>
+
+<h1>Part 2a - Logstash</h1>
+
+<p>First thing we need to do is build the container and push it to ECR.</p>
+
+<p>In the ECR portion of the AWS console, create a new repository called <code>test/logstash</code>.</p>
+
+<p>Then in your console for <a href="https://github.com/myoung34/elk-docker-aws/blob/master/logstash/Dockerfile">the logstash dockerfile</a> run:</p>
+
+<pre><code>docker build -t logstash:local .
+docker tag logstash:local \
+   {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/logstash:latest
+$(aws ecr get-login)
+docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/logstash:latest
+</code></pre>
+
+<p>Once this is pushed you can verify it by looking for a tag <code>latest</code> in your <code>test/logstash</code> ECR repository.</p>
+
+<p>Next upload <a href="https://github.com/myoung34/elk-docker-aws/blob/master/logstash/cloudformation.json">this cloudformation template</a> to Cloudformation (modifying the parameters as you need).</p>
+
+<p><img src="../../images/elk/logstash_cft.png" alt="" /></p>
+
+<p>You now have a listening logstash instance! My next step would be to configure a Route53 domain name to point to the logstash load balancer so you can have real SSL without any chain issues.</p>
+
+<h1>Takeaways</h1>
+
+<p>Similar to what we did with elasticsearch, logstash is listening on port <code>5000</code> for beats input. It uses self-signed SSL certificates. Most beats forwarders won&rsquo;t play nice with that out of the box, but if you configure Route53 to point to the ELB and use ACM, it will be valid SSL. The load balancer will use TCP to send to the logstash instances and not care that it is self-signed.</p>
+
+<p>The <a href="https://github.com/myoung34/elk-docker-aws/blob/master/logstash/logstash.conf">logstash configuration file</a> uses dynamic indexes, so whatever you set <code>document_type</code> on your beats configuration to will become the index.</p>
+
+<h1>Part 2b - Send to logstash</h1>
+
+<p>Install the latest stable logstash and use this filebeat configuration to get ready to ship:</p>
+
+<pre><code>filebeat:
+  prospectors:
+    -
+      paths:
+        - "/var/log/test/*"
+      encoding: plain
+      input_type: log
+      fields_under_root: true
+      document_type: test
+output:
+  logstash:
+    hosts: ["log-test.dev.mydom.com:5000"]
+</code></pre>
+
+<p>Next make sure that directory exists via <code>sudo mkdir /var/log/test</code> and start the service (depends on your OS): <code>sudo service filebeat start</code>.</p>
+
+<p>Lastly, lets send something to logstash: <code>echo asdf | sudo tee -a /var/log/test/$(uuidgen)</code>. That will generate a random file and put <code>asdf</code> into it. It should show up in your kopf plugin to view:</p>
+
+<p><img src="../../images/elk/logstash_kopf.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch]]></title>
+    <link href="https://marcyoung.us/post/dockerized-elk-part-1"/>
+    <updated>2016-08-08T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/dockerized-elk-part1</id>
+    <content type="html"><![CDATA[<p>This will be a write-up on how to get a self-healing and self-curating SSL-enabled Hot/Warm ELK stack using ECS and lambda <!-- more --></p>
+
+<h1>Disclaimer</h1>
+
+<p>I&rsquo;m redacting any information that might seem sensitive such as account numbers. Use your discretion and make sure you use values that make sense for things blacked out in images or in <code>{}</code> notation.</p>
+
+<h1>Part 1a - ECS Base Instances</h1>
+
+<p>This is actually one of the easier pieces. We need a base ECS cluster to run our tasks on. <a href="https://github.com/myoung34/elk-docker-aws/blob/master/ecs_base/cloudformation.json">This cloudformation template</a> assumes your VPC is connectible, etc. If your VPC is compatible, just upload that file in cloudformation and when it&rsquo;s done, you&rsquo;ll have a cluster ready!</p>
+
+<p>The params tab:</p>
+
+<p><img src="../../images/elk/elk_base_cft.png" alt="" /></p>
+
+<p>After completion:</p>
+
+<p><img src="../../images/elk/elk_base_cft_output.png" alt="" /></p>
+
+<p>If you were to go to your ECS tab in your AWS console, you will see a new cluster with the name <code>elk-stack-ECSCluster-1A5AXF087VXOD</code> and eventually you would have 4 EC2 instances available for running tasks.</p>
+
+<h1>Part 1b - Elasticsearch</h1>
+
+<p>First thing we need to do is build the container and push it to ECR.</p>
+
+<p>In the ECR portion of the AWS console, create a new repository called <code>test/elasticsearch</code>.</p>
+
+<p>Then in your console for <a href="https://github.com/myoung34/elk-docker-aws/tree/master/elasticsearch">the elasticsearch dockerfile</a> run:</p>
+
+<pre><code>docker build -t elasticsearch:local .
+docker tag elasticsearch:local \
+   {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/elasticsearch:latest
+$(aws ecr get-login)
+docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/elasticsearch:latest
+</code></pre>
+
+<p>Once this is pushed you can verify it by looking for a tag <code>latest</code> in your <code>test/elasticsearch</code> ECR repository.</p>
+
+<p>Next upload <a href="https://github.com/myoung34/elk-docker-aws/blob/master/elasticsearch/cloudformation.json">this cloudformation template</a> to Cloudformation (modifying the parameters as you need).</p>
+
+<p>The parameters I used:</p>
+
+<p><img src="../../images/elk/elasticsearch_cft_params.png" alt="" /></p>
+
+<p>And the output tab:</p>
+
+<p><img src="../../images/elk/elasticsearch_cft_output.png" alt="" /></p>
+
+<p>If you paid enough attention to the code in the <a href="https://github.com/myoung34/elk-docker-aws/blob/master/elasticsearch/docker-entrypoint.sh">docker-entrypoint.sh</a> file you might notice this line: <code>export NODE_TYPE=$([[ `echo $((1 + RANDOM % 2))` -eq "1" ]] &amp;&amp; echo warm || echo hot)</code>.</p>
+
+<p>That, along with the <a href="https://github.com/myoung34/elk-docker-aws/blob/master/elasticsearch/elasticsearch.yml">elasticsearch configuration yaml</a>, namely the line: <code>node.box_type: ${NODE_TYPE}</code> gives you a random 50/50 chance of getting a &ldquo;hot&rdquo; or &ldquo;warm&rdquo; node. <a href="https://www.elastic.co/blog/hot-warm-architecture">The hot/warm architecture is outlined here</a> but basically you&rsquo;re going to have nodes that have attributes <code>box_type: hot</code> or <code>box_type: warm</code>. We&rsquo;ll go over how the data matters later, but for now you can verify that like in these screen shots by browsing to your elastic load balancer such as: <code>internal-elasticse-ESElasti-WYA9ZLRBVV8X-214980960.us-east-1.elb.amazonaws.com:9200/_plugin/kopf</code> and viewing the attributes for your node.</p>
+
+<p><img src="../../images/elk/elasticsearch_kopf_hot.png" alt="" /></p>
+
+<p><img src="../../images/elk/elasticsearch_kopf_warm.png" alt="" /></p>
+
+<p>You now have an SSL-enabled ELK stack that will have hot or warm nodes.</p>
+
+<h1>Takeaways</h1>
+
+<p>SSL is enabled by using NGINX as an SSL-listener in front of the ES port <code>9200</code> using self-signed certs. Elasticsearch is configured to use <code>19200</code> but broadcast <code>9200</code>. This lets the nodes themselves talk over SSL using insecure TLS, but they look normal to the outside world. The Load balancer uses ACM from Amazon with a real domain <code>*.dev.mydom.com</code> (in my screenshots) to terminate SSL with a real chain, but communicates over TCP to the ES nodes to the self-signed server.</p>
+
+<p>The reason for doing this: things like to be able to verify the chain, and don&rsquo;t like self-signed certs. As you see in my screen shot, since I used route53 to point <code>es-test.dev.mydom.com</code> to the ELB (which uses a valid ACM cert), everything is encrypted but outward facing services will not have chain errors.</p>
+
+<p>Hot-warm could be better implemented, but for demonstration purposes, 50/50 is fine if you spin up 4+ nodes. If you only use 2 ECS tasks such as the screen shots, you might end up with both hot or both warm. If you&rsquo;re following along, you&rsquo;ll want at least one of each for curator to make sense.</p>
+]]></content>
+  </entry>
+  
+</feed>

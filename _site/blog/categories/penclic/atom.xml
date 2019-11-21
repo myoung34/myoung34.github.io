@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: penclic | Marcus Young]]></title>
+  <link href="https://marcyoung.us/blog/categories/penclic/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2019-11-21T20:32:09+00:00</updated>
+  <id>https://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
+    <link href="https://marcyoung.us/post/ergo-mouse-review"/>
+    <updated>2017-06-26T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/ergo-mouse-review</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve Recently been really into ergonomic mice, and wanted to give my thoughts on a few after going all in. <!-- more --></p>
+
+<p>In the last few months, I&rsquo;ve been pretty into mechanical keyboards and form factor. I&rsquo;ve been using an original (very old) Rollermouse for about 2 years now and was looking to upgrade it (the thing is huge).</p>
+
+<p>My current home setup is a Contour Rollermouse free2 and a pok3r (Cherry MX Clears) and a Logitech G700s for gaming.
+<img class="left" src="/images/free1.jpg"></p>
+
+<p>My work set up is a TechKeys JD40 on a 1up case (80g Cherry MX browns) and a Contour Rollermouse Red.
+<img class="left" src="/images/red1.jpg"></p>
+
+<p>While shopping around, I came upon the <a href="https://amzn.to/2tguHYQ">Penclic NiceTouch t2</a>. It caught my eye because it&rsquo;s <em>exactly</em> the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that&rsquo;s a huge draw.
+They sent me one to sample, so I decided to do a pro/con of my setups.</p>
+
+<h2>Contourmouse Red</h2>
+
+<p>This is by far the most sturdy of all of the mice. It&rsquo;s made of stainless steel, and could be used as a bludgeon. It doesnt move, and the rollerbar at the top is very thick with a grippy surface area to it.
+My biggest complaint with the original contourmouse was that you ran out of horizontal space. You&rsquo;d have to hold it far left to let the mouse slowly track over, or right because there was no physical space for the mouse to go left or right anymore.
+I got adjusted to it but it happened often enough to notice. With the red, this is gone. I&rsquo;m not sure if it&rsquo;s smarter or if the acceleration takes care of it, but it never happens, or just happens far less.</p>
+
+<p>All the buttons are 100% programmable in OSX/Windows via their driver. I havent tried on linux, but I&rsquo;m sure it is. The bar itself has a physical tensioner as well which is nice to add resistance. And as far as usability: it&rsquo;s great. The roller bar
+is a physical left click if you press, and everything is in the right place. I dont have to move my hands <em>at all</em> to use it.</p>
+
+<p><img class="left" src="/images/red1.jpg">
+<img class="left" src="/images/red2.jpg"></p>
+
+<p>The drawback is price. It&rsquo;s crazy expensive, and I got lucky to find it on ebay after months of searching/bidding for a low price. I&rsquo;m not sure it&rsquo;s worth the original MSRP, but I love it.</p>
+
+<h2>Contourmouse Free2</h2>
+
+<p>This one has most of the same pros as the Red, but I find myself getting annoyed at the physical bar occasionally. It&rsquo;s smaller than the red in terms of diameter, it&rsquo;s closer to the original contourmouse. It makes it a little harder to get your thumb on
+and move freely just because it&rsquo;s thinner. The tensioner isnt that great, so sometimes after a long coding session when my hands get a little stiff the mouse shows my thumb shakiness a little on &ldquo;exact&rdquo; clicks like on small buttons. That&rsquo;s when I can tell
+I&rsquo;ve been at it too long. And the original complaint about physical left/right exists here. I find myself out of space to go left or right and have to break focus to move the mouse over. If I were trying to do exact work like CAD/3d modelling I&rsquo;d probably
+throw it out the window by this point. It&rsquo;s great, but it&rsquo;s not worth the price considering how much nicer the Red is. Also, after only a few weeks, the palm rest started coming apart, and I used a sticker to prevent it from spreading. I can tell you right
+now though, the sticker is functionally part of it now. If I pull it off, the padding will come with it. They  call the pads replaceable, but that assumes you can find it. I can&rsquo;t find replacement pads that dont come with a full keyboard.</p>
+
+<p><img class="left" src="/images/free1.jpg">
+<img class="left" src="/images/free2.jpg"></p>
+
+<p>This one is not worth the price, but I&rsquo;d buy it again if it were &lt; $60.</p>
+
+<h2>Penclic NiceTouce T2</h2>
+
+<p>This is the one I was iffy about. Functionally, it&rsquo;s great. They sent me the matching keyboard, the Penclic NiceTouch C2, which is a chiclet key style keyboard. Together they work fine. If you like chiclets it types and works great.
+However, my biggest problem is not with the keyboard, but with the trackpad. As a trackpad, it&rsquo;s fine, but it doesn&rsquo;t support gestures or multi-finger. I&rsquo;ve become so used to being able to do two-finger scroll that it&rsquo;s frustrating to not have it.
+There is a physical rotating key that lets you scroll left right, but the right side of my palm kept touching it and making my cursor jump in vim.</p>
+
+<p><img class="left" src="/images/t2_1.jpg">
+<img class="left" src="/images/t2_4.jpg">
+<img class="left" src="/images/t2_5.jpg">
+<img class="left" src="/images/t2_6.jpg"></p>
+
+<p>My other complaint is with the buttons. They&rsquo;re not labeled or programmable so you <em>have</em> to read the booklet to know what buttons &frac34; do. They&rsquo;re also impossible to reach. The draw to the contourmouse design is that the bar clicks but also those buttons
+are very reachable by your thumbs. You can put your hands on the Home keys and not  have to move your hands at all to be efficient. With the T2 the buttons are so far down that they&rsquo;re not reachable, meaning I have to move my hands to click them. At that
+point I&rsquo;d rather have a mouse. Without two-finger scroll it means that I cant do anything except move my mouse up/down/left/right without moving my hands around.</p>
+
+<p><img class="left" src="/images/t2_3.jpg"></p>
+
+<p>The only other complaint I have is that if you use the trackpad with a different keyboard (like my pok3r), it&rsquo;s too low and leave a huge gap vertically. There are no risers (like on most keyboard) to raise the trackpad, so I stuffed a piece of cardboard
+under it, but that made it a bit wobbly. I could probably 3d print something, but that&rsquo;s pretty intense for an out-of-the-box experience. Lastly, the trackpad is <em>very</em> light. So light that it moves around while using it.  It probably only weighs a few
+ounces which gives it a flemsy breakable feel. Having something that light on top of a  piece of cardboard created a very unstable setup.</p>
+
+<p><img class="left" src="/images/t2_2.jpg"></p>
+]]></content>
+  </entry>
+  
+</feed>

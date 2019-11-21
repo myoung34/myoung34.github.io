@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: planck | Marcus Young]]></title>
+  <link href="https://marcyoung.us/blog/categories/planck/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2019-11-21T20:32:09+00:00</updated>
+  <id>https://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Homemade planck]]></title>
+    <link href="https://marcyoung.us/post/planck"/>
+    <updated>2017-01-18T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/planck</id>
+    <content type="html"><![CDATA[<p>I made a super tedious keyboard.<!-- more --></p>
+
+<p>I’ve owned a Das Keyboard Model S Ultimate for about 3 years now. It was mostly to get into keyboards and try out a nice mechanical one. I still love it, but after getting more interested in them, I decided to build a planck.</p>
+
+<p>A planck is basically an ortholinear keyboard (meaning the keys are in perfect columns and rows) and has 47-48 keys (4x12 called a 40%).</p>
+
+<p>Basically your fingers do the work and your thumbs toggle the keyboard to differently layers.</p>
+
+<p>I 3d printed the case, then wired up the columns and rows using 1N4148 diodes to a teensy. My first iteration used what looked like a really awesome 3d printed base, but it ended up overwhelming me because the wires had to be routed through very very tiny spaces, and my soldering iron: a) needed some love and b) kept melting the 3d printed base (because of all the tight spots). I then printed a much different and standard base and things went smoother.</p>
+
+<p>I also got overwhelmed with the <a href="https://github.com/tmk/tmk_keyboard">TMK firmware</a>. Everyone says it’s easy, and you’d think as a programmer I’d have some ease with it, but it’s super confusing and talks about bit shifting like it’s just adding numbers and you should be able to do it in your sleep. Then I found <a href="https://kb.sized.io/">this site</a> and was done in under an hour. Obligatory pictures.</p>
+
+<p><img class="left" src="/images/IMG_20160927_062158.jpg" title="keyboard 1" >
+<img class="left" src="/images/IMG_20161224_143647.jpg" title="keyboard 1" >
+<img class="left" src="/images/IMG_20161225_050545.jpg" title="keyboard 1" >
+<img class="left" src="/images/IMG_20170104_145354.jpg" title="keyboard 1" ></p>
+]]></content>
+  </entry>
+  
+</feed>

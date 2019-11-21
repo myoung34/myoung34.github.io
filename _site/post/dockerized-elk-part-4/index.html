@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>AWS ECS Hot/Warm ELK + Curator Part 4 - Curator - Marcus Young</title>
+  <meta name="author" content="Marcus Young">
+
+  
+  <meta name="description" content="The previous part focused on getting Kibana up. This one focuses on getting Curator Disclaimer I&rsquo;m redacting any information that might seem &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://marcyoung.us/post/dockerized-elk-part-4">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcus Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Marcus Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marcyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+  <li><a href="https://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
+  <li><a href="https://www.dropbox.com/s/3dnv34v27xrnawb/Resume-Marcus.Young%20-%20Public.doc">Resume</a></li>
+  <li><a onclick="openForm()">Message Me</a></li>
+</ul>
+<div class="form-popup" id="myForm">
+  <form action="https://pcagf163b0.execute-api.us-east-1.amazonaws.com/prod/email/send/formencoded" method="POST" class="form-container">
+    <h1>Message</h1>
+
+    <input type="text" placeholder="Email" name="email" required>
+    <input type="text" placeholder="Name" name="name" required>
+    <input type="textarea" placeholder="Write Me" name="content" required>
+
+    <button type="submit" class="btn">Send</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">AWS ECS Hot/Warm ELK + Curator Part 4 - Curator</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-08T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The previous part focused on getting Kibana up. This one focuses on getting Curator <!-- more --></p>
+
+<h1>Disclaimer</h1>
+
+<p>I&rsquo;m redacting any information that might seem sensitive such as account numbers. Use your discretion and make sure you use values that make sense for things blacked out in images or in <code>{}</code> notation.</p>
+
+<h1>Part 2 - Curator</h1>
+
+<p>This is the coolest part of the whole stack.</p>
+
+<p>We&rsquo;re basically going to build/deploy a docker image for Curator, then upload a cloudformation template that creates a Lambda function to run it.</p>
+
+<p>The lambda function will have a trigger of your choice (probably a scheduled event for once a day if I had to guess) and will run two tasks.</p>
+
+<p>Task 1 is a rotate warm task that will tell Elasticsearch to move any indexes to warm that (in this case) are 0 days old (for demo purposes).
+Task 2 is a delete task that tells Elasticsearch to delete any indexes older than 14 days.</p>
+
+<p>You can expand this to stagger them, take snapshots, etc. This allows you to have schedules that define how the data moves from box to box or to backups!</p>
+
+<p>First thing we need to do is build the container and push it to ECR.</p>
+
+<p>In the ECR portion of the AWS console, create a new repository called <code>test/curator</code>.</p>
+
+<p>Then in your console for <a href="https://github.com/myoung34/elk-docker-aws/blob/master/curator/Dockerfile">the curator dockerfile</a> run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker build -t curator:local .
+</span><span class='line'>docker tag curator:local \
+</span><span class='line'>   {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/curator:latest
+</span><span class='line'>$(aws ecr get-login)
+</span><span class='line'>docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/curator:latest</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once this is pushed you can verify it by looking for a tag <code>latest</code> in your <code>test/curator</code> ECR repository.</p>
+
+<p>Next upload <a href="https://github.com/myoung34/elk-docker-aws/blob/master/curator/cloudformation.json">this cloudformation template</a> to Cloudformation (modifying the parameters as you need).</p>
+
+<p><img src="../../images/elk/curator_cft_params.png" alt="" /></p>
+
+<p>Once it is complete, go to the Lambda portion of AWS and click your function that was created. You can test it by clicking &ldquo;Test&rdquo; and just hitting &ldquo;submit&rdquo;.</p>
+
+<p>You will see some output such as:</p>
+
+<p><img src="../../images/elk/curator_lambda.png" alt="" /></p>
+
+<p>If you go to the ECS console quickly you will see two tasks have been created and are being run for the first time (will be in pending for a minute while the image is being pulled to the instance running it).</p>
+
+<p><img src="../../images/elk/curator_delete_task.png" alt="" /></p>
+
+<p><img src="../../images/elk/curator_rotate_warm_task.png" alt="" /></p>
+
+<p>And now if you look at your kopf plugin you will see the data move from the &ldquo;hot&rdquo; node:</p>
+
+<p><img src="../../images/elk/curator_before.png" alt="" /></p>
+
+<p>To eventually the &ldquo;warm&rdquo; node:</p>
+
+<p><img src="../../images/elk/curator_after.png" alt="" /></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-08T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/ecs/'>ecs</a>, <a class='category' href='/blog/categories/elk/'>elk</a>, <a class='category' href='/blog/categories/lambda/'>lambda</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/dockerized-elk-part-3" title="Previous Post: AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana">&laquo; AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/planck" title="Next Post: Homemade planck">Homemade planck &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/barcade">Barcaderator - Building an Arcade Kegerator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/scooters">Hacking &#8220;Aviary&#8221; Scooters</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/slack-not-bash">Slack Is Not Your Bash Prompt</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/hulk-smash">Hulk-Smash Production</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/deploy-production-button">A Physical Deploy-Production Button</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2019 - Marcus Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'marcyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marcyoung.us/post/dockerized-elk-part-4';
+        var disqus_url = 'https://marcyoung.us/post/dockerized-elk-part-4';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
