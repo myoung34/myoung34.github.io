@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: opa | Marcus Young]]></title>
+  <link href="https://marcyoung.us/blog/categories/opa/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2019-12-02T19:54:55+00:00</updated>
+  <id>https://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Playing around with Gatekeeper V3 in K8S]]></title>
+    <link href="https://marcyoung.us/post/gatekeeper-v3"/>
+    <updated>2019-12-02T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/opa-k8s</id>
+    <content type="html"><![CDATA[<p>Enforce allow/deny Policies in kubernetes at a base controller level  <!-- more --></p>
+
+<p>I was at kubecon the in mid-November with an old roommate (in the same industry as me) and some coworkers but got to see some cool kubernetes stuff.</p>
+
+<p>Since my job crosses the Security boundary, and I&rsquo;m fairly new to k8s, most of my talks were somewhere on the basic level or <a href="https://github.com/open-policy-agent/opa">opa level</a>. With OPA what you get is a lightweight language to write policies your kubernetes cluster should adhere to.</p>
+
+<p>Typically (I think) this is traditionally run by building your policies into a sidecar and forcing it to be an <a href="https://github.com/open-policy-agent/kube-mgmt">admission controller</a>.</p>
+
+<p>Gatekeeper simplifies this by removing the side-car for native CRD&rsquo;s and adds a few things like audit logs.</p>
+
+<p>I&rsquo;m going to build up an example of this using EKS.</p>
+
+<p>I assume we have a working EKS cluster:</p>
+
+<pre><code>$ aws-vault exec home -- kubectl get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   172.20.0.1   &lt;none&gt;        443/TCP   6h15m
+</code></pre>
+
+<p>Before we deploy anything, let&rsquo;s set up GateKeeper v3:</p>
+
+<pre><code>$ aws-vault exec home -- kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/deploy/gatekeeper.yaml
+</code></pre>
+
+<p>Gatekeeper should now be running (albeit with no policies):</p>
+
+<pre><code>$ aws-vault exec home -- kubectl get all -n gatekeeper-system
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/gatekeeper-controller-manager-0   1/1     Running   1          144m
+
+NAME                                            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+service/gatekeeper-controller-manager-service   ClusterIP   172.20.41.90   &lt;none&gt;        443/TCP   144m
+
+NAME                                             READY   AGE
+statefulset.apps/gatekeeper-controller-manager   1/1     144m
+</code></pre>
+
+<p>Next, before we move on, I&rsquo;m going to set up <a href="https://github.com/garethr/policykit">policykit</a> so that we can use real REGO (the language for OPA) instead of rego embedded inside yaml (allows policy testing etc later on):</p>
+
+<pre><code>pip install policykit
+cat &lt;&lt;EOF &gt;k8sallowedrepos.rego
+package k8sallowedrepos
+
+violation[{"msg": msg}] {
+  container := input.review.object.spec.containers[_]
+  satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+  not any(satisfied)
+  msg := sprintf("container &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+}
+
+violation[{"msg": msg}] {
+  container := input.review.object.spec.initContainers[_]
+  satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+  not any(satisfied)
+  msg := sprintf("container &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+}
+EOF
+</code></pre>
+
+<p>What we have now is a rego file that will validate base images (parameterized). Let&rsquo;s generate our ConstraintTemplate (the basic template that accepts parameters):</p>
+
+<pre><code>$ pk build *.rego
+[k8sallowedrepos] Generating a ConstraintTemplate from "k8sallowedrepos.rego"
+[k8sallowedrepos] Saving to "k8sallowedrepos.yaml"
+</code></pre>
+
+<p>Let&rsquo;s see what that ConstraintTemplate looks like:</p>
+
+<pre><code>$ cat k8sallowedrepos.yaml
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sallowedrepos
+spec:
+  crd:
+    spec:
+      names:
+        kind: k8sallowedrepos
+        listKind: k8sallowedreposList
+        plural: k8sallowedrepos
+        singular: k8sallowedrepo
+  targets:
+  - rego: |
+      package k8sallowedrepos
+
+      violation[{"msg": msg}] {
+        container := input.review.object.spec.containers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf("container &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+      }
+
+      violation[{"msg": msg}] {
+        container := input.review.object.spec.initContainers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf("container &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+      }
+    target: admission.k8s.gatekeeper.sh
+</code></pre>
+
+<p>As you can see that rego is now embedded inside a ConstraintTemplate yaml. Let&rsquo;s apply it:</p>
+
+<pre><code>$ aws-vault exec home -- kubectl apply -f k8sallowedrepos.yaml
+constrainttemplate.templates.gatekeeper.sh/k8sallowedrepos configured
+</code></pre>
+
+<p>We have a template but no OPA rules yet.</p>
+
+<pre><code>$ aws-vault exec home -- kubectl logs pod/gatekeeper-controller-manager-0 -n gatekeeper-system
+{"level":"info","ts":1575315679.2535567,"logger":"controller","msg":"Audit opa.Audit() audit results","metaKind":"audit","violations":0}
+{"level":"info","ts":1575315679.255231,"logger":"controller","msg":"constraint","metaKind":"audit","resource kind":"k8sallowedrepos"}
+{"level":"info","ts":1575315679.259529,"logger":"controller","msg":"constraint","metaKind":"audit","count of constraints":0}
+</code></pre>
+
+<p>Let&rsquo;s add a rule to deny anything that&rsquo;s not from <code>alpine</code> (ironically the opposite of secure):</p>
+
+<pre><code>$ cat &lt;&lt;EOF &gt;check_repo.yaml
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: k8sallowedrepos
+metadata:
+  name: default-repo-is-wrong
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - "default"
+  parameters:
+    repos:
+      - "alpine"
+EOF
+$ aws-vault exec home -- kubectl apply -f check_repo.yaml
+k8sallowedrepos.constraints.gatekeeper.sh/default-repo-is-wrong created
+</code></pre>
+
+<p>We can now see Gatekeeper has it:</p>
+
+<pre><code>...snip noise...
+{"level":"info","ts":1575315769.4250739,"logger":"controller","msg":"constraint","metaKind":"audit","count of constraints":1}
+...snip noise...
+</code></pre>
+
+<p>Let&rsquo;s push up a Helm chart that violates it:</p>
+
+<pre><code>$ cat charts/cloud-custodian/values.yaml  | grep repos
+  repository: 11111111111.dkr.ecr.us-east-1.amazonaws.com/cloud-custodian
+$ helm package charts/cloud-custodian/
+Successfully packaged chart and saved it to: charts/cloud-custodian-0.1.2.tgz
+$ aws-vault exec home -- helm install --name cloud-custodian charts/cloud-custodian-0.1.2.tgz
+NAME:   cloud-custodian
+LAST DEPLOYED: Mon Dec  2 13:44:47 2019
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/Deployment
+NAME             READY  UP-TO-DATE  AVAILABLE  AGE
+cloud-custodian  0/1    0           0          0s
+
+==&gt; v1/ServiceAccount
+NAME             SECRETS  AGE
+cloud-custodian  1        0s
+</code></pre>
+
+<p>Did it work?</p>
+
+<pre><code>$ aws-vault exec home -- kubectl get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   172.20.0.1   &lt;none&gt;        443/TCP   6h25m
+
+NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cloud-custodian   0/1     0            0           18s
+
+NAME                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/cloud-custodian-744bd4768d   1         0         0       18s
+</code></pre>
+
+<p>It&rsquo;s not running. let&rsquo;s look:</p>
+
+<pre><code>$ aws-vault exec home -- kubectl describe replicaset.apps/cloud-custodian-744bd4768d | tail -n 4
+Events:
+  Type     Reason        Age                From                   Message
+  ----     ------        ----               ----                   -------
+  Warning  FailedCreate  3s (x14 over 44s)  replicaset-controller  Error creating: admission webhook "validation.gatekeeper.sh" denied the request: [denied by default-repo-is-wrong] container &lt;cloud-custodian&gt; has an invalid image repo &lt;11111111111.dkr.ecr.us-east-1.amazonaws.com/cloud-custodian:latest&gt;, allowed repos are ["alpine"]
+</code></pre>
+
+<p>And just like that we enforced a policy that prevented this from running!</p>
+
+<p>More to come from OPA as I get more comfortable with it and learn how to test the policies before they go into K8S!</p>
+]]></content>
+  </entry>
+  
+</feed>
