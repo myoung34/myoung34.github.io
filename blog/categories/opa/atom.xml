@@ -4,7 +4,7 @@
   <title><![CDATA[Category: opa | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/opa/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2019-12-02T19:54:55+00:00</updated>
+  <updated>2019-12-11T14:05:49+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -57,8 +57,8 @@ statefulset.apps/gatekeeper-controller-manager   1/1     144m
 
 <p>Next, before we move on, I&rsquo;m going to set up <a href="https://github.com/garethr/policykit">policykit</a> so that we can use real REGO (the language for OPA) instead of rego embedded inside yaml (allows policy testing etc later on):</p>
 
-<pre><code>pip install policykit
-cat &lt;&lt;EOF &gt;k8sallowedrepos.rego
+<pre><code>$ pip install policykit
+$ cat &lt;&lt;EOF &gt;k8sallowedrepos.rego
 package k8sallowedrepos
 
 violation[{"msg": msg}] {
@@ -77,7 +77,53 @@ violation[{"msg": msg}] {
 EOF
 </code></pre>
 
-<p>What we have now is a rego file that will validate base images (parameterized). Let&rsquo;s generate our ConstraintTemplate (the basic template that accepts parameters):</p>
+<p>What we have now is a rego file that will validate base images (parameterized). Let&rsquo;s write some tests.</p>
+
+<pre><code>$ cat &lt;&lt;EOF &gt;k8sallowedrepos_test.rego
+package k8sallowedrepos
+
+test_image_safety_positive {
+    count(violation) == 1 with input.parameters.repos as ["hooli.com/"]
+        with input.review.object.spec.containers as [
+            {"name": "ok", "image": "hooli.com/web"},
+            {"name": "bad", "image": "badrepo.com/web"},
+        ]
+}
+
+test_image_safety_negative {
+    count(violation) == 0 with input.parameters.repos as ["hooli.com/"]
+        with input.review.object.spec.containers as [
+            {"name": "ok", "image": "hooli.com/web"},
+        ]
+}
+
+test_image_safety_init_container_positive {
+    count(violation) == 1 with input.parameters.repos as ["hooli.com/"]
+        with input.review.object.spec.initContainers as [
+            {"name": "ok", "image": "hooli.com/web"},
+            {"name": "bad", "image": "badrepo.com/web"},
+        ]
+}
+
+test_image_safety_init_container_negative {
+    count(violation) == 0 with input.parameters.repos as ["hooli.com/"]
+        with input.review.object.spec.initContainers as [
+            {"name": "ok", "image": "hooli.com/web"},
+        ]
+}
+EOF
+
+$ curl -Ls https://github.com/open-policy-agent/opa/releases/download/v0.15.1/opa_linux_amd64 -o opa &amp;&amp; chmod +x opa
+$ opa test . -v
+data.k8sallowedrepos.test_image_safety_positive: PASS (622.8µs)
+data.k8sallowedrepos.test_image_safety_negative: PASS (376µs)
+data.k8sallowedrepos.test_image_safety_init_container_positive: PASS (550.6µs)
+data.k8sallowedrepos.test_image_safety_init_container_negative: PASS (389.3µs)
+--------------------------------------------------------------------------------
+PASS: 4/4
+</code></pre>
+
+<p>Now let&rsquo;s generate our ConstraintTemplate (the basic template that accepts parameters):</p>
 
 <pre><code>$ pk build *.rego
 [k8sallowedrepos] Generating a ConstraintTemplate from "k8sallowedrepos.rego"
