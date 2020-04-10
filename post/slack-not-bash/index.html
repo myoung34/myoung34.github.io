@@ -82,30 +82,7 @@
   <li><a href="https://github.com/myoung34">Github</a></li>
   <li><a href="https://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
   <li><a href="https://www.dropbox.com/s/3dnv34v27xrnawb/Resume-Marcus.Young%20-%20Public.doc">Resume</a></li>
-  <li><a onclick="openForm()">Message Me</a></li>
 </ul>
-<div class="form-popup" id="myForm">
-  <form action="https://pcagf163b0.execute-api.us-east-1.amazonaws.com/prod/email/send/formencoded" method="POST" class="form-container">
-    <h1>Message</h1>
-
-    <input type="text" placeholder="Email" name="email" required>
-    <input type="text" placeholder="Name" name="name" required>
-    <input type="textarea" placeholder="Write Me" name="content" required>
-
-    <button type="submit" class="btn">Send</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
-
-<script>
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-</script>
 
 </nav>
   <div id="main">
