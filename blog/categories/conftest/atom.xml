@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: conftest | Marcus Young]]></title>
+  <link href="https://marcyoung.us/blog/categories/conftest/atom.xml" rel="self"/>
+  <link href="https://marcyoung.us/"/>
+  <updated>2020-05-01T17:12:25+00:00</updated>
+  <id>https://marcyoung.us/</id>
+  <author>
+    <name><![CDATA[Marcus Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Terraform and Open Policy Agent with Atlantis]]></title>
+    <link href="https://marcyoung.us/post/atlantis-opa"/>
+    <updated>2020-05-01T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/atlantis-opa</id>
+    <content type="html"><![CDATA[<p>At Zapier we really like Atlantis and smart pre-flight checks. <!-- more --></p>
+
+<p>If you see a trend in my latest blogs it&rsquo;s likely you&rsquo;ll guess i really like <a href="https://www.openpolicyagent.org">OPA</a>.</p>
+
+<p>We use it in EKS to report on assertions consistently across all our clusters.</p>
+
+<p>I use it to run tests against the gatekeeper rules.</p>
+
+<p>It&rsquo;s pretty awesome, and it <a href="https://www.openpolicyagent.org/docs/latest/terraform">supports terraform plans</a>.</p>
+
+<h3>The Set-Up</h3>
+
+<p>I started off by forking the upstream atlantis AMI and baking the aws-cli into it.</p>
+
+<p>In my atlantis.yaml I set up all the repos to use a new workflow <code>opa-workflow</code> such:</p>
+
+<pre><code>workflows:
+  opa-workflow:
+    plan:
+      steps:
+        - init
+        - plan
+        - run: terraform$ATLANTIS_TERRAFORM_VERSION workspace select -no-color $WORKSPACE
+        - run: terraform$ATLANTIS_TERRAFORM_VERSION show -json $PLANFILE &gt;"${PROJECT_NAME}_${PULL_NUM}_$(git rev-parse HEAD).json"
+        - run: aws s3 cp "${DIR}/${PROJECT_NAME}_${PULL_NUM}_$(git rev-parse HEAD).json" s3://bucket_name/terraform/tfplan/ &gt;/dev/null
+</code></pre>
+
+<p>This pushes the plan file as <code>production_1234_somesha11122.json</code> into the bucket.</p>
+
+<p>Next we have an AWS lambda with conftest built in. It responds to <code>terraform/tfplan/*.json</code> S3 create notifications, parses out the SHA, PR number, and workspace from atlantis, then runs:</p>
+
+<pre><code>command:= exec.Command(
+  "/var/task/bin/conftest",
+  "test",
+  "--no-color",
+  "--output",
+  "json",
+  "/tmp/tfplan.json"
+)
+output, err := command.CombinedOutput()
+if err != nil {
+  fmt.Printf("[%s] conftest failed: %v", time.Now().Format("2006-01-02 15:04:05"), err)
+}
+</code></pre>
+
+<p>Once this works, we can parse back the info to a comment and send a success|failure status to the git sha!</p>
+
+<p><img src="/images/terropa.png"></p>
+]]></content>
+  </entry>
+  
+</feed>

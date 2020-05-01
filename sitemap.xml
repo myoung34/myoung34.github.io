@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://marcyoung.us/post/atlantis-opa</loc>
+<lastmod>2020-05-01T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://marcyoung.us/post/smart-home</loc>
 <lastmod>2020-03-31T00:00:00+00:00</lastmod>
 </url>
@@ -217,10 +221,10 @@
 <lastmod>2011-02-03T00:00:00+00:00</lastmod>
 </url>
 <url>
-<loc>https://marcyoung.us/blog/archives/</loc>
+<loc>https://marcyoung.us/</loc>
 </url>
 <url>
-<loc>https://marcyoung.us/</loc>
+<loc>https://marcyoung.us/blog/archives/</loc>
 </url>
 <url>
 <loc>https://marcyoung.us/blog/categories/javascript/</loc>
@@ -413,5 +417,11 @@
 </url>
 <url>
 <loc>https://marcyoung.us/blog/categories/hacking/</loc>
+</url>
+<url>
+<loc>https://marcyoung.us/blog/categories/conftest/</loc>
+</url>
+<url>
+<loc>https://marcyoung.us/blog/categories/atlantis/</loc>
 </url>
 </urlset>
