@@ -4,7 +4,7 @@
   <title><![CDATA[Category: conftest | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/conftest/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2020-05-01T17:12:25+00:00</updated>
+  <updated>2020-05-17T12:52:01+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -65,7 +65,35 @@ if err != nil {
 
 <p>Once this works, we can parse back the info to a comment and send a success|failure status to the git sha!</p>
 
+<pre><code>if statusString == "failure" {
+  atlantisStatus := &amp;github.RepoStatus{
+    State: github.String(statusString),
+    Description: github.String("TerrOPA Failures"),
+    Context: github.String("atlantis/plan"),
+  }
+  client.Repositories.CreateStatus(backgroundctx, orgName, repoName, gitSha, atlantisStatus)
+}
+</code></pre>
+
 <p><img src="/images/terropa.png"></p>
+
+<h2>Update</h2>
+
+<p>I&rsquo;ve had a few people ask me why I did it this way as an AWS lambda vs just running it on atlantis. I actually tried this first, but it wasn&rsquo;t &ldquo;clean&rdquo;.</p>
+
+<p>First: if atlantis plan fails, its not very intuitive, <em>especially</em> if it&rsquo;s not a terraform error. It&rsquo;s kind of an unformatted stack trace.</p>
+
+<p><img src="/images/terropa2.png"></p>
+
+<p>With that exception it&rsquo;s not very feedback friendly. The point of this project is to provide a clean feedback loop for those who may not know or care what OPA is. We have quite a few methods of automatically generating terraform projects from cookie cutter + modules. I wanted a way of providing as much context as possible.</p>
+
+<p>Next: we have a fairly large engineering team and I like to work in a &ldquo;plugin&rdquo; modal. When I&rsquo;m introducing something new I like to be able to toggle it on and off quickly, or gather metrics before pushing for changes. In this way, it&rsquo;s completely separated from Atlantis and has its own SDLC, which is nice from a &ldquo;Marc, you broke everything&rdquo; perspective.</p>
+
+<p>Lastly I had to make a call from a security perspective. The point of this is 100% to be able from an upper architectural/infosec level to make assertions. For example: tagging. Tagging for us is partially for billing, partially to see our accountability plane, but <em>mostly</em> so that we can scope least privilege.</p>
+
+<p>Having this with atlantis would mean the policies live in the atlantis repo for the container builder - I dont want to bounce atlantis every time we add/change policies.</p>
+
+<p>Otherwise it would mean the policies live with the terraform which means that you could modify the assertions per-branch which is also a choice we made to avoid. These policies are open for contribution from everyone but it&rsquo;s an explicit rule that it&rsquo;s not meant to be able to shifted per branch and introduce a threat model around modifying it to pass when it shouldn&rsquo;t.</p>
 ]]></content>
   </entry>
   

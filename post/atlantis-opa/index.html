@@ -186,7 +186,43 @@
 
 <p>Once this works, we can parse back the info to a comment and send a success|failure status to the git sha!</p>
 
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>if statusString == "failure" {
+</span><span class='line'>  atlantisStatus := &github.RepoStatus{
+</span><span class='line'>    State: github.String(statusString),
+</span><span class='line'>    Description: github.String("TerrOPA Failures"),
+</span><span class='line'>    Context: github.String("atlantis/plan"),
+</span><span class='line'>  }
+</span><span class='line'>  client.Repositories.CreateStatus(backgroundctx, orgName, repoName, gitSha, atlantisStatus)
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
 <p><img src="/images/terropa.png"></p>
+
+<h2>Update</h2>
+
+<p>I&rsquo;ve had a few people ask me why I did it this way as an AWS lambda vs just running it on atlantis. I actually tried this first, but it wasn&rsquo;t &ldquo;clean&rdquo;.</p>
+
+<p>First: if atlantis plan fails, its not very intuitive, <em>especially</em> if it&rsquo;s not a terraform error. It&rsquo;s kind of an unformatted stack trace.</p>
+
+<p><img src="/images/terropa2.png"></p>
+
+<p>With that exception it&rsquo;s not very feedback friendly. The point of this project is to provide a clean feedback loop for those who may not know or care what OPA is. We have quite a few methods of automatically generating terraform projects from cookie cutter + modules. I wanted a way of providing as much context as possible.</p>
+
+<p>Next: we have a fairly large engineering team and I like to work in a &ldquo;plugin&rdquo; modal. When I&rsquo;m introducing something new I like to be able to toggle it on and off quickly, or gather metrics before pushing for changes. In this way, it&rsquo;s completely separated from Atlantis and has its own SDLC, which is nice from a &ldquo;Marc, you broke everything&rdquo; perspective.</p>
+
+<p>Lastly I had to make a call from a security perspective. The point of this is 100% to be able from an upper architectural/infosec level to make assertions. For example: tagging. Tagging for us is partially for billing, partially to see our accountability plane, but <em>mostly</em> so that we can scope least privilege.</p>
+
+<p>Having this with atlantis would mean the policies live in the atlantis repo for the container builder - I dont want to bounce atlantis every time we add/change policies.</p>
+
+<p>Otherwise it would mean the policies live with the terraform which means that you could modify the assertions per-branch which is also a choice we made to avoid. These policies are open for contribution from everyone but it&rsquo;s an explicit rule that it&rsquo;s not meant to be able to shifted per branch and introduce a threat model around modifying it to pass when it shouldn&rsquo;t.</p>
 </div>
 
 
