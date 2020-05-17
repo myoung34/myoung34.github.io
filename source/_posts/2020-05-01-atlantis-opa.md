@@ -71,4 +71,34 @@ if err != nil {
 
 Once this works, we can parse back the info to a comment and send a success|failure status to the git sha!
 
+```
+if statusString == "failure" {
+  atlantisStatus := &github.RepoStatus{
+    State: github.String(statusString),
+    Description: github.String("TerrOPA Failures"),
+    Context: github.String("atlantis/plan"),
+  }
+  client.Repositories.CreateStatus(backgroundctx, orgName, repoName, gitSha, atlantisStatus)
+}
+```
+
 {% img /images/terropa.png %}
+
+
+## Update ##
+
+I've had a few people ask me why I did it this way as an AWS lambda vs just running it on atlantis. I actually tried this first, but it wasn't "clean".
+
+First: if atlantis plan fails, its not very intuitive, *especially* if it's not a terraform error. It's kind of an unformatted stack trace.
+
+{% img /images/terropa2.png %}
+
+With that exception it's not very feedback friendly. The point of this project is to provide a clean feedback loop for those who may not know or care what OPA is. We have quite a few methods of automatically generating terraform projects from cookie cutter + modules. I wanted a way of providing as much context as possible.
+
+Next: we have a fairly large engineering team and I like to work in a "plugin" modal. When I'm introducing something new I like to be able to toggle it on and off quickly, or gather metrics before pushing for changes. In this way, it's completely separated from Atlantis and has its own SDLC, which is nice from a "Marc, you broke everything" perspective.
+
+Lastly I had to make a call from a security perspective. The point of this is 100% to be able from an upper architectural/infosec level to make assertions. For example: tagging. Tagging for us is partially for billing, partially to see our accountability plane, but *mostly* so that we can scope least privilege. 
+
+Having this with atlantis would mean the policies live in the atlantis repo for the container builder - I dont want to bounce atlantis every time we add/change policies.
+
+Otherwise it would mean the policies live with the terraform which means that you could modify the assertions per-branch which is also a choice we made to avoid. These policies are open for contribution from everyone but it's an explicit rule that it's not meant to be able to shifted per branch and introduce a threat model around modifying it to pass when it shouldn't.
