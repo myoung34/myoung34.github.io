@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Pterodactyl - The bluetooth dactyl fork - Marcus Young</title>
+  <meta name="author" content="Marcus Young">
+
+  
+  <meta name="description" content="I spent far too much time making a bluetooth dactyl keyboard with built in wrist rests This took about a year, off and on. With covid I finally found &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://marcyoung.us/post/pterodactyl">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcus Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Marcus Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marcyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+  <li><a href="https://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
+  <li><a href="https://www.dropbox.com/s/3dnv34v27xrnawb/Resume-Marcus.Young%20-%20Public.doc">Resume</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Pterodactyl - the Bluetooth Dactyl Fork</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-05-23T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I spent far too much time making a bluetooth dactyl keyboard with built in wrist rests <!-- more --></p>
+
+<p>This took about a year, off and on. With covid I finally found some time to finish it.</p>
+
+<h3>Build Hardware</h3>
+
+<ul>
+<li>Base was customized heavily by me from <a href="https://www.thingiverse.com/thing:2436848">this one</a>. <a href="https://www.thingiverse.com/thing:4186032">Mine here</a> supports less ugly wrist pads IMO, printed in Wood PLA from hatchbox on a taz6 at 0.1micron height</li>
+<li><a href="https://www.adafruit.com/product/2771">Feather 32u4</a></li>
+<li>TRRS cable</li>
+<li><a href="https://www.mouser.com/ProductDetail/Microchip-Technology/MCP23018-E-SP">MCP 23018 io expander</a></li>
+<li><a href="https://www.amazon.com/gp/product/B07DF83HK7">Wrist rests</a></li>
+<li><a href="https://drop.com/buy/drop-oblotzky-gmk-oblivion-v2-custom-keycap-set">TMK Oblotzky Oblivion V2 caps</a></li>
+</ul>
+
+
+<h3>Notes</h3>
+
+<p>I ran into a lot of issues.</p>
+
+<ol>
+<li>With the feather I had to swap <code>GPIOA</code> and <code>GPIOB</code> for <code>EXPANDER_COL_REGISTER</code> and <code>EXPANDER_ROW_REGISTER</code></li>
+<li>It took <em>months</em> for me to realize that the Serial stuff with <code>SPLIT_KEYBOARD</code> <a href="https://beta.docs.qmk.fm/using-qmk/hardware-features/feature_split_keyboard">here</a> does <em>not</em> work with an IO expander like the MCP23018. This is poorly documented IMO. You have to use two of the same chipsets to use that feature and the feather 32u4 aint cheap</li>
+<li><a href="https://github.com/adereth/dactyl-keyboard/issues/57">this issue</a> would have been massively helpful originally to know I was wiring it incorrectly.</li>
+<li>Swapping the board from the right side to the left side turned out massively tedious and <a href="https://github.com/qmk/qmk_firmware/pull/9181/files#diff-6b1633df300bad911cd57febbbbdb2aaR63">my PR</a> suffers for it.</li>
+<li>Im dumb and bought a mislabeled TRS cable as a TRRS cable and it obviously didn&rsquo;t work combined with my inability to count the rings on it.</li>
+</ol>
+
+
+<h3>Pics or GTFO</h3>
+
+<p><img class="left" src="/images/ptero1.jpg">
+<img class="left" src="/images/ptero2.jpg">
+<img class="left" src="/images/ptero3.jpg">
+<img class="left" src="/images/ptero4.jpg">
+<img class="left" src="/images/ptero5.jpg">
+<img class="left" src="/images/ptero6.jpg">
+<img class="left" src="/images/ptero7.jpg">
+<img class="left" src="/images/ptero8.jpg"></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-05-23T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ergo/'>ergo</a>, <a class='category' href='/blog/categories/keyboard/'>keyboard</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/atlantis-opa" title="Previous Post: Terraform and Open Policy Agent with Atlantis">&laquo; Terraform and Open Policy Agent with Atlantis</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/pterodactyl">Pterodactyl - the Bluetooth Dactyl Fork</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/atlantis-opa">Terraform and Open Policy Agent With Atlantis</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/smart-home">My Secure Smart Home</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/homebrew-hacking">Homebrew Hacking</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/gatekeeper-v3">Playing Around With Gatekeeper V3 in K8S</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2020 - Marcus Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'marcyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marcyoung.us/post/pterodactyl';
+        var disqus_url = 'https://marcyoung.us/post/pterodactyl';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

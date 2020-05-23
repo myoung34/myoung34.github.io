@@ -4,7 +4,7 @@
   <title><![CDATA[Category: keyboard | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/keyboard/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2020-05-17T12:52:01+00:00</updated>
+  <updated>2020-05-23T18:03:08+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="https://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Pterodactyl - The bluetooth dactyl fork]]></title>
+    <link href="https://marcyoung.us/post/pterodactyl"/>
+    <updated>2020-05-23T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/pterodactyl</id>
+    <content type="html"><![CDATA[<p>I spent far too much time making a bluetooth dactyl keyboard with built in wrist rests <!-- more --></p>
+
+<p>This took about a year, off and on. With covid I finally found some time to finish it.</p>
+
+<h3>Build Hardware</h3>
+
+<ul>
+<li>Base was customized heavily by me from <a href="https://www.thingiverse.com/thing:2436848">this one</a>. <a href="https://www.thingiverse.com/thing:4186032">Mine here</a> supports less ugly wrist pads IMO, printed in Wood PLA from hatchbox on a taz6 at 0.1micron height</li>
+<li><a href="https://www.adafruit.com/product/2771">Feather 32u4</a></li>
+<li>TRRS cable</li>
+<li><a href="https://www.mouser.com/ProductDetail/Microchip-Technology/MCP23018-E-SP">MCP 23018 io expander</a></li>
+<li><a href="https://www.amazon.com/gp/product/B07DF83HK7">Wrist rests</a></li>
+<li><a href="https://drop.com/buy/drop-oblotzky-gmk-oblivion-v2-custom-keycap-set">TMK Oblotzky Oblivion V2 caps</a></li>
+</ul>
+
+
+<h3>Notes</h3>
+
+<p>I ran into a lot of issues.</p>
+
+<ol>
+<li>With the feather I had to swap <code>GPIOA</code> and <code>GPIOB</code> for <code>EXPANDER_COL_REGISTER</code> and <code>EXPANDER_ROW_REGISTER</code></li>
+<li>It took <em>months</em> for me to realize that the Serial stuff with <code>SPLIT_KEYBOARD</code> <a href="https://beta.docs.qmk.fm/using-qmk/hardware-features/feature_split_keyboard">here</a> does <em>not</em> work with an IO expander like the MCP23018. This is poorly documented IMO. You have to use two of the same chipsets to use that feature and the feather 32u4 aint cheap</li>
+<li><a href="https://github.com/adereth/dactyl-keyboard/issues/57">this issue</a> would have been massively helpful originally to know I was wiring it incorrectly.</li>
+<li>Swapping the board from the right side to the left side turned out massively tedious and <a href="https://github.com/qmk/qmk_firmware/pull/9181/files#diff-6b1633df300bad911cd57febbbbdb2aaR63">my PR</a> suffers for it.</li>
+<li>Im dumb and bought a mislabeled TRS cable as a TRRS cable and it obviously didn&rsquo;t work combined with my inability to count the rings on it.</li>
+</ol>
+
+
+<h3>Pics or GTFO</h3>
+
+<p><img class="left" src="/images/ptero1.jpg">
+<img class="left" src="/images/ptero2.jpg">
+<img class="left" src="/images/ptero3.jpg">
+<img class="left" src="/images/ptero4.jpg">
+<img class="left" src="/images/ptero5.jpg">
+<img class="left" src="/images/ptero6.jpg">
+<img class="left" src="/images/ptero7.jpg">
+<img class="left" src="/images/ptero8.jpg"></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Homemade planck]]></title>
