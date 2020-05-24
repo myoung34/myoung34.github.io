@@ -29,7 +29,7 @@ This took about a year, off and on. With covid I finally found some time to fini
 * TRRS cable
 * [MCP 23018 io expander](https://www.mouser.com/ProductDetail/Microchip-Technology/MCP23018-E-SP)
 * [Wrist rests](https://www.amazon.com/gp/product/B07DF83HK7)
-* [TMK Oblotzky Oblivion V2 caps](https://drop.com/buy/drop-oblotzky-gmk-oblivion-v2-custom-keycap-set)
+* [GMK Oblotzky Oblivion V2 caps](https://drop.com/buy/drop-oblotzky-gmk-oblivion-v2-custom-keycap-set)
 * [Holy Panda switches](https://mechwiki.com/holy-panda/)
 * [Amoeba single switch PCB's](https://keeb.io/products/amoeba-single-switch-pcbs)
 * [1N4148 diodes](https://mechanicalkeyboards.com/shop/index.php?l=product_detail&p=1613)
