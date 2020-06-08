@@ -440,3 +440,57 @@ text_sensor:
   - platform: version
     name: "ESPHome Version"
 ```
+
+### Smart Switch ###
+
+I kept blowing my outdoor smart bulb, I'm guessing the voltage or current is too volatile?
+
+I chose the [TreatLife single pole](https://www.amazon.com/gp/product/B07R7PCCT9). 
+
+{% img /images/ss01s.png %}
+
+This yaml lets the LED indicator (GPIO4) toggle with the virtual button (GPIO13) and the physical button (GPIO12)
+
+```
+esphome:
+  name: front_porch_switch
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  domain: !secret wifi_domain
+
+logger:
+  level: VERBOSE
+  baud_rate: 0
+
+api:
+  password: !secret api_password
+
+ota:
+  password: !secret ota_password
+
+switch:
+  - platform: gpio
+    id: "relay"
+    name: "light"
+    pin: 12
+
+output:
+  - platform: esp8266_pwm
+    id: status_led
+    pin:
+      number: GPIO4
+      inverted: True
+
+binary_sensor:
+  - platform: gpio
+    name: "button"
+    pin:
+      number: 13
+      inverted: True
+    on_press:
+      - switch.toggle: relay
+```
