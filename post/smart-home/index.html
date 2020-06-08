@@ -803,6 +803,100 @@ Basically I built my .bin from the yaml below, replaced tasmota.bin in that dir 
 </span><span class='line'>  - platform: version
 </span><span class='line'>    name: "ESPHome Version"</span></code></pre></td></tr></table></div></figure>
 
+
+<h3>Smart Switch</h3>
+
+<p>I kept blowing my outdoor smart bulb, I&rsquo;m guessing the voltage or current is too volatile?</p>
+
+<p>I chose the <a href="https://www.amazon.com/gp/product/B07R7PCCT9">TreatLife single pole</a>.</p>
+
+<p><img src="/images/ss01s.png"></p>
+
+<p>This yaml lets the LED indicator (GPIO4) toggle with the virtual button (GPIO13) and the physical button (GPIO12)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>esphome:
+</span><span class='line'>  name: front_porch_switch
+</span><span class='line'>  platform: ESP8266
+</span><span class='line'>  board: esp01_1m
+</span><span class='line'>
+</span><span class='line'>wifi:
+</span><span class='line'>  ssid: !secret wifi_ssid
+</span><span class='line'>  password: !secret wifi_password
+</span><span class='line'>  domain: !secret wifi_domain
+</span><span class='line'>
+</span><span class='line'>logger:
+</span><span class='line'>  level: VERBOSE
+</span><span class='line'>  baud_rate: 0
+</span><span class='line'>
+</span><span class='line'>api:
+</span><span class='line'>  password: !secret api_password
+</span><span class='line'>
+</span><span class='line'>ota:
+</span><span class='line'>  password: !secret ota_password
+</span><span class='line'>
+</span><span class='line'>switch:
+</span><span class='line'>  - platform: gpio
+</span><span class='line'>    id: "relay"
+</span><span class='line'>    name: "light"
+</span><span class='line'>    pin: 12
+</span><span class='line'>
+</span><span class='line'>output:
+</span><span class='line'>  - platform: esp8266_pwm
+</span><span class='line'>    id: status_led
+</span><span class='line'>    pin:
+</span><span class='line'>      number: GPIO4
+</span><span class='line'>      inverted: True
+</span><span class='line'>
+</span><span class='line'>binary_sensor:
+</span><span class='line'>  - platform: gpio
+</span><span class='line'>    name: "button"
+</span><span class='line'>    pin:
+</span><span class='line'>      number: 13
+</span><span class='line'>      inverted: True
+</span><span class='line'>    on_press:
+</span><span class='line'>      - switch.toggle: relay</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
