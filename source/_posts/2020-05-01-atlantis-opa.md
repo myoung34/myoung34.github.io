@@ -22,7 +22,7 @@ tags:
   - atlantis
 ---
 
-At Zapier we really like Atlantis and smart pre-flight checks. <!-- more -->
+We really like Atlantis and smart pre-flight checks. <!-- more -->
 
 If you see a trend in my latest blogs it's likely you'll guess i really like [OPA](https://www.openpolicyagent.org). 
 
