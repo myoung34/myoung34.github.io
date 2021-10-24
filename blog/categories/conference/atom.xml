@@ -4,7 +4,7 @@
   <title><![CDATA[Category: conference | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/conference/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2021-10-24T19:40:27+00:00</updated>
+  <updated>2021-10-24T19:43:16+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -20,7 +20,9 @@
     <id>https://marcyoung.us/post/custodian</id>
     <content type="html"><![CDATA[<p>I did a talk with stacklet during KubeCon <!-- more --></p>
 
-<p><a href=https://www.youtube.com/watch?v=NB5GnHmgsa0>Talk is here</a></p>
+<p><br/>
+<a href=https://www.youtube.com/watch?v=NB5GnHmgsa0>Talk is here</a>
+<br/></p>
 
 <p>This was part of governance as code day at KubeCon 2021</p>
 ]]></content>
