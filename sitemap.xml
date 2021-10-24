@@ -2,6 +2,10 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://marcyoung.us/post/pterodactyl</loc>
+<lastmod>2021-10-24T00:00:00+00:00</lastmod>
+</url>
+<url>
+<loc>https://marcyoung.us/post/pterodactyl</loc>
 <lastmod>2020-05-23T00:00:00+00:00</lastmod>
 </url>
 <url>
@@ -427,5 +431,11 @@
 </url>
 <url>
 <loc>https://marcyoung.us/blog/categories/atlantis/</loc>
+</url>
+<url>
+<loc>https://marcyoung.us/blog/categories/cloud-custodian/</loc>
+</url>
+<url>
+<loc>https://marcyoung.us/blog/categories/kubecon/</loc>
 </url>
 </urlset>
