@@ -1,0 +1,27 @@
+---
+title: "Kubecon - AWS Organizations and Cloud-Custodian"
+author: myoung
+layout: post
+comments: true
+permalink: /post/kubecon_2021
+seo_follow:
+  - 'false'
+seo_noindex:
+  - 'false'
+categories:
+  - cloud-custodian
+  - conference
+  - kubecon
+tags:
+  - cloud-custodian
+  - conference
+  - kubecon
+---
+
+I did a talk with stacklet during KubeCon <!-- more -->
+
+<br/>
+<a href=https://www.youtube.com/watch?v=NB5GnHmgsa0>Talk is here</a>
+<br/>
+
+This was part of governance as code day at KubeCon 2021
