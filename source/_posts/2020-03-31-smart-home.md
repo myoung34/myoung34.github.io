@@ -29,7 +29,10 @@ I've spent the last year figuring out what I want to control "things" in my hous
 
 ## The Network ##
 
-I don't have any crazy networking gear, just a [Netgear r7000](https://www.amazon.com/R7000-100PAS-Nighthawk-Parental-Controls-Compatible/dp/B00F0DD0I6) running [Kong](https://www.myopenrouter.com/kong-downloads)
+~~I don't have any crazy networking gear, just a [Netgear r7000](https://www.amazon.com/R7000-100PAS-Nighthawk-Parental-Controls-Compatible/dp/B00F0DD0I6) running [Kong](https://www.myopenrouter.com/kong-downloads)~~
+
+I now have a very different set up.
+{% img /images/router.jpg %}
 
 Configuring this for my setup is painful, but:
 
