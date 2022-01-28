@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-01-28T22:48:05+00:00</updated>
+  <updated>2022-01-28T22:55:55+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Some Arcade rebuilds]]></title>
+    <link href="https://marcyoung.us/post/arcade_rebuilds"/>
+    <updated>2022-01-28T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/arcades</id>
+    <content type="html"><![CDATA[I spent a good chunk of 2021 rebuilding arcades for people <!-- more -->
+
+If you&#8217;re going to send me hate letters for pandoras box: go ahead and hit the back button. I made these for people who dont want a bunch of arcades, so every single one of these was pandoras box.
+I&#8217;ll share some before and afters:
+
+An atari centipede (already JAMMA) in mostly good condition. 
+* Turned into Pandoras box
+* The CRT was bad, they wanted it LCD
+* They wanted to just turn the marquee blank
+* The 6 button wiring harness was a joke
+* I wanted to keep the steel control board so I welded back all the button holes and redrilled and added some nice polylaminate artwork over it
+<img src="https://marcyoung.us/images/arcade/Centipede.jpg">
+
+A knock off galaga
+* Turned into Pandoras box
+* The control panel was hacked together on 3/4&#8221; MDF
+* A real fire hazard internally
+* CRT was bad, but the glass was good. The &#8220;marquee&#8221; was just paint on the backside: easily removed with acetone
+* Wood was mostly saveable minus the water soaked edges/corners. Fixed with lots of sanding and bondo.
+<img src="https://marcyoung.us/images/arcade/galaga.jpg">
+<img src="https://marcyoung.us/images/arcade/galaga1.jpg">
+
+A Stern Berzerk in absolute terrible condition
+* Turned into Pandoras box
+* This took 90% of the time just to sand.
+* All the wood is pressed wood that had started to come apart at the bottom. Had to cut it all off and fix with bondo
+* Custom cut a new control panel from 3/4&#8221; MDF
+* The CRT was bad, replaced with a monitor inlaid into a new 3/4&#8221; MDF with a router for the bezel cover
+<img src="https://marcyoung.us/images/arcade/stern.jpg">
+
+
+Knock off WWE Wrestlefest turned Survival Arts
+* Rewired to CHAMMA, added pandoras box
+* CRT was still in great shape, no glass and didnt have the ability to cut plexi. Sold at a yard sale
+* CPO was hacked together with plexi over it. Cut all new 3/4&#8221; for the 6 buttons, kept the hardware + plexi
+* Repainted, 3d printed a &#8220;MAME&#8221; marquee and glued to a new marquee
+<img src="https://marcyoung.us/images/arcade/survival_arts.jpg">
+
+Zaxxon hacked into a poker game
+* Disgusting estate sale find. 
+* Contained dead rat
+* CRT was saveable with some magnet work
+* Recut new CPO from 3/4&#8221; MDF and wired to CHAMMA with pandoras box
+* Kept all artwork and 90s style fake wood laminate
+* 3d printed a cover for the front hole (not pictured)
+<img src="https://marcyoung.us/images/arcade/zaxxon.jpg">
+
+Completely empty MK2 shell
+* Stole CPO from another similar Midway shell
+* Customer wanted light up LEDs which required hacking up all the button PCBs to separate the ground and voltage and wiring them to the +5V on the CHAMMA harness
+* New LCD built into shell from a 32&#8221; TV
+<img src="https://marcyoung.us/images/arcade/mk2.jpg">
+
+Custom 4 Player from MK1 cabinet
+* MK1 cabinet modified to fit a 4 player CPO
+* Built dimensions to fit, using custom latching system to remove (does not fit through a standard door as-is)
+* 2 Players are to CHAMMA harness as usual, the other 2 players are USB into pandoras box. Worked surprisingly easy
+* Wanted it galaga themed, so galaga marquee and side artwork ordered to fit
+* Original 25&#8221; CRT still worked great, added plexi
+<img src="https://marcyoung.us/images/arcade/mk1_1.jpg">
+<img src="https://marcyoung.us/images/arcade/mk1_2.jpg">
+<img src="https://marcyoung.us/images/arcade/mk1_3.jpg">
+<img src="https://marcyoung.us/images/arcade/mk1_4.jpg">
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Kubecon - AWS Organizations and Cloud-Custodian]]></title>
@@ -2864,485 +2935,6 @@ ounces which gives it a flemsy breakable feel. Having something that light on to
 
 
 <p>What did we do? We basically said ops users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 1]]></title>
-    <link href="https://marcyoung.us/post/bless-part1"/>
-    <updated>2017-06-20T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/bless-part1</id>
-    <content type="html"><![CDATA[<p>I finally got Netflix’s <a href="https://github.com/netflix/bless">Bless</a> running in production using a forked version of Lyft’s <a href="https://github.com/lyft/python-blessclient">client</a>. This post will focus on the first and easier portion: Bless in Lambda <!-- more --></p>
-
-<h1>Prerequisites</h1>
-
-<p>Time and terraform. I like terraform because I dislike cloudformation. Feel free to adapt.</p>
-
-<h2>Installing Bless</h2>
-
-<p>This is actually the easiest part, because it’s straight forward. Side note: I like bless because of its simplicity. It uses lambda + KMS and nothing more. The permissions are stupid simple. The purpose, after talking to one of the guys behind it, was to make it feel native and un-intrusive. It works.</p>
-
-<h2>Setup Config</h2>
-
-<p>This was the hardest to get going, because configuration always is. The readme says to paste in a function to lambda to generate your password. But thats not needed with the super awesome lambda container from <a href="https://github.com/lambci/docker-lambda">lambci</a>. To do this, create a file function.py with the contents:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>import boto3
-</span><span class='line'>import base64
-</span><span class='line'>import os
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>def lambda_handler(event, context):
-</span><span class='line'>    region = os.environ['AWS_REGION']
-</span><span class='line'>    client = boto3.client('kms', region_name=region)
-</span><span class='line'>    response = client.encrypt(
-</span><span class='line'>    KeyId='kms_key_id',
-</span><span class='line'>    Plaintext='totallysecure'
-</span><span class='line'>    )
-</span><span class='line'>
-</span><span class='line'>    ciphertext = response['CiphertextBlob']
-</span><span class='line'>    return base64.b64encode(ciphertext)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now lets run that without using the real lambda. Make sure your access key/id have the required permissions to do <code>kms:Encrypt</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY -e AWS_REGION=us-east-1 -v "$PWD":/var/task lambci/lambda:python2.7 function.lambda_handler
-</span><span class='line'>START RequestId: 42f85048-91e1-4b48-9376-0563722616f0 Version: $LATEST
-</span><span class='line'>END RequestId: 42f85048-91e1-4b48-9376-0563722616f0
-</span><span class='line'>REPORT RequestId: 42f85048-91e1-4b48-9376-0563722616f0 Duration: 733 ms Billed Duration: 800 ms Memory Size: 1536 MB Max Memory Used: 25 MB
-</span><span class='line'>"some base64 encoded key"</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>The Config</h2>
-
-<p>This is an example of a finished config. Save it as <code>lambda_configs/bless_deploy.cfg</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[Bless Options]
-</span><span class='line'>certificate_validity_after_seconds = 120
-</span><span class='line'>certificate_validity_before_seconds = 120
-</span><span class='line'>entropy_minimum_bits = 2048
-</span><span class='line'>random_seed_bytes = 256
-</span><span class='line'>logging_level = INFO
-</span><span class='line'>
-</span><span class='line'>[Bless CA]
-</span><span class='line'>
-</span><span class='line'>us-east-1_password = some base64 encoded key from lambci/lambda
-</span><span class='line'>ca_private_key_file = foo1.pem
-</span><span class='line'>
-</span><span class='line'>[KMS Auth]</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Build</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ virtualenv venv
-</span><span class='line'>$ . venv/bin/activate
-</span><span class='line'>$ pip install -r requirements.txt
-</span><span class='line'>$ make publish </span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Deploy</h1>
-
-<h2>IAM</h2>
-
-<p>The first piece is the IAM portion for Bless. I need to allow it to:</p>
-
-<ol>
-<li>Generate random keys from KMS (obvious)</li>
-<li>Decrypt the KMS key that’s the password for Bless. This is generated and</li>
-<li>Create the log group (maybe not necesary since Lambda does that for you?)</li>
-<li>Push logs</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_role" "bless_lambda" {
-</span><span class='line'>    name = "bless_lambda"
-</span><span class='line'>    assume_role_policy = &lt;&lt;EOF
-</span><span class='line'>{
-</span><span class='line'>  "Version": "2012-10-17",
-</span><span class='line'>  "Statement": [
-</span><span class='line'>    {
-</span><span class='line'>      "Action": "sts:AssumeRole",
-</span><span class='line'>      "Principal": {
-</span><span class='line'>        "Service": "lambda.amazonaws.com"
-</span><span class='line'>      },
-</span><span class='line'>      "Effect": "Allow",
-</span><span class='line'>      "Sid": ""
-</span><span class='line'>    }
-</span><span class='line'>  ]
-</span><span class='line'>}
-</span><span class='line'>EOF
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>resource "aws_iam_role_policy" "bless_lambda" {
-</span><span class='line'>    name = "bless_lambda"
-</span><span class='line'>    role = "${aws_iam_role.bless_lambda.id}"
-</span><span class='line'>    policy = &lt;&lt;EOF
-</span><span class='line'>{
-</span><span class='line'>    "Version": "2012-10-17",
-</span><span class='line'>    "Statement": [
-</span><span class='line'>        {
-</span><span class='line'>          "Sid": "Stmt1443036478000",
-</span><span class='line'>          "Effect": "Allow",
-</span><span class='line'>          "Action": [
-</span><span class='line'>              "kms:GenerateRandom",
-</span><span class='line'>              "kms:Decrypt"
-</span><span class='line'>          ],
-</span><span class='line'>          "Resource": [
-</span><span class='line'>              "${data.terraform_remote_state.kms.ops_bless_arn}"
-</span><span class='line'>          ]
-</span><span class='line'>        },
-</span><span class='line'>        {
-</span><span class='line'>            "Effect": "Allow",
-</span><span class='line'>            "Action": "logs:CreateLogGroup",
-</span><span class='line'>            "Resource": "arn:aws:logs:us-east-1:*:*"
-</span><span class='line'>        },
-</span><span class='line'>        {
-</span><span class='line'>            "Effect": "Allow",
-</span><span class='line'>            "Action": [
-</span><span class='line'>                "logs:CreateLogStream",
-</span><span class='line'>                "logs:PutLogEvents"
-</span><span class='line'>            ],
-</span><span class='line'>            "Resource": [
-</span><span class='line'>                "arn:aws:logs:us-east-1:*:log-group:/aws/lambda/*"
-</span><span class='line'>            ]
-</span><span class='line'>        }
-</span><span class='line'>    ]
-</span><span class='line'>}
-</span><span class='line'>EOF
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>KMS</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_kms_key" "ops-bless" {
-</span><span class='line'>    description             = "KMS key for Bless"
-</span><span class='line'>    deletion_window_in_days = 7
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>resource "aws_kms_alias" "ops-bless" {
-</span><span class='line'>    name          = "alias/ops/bless"
-</span><span class='line'>    target_key_id = "${aws_kms_key.ops-bless.key_id}"
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>output "ops_bless_arn" {
-</span><span class='line'>  value = "${aws_kms_key.ops-bless.arn}"
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Client</h1>
-
-<h2>Client IAM role to assume</h2>
-
-<p>It basically just allows the invocation of our deployed function:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_role" "bless-client" {
-</span><span class='line'>    name               = "bless-client"
-</span><span class='line'>    path               = "/"
-</span><span class='line'>    assume_role_policy = &lt;&lt;EOF
-</span><span class='line'>{
-</span><span class='line'>    "Version": "2012-10-17",
-</span><span class='line'>    "Statement": [
-</span><span class='line'>        {
-</span><span class='line'>            "Action": "lambda:InvokeFunction",
-</span><span class='line'>            "Effect": "Allow",
-</span><span class='line'>            "Resource": [
-</span><span class='line'>                "${data.terraform_remote_state.lambda-bless.bless_arn}"
-</span><span class='line'>            ]
-</span><span class='line'>        }
-</span><span class='line'>    ]
-</span><span class='line'>}
-</span><span class='line'>EOF
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I added this to our <code>ops</code> IAM group so that any ops person can assume the role or use <code>kms:Encrypt</code> from the bless KMS key:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_group_policy" "bless-client" {
-</span><span class='line'>    name = "bless-client_iam_policy"
-</span><span class='line'>    group = "${aws_iam_group.ops.id}"
-</span><span class='line'>    policy = &lt;&lt;EOF
-</span><span class='line'>{
-</span><span class='line'>    "Version": "2012-10-17",
-</span><span class='line'>    "Statement": [
-</span><span class='line'>      {
-</span><span class='line'>        "Effect": "Allow",
-</span><span class='line'>        "Action": "sts:AssumeRole",
-</span><span class='line'>        "Resource": [
-</span><span class='line'>          "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
-</span><span class='line'>        ]
-</span><span class='line'>      },
-</span><span class='line'>      {
-</span><span class='line'>        "Action": "kms:Encrypt",
-</span><span class='line'>        "Effect": "Allow",
-</span><span class='line'>        "Resource": [
-</span><span class='line'>          "${data.terraform_remote_state.kms.ops_bless_arn}"
-</span><span class='line'>        ],
-</span><span class='line'>        "Condition": {
-</span><span class='line'>          "StringEquals": {
-</span><span class='line'>            "kms:EncryptionContext:user_type": "user",
-</span><span class='line'>            "kms:EncryptionContext:from": "$${aws:username}"
-</span><span class='line'>          }
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    ]
-</span><span class='line'>}
-</span><span class='line'>EOF
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Client config</h2>
-
-<p>This is an example of what my client config looks like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[MAIN]
-</span><span class='line'>region_aliases: east
-</span><span class='line'>kms_service_name: bless
-</span><span class='line'>bastion_ips: 192.168.1.6
-</span><span class='line'>remote_user: ec2-user
-</span><span class='line'>
-</span><span class='line'>[CLIENT]
-</span><span class='line'>domain_regex: (.*\.mycompany\.com|.*\.example\.net|\A10\.[0-9](?:\.[0-9]{1,3}){2}\Z)$
-</span><span class='line'>cache_dir: .bless/session
-</span><span class='line'>cache_file: bless_cache.json
-</span><span class='line'>mfa_cache_dir: .aws/session
-</span><span class='line'>mfa_cache_file: token_cache.json
-</span><span class='line'>ip_urls: https://api.ipify.org, https://canihazip.com
-</span><span class='line'>update_script: update_blessclient.sh
-</span><span class='line'>
-</span><span class='line'>[LAMBDA]
-</span><span class='line'>user_role: bless-client
-</span><span class='line'>account_id: my account id
-</span><span class='line'>functionname: bless
-</span><span class='line'>functionversion: $LATEST
-</span><span class='line'>certlifetime: 120
-</span><span class='line'>ipcachelifetime: 120
-</span><span class='line'>timeout_connect: 30
-</span><span class='line'>timeout_read: 30
-</span><span class='line'>
-</span><span class='line'>[REGION_EAST]
-</span><span class='line'>awsregion: us-east-1
-</span><span class='line'>kmsauthkey: my kms id that i used for the original password encrypt</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Test</h1>
-
-<p>You should now have a lambda that can generate certificates to use. You’ll need to put the public keys from <code>foo1.pub</code> and <code>foo2.pub</code> into your servers at <code>/etc/ssh/cas.pub</code> and add <code>TrustedUserCAKeys /etc/ssh/cas.pub</code> to <code>/etc/ssh/sshd_config</code> You can test this with their client:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>function bounce () {
-</span><span class='line'>  FILE="$(mktemp)"
-</span><span class='line'>  rm -rf ${FILE}
-</span><span class='line'>  ssh-keygen -f ${FILE} -N ""
-</span><span class='line'>  ./bless_client.py \
-</span><span class='line'>    us-east-1 \
-</span><span class='line'>    bless \
-</span><span class='line'>    testdev $(curl --silent https://ipecho.net/plain) \
-</span><span class='line'>    ec2-user $(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1') \
-</span><span class='line'>    "" \
-</span><span class='line'>    ${FILE}.pub ${FILE}-cert.pub
-</span><span class='line'>  ssh -i ${FILE} ec2-user@$1 "${@:2}"
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>$ bounce 10.0.0.19</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Puppet and MarkLogic - Marcus Young</title>
+  <title>Some Arcade rebuilds - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the puppetforge. One of which is something &hellip;">
+  <meta name="description" content="I spent a good chunk of 2021 rebuilding arcades for people If you're going to send me hate letters for pandoras box: go ahead and hit the back button &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="https://marcyoung.us/post/puppet-and-marklogic">
+  <link rel="canonical" href="https://marcyoung.us/post/arcade_rebuilds">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
@@ -92,7 +92,7 @@
   <header>
     
       
-        <h1 class="entry-title">Puppet and MarkLogic</h1>
+        <h1 class="entry-title">Some Arcade Rebuilds</h1>
       
     
     
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2013-12-14T00:00:00+00:00" pubdate data-updated="true"></time>
+<time datetime="2022-01-28T00:00:00+00:00" pubdate data-updated="true"></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,15 +118,69 @@
   </header>
 
 
-<div class="entry-content"><p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="https://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="https://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
+<div class="entry-content">I spent a good chunk of 2021 rebuilding arcades for people <!-- more -->
 
-<p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
+If you&#8217;re going to send me hate letters for pandoras box: go ahead and hit the back button. I made these for people who dont want a bunch of arcades, so every single one of these was pandoras box.
+I&#8217;ll share some before and afters:
 
-<p>How does this suck for me? I like to test. It&rsquo;s my new thing. In order to test your module, you need consistency, and for this that&rsquo;s hard to do without violating their terms. My solution? I have a super secret vagrant .box file that has a local Yum repository with the versions I know it supports (everything over version 6). No big deal, sort of.</p>
+An atari centipede (already JAMMA) in mostly good condition. 
+* Turned into Pandoras box
+* The CRT was bad, they wanted it LCD
+* They wanted to just turn the marquee blank
+* The 6 button wiring harness was a joke
+* I wanted to keep the steel control board so I welded back all the button holes and redrilled and added some nice polylaminate artwork over it
+<img src="/images/arcade/Centipede.jpg">
 
-<p>Did I mention the software also requires activation? That affects testing too, because I can&rsquo;t just hardcode my license information even though it&rsquo;s free and easily obtainable. My solution was to force the user to have a <code>~/.marklogic.yml</code> file that contains the information. None of this means anything to the normal use who wishes to install marklogic, they just need a Yum repository set up that holds the MarkLogic version. It does mean something to me in terms of making something that&rsquo;s easy to fork and fix if there are issues.</p>
+A knock off galaga
+* Turned into Pandoras box
+* The control panel was hacked together on 3/4&#8221; MDF
+* A real fire hazard internally
+* CRT was bad, but the glass was good. The &#8220;marquee&#8221; was just paint on the backside: easily removed with acetone
+* Wood was mostly saveable minus the water soaked edges/corners. Fixed with lots of sanding and bondo.
+<img src="/images/arcade/galaga.jpg">
+<img src="/images/arcade/galaga1.jpg">
 
-<p>TL;DR: <a href="https://www.puppetforge.com/myoung34/marklogic">My module is here.</a></p>
+A Stern Berzerk in absolute terrible condition
+* Turned into Pandoras box
+* This took 90% of the time just to sand.
+* All the wood is pressed wood that had started to come apart at the bottom. Had to cut it all off and fix with bondo
+* Custom cut a new control panel from 3/4&#8221; MDF
+* The CRT was bad, replaced with a monitor inlaid into a new 3/4&#8221; MDF with a router for the bezel cover
+<img src="/images/arcade/stern.jpg">
+
+
+Knock off WWE Wrestlefest turned Survival Arts
+* Rewired to CHAMMA, added pandoras box
+* CRT was still in great shape, no glass and didnt have the ability to cut plexi. Sold at a yard sale
+* CPO was hacked together with plexi over it. Cut all new 3/4&#8221; for the 6 buttons, kept the hardware + plexi
+* Repainted, 3d printed a &#8220;MAME&#8221; marquee and glued to a new marquee
+<img src="/images/arcade/survival_arts.jpg">
+
+Zaxxon hacked into a poker game
+* Disgusting estate sale find. 
+* Contained dead rat
+* CRT was saveable with some magnet work
+* Recut new CPO from 3/4&#8221; MDF and wired to CHAMMA with pandoras box
+* Kept all artwork and 90s style fake wood laminate
+* 3d printed a cover for the front hole (not pictured)
+<img src="/images/arcade/zaxxon.jpg">
+
+Completely empty MK2 shell
+* Stole CPO from another similar Midway shell
+* Customer wanted light up LEDs which required hacking up all the button PCBs to separate the ground and voltage and wiring them to the +5V on the CHAMMA harness
+* New LCD built into shell from a 32&#8221; TV
+<img src="/images/arcade/mk2.jpg">
+
+Custom 4 Player from MK1 cabinet
+* MK1 cabinet modified to fit a 4 player CPO
+* Built dimensions to fit, using custom latching system to remove (does not fit through a standard door as-is)
+* 2 Players are to CHAMMA harness as usual, the other 2 players are USB into pandoras box. Worked surprisingly easy
+* Wanted it galaga themed, so galaga marquee and side artwork ordered to fit
+* Original 25&#8221; CRT still worked great, added plexi
+<img src="/images/arcade/mk1_1.jpg">
+<img src="/images/arcade/mk1_2.jpg">
+<img src="/images/arcade/mk1_3.jpg">
+<img src="/images/arcade/mk1_4.jpg">
 </div>
 
 
@@ -149,12 +203,12 @@
   
 
 
-<time datetime="2013-12-14T00:00:00+00:00" pubdate data-updated="true"></time>
+<time datetime="2022-01-28T00:00:00+00:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/deployment/'>deployment</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>, <a class='category' href='/blog/categories/uncategorized/'>uncategorized</a>, <a class='category' href='/blog/categories/windows/'>windows</a>
+    <a class='category' href='/blog/categories/arcade/'>arcade</a>
   
 </span>
 
@@ -174,10 +228,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left articlenav" href="/post/puppetconf2013" title="Previous Post: What I Learned From PuppetConf 2013">&laquo; What I Learned From PuppetConf 2013</a>
+        <a class="basic-alignment left articlenav" href="/post/kubecon_2021" title="Previous Post: Kubecon - AWS Organizations and Cloud-Custodian">&laquo; Kubecon - AWS Organizations and Cloud-Custodian</a>
       
-      
-        <a class="basic-alignment right articlenav" href="/post/udoo-and-sata" title="Next Post: UDOO and SATA - The Definitive Guide">UDOO and SATA - The Definitive Guide &raquo;</a>
       
     </p>
   </footer>
@@ -280,8 +332,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'https://marcyoung.us/post/puppet-and-marklogic';
-        var disqus_url = 'https://marcyoung.us/post/puppet-and-marklogic';
+        var disqus_identifier = 'https://marcyoung.us/post/arcade_rebuilds';
+        var disqus_url = 'https://marcyoung.us/post/arcade_rebuilds';
         var disqus_script = 'embed.js';
       
     (function () {
