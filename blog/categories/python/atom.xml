@@ -4,7 +4,7 @@
   <title><![CDATA[Category: python | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/python/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2021-10-24T20:01:17+00:00</updated>
+  <updated>2022-01-28T22:12:26+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -24,7 +24,10 @@
 
 <h2>The Network</h2>
 
-<p>I don&rsquo;t have any crazy networking gear, just a <a href="https://www.amazon.com/R7000-100PAS-Nighthawk-Parental-Controls-Compatible/dp/B00F0DD0I6">Netgear r7000</a> running <a href="https://www.myopenrouter.com/kong-downloads">Kong</a></p>
+<p><del>I don&rsquo;t have any crazy networking gear, just a <a href="https://www.amazon.com/R7000-100PAS-Nighthawk-Parental-Controls-Compatible/dp/B00F0DD0I6">Netgear r7000</a> running <a href="https://www.myopenrouter.com/kong-downloads">Kong</a></del></p>
+
+<p>I now have a very different set up.
+<img src="/images/router.jpg"></p>
 
 <p>Configuring this for my setup is painful, but:</p>
 
