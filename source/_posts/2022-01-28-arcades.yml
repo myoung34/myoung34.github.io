@@ -1,0 +1,79 @@
+---
+title: "Some Arcade rebuilds"
+author: myoung
+layout: post
+comments: true
+permalink: /post/arcade_rebuilds
+seo_follow:
+  - 'false'
+seo_noindex:
+  - 'false'
+categories:
+  - arcade
+tags:
+  - arcade
+---
+
+I spent a good chunk of 2021 rebuilding arcades for people <!-- more -->
+
+If you're going to send me hate letters for pandoras box: go ahead and hit the back button. I made these for people who dont want a bunch of arcades, so every single one of these was pandoras box.
+I'll share some before and afters:
+
+An atari centipede (already JAMMA) in mostly good condition. 
+* Turned into Pandoras box
+* The CRT was bad, they wanted it LCD
+* They wanted to just turn the marquee blank
+* The 6 button wiring harness was a joke
+* I wanted to keep the steel control board so I welded back all the button holes and redrilled and added some nice polylaminate artwork over it
+{% img /images/arcade/Centipede.jpg %}
+
+A knock off galaga
+* Turned into Pandoras box
+* The control panel was hacked together on 3/4" MDF
+* A real fire hazard internally
+* CRT was bad, but the glass was good. The "marquee" was just paint on the backside: easily removed with acetone
+* Wood was mostly saveable minus the water soaked edges/corners. Fixed with lots of sanding and bondo.
+{% img /images/arcade/galaga.jpg %}
+{% img /images/arcade/galaga1.jpg %}
+
+A Stern Berzerk in absolute terrible condition
+* Turned into Pandoras box
+* This took 90% of the time just to sand.
+* All the wood is pressed wood that had started to come apart at the bottom. Had to cut it all off and fix with bondo
+* Custom cut a new control panel from 3/4" MDF
+* The CRT was bad, replaced with a monitor inlaid into a new 3/4" MDF with a router for the bezel cover
+{% img /images/arcade/stern.jpg %}
+
+
+Knock off WWE Wrestlefest turned Survival Arts
+* Rewired to CHAMMA, added pandoras box
+* CRT was still in great shape, no glass and didnt have the ability to cut plexi. Sold at a yard sale
+* CPO was hacked together with plexi over it. Cut all new 3/4" for the 6 buttons, kept the hardware + plexi
+* Repainted, 3d printed a "MAME" marquee and glued to a new marquee
+{% img /images/arcade/survival_arts.jpg %}
+
+Zaxxon hacked into a poker game
+* Disgusting estate sale find. 
+* Contained dead rat
+* CRT was saveable with some magnet work
+* Recut new CPO from 3/4" MDF and wired to CHAMMA with pandoras box
+* Kept all artwork and 90s style fake wood laminate
+* 3d printed a cover for the front hole (not pictured)
+{% img /images/arcade/zaxxon.jpg %}
+
+Completely empty MK2 shell
+* Stole CPO from another similar Midway shell
+* Customer wanted light up LEDs which required hacking up all the button PCBs to separate the ground and voltage and wiring them to the +5V on the CHAMMA harness
+* New LCD built into shell from a 32" TV
+{% img /images/arcade/mk2.jpg %}
+
+Custom 4 Player from MK1 cabinet
+* MK1 cabinet modified to fit a 4 player CPO
+* Built dimensions to fit, using custom latching system to remove (does not fit through a standard door as-is)
+* 2 Players are to CHAMMA harness as usual, the other 2 players are USB into pandoras box. Worked surprisingly easy
+* Wanted it galaga themed, so galaga marquee and side artwork ordered to fit
+* Original 25" CRT still worked great, added plexi
+{% img /images/arcade/mk1_1.jpg %}
+{% img /images/arcade/mk1_2.jpg %}
+{% img /images/arcade/mk1_3.jpg %}
+{% img /images/arcade/mk1_4.jpg %}
