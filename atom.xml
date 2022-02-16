@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-01-28T23:08:09+00:00</updated>
+  <updated>2022-02-16T01:33:11+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,134 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Making my own plaato keg firmware]]></title>
+    <link href="https://marcyoung.us/post/arcade_rebuilds"/>
+    <updated>2022-02-15T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/plaato-keg</id>
+    <content type="html"><![CDATA[<p>After two years of failing to deliver a promised feature I decided to reverse engineer and make my own plaato keg firmware <!-- more --></p>
+
+<p><br/>
+<br/>
+I backed this project because plaato makes really good quality stuff. The idea of having a weight based keg estimator for my barcaderator was key.
+They promised multiple times they&rsquo;d allow people to capture the data themselves. They have yet to deliver.
+<br/>
+<br/></p>
+
+<p><img src="https://marcyoung.us/images/keg/keg6.png">
+<br/></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Andreas (PLAATO)
+</span><span class='line'>
+</span><span class='line'>Aug 12, 2020, 3:14 PM GMT+2
+</span><span class='line'>
+</span><span class='line'>Hi! We've unfortunately had to put the webhook for PLAATO Keg
+</span><span class='line'>on the back burner as we are working on other projects, 
+</span><span class='line'>particularly with our backend, that take priority at the moment. 
+</span><span class='line'>While we would very much like to implement the webhook we 
+</span><span class='line'>unfortunately don't have any ETA on this as of now.</span></code></pre></td></tr></table></div></figure>
+
+
+<p><br/></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Abi from Plaato
+</span><span class='line'>
+</span><span class='line'>Feb 11, 2022 2:21 AM GMT+2
+</span><span class='line'>
+</span><span class='line'>Hey Marcus,
+</span><span class='line'>
+</span><span class='line'>Thank you for sharing. What I will do to make sure your voice is 
+</span><span class='line'>heard is to share your message as a Feature Request to the development
+</span><span class='line'>team.
+</span><span class='line'>
+</span><span class='line'>I hope this helps, please let me know if you have any additional 
+</span><span class='line'>questions.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So I decided: why not do it myself?</p>
+
+<p>In january 2020 I did a <a href="https://marcyoung.us/post/homebrew-hacking/">PyTN talk about how to sniff the data.</a> While cool, it didn&rsquo;t really bear much fruit. The amount of effort to make this be my end game was a bit much and I&rsquo;d be reliant on always intercepting it. I did however know that its got an ESP32-D0W0 (wroom) as the brains and it didnt look that complicated.</p>
+
+<p>So I took it down again and flashed a basic esphome build to it (the code is <a href="https://github.com/myoung34/plaato-keg-esphome">here.</a></p>
+
+<p><br/>
+<img src="https://marcyoung.us/images/keg/keg.jpg">
+<br/></p>
+
+<p>This was easier than it looks, you just need a steady hand. Once you flash it the first time you can do pure OTA updates.</p>
+
+<p>I wont go into absolute detail but you can just look at the pinout for the ESP32 and solder leads to the pins directly. RX, TX, Gnd, Vcc, and GPIO (grounded) directly to an FTDI programmer.</p>
+
+<p>First I made a backup of the original firmware:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
+</span><span class='line'>  --flash_mode dio --flash_freq 40m --flash_size detect \
+</span><span class='line'>  0 plaato_backup.bin</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then I flashed the new one built from ESPhome:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
+</span><span class='line'>  --flash_mode dio --flash_freq 40m --flash_size detect 0 \
+</span><span class='line'>  plaato.bin</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it shows up in ESPHome as expected!</p>
+
+<p>I then used a (very old) osciloscope to try to map out the load cells (load cell combinator is pretty boring (yayyy) and just drags the voltage, ground, data, etc over a ribbon cable to the main PCB. This main PCB uses a <code>P##</code> notation which are not 1:1 with the ESP32 (booooo)</p>
+
+<p><br/>
+<img src="https://marcyoung.us/images/keg/keg1.jpg">
+<br/></p>
+
+<p>I was able to discover that the clock for this is P14. I then used a multimeter to correlate P14 to GPIO16 (by dragging the other load across all the ESP32 pins until a beep gave it away). I did this to discover the data pin from the load cell combinator is P28. My handy dandy Multimeter let me correlate P28 to GPIO 17 on the ESP32.</p>
+
+<p><br/>
+<img src="https://marcyoung.us/images/keg/keg2.jpg">
+<br/>
+<br/>
+<img src="https://marcyoung.us/images/keg/keg3.jpg">
+<br/></p>
+
+<p>I was able to figure out the LEDs without an oscilloscope by just using a multimeter. The main PCB just uses GPIO to turn those pins high or low to run the 3 LEDs, which is boring (yay).</p>
+
+<p>The only thing I have yet to figure out is the water sensor (It looks like it&rsquo;s using a TVS diode to protect the thing from whatever its doing to detect water (voltage shorting?)) and whatever it&rsquo;s using to allow resets (a magnet above the MV3581?)</p>
+
+<p>Check out the <a href="https://github.com/myoung34/plaato-keg-esphome">repo for my up to date esphome yaml</a></p>
+
+<p><br/>
+<img src="https://marcyoung.us/images/keg/keg7.png">
+<br/></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Some Arcade rebuilds]]></title>
@@ -2636,333 +2764,6 @@ under it, but that made it a bit wobbly. I could probably 3d print something, bu
 ounces which gives it a flemsy breakable feel. Having something that light on top of a  piece of cardboard created a very unstable setup.</p>
 
 <p><img class="left" src="https://marcyoung.us/images/t2_2.jpg"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Up and Running With Bless and Enforced MFA - Part 2]]></title>
-    <link href="https://marcyoung.us/post/bless-part2"/>
-    <updated>2017-06-20T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/bless-part2</id>
-    <content type="html"><![CDATA[<p>Part 2 of deploying Bless will focus on enforcing MFA and using Lyft’s client. <!-- more --></p>
-
-<p>The problem at this point is that anyone in the ops group can bounce without MFA enforced. We can set up the lyft client, which enforces MFA, but if we dont make other changes, there’s no enforcement of MFA. ie you can still call the netflix client and bounce right in.</p>
-
-<p>The other issue is that Netflix’s bless holds true the idea of a bastion host. In-house, we have IPSec tunnels from our VPC’s to our internal network, so I dont need to bounce through a bastion. So I want anyone to be able to bounce, given that they have permissions (ops) and they used MFA. Lyft’s doesn’t enforce the bastion concept, which is nice.</p>
-
-<h1>Prerequisites</h1>
-
-<p>In the IAM console in AWS, enable an MFA device for your user.</p>
-
-<h2>Setting up the client</h2>
-
-<p>I wrote a wrapper to simplify this. Feel free to not like it, but I put this in my <code>~/.bash_aliases</code> to make it easier:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>function bounce() {
-</span><span class='line'>  if [[ ! -d ~/.blessclient ]]; then
-</span><span class='line'>    pushd . &gt;/dev/null
-</span><span class='line'>    git clone https://github.com/lyft/python-blessclient.git ~/.blessclient
-</span><span class='line'>    cd $_
-</span><span class='line'>    make
-</span><span class='line'>    popd &gt;/dev/null
-</span><span class='line'>  fi
-</span><span class='line'>  INTERNAL_IP=$(ifconfig | grep inet | grep 192 | awk '{ print $2}')
-</span><span class='line'>  # This gets weird if you have wired and wifi hooked up (sometimes i do). It might allow the wrong IP and give you a crap error messsage.
-</span><span class='line'>  if [[ $(ifconfig | grep inet | grep 192 | awk '{ print $2}' | wc -l) -gt 1 ]] && [[ -z ${BLESSFIXEDIP} ]]; then
-</span><span class='line'>    echo "More than one internal ip found. Disable a network interface or provide it manually via env var 'BLESSFIXEDIP'"
-</span><span class='line'>  else
-</span><span class='line'>    FILE="$(mktemp)"
-</span><span class='line'>    rm -rf ${FILE}*
-</span><span class='line'>    ssh-keygen -f ${FILE} -N ""
-</span><span class='line'>    BLESS_IDENTITYFILE=${FILE} BLESSFIXEDIP=${BLESSFIXEDIP:-${INTERNAL_IP}} ~/.blessclient/blessclient.run --host $1 --nocache --config ~/.blessclient/blessclient.cfg --region EAST && ssh -i ${FILE} ec2-user@$1
-</span><span class='line'>  fi
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can bounce with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ bounce 10.0.3.7
-</span><span class='line'>Generating public/private rsa key pair.
-</span><span class='line'>Your identification has been saved in /var/folders/5j/n9trdvbn3qqdtkshkpvnrkhh0000gp/T/tmp.s2ZdeuJD.
-</span><span class='line'>Your public key has been saved in /var/folders/5j/n9trdvbn3qqdtkshkpvnrkhh0000gp/T/tmp.s2ZdeuJD.pub.
-</span><span class='line'>The key fingerprint is:
-</span><span class='line'>SHA256:CizQBI/ROY8QIeiRjt7rY65jPc/oJDL3MA marcyoung@Admins-MacBook-Pro.local
-</span><span class='line'>The key's randomart image is:
-</span><span class='line'>+---[RSA 2048]----+
-</span><span class='line'>|B*+.             |
-</span><span class='line'>|++o              |
-</span><span class='line'>|=..              |
-</span><span class='line'>|.o.*.            |
-</span><span class='line'>|. o  S           |
-</span><span class='line'>|...+ . .         |
-</span><span class='line'>| E .o.           |
-</span><span class='line'>|oo= + .          |
-</span><span class='line'>|.=*              |
-</span><span class='line'>+----[SHA256]-----+
-</span><span class='line'>Enter your AWS MFA code: 477821
-</span><span class='line'>Requesting certificate for your public key (set BLESSQUIET=1 to suppress these messages)
-</span><span class='line'>Finished getting certificate.
-</span><span class='line'>Last login: Fri Jun 16 20:14:52 2017 from ip-192-168-1-124.ec2.internal
-</span><span class='line'>
-</span><span class='line'>       __|  __|_  )
-</span><span class='line'>       _|  (     /   Amazon Linux AMI
-</span><span class='line'>      ___|\___|___|
-</span><span class='line'>
-</span><span class='line'>https://aws.amazon.com/amazon-linux-ami/2017.03-release-notes/
-</span><span class='line'>No packages needed for security; 2 packages available
-</span><span class='line'>Run "sudo yum update" to apply all updates.
-</span><span class='line'>[marc@server ~]$</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nice! But again, MFA is used, not enforced. Lets change that.</p>
-
-<p>I hinted at my group policy in part 1 for <code>ops</code> that looked like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_group_policy" "bless-client" {
-</span><span class='line'>    name = "bless-client_iam_policy"
-</span><span class='line'>    group = "${aws_iam_group.ops.id}"
-</span><span class='line'>    policy = &lt;&lt;EOF
-</span><span class='line'>{
-</span><span class='line'>    "Version": "2012-10-17",
-</span><span class='line'>    "Statement": [
-</span><span class='line'>      {
-</span><span class='line'>        "Effect": "Allow",
-</span><span class='line'>        "Action": "sts:AssumeRole",
-</span><span class='line'>        "Resource": [
-</span><span class='line'>          "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
-</span><span class='line'>        ]
-</span><span class='line'>      },
-</span><span class='line'>      {
-</span><span class='line'>        "Action": "kms:Encrypt",
-</span><span class='line'>        "Effect": "Allow",
-</span><span class='line'>        "Resource": [
-</span><span class='line'>          "${data.terraform_remote_state.kms.ops_bless_arn}"
-</span><span class='line'>        ],
-</span><span class='line'>        "Condition": {
-</span><span class='line'>          "StringEquals": {
-</span><span class='line'>            "kms:EncryptionContext:user_type": "user",
-</span><span class='line'>            "kms:EncryptionContext:from": "$${aws:username}"
-</span><span class='line'>          }
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    ]
-</span><span class='line'>}
-</span><span class='line'>EOF
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>But in actuality, it should look more like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_iam_group_policy" "bless-client" {
-</span><span class='line'>    name = "assume-bless-role"
-</span><span class='line'>    group = "${aws_iam_group.ops.id}"
-</span><span class='line'>    policy = &lt;&lt;EOF
-</span><span class='line'>{
-</span><span class='line'>  "Version": "2012-10-17",
-</span><span class='line'>  "Statement": [
-</span><span class='line'>    {
-</span><span class='line'>      "Effect": "Allow",
-</span><span class='line'>      "Action": "sts:AssumeRole",
-</span><span class='line'>      "Resource": [
-</span><span class='line'>        "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
-</span><span class='line'>      ],
-</span><span class='line'>      "Condition": {
-</span><span class='line'>        "Bool": {
-</span><span class='line'>          "aws:MultiFactorAuthPresent": "true"
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "Effect": "Deny",
-</span><span class='line'>      "Action": "sts:AssumeRole",
-</span><span class='line'>      "Resource": [
-</span><span class='line'>        "${data.terraform_remote_state.bless_client_iam.bless-client-role-arn}"
-</span><span class='line'>      ],
-</span><span class='line'>      "Condition": {"BoolIfExists": {"aws:MultiFactorAuthPresent": false}}
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "Action": "kms:Encrypt",
-</span><span class='line'>      "Effect": "Allow",
-</span><span class='line'>      "Resource": [
-</span><span class='line'>        "${data.terraform_remote_state.kms.ops_bless_arn}"
-</span><span class='line'>      ],
-</span><span class='line'>      "Condition": {
-</span><span class='line'>        "StringEquals": {
-</span><span class='line'>          "kms:EncryptionContext:user_type": "user",
-</span><span class='line'>          "kms:EncryptionContext:from": "$${aws:username}"
-</span><span class='line'>        },
-</span><span class='line'>        "Bool": {
-</span><span class='line'>          "aws:MultiFactorAuthPresent": "true"
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "Action": "kms:Encrypt",
-</span><span class='line'>      "Effect": "Deny",
-</span><span class='line'>      "Resource": [
-</span><span class='line'>        "${data.terraform_remote_state.kms.ops_bless_arn}"
-</span><span class='line'>      ],
-</span><span class='line'>      "Condition": {
-</span><span class='line'>        "StringEquals": {
-</span><span class='line'>          "kms:EncryptionContext:user_type": "user",
-</span><span class='line'>          "kms:EncryptionContext:from": "$${aws:username}"
-</span><span class='line'>        },
-</span><span class='line'>        "BoolIfExists": {
-</span><span class='line'>          "aws:MultiFactorAuthPresent": false
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    }
-</span><span class='line'>  ]
-</span><span class='line'>}
-</span><span class='line'>EOF
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What did we do? We basically said ops users can assume the bless-client role or call kms:Encrypt on that key, but only if they used MFA. If you try the original bless client now, it will fail.</p>
 ]]></content>
   </entry>
   
