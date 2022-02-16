@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-02-16T01:33:11+00:00</updated>
+  <updated>2022-02-16T01:35:05+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -15,7 +15,7 @@
   
   <entry>
     <title type="html"><![CDATA[Making my own plaato keg firmware]]></title>
-    <link href="https://marcyoung.us/post/arcade_rebuilds"/>
+    <link href="https://marcyoung.us/post/plaato_keg_esphome"/>
     <updated>2022-02-15T00:00:00+00:00</updated>
     <id>https://marcyoung.us/post/plaato-keg</id>
     <content type="html"><![CDATA[<p>After two years of failing to deliver a promised feature I decided to reverse engineer and make my own plaato keg firmware <!-- more --></p>

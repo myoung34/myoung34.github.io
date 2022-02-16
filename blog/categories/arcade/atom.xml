@@ -4,7 +4,7 @@
   <title><![CDATA[Category: arcade | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/arcade/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-02-16T01:33:11+00:00</updated>
+  <updated>2022-02-16T01:35:05+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,128 +12,6 @@
   </author>
   <generator uri="https://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Making my own plaato keg firmware]]></title>
-    <link href="https://marcyoung.us/post/arcade_rebuilds"/>
-    <updated>2022-02-15T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/plaato-keg</id>
-    <content type="html"><![CDATA[<p>After two years of failing to deliver a promised feature I decided to reverse engineer and make my own plaato keg firmware <!-- more --></p>
-
-<p><br/>
-<br/>
-I backed this project because plaato makes really good quality stuff. The idea of having a weight based keg estimator for my barcaderator was key.
-They promised multiple times they&rsquo;d allow people to capture the data themselves. They have yet to deliver.
-<br/>
-<br/></p>
-
-<p><img src="/images/keg/keg6.png">
-<br/>
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Andreas (PLAATO)&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Aug 12, 2020, 3:14 PM GMT+2&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Hi! We&rsquo;ve unfortunately had to put the webhook for PLAATO Keg
-</span><span class='line'>on the back burner as we are working on other projects,
-</span><span class='line'>particularly with our backend, that take priority at the moment.
-</span><span class='line'>While we would very much like to implement the webhook we
-</span><span class='line'>unfortunately don&rsquo;t have any ETA on this as of now.
-</span><span class='line'>&lt;code&gt;
-</span><span class='line'>&lt;br/&gt;
-</span><span class='line'>&lt;/code&gt;
-</span><span class='line'>Abi from Plaato&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Feb 11, 2022 2:21 AM GMT+2&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Hey Marcus,&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Thank you for sharing. What I will do to make sure your voice is
-</span><span class='line'>heard is to share your message as a Feature Request to the development
-</span><span class='line'>team.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;I hope this helps, please let me know if you have any additional
-</span><span class='line'>questions.</span></code></pre></td></tr></table></div></figure></p>
-
-<p>So I decided: why not do it myself?</p>
-
-<p>In january 2020 I did a <a href="https://marcyoung.us/post/homebrew-hacking/">PyTN talk about how to sniff the data.</a> While cool, it didn&rsquo;t really bear much fruit. The amount of effort to make this be my end game was a bit much and I&rsquo;d be reliant on always intercepting it. I did however know that its got an ESP32-D0W0 (wroom) as the brains and it didnt look that complicated.</p>
-
-<p>So I took it down again and flashed a basic esphome build to it (the code is <a href="https://github.com/myoung34/plaato-keg-esphome">here.</a></p>
-
-<p><br/>
-<img src="/images/keg/keg.jpg">
-<br/></p>
-
-<p>This was easier than it looks, you just need a steady hand. Once you flash it the first time you can do pure OTA updates.</p>
-
-<p>I wont go into absolute detail but you can just look at the pinout for the ESP32 and solder leads to the pins directly. RX, TX, Gnd, Vcc, and GPIO (grounded) directly to an FTDI programmer.</p>
-
-<p>First I made a backup of the original firmware:</p>
-
-<pre><code>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
-  --flash_mode dio --flash_freq 40m --flash_size detect \
-  0 plaato_backup.bin
-</code></pre>
-
-<p>Then I flashed the new one built from ESPhome:</p>
-
-<pre><code>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
-  --flash_mode dio --flash_freq 40m --flash_size detect 0 \
-  plaato.bin
-</code></pre>
-
-<p>Now it shows up in ESPHome as expected!</p>
-
-<p>I then used a (very old) osciloscope to try to map out the load cells (load cell combinator is pretty boring (yayyy) and just drags the voltage, ground, data, etc over a ribbon cable to the main PCB. This main PCB uses a <code>P##</code> notation which are not 1:1 with the ESP32 (booooo)</p>
-
-<p><br/>
-<img src="/images/keg/keg1.jpg">
-<br/></p>
-
-<p>I was able to discover that the clock for this is P14. I then used a multimeter to correlate P14 to GPIO16 (by dragging the other load across all the ESP32 pins until a beep gave it away). I did this to discover the data pin from the load cell combinator is P28. My handy dandy Multimeter let me correlate P28 to GPIO 17 on the ESP32.</p>
-
-<p><br/>
-<img src="/images/keg/keg2.jpg">
-<br/>
-<br/>
-<img src="/images/keg/keg3.jpg">
-<br/></p>
-
-<p>I was able to figure out the LEDs without an oscilloscope by just using a multimeter. The main PCB just uses GPIO to turn those pins high or low to run the 3 LEDs, which is boring (yay).</p>
-
-<p>The only thing I have yet to figure out is the water sensor (It looks like it&rsquo;s using a TVS diode to protect the thing from whatever its doing to detect water (voltage shorting?)) and whatever it&rsquo;s using to allow resets (a magnet above the MV3581?)</p>
-
-<p>Check out the <a href="https://github.com/myoung34/plaato-keg-esphome">repo for my up to date esphome yaml</a></p>
-
-<p><br/>
-<img src="/images/keg/keg7.png">
-<br/></p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Some Arcade rebuilds]]></title>

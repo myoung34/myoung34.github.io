@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Making my own plaato keg firmware - Marcus Young</title>
+  <title>Some Arcade rebuilds - Marcus Young</title>
   <meta name="author" content="Marcus Young">
 
   
-  <meta name="description" content="After two years of failing to deliver a promised feature I decided to reverse engineer and make my own plaato keg firmware I backed this project &hellip;">
+  <meta name="description" content="I spent a good chunk of 2021 rebuilding arcades for people If you're going to send me hate letters for pandoras box: go ahead and hit the back button &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,7 +92,7 @@
   <header>
     
       
-        <h1 class="entry-title">Making My Own Plaato Keg Firmware</h1>
+        <h1 class="entry-title">Some Arcade Rebuilds</h1>
       
     
     
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2022-02-15T00:00:00+00:00" pubdate data-updated="true"></time>
+<time datetime="2022-01-28T00:00:00+00:00" pubdate data-updated="true"></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,126 +118,97 @@
   </header>
 
 
-<div class="entry-content"><p>After two years of failing to deliver a promised feature I decided to reverse engineer and make my own plaato keg firmware <!-- more --></p>
+<div class="entry-content">I spent a good chunk of 2021 rebuilding arcades for people <!-- more -->
 
-<p><br/>
-<br/>
-I backed this project because plaato makes really good quality stuff. The idea of having a weight based keg estimator for my barcaderator was key.
-They promised multiple times they&rsquo;d allow people to capture the data themselves. They have yet to deliver.
-<br/>
-<br/></p>
-
-<p><img src="/images/keg/keg6.png">
-<br/></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Andreas (PLAATO)
-</span><span class='line'>
-</span><span class='line'>Aug 12, 2020, 3:14 PM GMT+2
-</span><span class='line'>
-</span><span class='line'>Hi! We've unfortunately had to put the webhook for PLAATO Keg
-</span><span class='line'>on the back burner as we are working on other projects, 
-</span><span class='line'>particularly with our backend, that take priority at the moment. 
-</span><span class='line'>While we would very much like to implement the webhook we 
-</span><span class='line'>unfortunately don't have any ETA on this as of now.</span></code></pre></td></tr></table></div></figure>
-
-
-<p><br/></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Abi from Plaato
-</span><span class='line'>
-</span><span class='line'>Feb 11, 2022 2:21 AM GMT+2
-</span><span class='line'>
-</span><span class='line'>Hey Marcus,
-</span><span class='line'>
-</span><span class='line'>Thank you for sharing. What I will do to make sure your voice is 
-</span><span class='line'>heard is to share your message as a Feature Request to the development
-</span><span class='line'>team.
-</span><span class='line'>
-</span><span class='line'>I hope this helps, please let me know if you have any additional 
-</span><span class='line'>questions.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So I decided: why not do it myself?</p>
-
-<p>In january 2020 I did a <a href="/post/homebrew-hacking/">PyTN talk about how to sniff the data.</a> While cool, it didn&rsquo;t really bear much fruit. The amount of effort to make this be my end game was a bit much and I&rsquo;d be reliant on always intercepting it. I did however know that its got an ESP32-D0W0 (wroom) as the brains and it didnt look that complicated.</p>
-
-<p>So I took it down again and flashed a basic esphome build to it (the code is <a href="https://github.com/myoung34/plaato-keg-esphome">here.</a></p>
-
-<p><br/>
-<img src="/images/keg/keg.jpg">
-<br/></p>
-
-<p>This was easier than it looks, you just need a steady hand. Once you flash it the first time you can do pure OTA updates.</p>
-
-<p>I wont go into absolute detail but you can just look at the pinout for the ESP32 and solder leads to the pins directly. RX, TX, Gnd, Vcc, and GPIO (grounded) directly to an FTDI programmer.</p>
-
-<p>First I made a backup of the original firmware:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
-</span><span class='line'>  --flash_mode dio --flash_freq 40m --flash_size detect \
-</span><span class='line'>  0 plaato_backup.bin</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then I flashed the new one built from ESPhome:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
-</span><span class='line'>  --flash_mode dio --flash_freq 40m --flash_size detect 0 \
-</span><span class='line'>  plaato.bin</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now it shows up in ESPHome as expected!</p>
-
-<p>I then used a (very old) osciloscope to try to map out the load cells (load cell combinator is pretty boring (yayyy) and just drags the voltage, ground, data, etc over a ribbon cable to the main PCB. This main PCB uses a <code>P##</code> notation which are not 1:1 with the ESP32 (booooo)</p>
-
-<p><br/>
-<img src="/images/keg/keg1.jpg">
-<br/></p>
-
-<p>I was able to discover that the clock for this is P14. I then used a multimeter to correlate P14 to GPIO16 (by dragging the other load across all the ESP32 pins until a beep gave it away). I did this to discover the data pin from the load cell combinator is P28. My handy dandy Multimeter let me correlate P28 to GPIO 17 on the ESP32.</p>
-
-<p><br/>
-<img src="/images/keg/keg2.jpg">
 <br/>
 <br/>
-<img src="/images/keg/keg3.jpg">
-<br/></p>
+If you&#8217;re going to send me hate letters for pandoras box: go ahead and hit the back button. I made these for people who dont want a bunch of arcades, so every single one of these was pandoras box.
+<br/>
+<br/>
+I&#8217;ll share some before and afters:
 
-<p>I was able to figure out the LEDs without an oscilloscope by just using a multimeter. The main PCB just uses GPIO to turn those pins high or low to run the 3 LEDs, which is boring (yay).</p>
+<br/>
+<br/>
+<br/>
+An atari centipede (already JAMMA) in mostly good condition. <br/>
+* Turned into Pandoras box<br/>
+* The CRT was bad, they wanted it LCD<br/>
+* They wanted to just turn the marquee blank<br/>
+* The 6 button wiring harness was a joke<br/>
+* I wanted to keep the steel control board so I welded back all the button holes and redrilled and added some nice polylaminate artwork over it<br/>
+<img src="/images/arcade/Centipede.jpg">
 
-<p>The only thing I have yet to figure out is the water sensor (It looks like it&rsquo;s using a TVS diode to protect the thing from whatever its doing to detect water (voltage shorting?)) and whatever it&rsquo;s using to allow resets (a magnet above the MV3581?)</p>
+<br/>
+<br/>
+A knock off galaga<br/>
+* Turned into Pandoras box<br/>
+* The control panel was hacked together on 3/4&#8221; MDF<br/>
+* A real fire hazard internally<br/>
+* CRT was bad, but the glass was good. The &#8220;marquee&#8221; was just paint on the backside: easily removed with acetone<br/>
+* Wood was mostly saveable minus the water soaked edges/corners. Fixed with lots of sanding and bondo.<br/>
+<img src="/images/arcade/galaga.jpg"><br/>
+<img src="/images/arcade/galaga1.jpg">
 
-<p>Check out the <a href="https://github.com/myoung34/plaato-keg-esphome">repo for my up to date esphome yaml</a></p>
+<br/>
+<br/>
+A Stern Berzerk in absolute terrible condition<br/>
+* Turned into Pandoras box<br/>
+* This took 90% of the time just to sand.<br/>
+* All the wood is pressed wood that had started to come apart at the bottom. Had to cut it all off and fix with bondo<br/>
+* Custom cut a new control panel from 3/4&#8221; MDF<br/>
+* The CRT was bad, replaced with a monitor inlaid into a new 3/4&#8221; MDF with a router for the bezel cover<br/>
+<img src="/images/arcade/stern.jpg">
 
-<p><br/>
-<img src="/images/keg/keg7.png">
-<br/></p>
+
+<br/>
+<br/>
+Knock off WWE Wrestlefest turned Survival Arts<br/>
+* Rewired to CHAMMA, added pandoras box<br/>
+* CRT was still in great shape, no glass and didnt have the ability to cut plexi. Sold at a yard sale<br/>
+* CPO was hacked together with plexi over it. Cut all new 3/4&#8221; for the 6 buttons, kept the hardware + plexi<br/>
+* Repainted, 3d printed a &#8220;MAME&#8221; marquee and glued to a new marquee<br/>
+<img src="/images/arcade/survival_arts.jpg">
+
+<br/>
+<br/>
+Zaxxon hacked into a poker game<br/>
+* Disgusting estate sale find. <br/>
+* Contained dead rat<br/>
+* CRT was saveable with some magnet work<br/>
+* Recut new CPO from 3/4&#8221; MDF and wired to CHAMMA with pandoras box<br/>
+* Kept all artwork and 90s style fake wood laminate<br/>
+* 3d printed a cover for the front hole (not pictured)<br/>
+<img src="/images/arcade/zaxxon.jpg">
+
+<br/>
+<br/>
+Completely empty MK2 shell<br/>
+* Stole CPO from another similar Midway shell<br/>
+* Customer wanted light up LEDs which required hacking up all the button PCBs to separate the ground and voltage and wiring them to the +5V on the CHAMMA harness<br/>
+* New LCD built into shell from a 32&#8221; TV<br/>
+<img src="/images/arcade/mk2.jpg">
+
+<br/>
+<br/>
+Gem fighter<br/>
+* A dynamo cabinet turned into gem fighter<br/>
+* They wanted mrs pacman marquee and a generic multi-game CPO - a nice polylaminate one with zelda, donkey kong, pacman etc<br/>
+* Wood was originally in great shape, CRT was bad. Said fixable but needed a complete overhaul. Used an LCD to replace.<br/>
+* Paint touch up, replacement locks<br/>
+<img src="/images/arcade/gem_fighter.jpg">
+
+<br/>
+<br/>
+Custom 4 Player from MK1 cabinet<br/>
+* MK1 cabinet modified to fit a 4 player CPO<br/>
+* Built dimensions to fit, using custom latching system to remove (does not fit through a standard door as-is)<br/>
+* 2 Players are to CHAMMA harness as usual, the other 2 players are USB into pandoras box. Worked surprisingly easy<br/>
+* Wanted it galaga themed, so galaga marquee and side artwork ordered to fit<br/>
+* Original 25&#8221; CRT still worked great, added plexi<br/>
+<img src="/images/arcade/mk1_1.jpg"><br/>
+<img src="/images/arcade/mk1_2.jpg"><br/>
+<img src="/images/arcade/mk1_3.jpg"><br/>
+<img src="/images/arcade/mk1_4.jpg">
 </div>
 
 
@@ -260,7 +231,7 @@ They promised multiple times they&rsquo;d allow people to capture the data thems
   
 
 
-<time datetime="2022-02-15T00:00:00+00:00" pubdate data-updated="true"></time>
+<time datetime="2022-01-28T00:00:00+00:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
@@ -285,8 +256,10 @@ They promised multiple times they&rsquo;d allow people to capture the data thems
     
     <p class="meta">
       
-        <a class="basic-alignment left articlenav" href="/post/arcade_rebuilds" title="Previous Post: Some Arcade rebuilds">&laquo; Some Arcade rebuilds</a>
+        <a class="basic-alignment left articlenav" href="/post/kubecon_2021" title="Previous Post: Kubecon - AWS Organizations and Cloud-Custodian">&laquo; Kubecon - AWS Organizations and Cloud-Custodian</a>
       
+      
+        <a class="basic-alignment right articlenav" href="/post/plaato_keg_esphome" title="Next Post: Making my own plaato keg firmware">Making my own plaato keg firmware &raquo;</a>
       
     </p>
   </footer>
@@ -307,7 +280,7 @@ They promised multiple times they&rsquo;d allow people to capture the data thems
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/post/arcade_rebuilds">Making My Own Plaato Keg Firmware</a>
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
       </li>
     
       <li class="post">
