@@ -233,11 +233,12 @@ They promised multiple times they&rsquo;d allow people to capture the data thems
 
 <p>The only thing I have yet to figure out is the water sensor (It looks like it&rsquo;s using a TVS diode to protect the thing from whatever its doing to detect water (voltage shorting?)) and whatever it&rsquo;s using to allow resets (a magnet above the MV3581?)</p>
 
-<p>Check out the <a href="https://github.com/myoung34/plaato-keg-esphome">repo for my up to date esphome yaml</a></p>
-
-<p><br/>
+<p>Next I used <a href="https://zapier.com/page/webhooks/">zapier webhooks</a> to receive the <a href="https://esphome.io/components/http_request.html">HTTP Post</a> from esphome to send it to Zapier, which then sends it to datadog.
+<br/>
 <img src="/images/keg/keg7.png">
 <br/></p>
+
+<p>Check out the <a href="https://github.com/myoung34/plaato-keg-esphome">repo for my up to date esphome yaml</a></p>
 </div>
 
 
