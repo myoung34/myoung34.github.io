@@ -73,9 +73,8 @@ I wont go into absolute detail but you can just look at the pinout for the ESP32
 First I made a backup of the original firmware:
 
 ```
-esptool.py --port /dev/tty.usbserial-00000000 write_flash \
-  --flash_mode dio --flash_freq 40m --flash_size detect \
-  0 plaato_backup.bin
+esptool.py --chip esp32 --port /dev/tty.usbserial-00000000 \
+  -b 115200 read_flash 0 0x400000 plaato_backup.bin
 ```
 
 Then I flashed the new one built from ESPhome:
