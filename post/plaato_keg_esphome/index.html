@@ -196,10 +196,8 @@ They promised multiple times they&rsquo;d allow people to capture the data thems
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
-</span><span class='line'>  --flash_mode dio --flash_freq 40m --flash_size detect \
-</span><span class='line'>  0 plaato_backup.bin</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>esptool.py --chip esp32 --port /dev/tty.usbserial-00000000 \
+</span><span class='line'>  -b 115200 read_flash 0 0x400000 plaato_backup.bin</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Then I flashed the new one built from ESPhome:</p>

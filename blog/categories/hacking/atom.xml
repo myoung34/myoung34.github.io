@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hacking | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/hacking/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-02-16T01:49:15+00:00</updated>
+  <updated>2022-02-17T10:14:51+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -94,9 +94,8 @@ They promised multiple times they&rsquo;d allow people to capture the data thems
 
 <p>First I made a backup of the original firmware:</p>
 
-<pre><code>esptool.py --port /dev/tty.usbserial-00000000 write_flash \
-  --flash_mode dio --flash_freq 40m --flash_size detect \
-  0 plaato_backup.bin
+<pre><code>esptool.py --chip esp32 --port /dev/tty.usbserial-00000000 \
+  -b 115200 read_flash 0 0x400000 plaato_backup.bin
 </code></pre>
 
 <p>Then I flashed the new one built from ESPhome:</p>
