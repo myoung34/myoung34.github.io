@@ -4,7 +4,7 @@
   <title><![CDATA[Category: media | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/media/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-02-17T10:14:51+00:00</updated>
+  <updated>2022-04-20T00:36:09+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -71,46 +71,6 @@ root@raspberrypi:~/bluetoothradio# reboot
 <p>Thanks to:<br/>
 <a title="johnhamelink" href="https://github.com/johnhamelink" target="_blank">johnhamelink</a><br/>
 <a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[(FIX) MediaTomb/uShare Won&#8217;t Broadcast SSDP]]></title>
-    <link href="https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp/"/>
-    <updated>2012-11-28T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/fix-mediatombushare-broadcast-ssdp</id>
-    <content type="html"><![CDATA[<p>If you&#8217;re running Mediatomb or uShare and your xbox, ps3, tv, or whatever other UPnP/DNLA device doesn&#8217;t see the server, here&#8217;s a few fixes I&#8217;ve discovered.<!--more--></p>
-
-<ul>
-<li>If you&#8217;re running SELinux, disable it temporarily (it doesn&#8217;t play well sometimes)</li>
-<li>Both of these use the IGMP protocol to display their SSDP. Try allowing it through IPTables: <figure class='code'><figcaption><span>bash </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># iptables -A INPUT -i &lt;em1|eth0|device name> -s 0.0.0.0/32 -d 224.0.0.1/32 -p igmp -j ACCEPT</span></code></pre></td></tr></table></div></figure></li>
-<li>Make sure your router allows UPnP</li>
-<li>Ensure the right ports are allowed through the firewall
-
-<ul>
-<li>ushare
-
-<ul>
-<li>UDP 1900</li>
-<li>TCP 2869</li>
-<li>TCP 5000</li>
-</ul>
-</li>
-<li>mediatomb
-
-<ul>
-<li>The port you have set in the /etc/mediatomb.conf as MT_PORT</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-
-<p>I spent quite a while trying to figure this out on my set-up, and it turned out the igmp fix was all I needed.
-Days of work for 1 line in my /etc/sysconfig/iptables file.</p>
 ]]></content>
   </entry>
   
