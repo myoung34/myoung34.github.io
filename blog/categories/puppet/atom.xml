@@ -4,7 +4,7 @@
   <title><![CDATA[Category: puppet | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/puppet/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-07-09T17:50:20+00:00</updated>
+  <updated>2022-07-09T18:01:17+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,28 +12,6 @@
   </author>
   <generator uri="https://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Yet another Puppet module - HBase]]></title>
-    <link href="https://marcyoung.us/post/hbase-puppet-module"/>
-    <updated>2014-10-28T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/hbase-puppet-module</id>
-    <content type="html"><![CDATA[<p>In my current set-up I have now deployed a very ugly HBase RPM (0.96) with a puppet manifest to help other devs bring up hbase quickly as well as a more resilient version of the same setup to a coworkers hbase stargate project. I decided to sit down and make it &ldquo;legit&rdquo; by adding best-practices and real usage tests. <!-- more --></p>
-
-<p>I present yet another HBase module. Unlike the ones on the forge, however, this one works.</p>
-
-<p>The RPMs are provided by a yum repo from <a href="https://hortonworks.com/hdp/">horton works data platform</a> which are very well made, contain well-catered configuration files, and even uses zookeeper out of the box. If you have made it this far and wish to try it out, it is very simple and works exremely well. While I would NOT use it in production in favor of a clustered set up with Thrift, Region Servers, or even YARN, it will work for most dev set ups. If you use it in production, drop me a line on how well it performs under load.</p>
-
-<p>If you are interested in something more suitable for production I recommand <a href="https://ambari.apache.org/">Ambari</a>. It&rsquo;s extremely awesome. Otherwise, just check out my current module at <a href="https://github.com/myoung34/puppet-hbase">my github</a> or on the <a href="https://forge.puppetlabs.com/myoung34/hbase">puppet forge</a>.</p>
-
-<p>Basic Usage:</p>
-
-<pre><code>class { 'hbase':
-  port =&gt; '8080', #default is '8000'
-}
-</code></pre>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[New Puppet Module - MirthConnect]]></title>
@@ -404,6 +382,104 @@ bundle exec rake stable
 <p>You&rsquo;ll notice that each time you make a change to the git repository, it will build an RPM for it and upload it to the Pulp server. That means that if you&rsquo;re subscribed to that Yum repository, you could do a <code>yum update myapp</code> and you&rsquo;d get a new version. We&rsquo;re getting very close to done =)</p>
 
 <p><img class="left" src="/images/jenkinsbuild.png" title="jenkins" ></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Complete Continuous Deployment Using Puppet and Pulp - Part 1 - The Machines]]></title>
+    <link href="https://marcyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines"/>
+    <updated>2014-03-19T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/continuous-deployment-part-1-the-machines</id>
+    <content type="html"><![CDATA[<p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64<!--more--></p>
+
+<h1>Servers</h1>
+
+<h2>Git server</h2>
+
+<p>For this you don&rsquo;t really need to set this one up, but most likely you&rsquo;ll have an internal git server. I&rsquo;ll be using Github for this demo. Use whatever you like.</p>
+
+<h2>Pulp</h2>
+
+<p>Set up the server and client via <a href="https://pulp-user-guide.readthedocs.org/en/pulp-2.3/installation.html">this guide</a>.</p>
+
+<p>When done, go ahead and create an <em>unstable</em> feed via:</p>
+
+<pre><code>pulp-admin login -uadmin -padmin
+pulp-admin rpm repo create --repo-id=unstable \
+  --relative-url=unstable --serve-http=true \
+  --display-name='Unstable Packages'
+pulp-admin logout
+</code></pre>
+
+<h2>Jenkins</h2>
+
+<p>Follow <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+RedHat+distributions">this guide</a> to set up jenkins.</p>
+
+<p>Install the jenkins plugins:</p>
+
+<ul>
+<li>git scm</li>
+<li>ssh plugin</li>
+<li>rvm</li>
+<li>warnings</li>
+</ul>
+
+
+<p>Install these extra Yum packages:</p>
+
+<p><code>yum install -y rpm-build rpm ruby ruby-devel rubygems git automake autoconf gcc gcc-c++</code></p>
+
+<p><a href="https://rvm.io">Set up RVM</a></p>
+
+<p>Install <a href="https://github.com/jordansissel/fpm">FPM</a> via gem: <code>gem install fpm</code></p>
+
+<p>Install the pulp-admin tools the same way you did on the pulp server <strong>Not the server, just the admin tools!</strong></p>
+
+<p>Go ahead an ensure all these bits and pieces work, such as connecting to pulp via the login command, using rvm, etc. Jenkins is the heavy lifter in this stack.</p>
+
+<h2>Foreman</h2>
+
+<p><a href="https://theforeman.org/manuals/1.4/quickstart_guide.html#Installation">The guide for 1.4.1 is here</a></p>
+
+<p>Install <strong>r10k</strong> via gem: <code>gem install r10k</code></p>
+
+<p>Also, install the Puppetlabs yum repository and update puppet to 3.4.2 or higher.</p>
+
+<p>Updating Puppet from 2 to 3 on Foreman requires some configuration changes. To get these, just re-run the <code># foreman-installer</code> command.</p>
+
+<p>Make these changes to <strong>/etc/puppet/puppet.conf</strong> for now:</p>
+
+<ul>
+<li>Under the <strong>[master]</strong> section add: <code>hiera_config   = $confdir/hiera/master/hiera.yaml</code></li>
+<li>Replace the <strong>[development]</strong> and <strong>[production]</strong> elements at the bottom with:
+<code>
+[development]
+modulepath     = /etc/puppet/environments/dev/modules:/etc/puppet/modules
+config_version =
+[production]
+modulepath     = /etc/puppet/environments/master/modules:/etc/puppet/modules
+config_version =
+</code></li>
+</ul>
+
+
+<h2>A puppet node</h2>
+
+<p>Because why not. Install the puppet yum repository and install Puppet 3.4.2 or higher.</p>
+
+<p>Make sure you have <code>pluginsync = true</code> in the <strong>/etc/puppet/puppet.conf</strong> file under <strong>[main]</strong></p>
+
+<p>My assumption before you move on, if you&rsquo;re following along, is that this node can connect to the puppet master (foreman) and generates all green when you run <code># puppet agent -t</code></p>
+
+<p>Lastly, make sure you&rsquo;re subscribed to the Yum repository for the <strong>myapp</strong> package we&rsquo;ve been building so that puppet can install it when we get to that point. To do that, create the file <strong>/etc/yum.repos.d/mypulp.repo</strong> with the contents:</p>
+
+<pre><code>[mypulp]
+name=My Pulp Provider - Unstable
+baseurl=https://pulp.blindrage.local/pulp/repos/unstable/
+enabled=1
+gpgcheck=0
+metadata_expire=10
+</code></pre>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-07-09T17:50:20+00:00</updated>
+  <updated>2022-07-09T18:01:17+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -2752,41 +2752,6 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[re:Invent 2017 (never again)]]></title>
-    <link href="https://marcyoung.us/post/reinvent-2017"/>
-    <updated>2017-12-22T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/reinvent-2017</id>
-    <content type="html"><![CDATA[<p>This was my worst overall conference experience to date. <!-- more --></p>
-
-<p>Along with many others, I had my share of complaints, but this one takes the cake.</p>
-
-<p>This conference had an estimated 43,000 people. It was yuge. And it was actually well-run. Everything &ldquo;ran&rdquo; smoothly overall, but the experiences varied wildly from person to person. I&rsquo;ll sum mine up:</p>
-
-<ol>
-<li>I registered for talks only 2-3 days after it opened. I was &ldquo;confirmed&rdquo; for 3. All others for 6 days were walk up only.</li>
-<li>We were told to get to walk ups at least 30min early. The rooms were guaranteed 80% reserved with 20% for walk ups. I was at multiple over an hour early at 3 and sat outside and worked, no big deal. I was in the 20% buffer each time, confirmed by the person counting the line. At all 3 I was turned away within 15 people of the door for &ldquo;fire code&rdquo;. So the math: An hour sitting, turned away. The next talk is in 30 min, so that&rsquo;s a no go. So waste 30 minutes or and spend an hour waiting at next one to get in. Turned away there as well, with nothing to do for the next 30min. That&rsquo;s 3 hours of sitting.</li>
-<li>Each full room has &lsquo;overflow&rsquo;. One was great, it was a big auditorium with bluetooth headsets and limited capacity, which I was able to get into. The others were a big shared room using a special WiFi hotspot to listen in on an app you download to your phone. It was oversaturated by all of the overflow so it kept cutting out. That happened twice.</li>
-<li>The main talks were spread across 3-4 hotels, the main ones being MGM Grand and the Venetian, which are not near each other. So you walk or take the provided buses. The buses are great, but they didnt travel the strip and took about 20 minutes to make the 1.5 mile distance. Next: all of the buses load and unload at the same spot. So you end up waiting an extra 15-20min in a busline waiting for the other multiple buses to  unload then fully (or partially) load back. So ~45minutes for a 1.5mile ride.</li>
-</ol>
-
-
-<p>So after 6 days I got to see 3 talks. I asked for a refund and was given the approval, but was told that &ldquo;a few thousand people are having similar complaints. management is already looking at how to improve the 2018 version based on feedback.&rdquo;</p>
-
-<p>Notable annoyances on the trip not related to amazon but added to the overall experience:</p>
-
-<ol>
-<li>The MGM grand was full and I obviously got the &lsquo;under construction&rsquo; room. There was no placard (number) so it was hard to find (especially if drinking). The entertainment center was completely busted with wood that fell when I tried to use it. The wall safe was closed/locked and management could not get it to open, so I couldn&rsquo;t use it for my cash. My keycards didnt work, and it&rsquo;s on the other side of the hotel from the lobby (~10min walk). When it&rsquo;s late: walk 10 min to the room. Cards dont work. Walk 10 min to lobby to get new one. Walk 10 min back to get into room. This happened 4 times to the point where they  waived all of my fees and changed the lock on day 4 to an upgraded RFID version (so kudos there).</li>
-<li>American airlines keeps changing my name to Marcus AMERICANAIRLINES Young. TSA precheck checks against your full name so I have to get it printed at counter (waiting in that line negates the bonus of having TSA precheck). They couldnt get it to go through even after confirming my KTN and said &ldquo;all they can do is keep printing my ticket to see if it gets TSA&rdquo;. So after spending an hour to not get that to work I just go through the normal line (why did I pay for TSA precheck?)</li>
-</ol>
-
-
-<p>I used up my entire conference budget for re:Invent. Never again.</p>
-
-<p> /rant</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Ergoslider Review]]></title>
     <link href="https://marcyoung.us/post/ergoslider-review"/>
     <updated>2017-10-09T00:00:00+00:00</updated>
@@ -2826,6 +2791,76 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
 
 <p><img class="left" src="https://marcyoung.us/images/ergoslider1.jpg">
 <img class="left" src="https://marcyoung.us/images/ergoslider2.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
+    <link href="https://marcyoung.us/post/ergo-mouse-review"/>
+    <updated>2017-06-26T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/ergo-mouse-review</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve Recently been really into ergonomic mice, and wanted to give my thoughts on a few after going all in. <!-- more --></p>
+
+<p>In the last few months, I&rsquo;ve been pretty into mechanical keyboards and form factor. I&rsquo;ve been using an original (very old) Rollermouse for about 2 years now and was looking to upgrade it (the thing is huge).</p>
+
+<p>My current home setup is a Contour Rollermouse free2 and a pok3r (Cherry MX Clears) and a Logitech G700s for gaming.
+<img class="left" src="https://marcyoung.us/images/free1.jpg"></p>
+
+<p>My work set up is a TechKeys JD40 on a 1up case (80g Cherry MX browns) and a Contour Rollermouse Red.
+<img class="left" src="https://marcyoung.us/images/red1.jpg"></p>
+
+<p>While shopping around, I came upon the <a href="https://amzn.to/2tguHYQ">Penclic NiceTouch t2</a>. It caught my eye because it&rsquo;s <em>exactly</em> the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that&rsquo;s a huge draw.
+They sent me one to sample, so I decided to do a pro/con of my setups.</p>
+
+<h2>Contourmouse Red</h2>
+
+<p>This is by far the most sturdy of all of the mice. It&rsquo;s made of stainless steel, and could be used as a bludgeon. It doesnt move, and the rollerbar at the top is very thick with a grippy surface area to it.
+My biggest complaint with the original contourmouse was that you ran out of horizontal space. You&rsquo;d have to hold it far left to let the mouse slowly track over, or right because there was no physical space for the mouse to go left or right anymore.
+I got adjusted to it but it happened often enough to notice. With the red, this is gone. I&rsquo;m not sure if it&rsquo;s smarter or if the acceleration takes care of it, but it never happens, or just happens far less.</p>
+
+<p>All the buttons are 100% programmable in OSX/Windows via their driver. I havent tried on linux, but I&rsquo;m sure it is. The bar itself has a physical tensioner as well which is nice to add resistance. And as far as usability: it&rsquo;s great. The roller bar
+is a physical left click if you press, and everything is in the right place. I dont have to move my hands <em>at all</em> to use it.</p>
+
+<p><img class="left" src="https://marcyoung.us/images/red1.jpg">
+<img class="left" src="https://marcyoung.us/images/red2.jpg"></p>
+
+<p>The drawback is price. It&rsquo;s crazy expensive, and I got lucky to find it on ebay after months of searching/bidding for a low price. I&rsquo;m not sure it&rsquo;s worth the original MSRP, but I love it.</p>
+
+<h2>Contourmouse Free2</h2>
+
+<p>This one has most of the same pros as the Red, but I find myself getting annoyed at the physical bar occasionally. It&rsquo;s smaller than the red in terms of diameter, it&rsquo;s closer to the original contourmouse. It makes it a little harder to get your thumb on
+and move freely just because it&rsquo;s thinner. The tensioner isnt that great, so sometimes after a long coding session when my hands get a little stiff the mouse shows my thumb shakiness a little on &ldquo;exact&rdquo; clicks like on small buttons. That&rsquo;s when I can tell
+I&rsquo;ve been at it too long. And the original complaint about physical left/right exists here. I find myself out of space to go left or right and have to break focus to move the mouse over. If I were trying to do exact work like CAD/3d modelling I&rsquo;d probably
+throw it out the window by this point. It&rsquo;s great, but it&rsquo;s not worth the price considering how much nicer the Red is. Also, after only a few weeks, the palm rest started coming apart, and I used a sticker to prevent it from spreading. I can tell you right
+now though, the sticker is functionally part of it now. If I pull it off, the padding will come with it. They  call the pads replaceable, but that assumes you can find it. I can&rsquo;t find replacement pads that dont come with a full keyboard.</p>
+
+<p><img class="left" src="https://marcyoung.us/images/free1.jpg">
+<img class="left" src="https://marcyoung.us/images/free2.jpg"></p>
+
+<p>This one is not worth the price, but I&rsquo;d buy it again if it were &lt; $60.</p>
+
+<h2>Penclic NiceTouce T2</h2>
+
+<p>This is the one I was iffy about. Functionally, it&rsquo;s great. They sent me the matching keyboard, the Penclic NiceTouch C2, which is a chiclet key style keyboard. Together they work fine. If you like chiclets it types and works great.
+However, my biggest problem is not with the keyboard, but with the trackpad. As a trackpad, it&rsquo;s fine, but it doesn&rsquo;t support gestures or multi-finger. I&rsquo;ve become so used to being able to do two-finger scroll that it&rsquo;s frustrating to not have it.
+There is a physical rotating key that lets you scroll left right, but the right side of my palm kept touching it and making my cursor jump in vim.</p>
+
+<p><img class="left" src="https://marcyoung.us/images/t2_1.jpg">
+<img class="left" src="https://marcyoung.us/images/t2_4.jpg">
+<img class="left" src="https://marcyoung.us/images/t2_5.jpg">
+<img class="left" src="https://marcyoung.us/images/t2_6.jpg"></p>
+
+<p>My other complaint is with the buttons. They&rsquo;re not labeled or programmable so you <em>have</em> to read the booklet to know what buttons &frac34; do. They&rsquo;re also impossible to reach. The draw to the contourmouse design is that the bar clicks but also those buttons
+are very reachable by your thumbs. You can put your hands on the Home keys and not  have to move your hands at all to be efficient. With the T2 the buttons are so far down that they&rsquo;re not reachable, meaning I have to move my hands to click them. At that
+point I&rsquo;d rather have a mouse. Without two-finger scroll it means that I cant do anything except move my mouse up/down/left/right without moving my hands around.</p>
+
+<p><img class="left" src="https://marcyoung.us/images/t2_3.jpg"></p>
+
+<p>The only other complaint I have is that if you use the trackpad with a different keyboard (like my pok3r), it&rsquo;s too low and leave a huge gap vertically. There are no risers (like on most keyboard) to raise the trackpad, so I stuffed a piece of cardboard
+under it, but that made it a bit wobbly. I could probably 3d print something, but that&rsquo;s pretty intense for an out-of-the-box experience. Lastly, the trackpad is <em>very</em> light. So light that it moves around while using it.  It probably only weighs a few
+ounces which gives it a flemsy breakable feel. Having something that light on top of a  piece of cardboard created a very unstable setup.</p>
+
+<p><img class="left" src="https://marcyoung.us/images/t2_2.jpg"></p>
 ]]></content>
   </entry>
   
