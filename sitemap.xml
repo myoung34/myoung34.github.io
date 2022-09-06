@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://marcyoung.us/post/zuckerpunch</loc>
+<lastmod>2022-08-25T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://marcyoung.us/post/pinball</loc>
 <lastmod>2022-07-09T00:00:00+00:00</lastmod>
 </url>
@@ -181,10 +185,10 @@
 <lastmod>2012-07-25T00:00:00+00:00</lastmod>
 </url>
 <url>
-<loc>https://marcyoung.us/</loc>
+<loc>https://marcyoung.us/blog/archives/</loc>
 </url>
 <url>
-<loc>https://marcyoung.us/blog/archives/</loc>
+<loc>https://marcyoung.us/</loc>
 </url>
 <url>
 <loc>https://marcyoung.us/blog/categories/beer/</loc>
@@ -365,5 +369,14 @@
 </url>
 <url>
 <loc>https://marcyoung.us/blog/categories/pinball/</loc>
+</url>
+<url>
+<loc>https://marcyoung.us/blog/categories/meta/</loc>
+</url>
+<url>
+<loc>https://marcyoung.us/blog/categories/pytorch/</loc>
+</url>
+<url>
+<loc>https://marcyoung.us/blog/categories/github/</loc>
 </url>
 </urlset>
