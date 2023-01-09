@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-09-06T02:10:08+00:00</updated>
+  <updated>2023-01-09T20:08:50+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[todo]]></title>
+    <link href="https://marcyoung.us/todo"/>
+    <updated>2023-01-07T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/tpicoc3</id>
+    <content type="html"><![CDATA[<p>I made a Tilt Hydrometer data receiver on a T-PicoC3 microcontroller in go + python <!-- more --></p>
+
+<p><img src="https://marcyoung.us/images/tpicoc3.gif">
+<img src="https://marcyoung.us/images/tpicoc3.png"></p>
+
+<p>This lets me send data from my tilt to (in my case) datadog via Zapier!</p>
+
+<p>Lets dive in:</p>
+
+<p>The tpicoc3 has 2 chips that can talk over UART.</p>
+
+<ul>
+<li>A raspberry pi RP2040 that can read the buttons and write to the TFT</li>
+<li>An ESP32 that can do BLE/Wifi</li>
+</ul>
+
+
+<p>So for this Im using micropython on the ESP32 to read BLE for iBeacons (tilts allowlisted), connect to wifi, send the data both over UART and HTTP POST.
+The RP2040 will read on UART and display to the TFT.</p>
+
+<p>You flash the different chips by USB-C polarity (flip the cable).</p>
+
+<p>First we have to figure out which side is which. If you plug it in and run <code>dmesg</code> you&rsquo;d see either something that says RP2040 or JTAG (ESP32).
+Below is the <code>dmesg</code> output for ESP32</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[ 1149.114007] usb 2-1.5: USB disconnect, device number 3
+</span><span class='line'>[ 1151.132877] usb 2-1.5: new full-speed USB device number 5 using ehci-pci
+</span><span class='line'>[ 1151.247319] usb 2-1.5: New USB device found, idVendor=303a, idProduct=1001, bcdDevice= 1.01
+</span><span class='line'>[ 1151.247328] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+</span><span class='line'>[ 1151.247332] usb 2-1.5: Product: USB JTAG/serial debug unit
+</span><span class='line'>[ 1151.247334] usb 2-1.5: Manufacturer: Espressif
+</span><span class='line'>[ 1151.247336] usb 2-1.5: SerialNumber: 60:55:F9:73:D5:7C
+</span><span class='line'>[ 1151.247876] cdc_acm 2-1.5:1.0: ttyACM0: USB ACM device</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets erase this bad boy. You&rsquo;ll need to install <a href="https://github.com/espressif/esptool">esptool</a> first.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 erase_flash
+</span><span class='line'>esptool.py v4.4
+</span><span class='line'>Serial port /dev/ttyACM0
+</span><span class='line'>Connecting...
+</span><span class='line'>Chip is ESP32-C3 (revision v0.3)
+</span><span class='line'>Features: WiFi, BLE
+</span><span class='line'>Crystal is 40MHz
+</span><span class='line'>MAC: 60:55:f9:73:d5:7c
+</span><span class='line'>Uploading stub...
+</span><span class='line'>Running stub...
+</span><span class='line'>Stub running...
+</span><span class='line'>Erasing flash (this may take a while)...
+</span><span class='line'>Chip erase completed successfully in 10.6s
+</span><span class='line'>Hard resetting via RTS pin...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next lets grab the binary for the ESP32C3. That is (currently) <a href="https://micropython.org/download/esp32c3-usb/">here</a></p>
+
+<p><code>$ wget https://micropython.org/resources/firmware/esp32c3-usb-20220618-v1.19.1.bin</code></p>
+
+<p>Lets flash it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 --baud 460800 write_flash -z 0x0 esp32c3-usb-20220618-v1.19.1.bin 
+</span><span class='line'>esptool.py v4.4
+</span><span class='line'>Serial port /dev/ttyACM0
+</span><span class='line'>Connecting...
+</span><span class='line'>Chip is ESP32-C3 (revision v0.3)
+</span><span class='line'>Features: WiFi, BLE
+</span><span class='line'>Crystal is 40MHz
+</span><span class='line'>MAC: 60:55:f9:73:d5:7c
+</span><span class='line'>Uploading stub...
+</span><span class='line'>Running stub...
+</span><span class='line'>Stub running...
+</span><span class='line'>Changing baud rate to 460800
+</span><span class='line'>Changed.
+</span><span class='line'>Configuring flash size...
+</span><span class='line'>Flash will be erased from 0x00000000 to 0x0015dfff...
+</span><span class='line'>Compressed 1431808 bytes to 868690...
+</span><span class='line'>Wrote 1431808 bytes (868690 compressed) at 0x00000000 in 10.4 seconds (effective 1104.9 kbit/s)...
+</span><span class='line'>Hash of data verified.
+</span><span class='line'>
+</span><span class='line'>Leaving...
+</span><span class='line'>Hard resetting via RTS pin...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to send the data via HTTP POST, grab that <a href="https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py">here</a></p>
+
+<p><code>$ wget https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py</code></p>
+
+<p>Load up <a href="https://thonny.org/">thonny</a> and flash it. Make sure you jump IO9 to GND (one time cost).
+In Thonny load up <a href="https://github.com/myoung34/bluey-lite/blob/main/main.py">this code</a></p>
+
+<p>Make sure to modify the HTTP post information (or remove it altogether) as well as the wifi info</p>
+
+<p>Hit save, choose the microcontroller and youre done here.</p>
+
+<p>Next: the other side. Flip your USB c cable.
+Now hold the Boot button, press Run, let go of boot. The screen will go black and you should see a new drive show up named <code>RPI-RP2</code></p>
+
+<p>Lets flash it.</p>
+
+<p>You&rsquo;ll need <a href="https://tinygo.org/">tinygo</a> and <a href="https://golang.com">go</a> set up. If you dont: then just drop the (asuming you trust me, but the RP2040 cant use wifi or anything anyway) binary from <a href="https://github.com/myoung34/bluey-lite/releases">here</a></p>
+
+<p>Drop it into that <code>RPI-RP2</code> drive and unmount it.</p>
+
+<p>Bam. Done.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Zuckerpunch - Abusing self hosted github runners at Facebook]]></title>
@@ -2868,49 +3023,6 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
 </span><span class='line'>EOT
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ergoslider Review]]></title>
-    <link href="https://marcyoung.us/post/ergoslider-review"/>
-    <updated>2017-10-09T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/post/ergoslider-review</id>
-    <content type="html"><![CDATA[<p>Another ergonomic mouse review I gone and did <!-- more --></p>
-
-<p>Recently I&rsquo;ve been on an ergo kick (no pain, just realized how much more efficient I am).</p>
-
-<p>I reached out to a company selling a product much like the ContourMouse ergo mice but at a <a href="https://www.amazon.com/Ergoslider-Plus-Ergonomic-Roller-Bar-Tendinitis/dp/B071JNSD9Z/ref=sr_1_1?ie=UTF8&amp;qid=1507601165&amp;sr=8-1&amp;keywords=ergoslider">much lower price</a>.</p>
-
-<p>My assumption was that it would be ergo&#8217;ish but clunky. I was wrong. This thing is great!</p>
-
-<p>The first thing I realized, and drove me crazy for a few minutes, is that the roller bar is not attached. The documents don&rsquo;t say much, so I first thought I was missing a part. It says it&rsquo;s detached, but it didnt make sense to my brain. So after finding nothing in the booklet I just dropped it in its place and it was working. Strange. The contourmouse ones have it on a metal bar, this doenst pretend that. If you&rsquo;ve cleaned a contourmouse bar, its pretty awful. Requires bending metal, etc. This thing is cool, just remove it and rub it down with an alcohol wipe, done. I did wish it locked into place somehow though, because the drive to work involved it getting wedged under something in my backpack.</p>
-
-<p>In terms of usage, this thing is very much what I expected, plus some. Its very fluid, feels solid, and works great. The OS (mac + windows) worked immediately with it and didn&rsquo;t require pulling any software/drivers down.</p>
-
-<p>After using it for about 30 days now, I can say that if you&rsquo;re looking for an ergo mouse at a small price, look no further. This has been my go-to and will likely stay that way. It&rsquo;s been at our &ldquo;standing desk&rdquo; area for about two weeks and has prompted quite a few questions and quite a bit of usage.</p>
-
-<p>My only cons:</p>
-
-<ol>
-<li>The detachable mouse is both a pro and a con. It&rsquo;s great because it&rsquo;s detachable, but it&rsquo;s not because it&rsquo;s detached. It&rsquo;s not actually detachable, because it&rsquo;s literally always loose. Can probably get lost easily.</li>
-<li>The drivers are non-customizable. You can&rsquo;t map the buttons  to anything else, they are what they say they are. The biggest plus to contour mouse is that the keys are 100% mappable through software.</li>
-</ol>
-
-
-<p>The pros:</p>
-
-<ol>
-<li>Pretty much anything you can imagine about an ergo mouse: comfort, quality, usage, ease.</li>
-</ol>
-
-
-<p>Overall: buy this if you want to save a bit of cash.</p>
-
-<p>Pics below</p>
-
-<p><img class="left" src="https://marcyoung.us/images/ergoslider1.jpg">
-<img class="left" src="https://marcyoung.us/images/ergoslider2.jpg"></p>
 ]]></content>
   </entry>
   

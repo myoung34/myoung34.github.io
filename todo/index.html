@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>todo - Marcus Young</title>
+  <meta name="author" content="Marcus Young">
+
+  
+  <meta name="description" content="I made a Tilt Hydrometer data receiver on a T-PicoC3 microcontroller in go + python This lets me send data from my tilt to (in my case) datadog via &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://marcyoung.us/todo">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcus Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Marcus Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marcyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+  <li><a href="https://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
+  <li><a href="https://www.dropbox.com/s/7sbbbqe9d7sp3zh/Resume-Marcus.Young.doc?dl=0">Resume</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Todo</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-01-07T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I made a Tilt Hydrometer data receiver on a T-PicoC3 microcontroller in go + python <!-- more --></p>
+
+<p><img src="/images/tpicoc3.gif">
+<img src="/images/tpicoc3.png"></p>
+
+<p>This lets me send data from my tilt to (in my case) datadog via Zapier!</p>
+
+<p>Lets dive in:</p>
+
+<p>The tpicoc3 has 2 chips that can talk over UART.</p>
+
+<ul>
+<li>A raspberry pi RP2040 that can read the buttons and write to the TFT</li>
+<li>An ESP32 that can do BLE/Wifi</li>
+</ul>
+
+
+<p>So for this Im using micropython on the ESP32 to read BLE for iBeacons (tilts allowlisted), connect to wifi, send the data both over UART and HTTP POST.
+The RP2040 will read on UART and display to the TFT.</p>
+
+<p>You flash the different chips by USB-C polarity (flip the cable).</p>
+
+<p>First we have to figure out which side is which. If you plug it in and run <code>dmesg</code> you&rsquo;d see either something that says RP2040 or JTAG (ESP32).
+Below is the <code>dmesg</code> output for ESP32</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[ 1149.114007] usb 2-1.5: USB disconnect, device number 3
+</span><span class='line'>[ 1151.132877] usb 2-1.5: new full-speed USB device number 5 using ehci-pci
+</span><span class='line'>[ 1151.247319] usb 2-1.5: New USB device found, idVendor=303a, idProduct=1001, bcdDevice= 1.01
+</span><span class='line'>[ 1151.247328] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+</span><span class='line'>[ 1151.247332] usb 2-1.5: Product: USB JTAG/serial debug unit
+</span><span class='line'>[ 1151.247334] usb 2-1.5: Manufacturer: Espressif
+</span><span class='line'>[ 1151.247336] usb 2-1.5: SerialNumber: 60:55:F9:73:D5:7C
+</span><span class='line'>[ 1151.247876] cdc_acm 2-1.5:1.0: ttyACM0: USB ACM device</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets erase this bad boy. You&rsquo;ll need to install <a href="https://github.com/espressif/esptool">esptool</a> first.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 erase_flash
+</span><span class='line'>esptool.py v4.4
+</span><span class='line'>Serial port /dev/ttyACM0
+</span><span class='line'>Connecting...
+</span><span class='line'>Chip is ESP32-C3 (revision v0.3)
+</span><span class='line'>Features: WiFi, BLE
+</span><span class='line'>Crystal is 40MHz
+</span><span class='line'>MAC: 60:55:f9:73:d5:7c
+</span><span class='line'>Uploading stub...
+</span><span class='line'>Running stub...
+</span><span class='line'>Stub running...
+</span><span class='line'>Erasing flash (this may take a while)...
+</span><span class='line'>Chip erase completed successfully in 10.6s
+</span><span class='line'>Hard resetting via RTS pin...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next lets grab the binary for the ESP32C3. That is (currently) <a href="https://micropython.org/download/esp32c3-usb/">here</a></p>
+
+<p><code>$ wget https://micropython.org/resources/firmware/esp32c3-usb-20220618-v1.19.1.bin</code></p>
+
+<p>Lets flash it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 --baud 460800 write_flash -z 0x0 esp32c3-usb-20220618-v1.19.1.bin 
+</span><span class='line'>esptool.py v4.4
+</span><span class='line'>Serial port /dev/ttyACM0
+</span><span class='line'>Connecting...
+</span><span class='line'>Chip is ESP32-C3 (revision v0.3)
+</span><span class='line'>Features: WiFi, BLE
+</span><span class='line'>Crystal is 40MHz
+</span><span class='line'>MAC: 60:55:f9:73:d5:7c
+</span><span class='line'>Uploading stub...
+</span><span class='line'>Running stub...
+</span><span class='line'>Stub running...
+</span><span class='line'>Changing baud rate to 460800
+</span><span class='line'>Changed.
+</span><span class='line'>Configuring flash size...
+</span><span class='line'>Flash will be erased from 0x00000000 to 0x0015dfff...
+</span><span class='line'>Compressed 1431808 bytes to 868690...
+</span><span class='line'>Wrote 1431808 bytes (868690 compressed) at 0x00000000 in 10.4 seconds (effective 1104.9 kbit/s)...
+</span><span class='line'>Hash of data verified.
+</span><span class='line'>
+</span><span class='line'>Leaving...
+</span><span class='line'>Hard resetting via RTS pin...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to send the data via HTTP POST, grab that <a href="https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py">here</a></p>
+
+<p><code>$ wget https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py</code></p>
+
+<p>Load up <a href="https://thonny.org/">thonny</a> and flash it. Make sure you jump IO9 to GND (one time cost).
+In Thonny load up <a href="https://github.com/myoung34/bluey-lite/blob/main/main.py">this code</a></p>
+
+<p>Make sure to modify the HTTP post information (or remove it altogether) as well as the wifi info</p>
+
+<p>Hit save, choose the microcontroller and youre done here.</p>
+
+<p>Next: the other side. Flip your USB c cable.
+Now hold the Boot button, press Run, let go of boot. The screen will go black and you should see a new drive show up named <code>RPI-RP2</code></p>
+
+<p>Lets flash it.</p>
+
+<p>You&rsquo;ll need <a href="https://tinygo.org/">tinygo</a> and <a href="https://golang.com">go</a> set up. If you dont: then just drop the (asuming you trust me, but the RP2040 cant use wifi or anything anyway) binary from <a href="https://github.com/myoung34/bluey-lite/releases">here</a></p>
+
+<p>Drop it into that <code>RPI-RP2</code> drive and unmount it.</p>
+
+<p>Bam. Done.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-01-07T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/zuckerpunch" title="Previous Post: Zuckerpunch - Abusing self hosted github runners at Facebook">&laquo; Zuckerpunch - Abusing self hosted github runners at Facebook</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/todo">Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/arcade_rebuilds">Some Arcade Rebuilds</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2023 - Marcus Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'marcyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marcyoung.us/todo';
+        var disqus_url = 'https://marcyoung.us/todo';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

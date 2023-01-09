@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/programming/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2022-09-06T02:10:08+00:00</updated>
+  <updated>2023-01-09T20:08:50+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -81,11 +81,12 @@ root@raspberrypi:~/bluetoothradio# reboot
     <id>https://marcyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
     <content type="html"><![CDATA[<p><!--more-->I finished work on my new site: [www.kegduino.org][1] . Go check it out! It&#8217;s a micro-controlled Keg!</p>
 
-<p><div id="attachment_62" class="wp-caption alignnone" style="width: 810px">
+<div id="attachment_62" class="wp-caption alignnone" style="width: 810px">
   <a href="https://marcyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="https://marcyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
     The kegduino in action
   </p>
-</div></p>
+</div>
+
 
 <p> [1]: <a href="https://www.kegduino.org">https://www.kegduino.org</a></p>
 ]]></content>
