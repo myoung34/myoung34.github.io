@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/programming/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2023-01-09T20:08:50+00:00</updated>
+  <updated>2023-01-09T20:16:04+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="https://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Tilt Hydrometer On a T-PicoC3]]></title>
+    <link href="https://marcyoung.us/post/tilt-hydrometer-on-a-tpicoc3"/>
+    <updated>2023-01-07T00:00:00+00:00</updated>
+    <id>https://marcyoung.us/post/tpicoc3</id>
+    <content type="html"><![CDATA[<p>I made a Tilt Hydrometer data receiver on a T-PicoC3 microcontroller in go + python <!-- more --></p>
+
+<p><img src="/images/tpicoc3.gif">
+<img src="/images/tpicoc3.png"></p>
+
+<p>This lets me send data from my tilt to (in my case) datadog via Zapier!</p>
+
+<p>Lets dive in:</p>
+
+<p>The tpicoc3 has 2 chips that can talk over UART.</p>
+
+<ul>
+<li>A raspberry pi RP2040 that can read the buttons and write to the TFT</li>
+<li>An ESP32 that can do BLE/Wifi</li>
+</ul>
+
+
+<p>So for this Im using micropython on the ESP32 to read BLE for iBeacons (tilts allowlisted), connect to wifi, send the data both over UART and HTTP POST.
+The RP2040 will read on UART and display to the TFT.</p>
+
+<p>You flash the different chips by USB-C polarity (flip the cable).</p>
+
+<p>First we have to figure out which side is which. If you plug it in and run <code>dmesg</code> you&rsquo;d see either something that says RP2040 or JTAG (ESP32).
+Below is the <code>dmesg</code> output for ESP32</p>
+
+<pre><code>[ 1149.114007] usb 2-1.5: USB disconnect, device number 3
+[ 1151.132877] usb 2-1.5: new full-speed USB device number 5 using ehci-pci
+[ 1151.247319] usb 2-1.5: New USB device found, idVendor=303a, idProduct=1001, bcdDevice= 1.01
+[ 1151.247328] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 1151.247332] usb 2-1.5: Product: USB JTAG/serial debug unit
+[ 1151.247334] usb 2-1.5: Manufacturer: Espressif
+[ 1151.247336] usb 2-1.5: SerialNumber: 60:55:F9:73:D5:7C
+[ 1151.247876] cdc_acm 2-1.5:1.0: ttyACM0: USB ACM device
+</code></pre>
+
+<p>Lets erase this bad boy. You&rsquo;ll need to install <a href="https://github.com/espressif/esptool">esptool</a> first.</p>
+
+<pre><code>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 erase_flash
+esptool.py v4.4
+Serial port /dev/ttyACM0
+Connecting...
+Chip is ESP32-C3 (revision v0.3)
+Features: WiFi, BLE
+Crystal is 40MHz
+MAC: 60:55:f9:73:d5:7c
+Uploading stub...
+Running stub...
+Stub running...
+Erasing flash (this may take a while)...
+Chip erase completed successfully in 10.6s
+Hard resetting via RTS pin...
+</code></pre>
+
+<p>Next lets grab the binary for the ESP32C3. That is (currently) <a href="https://micropython.org/download/esp32c3-usb/">here</a></p>
+
+<p><code>$ wget https://micropython.org/resources/firmware/esp32c3-usb-20220618-v1.19.1.bin</code></p>
+
+<p>Lets flash it:</p>
+
+<pre><code>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 --baud 460800 write_flash -z 0x0 esp32c3-usb-20220618-v1.19.1.bin 
+esptool.py v4.4
+Serial port /dev/ttyACM0
+Connecting...
+Chip is ESP32-C3 (revision v0.3)
+Features: WiFi, BLE
+Crystal is 40MHz
+MAC: 60:55:f9:73:d5:7c
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00000000 to 0x0015dfff...
+Compressed 1431808 bytes to 868690...
+Wrote 1431808 bytes (868690 compressed) at 0x00000000 in 10.4 seconds (effective 1104.9 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
+</code></pre>
+
+<p>If you want to send the data via HTTP POST, grab that <a href="https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py">here</a></p>
+
+<p><code>$ wget https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py</code></p>
+
+<p>Load up <a href="https://thonny.org/">thonny</a> and flash it. Make sure you jump IO9 to GND (one time cost).
+In Thonny load up <a href="https://github.com/myoung34/bluey-lite/blob/main/main.py">this code</a></p>
+
+<p>Make sure to modify the HTTP post information (or remove it altogether) as well as the wifi info</p>
+
+<p>Hit save, choose the microcontroller and youre done here.</p>
+
+<p>Next: the other side. Flip your USB c cable.
+Now hold the Boot button, press Run, let go of boot. The screen will go black and you should see a new drive show up named <code>RPI-RP2</code></p>
+
+<p>Lets flash it.</p>
+
+<p>You&rsquo;ll need <a href="https://tinygo.org/">tinygo</a> and <a href="https://golang.com">go</a> set up. If you dont: then just drop the (asuming you trust me, but the RP2040 cant use wifi or anything anyway) binary from <a href="https://github.com/myoung34/bluey-lite/releases">here</a></p>
+
+<p>Drop it into that <code>RPI-RP2</code> drive and unmount it.</p>
+
+<p>Bam. Done.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Raspberry Pi-Automated Bluetooth Audio Player !]]></title>

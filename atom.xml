@@ -4,7 +4,7 @@
   <title><![CDATA[Marcus Young]]></title>
   <link href="https://marcyoung.us/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2023-01-09T20:08:50+00:00</updated>
+  <updated>2023-01-09T20:16:04+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[todo]]></title>
-    <link href="https://marcyoung.us/todo"/>
+    <title type="html"><![CDATA[Tilt Hydrometer On a T-PicoC3]]></title>
+    <link href="https://marcyoung.us/post/tilt-hydrometer-on-a-tpicoc3"/>
     <updated>2023-01-07T00:00:00+00:00</updated>
-    <id>https://marcyoung.us/tpicoc3</id>
+    <id>https://marcyoung.us/post/tpicoc3</id>
     <content type="html"><![CDATA[<p>I made a Tilt Hydrometer data receiver on a T-PicoC3 microcontroller in go + python <!-- more --></p>
 
 <p><img src="https://marcyoung.us/images/tpicoc3.gif">
