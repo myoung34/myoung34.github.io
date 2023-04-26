@@ -46,6 +46,14 @@ I abused Github Actions to get full root into the PyTorch ci runners. <!-- more 
 <br/>
 <br/>
 
+### Extra resources ###
+
+ * [iterative blog post referencing this](https://iterative.ai/blog/testing-external-contributions-using-github-actions-secrets/)
+ * [Github's revert](https://github.blog/changelog/2022-10-12-reverted-recent-change-that-caused-some-pull-requests-to-be-incorrectly-marked-as-merged/)
+
+<br/>
+<br/>
+
 ### The Gritty ###
 
 I run a somewhat successful open source [github action runner project](https://github.com/myoung34/docker-github-actions-runner)
