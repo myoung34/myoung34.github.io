@@ -1,0 +1,678 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Just In Time SSH Using EC2 Instance Connect - Marcus Young</title>
+  <meta name="author" content="Marcus Young">
+
+  
+  <meta name="description" content="I played around with just in time users in EC2 using instance connect and a custom built NSS module I needed to PoC a solution for SSH users that are &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://marcyoung.us/post/ec2-instance-connect-ssh">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Marcus Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Marcus Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:marcyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+  <li><a href="https://www.linkedin.com/pub/marcus-young/2a/69b/a63">LinkedIn</a></li>
+  <li><a href="https://www.dropbox.com/s/7sbbbqe9d7sp3zh/Resume-Marcus.Young.doc?dl=0">Resume</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Just in Time SSH Using EC2 Instance Connect</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-04-25T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I played around with just in time users in EC2 using instance connect and a custom built NSS module <!-- more --></p>
+
+<p>I needed to PoC a solution for SSH users that are backed by an IdP but ran into some issues.</p>
+
+<p>EC2 Instance Connect (IMO) seems to be way under promoted by AWS, and I feel like that&rsquo;s a real disservice if you need (I&rsquo;m so sorry for you) SSH (I do for this case).</p>
+
+<p>The TLDR for ec2 instance connect:</p>
+
+<ul>
+<li>A user makes a call <code>aws ec2-instance-connect send-ssh-public-key --instance-id i-08e2c277f1ea9a99a --instance-os-user marcus.young --ssh-public-key file:///home/myoung/.ssh/asdf.pub</code></li>
+<li>AWS pushes the public key to <code>http://169.254.169.254/latest/meta-data/managed-ssh-keys/active-keys/marcus.young</code> for <code>60</code> seconds</li>
+<li>The user does <code>ssh -i {private key that matches the public key} marcus.young@{public ip of the instance}</code> and gets in.</li>
+</ul>
+
+
+<p>That&rsquo;s crazy cool, but we have a few issues outright (major ones):</p>
+
+<ul>
+<li>You can impersonate. There&rsquo;s nothing keeping me from doing <code>--instance-os-user not.me</code> and getting in. Fine in small cases bad for observability. You could tie this back to a user but that sucks. Youd have to tie back the <code>SendSSHPublicKey</code> cloudtrail call with the iam user/role via the request params to the box, and if youre not shipping auth.log youre screwed. If 100 people do this at once you&rsquo;ve lost. There&rsquo;s no way to see which key material let who in to run what. If you thought &ldquo;Oh I&rsquo;ll use sts principaltags&rdquo; I love you. Keep reading.</li>
+<li>Users have to exist ahead of time. This is the <strong>big</strong> one. If you thought &ldquo;What if we create them when they send they create the key on the host&rdquo;. You can&rsquo;t. Not easily anyway. If you think it&rsquo;s still solvable or said &ldquo;What about NSS&rdquo; keep reading homie.</li>
+<li>There&rsquo;s no documented rate limits. I&rsquo;ve brought this up, no answer yet. I might see if I can break this ;)</li>
+<li>You cannot <em>directly</em> do this to private instances. You&rsquo;ll need public instances or bastions to do this. I&rsquo;ll give you a snippet for that too.</li>
+</ul>
+
+
+<p>Let&rsquo;s get started.</p>
+
+<p>First we need to bring up an Okta with IAM identity center.
+Sorry peeps but if you think I&rsquo;m doing <strong>that</strong> walkthrough just <code>ctrl+w</code> and touch grass. Not happening.</p>
+
+<p>Let&rsquo;s assume you have a working IdP and you can get into AWS. Let&rsquo;s start there.</p>
+
+<p>So impersonation&hellip;.</p>
+
+<p>The answer here is an SCP and <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_session-tags.html">sts principalTags</a>.
+For the principal tags, it&rsquo;s sort of straight forward. Unless you discover an IAM identity center bug like I did.
+If you&rsquo;re using IAM identity center: You&rsquo;ll need to use
+<code>https://aws.amazon.com/SAML/Attributes/AccessControl:{ attr name}</code>
+in Okta.</p>
+
+<p>The bug? Do <strong>not</strong> use both <code>AccessControl</code> and <code>PrincipalTag</code>. Apparently the IdC freaks out during the SAML jank and wont do anything.</p>
+
+<p>So in Okta, add this:</p>
+
+<p><img src="/images/ec2-ssh/okta1.png"></p>
+
+<p>Also while you&rsquo;re add it make sure you&rsquo;re using the nickName for the username.</p>
+
+<p><img src="/images/ec2-ssh/okta2.png"></p>
+
+<p>At this point go ahead and measure success by making sure that your user is in the <code>first.last</code> format and your <code>AssumeRoleWithSAML</code> call in Cloudtrail has the principalTags on the <code>requestParameters</code>. And by that I mean get angry and weep for 8 hours then find out you&rsquo;re hitting an invisible AWS bug. I&rsquo;ll wait.</p>
+
+<p>Thanks for coming back.</p>
+
+<p>Your user doesn&rsquo;t have to be in this format but it tracks with my needs and my SCP as well as my janky NSS code. Modify it if you need. You do you.</p>
+
+<p><img src="/images/ec2-ssh/okta3.png"></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>"eventName": "AssumeRoleWithSAML",
+</span><span class='line'>"awsRegion": "us-east-1",
+</span><span class='line'>"sourceIPAddress": "5.3.9.1",
+</span><span class='line'>"userAgent": "aws-internal/3 aws-sdk-java/1.12.451 blahblahblah",
+</span><span class='line'>"requestParameters": {
+</span><span class='line'>    "sAMLAssertionID": "_94942c8c-6b73-4912-86f9-14c",
+</span><span class='line'>    "roleSessionName": "marcus.young",
+</span><span class='line'>    "principalTags": {
+</span><span class='line'>        "userName": "marcus.young"
+</span><span class='line'>    },</span></code></pre></td></tr></table></div></figure>
+
+
+<p>OK. Now that you&rsquo;re getting the metadata lets lock it down.</p>
+
+<p>We&rsquo;re going to apply this SCP:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>  "Version": "2012-10-17",
+</span><span class='line'>  "Statement": [
+</span><span class='line'>    {
+</span><span class='line'>      "Sid": "DenyPublicKeyNotOwnedBySelf",
+</span><span class='line'>      "Effect": "Deny",
+</span><span class='line'>      "Action": "ec2-instance-connect:SendSSHPublicKey",
+</span><span class='line'>      "Resource": "*",
+</span><span class='line'>      "Condition": {
+</span><span class='line'>        "StringNotEquals": {
+</span><span class='line'>          "ec2:osuser": "${aws:PrincipalTag/userName}"
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    }
+</span><span class='line'>  ]
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Very cool right?
+What we&rsquo;ve done now is said &ldquo;Any call to <code>SendSSHPublicKey</code> has to have a <code>--instance-os-user</code> param that matches your <code>userName</code> principalTag that was set by okta</p>
+
+<p>Prove it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ aws ec2-instance-connect send-ssh-public-key \         
+</span><span class='line'>    --region us-east-1 \
+</span><span class='line'>    --availability-zone us-east-1a \
+</span><span class='line'>    --instance-id i-08843505c12cf9d7e \
+</span><span class='line'>    --instance-os-user myoung \
+</span><span class='line'>    --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .
+</span><span class='line'>
+</span><span class='line'>An error occurred (AccessDeniedException) when calling the SendSSHPublicKey operation: User: arn:aws:sts::1111111111:assumed-role/AWSReservedSSO_AdministratorAccess_e3aec0c44fb7c2e0/marcus.young is not authorized to perform: ec2-instance-connect:SendSSHPublicKey on resource: arn:aws:ec2:us-east-1:847713735871:instance/i-08843505c12cf9d7e with an explicit deny in a service control policy</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ aws ec2-instance-connect send-ssh-public-key \
+</span><span class='line'>    --region us-east-1 \
+</span><span class='line'>    --availability-zone us-east-1a \
+</span><span class='line'>    --instance-id i-08843505c12cf9d7e \
+</span><span class='line'>    --instance-os-user marcus.young \
+</span><span class='line'>    --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .
+</span><span class='line'>
+</span><span class='line'>{
+</span><span class='line'>  "RequestId": "5b47d1c2-f8dc-447b-8a0f-6cd5bf060d89",
+</span><span class='line'>  "Success": true
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bam. Now you can&rsquo;t straight up ssh as others outright.</p>
+
+<p>OK that part&rsquo;s done, but we still have another blocker: the user has to exist first.
+That sucks if you have a thousand users. I don&rsquo;t know about you but I don&rsquo;t want to have to sit there and crawl Okta for users that may never ssh in.</p>
+
+<p>OK So the way ec2-instance-connect software works (remember above about what SendSSHPublicKey does and ends it to the metadata endpoint):</p>
+
+<ul>
+<li>It adds some <code>AuthorizedKeysCommand</code> lines to <code>/etc/ssh/sshd_config</code></li>
+<li>When A user tries to SSH in and fails first it will then hit <code>http://169.254.169.254/latest/meta-data/managed-ssh-keys/active-keys/{user name}</code></li>
+<li>SSH Requires that user to exist. If it does, and the public key in memory from the metadata endpoint matches their private key: all good come on in bro</li>
+</ul>
+
+
+<p>So we can&rsquo;t rely on crawling, we can&rsquo;t rely on ssh, but we <strong>can</strong> rely on <a href="https://man7.org/linux/man-pages/man5/nss.5.html">nss</a> since thats what ssh relies on for <code>passwd</code>.
+OK so I sound like an expert but I&rsquo;m not. A large chunk of this was hacked out by another person at work, but I&rsquo;m familiar enough. Don&rsquo;t lose hope in me yet.</p>
+
+<p>So SSH talks to NSS. We can hook into NSS to do some logic and create a user like <a href="https://github.com/myoung34/ec2-instance-connect-libnss-create">this</a></p>
+
+<p>So now in my user-data I have this sin:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#cloud-config
+</span><span class='line'>packages:
+</span><span class='line'> - gcc
+</span><span class='line'> - unzip
+</span><span class='line'>
+</span><span class='line'>write_files:
+</span><span class='line'>  - path: /usr/local/bin/install-nss-create.sh
+</span><span class='line'>    owner: root:root
+</span><span class='line'>    permissions: '0777'
+</span><span class='line'>    content: |
+</span><span class='line'>      #!/bin/bash
+</span><span class='line'>      pushd . &gt;/dev/null 2&gt;&1
+</span><span class='line'>      cd /tmp
+</span><span class='line'>      curl -sL https://github.com/myoung34/ec2-instance-connect-libnss-create/archive/refs/heads/main.zip -o /tmp/nss-create.zip
+</span><span class='line'>      unzip nss-create.zip
+</span><span class='line'>      cd ec2-instance-connect-libnss-create-main
+</span><span class='line'>      make
+</span><span class='line'>      make install
+</span><span class='line'>      sed -i.bak 's/^passwd:.*sss files$/passwd:     sss files create files/g' /etc/nsswitch.conf
+</span><span class='line'>      popd &gt;/dev/null 2&gt;&1
+</span><span class='line'>
+</span><span class='line'>runcmd:
+</span><span class='line'>  - [/usr/local/bin/install-nss-create.sh]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I basically compile my nss garbage and add <code>create files</code> to <code>passwd</code> in <code>/etc/nsswitch.conf</code></p>
+
+<p>This means that when a user attempts to SSH it will hook in my C code that calls a script
+That script does a
+<code>curl http://169.254.169.254/latest/meta-data/managed-ssh-keys/active-keys/{user name}</code>.</p>
+
+<p>If it gets a 200-300 code (the user has put a public key in there - remember this only works for 60s) then it will create the user.</p>
+
+<p>After <code>create</code> I still have <code>files</code> so that SSH will go back and look them back up in <code>/etc/passwd</code>. So assuming they ran the <code>aws ec2-instance-connect send-ssh-public-key</code> command then tried to ssh within 60 seconds: they&rsquo;ll have a user with a matching public key and they&rsquo;ll get in.</p>
+
+<p>Bonus: we should be able to do this to get into private instances.</p>
+
+<p>For this proof I&rsquo;m going to assume you have a public instance <code>1.2.3.4</code> and a private instance you want to reach <code>10.0.0.50</code></p>
+
+<p>Let&rsquo;s make your <code>~/.ssh/config</code> file look like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host my-bastion
+</span><span class='line'>  IdentityFile ~/.ssh/asdf
+</span><span class='line'>  Hostname 1.2.3.4
+</span><span class='line'>  User marcus.young
+</span><span class='line'>
+</span><span class='line'>Host private-vps
+</span><span class='line'>  IdentityFile ~/.ssh/asdf
+</span><span class='line'>  ProxyJump my-bastion
+</span><span class='line'>  StrictHostKeyChecking no
+</span><span class='line'>  Hostname 10.0.0.50
+</span><span class='line'>  User marcus.young
+</span><span class='line'>  UserKnownHostsFile /dev/null</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&rsquo;s jump to that <code>private-vps</code> by using the <code>my-bastion</code> as a jump host.
+Hint: You&rsquo;ll need to make 2 SendSSHPublicKey calls. One to the public (so you can get into it) and one to the private (so you can also get into it)</p>
+
+<p>First let&rsquo;s prove we can&rsquo;t just get in. So you know I ain&rsquo;t lyin.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ssh my-bastion 
+</span><span class='line'>marcus.young@1.2.3.4: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+</span><span class='line'>
+</span><span class='line'>$ ssh private-vps
+</span><span class='line'>marcus.young@1.2.3.4: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+</span><span class='line'>kex_exchange_identification: Connection closed by remote host
+</span><span class='line'>Connection closed by UNKNOWN port 65535</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Told you. Let&rsquo;s push the key to both. (remember you have 60s. obviously id write a tool for this later).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ aws ec2-instance-connect send-ssh-public-key \
+</span><span class='line'>    --region us-east-1 \
+</span><span class='line'>    --availability-zone us-east-1a \
+</span><span class='line'>    --instance-id i-08e2c277f1ea9a99a \
+</span><span class='line'>    --instance-os-user marcus.young \
+</span><span class='line'>    --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .Success
+</span><span class='line'>true
+</span><span class='line'>
+</span><span class='line'>$ aws ec2-instance-connect send-ssh-public-key \
+</span><span class='line'>    --region us-east-1 \
+</span><span class='line'>    --availability-zone us-east-1a \
+</span><span class='line'>    --instance-id i-004b083d55a6d76c7 \
+</span><span class='line'>    --instance-os-user marcus.young \
+</span><span class='line'>    --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .Success
+</span><span class='line'>true
+</span><span class='line'>
+</span><span class='line'>$ ssh 10.0.0.50
+</span><span class='line'>Last login: Tue Apr 25 19:54:31 2023 from ip-10-0-0-50.ec2.internal
+</span><span class='line'>
+</span><span class='line'>   __|  __|  __|
+</span><span class='line'>   _|  (   \__ \   Amazon Linux 2 (ECS Optimized)
+</span><span class='line'> ____|\___|____/
+</span><span class='line'>
+</span><span class='line'>For documentation, visit http://aws.amazon.com/documentation/ecs
+</span><span class='line'>1 package(s) needed for security, out of 3 available
+</span><span class='line'>Run "sudo yum update" to apply all updates.```</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Very cool. So what did we accomplish?</p>
+
+<ul>
+<li>New instances have absolutely zero requirements on anything other than that very early PoC libnss module. Ideally I could package that up.</li>
+<li>We have the normal SSH auditing story. auth.log lines up. We have cloudtrail logs that tell us people are ssh&#8217;ing in and where.</li>
+<li>We have JIT users.</li>
+<li>We use the same IAM stories for ssh. If I have 8 accounts I know that you need access to an AWS account to get to the instances into it. We could go further and add more principal tags to say that you can&rsquo;t do sudo unless you have a tag, or that you can&rsquo;t ssh at all if you don&rsquo;t have a certain department. This  is <em>leagues</em> better than some of the paid software I&rsquo;ve tested.</li>
+<li>We increased no load to any custom tooling. Teleport has etcd, an SSH CA has some unique problems to solve, etc.</li>
+<li>Our onboarding and offboarding story for ssh is now the same as IAM</li>
+<li>In an incident etc we can simply block SendSSHPublicKey for suspicious users and <code>pkill</code> sshd for the named user (a win over shared users) on the bastion and effectively kill them off everywhere.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-04-25T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/ssh/'>ssh</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/tilt-hydrometer-on-a-tpicoc3" title="Previous Post: Tilt Hydrometer On a T-PicoC3">&laquo; Tilt Hydrometer On a T-PicoC3</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2023 - Marcus Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'marcyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://marcyoung.us/post/ec2-instance-connect-ssh';
+        var disqus_url = 'https://marcyoung.us/post/ec2-instance-connect-ssh';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
