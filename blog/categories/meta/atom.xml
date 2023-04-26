@@ -4,7 +4,7 @@
   <title><![CDATA[Category: meta | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/meta/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2023-04-26T02:42:46+00:00</updated>
+  <updated>2023-04-26T10:54:50+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -40,6 +40,17 @@
 <li><code>8/19</code> - After more favors I&rsquo;m able to escalate it to a new security engineer at meta that provides an extremely long and helpful response</li>
 <li><code>8/22 - 8/24</code> - Back and forth about scope and impact</li>
 <li><code>8/24</code> Resolved and $10,000 bounty paid out with a 7.5% bonus due to timeline</li>
+</ul>
+
+
+<p><br/>
+<br/></p>
+
+<h3>Extra resources</h3>
+
+<ul>
+<li><a href="https://iterative.ai/blog/testing-external-contributions-using-github-actions-secrets/">iterative blog post referencing this</a></li>
+<li><a href="https://github.blog/changelog/2022-10-12-reverted-recent-change-that-caused-some-pull-requests-to-be-incorrectly-marked-as-merged/">Github&rsquo;s revert</a></li>
 </ul>
 
 
