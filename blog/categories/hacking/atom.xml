@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hacking | Marcus Young]]></title>
   <link href="https://marcyoung.us/blog/categories/hacking/atom.xml" rel="self"/>
   <link href="https://marcyoung.us/"/>
-  <updated>2023-04-26T17:24:02+00:00</updated>
+  <updated>2023-11-03T00:09:09+00:00</updated>
   <id>https://marcyoung.us/</id>
   <author>
     <name><![CDATA[Marcus Young]]></name>
@@ -255,7 +255,7 @@ They promised multiple times they&rsquo;d allow people to capture the data thems
 
 <p>I was able to figure out the LEDs without an oscilloscope by just using a multimeter. The main PCB just uses GPIO to turn those pins high or low to run the 3 LEDs, which is boring (yay).</p>
 
-<p>The only thing I have yet to figure out is the water sensor (It looks like it&rsquo;s using a TVS diode to protect the thing from whatever its doing to detect water (voltage shorting?)) and whatever it&rsquo;s using to allow resets (a magnet above the MV3581?)</p>
+<p>The rest was trial and error.</p>
 
 <p>Next I used <a href="https://zapier.com/page/webhooks/">zapier webhooks</a> to receive the <a href="https://esphome.io/components/http_request.html">HTTP Post</a> from esphome to send it to Zapier, which then sends it to datadog.
 <br/>
