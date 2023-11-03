@@ -105,7 +105,7 @@ I was able to discover that the clock for this is P14. I then used a multimeter 
 
 I was able to figure out the LEDs without an oscilloscope by just using a multimeter. The main PCB just uses GPIO to turn those pins high or low to run the 3 LEDs, which is boring (yay).
 
-The only thing I have yet to figure out is the water sensor (It looks like it's using a TVS diode to protect the thing from whatever its doing to detect water (voltage shorting?)) and whatever it's using to allow resets (a magnet above the MV3581?)
+The rest was trial and error.
 
 Next I used [zapier webhooks](https://zapier.com/page/webhooks/) to receive the [HTTP Post](https://esphome.io/components/http_request.html) from esphome to send it to Zapier, which then sends it to datadog.
 <br/>
