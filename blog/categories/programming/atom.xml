@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: programming | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Tilt Hydrometer On a T-PicoC3]]></title>
+    <link href="https://markyoung.us/post/tilt-hydrometer-on-a-tpicoc3"/>
+    <updated>2023-01-07T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/tpicoc3</id>
+    <content type="html"><![CDATA[<p>I made a Tilt Hydrometer data receiver on a T-PicoC3 microcontroller in go + python <!-- more --></p>
+
+<p><img src="/images/tpicoc3.gif">
+<img src="/images/tpicoc3.png"></p>
+
+<p>This lets me send data from my tilt to (in my case) datadog via Zapier!</p>
+
+<p>Lets dive in:</p>
+
+<p>The tpicoc3 has 2 chips that can talk over UART.</p>
+
+<ul>
+<li>A raspberry pi RP2040 that can read the buttons and write to the TFT</li>
+<li>An ESP32 that can do BLE/Wifi</li>
+</ul>
+
+
+<p>So for this Im using micropython on the ESP32 to read BLE for iBeacons (tilts allowlisted), connect to wifi, send the data both over UART and HTTP POST.
+The RP2040 will read on UART and display to the TFT.</p>
+
+<p>You flash the different chips by USB-C polarity (flip the cable).</p>
+
+<p>First we have to figure out which side is which. If you plug it in and run <code>dmesg</code> you&rsquo;d see either something that says RP2040 or JTAG (ESP32).
+Below is the <code>dmesg</code> output for ESP32</p>
+
+<pre><code>[ 1149.114007] usb 2-1.5: USB disconnect, device number 3
+[ 1151.132877] usb 2-1.5: new full-speed USB device number 5 using ehci-pci
+[ 1151.247319] usb 2-1.5: New USB device found, idVendor=303a, idProduct=1001, bcdDevice= 1.01
+[ 1151.247328] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 1151.247332] usb 2-1.5: Product: USB JTAG/serial debug unit
+[ 1151.247334] usb 2-1.5: Manufacturer: Espressif
+[ 1151.247336] usb 2-1.5: SerialNumber: 60:55:F9:73:D5:7C
+[ 1151.247876] cdc_acm 2-1.5:1.0: ttyACM0: USB ACM device
+</code></pre>
+
+<p>Lets erase this bad boy. You&rsquo;ll need to install <a href="https://github.com/espressif/esptool">esptool</a> first.</p>
+
+<pre><code>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 erase_flash
+esptool.py v4.4
+Serial port /dev/ttyACM0
+Connecting...
+Chip is ESP32-C3 (revision v0.3)
+Features: WiFi, BLE
+Crystal is 40MHz
+MAC: 60:55:f9:73:d5:7c
+Uploading stub...
+Running stub...
+Stub running...
+Erasing flash (this may take a while)...
+Chip erase completed successfully in 10.6s
+Hard resetting via RTS pin...
+</code></pre>
+
+<p>Next lets grab the binary for the ESP32C3. That is (currently) <a href="https://micropython.org/download/esp32c3-usb/">here</a></p>
+
+<p><code>$ wget https://micropython.org/resources/firmware/esp32c3-usb-20220618-v1.19.1.bin</code></p>
+
+<p>Lets flash it:</p>
+
+<pre><code>➜  Downloads esptool.py --chip esp32c3 --port /dev/ttyACM0 --baud 460800 write_flash -z 0x0 esp32c3-usb-20220618-v1.19.1.bin 
+esptool.py v4.4
+Serial port /dev/ttyACM0
+Connecting...
+Chip is ESP32-C3 (revision v0.3)
+Features: WiFi, BLE
+Crystal is 40MHz
+MAC: 60:55:f9:73:d5:7c
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00000000 to 0x0015dfff...
+Compressed 1431808 bytes to 868690...
+Wrote 1431808 bytes (868690 compressed) at 0x00000000 in 10.4 seconds (effective 1104.9 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
+</code></pre>
+
+<p>If you want to send the data via HTTP POST, grab that <a href="https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py">here</a></p>
+
+<p><code>$ wget https://raw.githubusercontent.com/pfalcon/pycopy-lib/master/urequests/urequests/__init__.py</code></p>
+
+<p>Load up <a href="https://thonny.org/">thonny</a> and flash it. Make sure you jump IO9 to GND (one time cost).
+In Thonny load up <a href="https://github.com/myoung34/bluey-lite/blob/main/main.py">this code</a></p>
+
+<p>Make sure to modify the HTTP post information (or remove it altogether) as well as the wifi info</p>
+
+<p>Hit save, choose the microcontroller and youre done here.</p>
+
+<p>Next: the other side. Flip your USB c cable.
+Now hold the Boot button, press Run, let go of boot. The screen will go black and you should see a new drive show up named <code>RPI-RP2</code></p>
+
+<p>Lets flash it.</p>
+
+<p>You&rsquo;ll need <a href="https://tinygo.org/">tinygo</a> and <a href="https://golang.com">go</a> set up. If you dont: then just drop the (asuming you trust me, but the RP2040 cant use wifi or anything anyway) binary from <a href="https://github.com/myoung34/bluey-lite/releases">here</a></p>
+
+<p>Drop it into that <code>RPI-RP2</code> drive and unmount it.</p>
+
+<p>Bam. Done.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Raspberry Pi-Automated Bluetooth Audio Player !]]></title>
+    <link href="https://markyoung.us/post/raspberry-pi-automated-bluetooth-audio-player/"/>
+    <updated>2013-03-12T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/raspberry-pi-automated-bluetooth-audio-player</id>
+    <content type="html"><![CDATA[<!--more-->
+
+
+<h2>Backstory</h2>
+
+<p>After a long break, I&#8217;ve finally gotten one part of my to-do list for my Raspberry Pi&#8230;.automated bluetooth audio playing!<br/>
+As always: there were issues. First, the support for this sucked. I was thankful to get a starting point from <a title="John Hamelink" href="https://github.com/johnhamelink/bluetoothradio" target="_blank">John Hamelink</a>. He wrote a set of sweet scripts that automate a lot of this. However, they were written for Arch Linux, and required a bit of work syntactically to get it working for Debians Wheezy Release. <a href="https://github.com/myoung34/bluetoothradio" target="_blank">My final code is here.</a></p>
+
+<h2>The Nitty Gritty (install steps)</h2>
+
+<p>First, install the normal packages (as seen here) and let the pi user able to control bluetooth devices:</p>
+
+<pre><code>pi@raspberrypi ~ $ sudo apt-get install bluez pulseaudio-module-bluetooth python-gobject python-gobject-2
+pi@raspberrypi ~ $ sudo usermod -a -G lp pi
+</code></pre>
+
+<p>Next, let&#8217;s make the bluetooth module compatible for audio streaming. Edit <strong>/etc/bluetooth/audio.conf</strong> and add this after [General]:</p>
+
+<pre><code>Enable=Source,Sink,Media,Socket
+</code></pre>
+
+<p>Next, we&#8217;ll let pulseaudio do the playback. Edit <strong>/etc/pulse/daemon.conf</strong> and uncomment:</p>
+
+<pre><code>resample-method = trivial ; ADD THIS LINE TO THE FILE!
+</code></pre>
+
+<p>We need some additional packages to make it compatible with my scripts. Qdbus allows you to send D-Bus messages to the bluez daemon, git-core is so you can clone my repo, and bluez-tools provides the bluetooth-agent which is one of the daemon pieces.</p>
+
+<pre><code>pi@raspberrypi ~ $ sudo apt-get install bluez-tools qdbus git-core
+</code></pre>
+
+<p>Now, we&#8217;re going to gain root, put my code in /root, and make a init.d file you can provide at startup.</p>
+
+<pre><code>pi@raspberrypi ~ $ sudo su -
+root@raspberrypi:~# git clone https://github.com/myoung34/bluetoothradio.git --branch Wheezy
+root@raspberrypi:~# cd bluetoothradio
+root@raspberrypi:~/bluetoothradio# cp bluetooth-server /etc/init.d
+root@raspberrypi:~/bluetoothradio# chmod 755 /etc/init.d/bluetooth-server &amp;&amp; chmod +x /etc/init.d/bluetooth-server
+root@raspberrypi:~/bluetoothradio# update-rc.d bluetooth-server defaults
+root@raspberrypi:~/bluetoothradio# reboot
+</code></pre>
+
+<h2>Usage</h2>
+
+<p>After the reboot, you can now pair your device using &#8217;1234&#8242; (unless you modified the bluetoothPin file), and play yo&#8217; music!</p>
+
+<p>If for some reason it&#8217;s not connection, visit <a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711&#8242;s tutorial</a> and follow the steps to connect and trust the device, and reboot the pi.</p>
+
+<h2>Acknowledgements</h2>
+
+<p>Thanks to:<br/>
+<a title="johnhamelink" href="https://github.com/johnhamelink" target="_blank">johnhamelink</a><br/>
+<a title="KMonkey711" href="https://kmonkey711.blogspot.com/" target="_blank">KMonkey711</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KegDuino AKA HomeBrew and Arduinos&#8217; Love Child]]></title>
+    <link href="https://markyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child/"/>
+    <updated>2012-07-25T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/kegduino-aka-homebrew-and-arduinos-love-child</id>
+    <content type="html"><![CDATA[<p><!--more-->I finished work on my new site: [www.kegduino.org][1] . Go check it out! It&#8217;s a micro-controlled Keg!</p>
+
+<div id="attachment_62" class="wp-caption alignnone" style="width: 810px">
+  <a href="https://markyoung.us/wp-content/uploads/2012/07/IMG_0368.jpg"><img class="size-large wp-image-62" title="IMG_0368" src="https://markyoung.us/wp-content/uploads/2012/07/IMG_0368-1024x682.jpg" alt="Pouring my beer with a touch screen!" width="400" height="310" /></a><p class="wp-caption-text">
+    The kegduino in action
+  </p>
+</div>
+
+
+<p> [1]: <a href="https://www.kegduino.org">https://www.kegduino.org</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch - Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="This will be a write-up on how to get a self-healing and self-curating SSL-enabled Hot/Warm ELK stack using ECS and lambda Disclaimer I&rsquo;m &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/post/dockerized-elk-part-1">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-08T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This will be a write-up on how to get a self-healing and self-curating SSL-enabled Hot/Warm ELK stack using ECS and lambda <!-- more --></p>
+
+<h1>Disclaimer</h1>
+
+<p>I&rsquo;m redacting any information that might seem sensitive such as account numbers. Use your discretion and make sure you use values that make sense for things blacked out in images or in <code>{}</code> notation.</p>
+
+<h1>Part 1a - ECS Base Instances</h1>
+
+<p>This is actually one of the easier pieces. We need a base ECS cluster to run our tasks on. <a href="https://github.com/myoung34/elk-docker-aws/blob/master/ecs_base/cloudformation.json">This cloudformation template</a> assumes your VPC is connectible, etc. If your VPC is compatible, just upload that file in cloudformation and when it&rsquo;s done, you&rsquo;ll have a cluster ready!</p>
+
+<p>The params tab:</p>
+
+<p><img src="../../images/elk/elk_base_cft.png" alt="" /></p>
+
+<p>After completion:</p>
+
+<p><img src="../../images/elk/elk_base_cft_output.png" alt="" /></p>
+
+<p>If you were to go to your ECS tab in your AWS console, you will see a new cluster with the name <code>elk-stack-ECSCluster-1A5AXF087VXOD</code> and eventually you would have 4 EC2 instances available for running tasks.</p>
+
+<h1>Part 1b - Elasticsearch</h1>
+
+<p>First thing we need to do is build the container and push it to ECR.</p>
+
+<p>In the ECR portion of the AWS console, create a new repository called <code>test/elasticsearch</code>.</p>
+
+<p>Then in your console for <a href="https://github.com/myoung34/elk-docker-aws/tree/master/elasticsearch">the elasticsearch dockerfile</a> run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker build -t elasticsearch:local .
+</span><span class='line'>docker tag elasticsearch:local \
+</span><span class='line'>   {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/elasticsearch:latest
+</span><span class='line'>$(aws ecr get-login)
+</span><span class='line'>docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/elasticsearch:latest</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once this is pushed you can verify it by looking for a tag <code>latest</code> in your <code>test/elasticsearch</code> ECR repository.</p>
+
+<p>Next upload <a href="https://github.com/myoung34/elk-docker-aws/blob/master/elasticsearch/cloudformation.json">this cloudformation template</a> to Cloudformation (modifying the parameters as you need).</p>
+
+<p>The parameters I used:</p>
+
+<p><img src="../../images/elk/elasticsearch_cft_params.png" alt="" /></p>
+
+<p>And the output tab:</p>
+
+<p><img src="../../images/elk/elasticsearch_cft_output.png" alt="" /></p>
+
+<p>If you paid enough attention to the code in the <a href="https://github.com/myoung34/elk-docker-aws/blob/master/elasticsearch/docker-entrypoint.sh">docker-entrypoint.sh</a> file you might notice this line: <code>export NODE_TYPE=$([[ `echo $((1 + RANDOM % 2))` -eq "1" ]] &amp;&amp; echo warm || echo hot)</code>.</p>
+
+<p>That, along with the <a href="https://github.com/myoung34/elk-docker-aws/blob/master/elasticsearch/elasticsearch.yml">elasticsearch configuration yaml</a>, namely the line: <code>node.box_type: ${NODE_TYPE}</code> gives you a random 50/50 chance of getting a &ldquo;hot&rdquo; or &ldquo;warm&rdquo; node. <a href="https://www.elastic.co/blog/hot-warm-architecture">The hot/warm architecture is outlined here</a> but basically you&rsquo;re going to have nodes that have attributes <code>box_type: hot</code> or <code>box_type: warm</code>. We&rsquo;ll go over how the data matters later, but for now you can verify that like in these screen shots by browsing to your elastic load balancer such as: <code>internal-elasticse-ESElasti-WYA9ZLRBVV8X-214980960.us-east-1.elb.amazonaws.com:9200/_plugin/kopf</code> and viewing the attributes for your node.</p>
+
+<p><img src="../../images/elk/elasticsearch_kopf_hot.png" alt="" /></p>
+
+<p><img src="../../images/elk/elasticsearch_kopf_warm.png" alt="" /></p>
+
+<p>You now have an SSL-enabled ELK stack that will have hot or warm nodes.</p>
+
+<h1>Takeaways</h1>
+
+<p>SSL is enabled by using NGINX as an SSL-listener in front of the ES port <code>9200</code> using self-signed certs. Elasticsearch is configured to use <code>19200</code> but broadcast <code>9200</code>. This lets the nodes themselves talk over SSL using insecure TLS, but they look normal to the outside world. The Load balancer uses ACM from Amazon with a real domain <code>*.dev.mydom.com</code> (in my screenshots) to terminate SSL with a real chain, but communicates over TCP to the ES nodes to the self-signed server.</p>
+
+<p>The reason for doing this: things like to be able to verify the chain, and don&rsquo;t like self-signed certs. As you see in my screen shot, since I used route53 to point <code>es-test.dev.mydom.com</code> to the ELB (which uses a valid ACM cert), everything is encrypted but outward facing services will not have chain errors.</p>
+
+<p>Hot-warm could be better implemented, but for demonstration purposes, 50/50 is fine if you spin up 4+ nodes. If you only use 2 ECS tasks such as the screen shots, you might end up with both hot or both warm. If you&rsquo;re following along, you&rsquo;ll want at least one of each for curator to make sense.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-08T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/ecs/'>ecs</a>, <a class='category' href='/blog/categories/elk/'>elk</a>, <a class='category' href='/blog/categories/lambda/'>lambda</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/six-months-of-beanstalk" title="Previous Post: My Thoughts after six months of Elastic Beanstalk.">&laquo; My Thoughts after six months of Elastic Beanstalk.</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/dockerized-elk-part-2" title="Next Post: AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash">AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'markyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://markyoung.us/post/dockerized-elk-part-1';
+        var disqus_url = 'https://markyoung.us/post/dockerized-elk-part-1';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

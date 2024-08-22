@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>UDOO and SATA - The Definitive Guide - Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="I&rsquo;ve recently purchase a udoo. I am in love with it, however I had issues trying to boot from SATA. Short story: 4 core ARM computer with SATA &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/post/udoo-and-sata">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">UDOO and SATA - the Definitive Guide</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&rsquo;ve recently purchase a <a href="https://www.udoo.org">udoo</a>. I am in love with it, however I had issues trying to boot from SATA.<!--more--></p>
+
+<p>Short story: 4 core ARM computer with SATA, LVDS, and arduino support. I decided upon getting it, the first thing I&rsquo;d do is ditch the MicroSD card and boot from SATA, but it proved to be challenging. The issue is that the older images (including the one I wanted), use U-Boot 2009 or similar as the bootloader, which don&rsquo;t have great SATA support.</p>
+
+<p>The first thing I did was jump to Linaro Ubuntu 12.04 LTS, which uses U-Boot 2013. The next thing I did was grab a 16GB MicroSD and a 500GB SATA drive and load the image to it via:</p>
+
+<pre><code>    $ unzip udoo_quad_ubuntu1204_v2.0.zip
+    $ sudo dd if=udoo_quad_ubuntu1204_v2.0.img of=/dev/sdi bs=1M #sdi is my SATA drive. Be careful here.
+    $ sudo dd if=udoo_quad_ubuntu1204_v2.0.img of=/dev/sdg bs=1M #sdg is my MicroSD card. Be careful here.
+</code></pre>
+
+<p>Next, format the SATA drive the way you&rsquo;d like via GParted. I expanded the first partition to fill up all but 2GB, and formatted the rest as 2GB Swap. At this time you still have to have the MicroSD card in use for U-Boot, so expand that via GParted the same way while you&rsquo;re at it if you&rsquo;d like.</p>
+
+<p>The next part is to set up the UDOO for the Arduino IDE.</p>
+
+<p>Prerequisites:</p>
+
+<ul>
+<li>Keep J18 on (only remove the jumper if you&rsquo;re flashing the SAM3X (arduino). You&rsquo;re not, you&rsquo;ll just be communicating to the UDOO via tty, so <strong>keep J18 ON</strong>).</li>
+<li>Install the SATA. The data cable is obvious, but the power cord isn&rsquo;t. Wire the +5v line to the pin closest to the SATA data plug, and ground further. The connection is a <a href="https://www.adafruit.com/products/261">standard 2-pin JST connector.</a></li>
+<li>Install the &lsquo;USB to UART driver&rsquo; from the UDOO Downloads page if you&rsquo;re on windows. Linux has this since 3.2 kernel.</li>
+<li>Hook up a micro usb cable from the port nearest the corner of the UDOO to your PC.</li>
+<li>Download Arduino version 1.5.4, and download the bassac patch from the UDOO site. Extract Arduino (or install it), and copy the bossac files to <arduino dir>/hardware/tools , overwriting the ones there (if those are missing you&rsquo;ve gone astray already).</li>
+</ul>
+
+
+<p>Communicate with the UDOO:</p>
+
+<ul>
+<li>Load up Arduino.</li>
+<li>Select &lsquo;Arduino Due (Programming Port)&rsquo; from Tools -> Board Menu.</li>
+<li>Set the right COM in the Tools -> Port menu (Protip: if you&rsquo;re in linux and this is grayed out, run arduino as sudo).</li>
+<li>Open the serial monitor from Tools -> Serial Monitor.</li>
+<li>Change the baud rate to 115200, and set it to use Newlines, both of these are near the bottom.</li>
+</ul>
+
+
+<p>Change the default boot in the UDOO:</p>
+
+<ul>
+<li>Boot the UDOO and interrupt the boot sequence ASAP by entering something in the serial monitor and hitting Send (if you do this too slowly just reset the UDOO and try again).</li>
+<li>At the U-Boot prompt, type <code>setenv mmcroot /dev/sda1 rootwait rw</code> (To revert to booting from the sd, type <code>setenv mmcroot /dev/mmcblk0p1</code> and hit send via the serial monitor).</li>
+<li>If you&rsquo;d like to save this (probably don&rsquo;t want to the first time), type <code>saveenv</code> and hit send via the serial monitor.</li>
+<li>Type <code>boot</code> and hit send via the serial monitor.</li>
+<li>Verify it&rsquo;s actually booted via SATA with <code>df -mh</code> and hitting send via the serial monitor.</li>
+<li>???</li>
+<li>Profit.</li>
+</ul>
+
+
+<p>Bonus: Keep reading if your UDOO now boots from SATA and you&rsquo;d like to use that swap partition you created.</p>
+
+<ul>
+<li>When the UDOO is booted, type <code>sudo blkid</code> and copy the UUID for your swap partition (probably /dev/sda2) to your buffer (or your memory if you can do that crap with a GUID).</li>
+<li>Type <code>vim /etc/fstab</code> and add it as: <code>UUID=your-guid-dont-copy-pasta-me       none    swap    sw      0       0</code> . Note: use your UUID.</li>
+<li>Reboot, verify with htop (if you don&rsquo;t have it: <code>sudo apt-get install htop</code>).</li>
+</ul>
+
+
+<p>The problem is what I call the developer documentation problem. By that I mean this information is available on the UDOO site, but is out of date and was probably well written once. A long time ago. U-Boot &lt; 2013 has less than stellar SATA suport, and the guides say to use <code>setenv root root=/dev/sda1</code> which isn&rsquo;t true for U-Boot 2013. Also, I figured it would be nice to show you how to actually fill up the drive, use the swap partition, etc. Don&rsquo;t thank me. Or do.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/udoo/'>udoo</a>, <a class='category' href='/blog/categories/uncategorized/'>uncategorized</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/puppet-and-marklogic" title="Previous Post: Puppet and MarkLogic">&laquo; Puppet and MarkLogic</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/udoo-and-an-arduino-lcd" title="Next Post: UDOO and an Arduino LCD">UDOO and an Arduino LCD &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'markyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://markyoung.us/post/udoo-and-sata';
+        var disqus_url = 'https://markyoung.us/post/udoo-and-sata';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

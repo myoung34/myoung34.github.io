@@ -1,0 +1,559 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/posts/5/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app">Complete Continuous Deployment Using Puppet and Pulp - Part 2 - the Application</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-20T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Our application will be simple, as its goal is only to demonstrate a daemon that needs to be managed via init.d and packaged as an RPM.</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines">Complete Continuous Deployment Using Puppet and Pulp - Part 1 - the Machines</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-19T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/continuous-deployment-using-puppet-and-pulp-overview">Complete Continuous Deployment Using Puppet and Pulp - Overview</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-18T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/continuous-deployment-using-puppet-and-pulp-overview#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This will be by far my biggest post to date. I&rsquo;ve been asked from multiple sources about the system I&rsquo;ve set up at my current company, so this is a very small version of it. By the end of this, assuming you follow along, you&rsquo;ll have a multiple node system set up that will deploy a linux service, packaged as an RPM, to internal Yum feeds, with Puppet along the way to keep this continuously deployed. The puppet module I&rsquo;ll write to do this will also be continuous, with all changes to it causing tests to run, and r10k to redeploy them if successful.</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/continuous-deployment-using-puppet-and-pulp-overview">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/udoo-and-an-arduino-lcd">UDOO and an Arduino LCD</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-03T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/udoo-and-an-arduino-lcd#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have continued to want more out of my UDOO, so I decided to make use of a cracked LCD I had sitting around from Adafruit, by having the UDOO display system information to it.</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/udoo-and-an-arduino-lcd">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/udoo-and-sata">UDOO and SATA - the Definitive Guide</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/udoo-and-sata#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve recently purchase a <a href="https://www.udoo.org">udoo</a>. I am in love with it, however I had issues trying to boot from SATA.</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/udoo-and-sata">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/puppet-and-marklogic">Puppet and MarkLogic</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-14T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/puppet-and-marklogic#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="https://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="https://www.marklogic.com">MarkLogic</a> instance.</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/puppet-and-marklogic">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/raspberry-pi-automated-bluetooth-audio-player/">Raspberry Pi-Automated Bluetooth Audio Player !</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-12T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/raspberry-pi-automated-bluetooth-audio-player/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"></div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/raspberry-pi-automated-bluetooth-audio-player/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/post/kegduino-aka-homebrew-and-arduinos-love-child/">KegDuino AKA HomeBrew and Arduinos&#8217; Love Child</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="/post/kegduino-aka-homebrew-and-arduinos-love-child/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p></div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/kegduino-aka-homebrew-and-arduinos-love-child/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+      
+      <a class="next" href="/posts/4">Newer &rarr;</a>
+      
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'markyoung';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

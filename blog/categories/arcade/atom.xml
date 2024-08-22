@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: arcade | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/arcade/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Building a digital Pinball]]></title>
+    <link href="https://markyoung.us/post/pinball"/>
+    <updated>2022-07-09T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/pinball</id>
+    <content type="html"><![CDATA[<p>I got my hands on a 1990 Data East Batman Pinball that was in bad shape and refurbished it <!-- more --></p>
+
+<p><br/>
+<br/>
+About a year ago I got my hands on a Batman pinball that was in very bad shape and gutted for $300 (an unheard of price even for that shape).
+I decided to go all in and just wing it.
+<br/>
+<br/></p>
+
+<p>I removed the legs and bought new Williams/Bally black legs from pinballlife.com
+<br/>
+<img src="/images/pinball/pinball1.jpg">
+<br/></p>
+
+<p>You can see the shape its in generally. The wood is complely broken on every edge. The rails and lockdown bar were rusted but in great shape. I contacted someone locally that does metal work and got them brushed then powder coated. They came out looking brand new.</p>
+
+<p><br/>
+<img src="/images/pinball/rails.jpg">
+<br/></p>
+
+<p>Next was the body work</p>
+
+<p><br/>
+<img src="/images/pinball/pinball2.jpg">
+<img src="/images/pinball/pinball3.jpg">
+<img src="/images/pinball/pinball4.jpg">
+<img src="/images/pinball/pinball8.jpg">
+<img src="/images/pinball/pinball9.jpg">
+<br/></p>
+
+<p>I got the new artwork from Retro Refubs. Theyre vinyl which kind of stinks compared to the original artwork. Don&rsquo;t get me wrong, it looks absolutely fantastic but theres something about the original artwork being printed directly on the wood that I love (I dunno what that process is called).</p>
+
+<p>The front speaker panel was missing everything and the logo was obviously hand painted. I bought new grills and used an angle grinder to en-biggen the cut out for a PinDMD v3.</p>
+
+<p><br/>
+<img src="/images/pinball/pinball5.jpg">
+<img src="/images/pinball/pinball6.jpg">
+<br/></p>
+
+<p>I did a shit job because angle grinder so after the DMD fit I 3d printed a bezel that came out looking great.
+<br/>
+<img src="/images/pinball/pinball7.jpg">
+<br/></p>
+
+<p>Next Was the screen.</p>
+
+<p>I only had a 22&#8221; LCD and it came out just looking bad. There was so much wasted space due to the backglass housing being a near perfect square, so a rectangle left a ton of vertical space even though it was fairly large.</p>
+
+<p>I used this time to research square LCDs. Turns out these are niche af. I ended up landing on a LM265SQ1-SLA1 which is 26.5x26.5&#8221; square but 1920x1920. I also ended up finding an unbranded 12V board that claimed to support that resolution and the same LVDS 4 channel 8 bit 92 pin connector. It worked out great. You can see the size difference between the original on the left and the LM265SQ1 on the right from the backside. It was also expensive as shit at roughly $500 for the screen + controller.</p>
+
+<p><br/>
+<img src="/images/pinball/pinball10a.jpeg">
+<br/></p>
+
+<p>I then mounted it using the same bracket as before and a sliding lock and got a local glass shop to cut a custom tempered &frac14;&#8221; glass panel for it. It ended up a few millimeters too wide so its a  total pain to get in but i was able to do it without shattering it.</p>
+
+<p><br/>
+<img src="/images/pinball/pinball10.jpg">
+<br/></p>
+
+<p>I then started putting a computer in it. I used an intel i5 with a quadro m4000 I happened to be sitting on. I originally mounted it normal but it did not work with the coin door and I really wanted the computer to be reachable where it was since it fit great.</p>
+
+<p><br/>
+<img src="/images/pinball/pinball13.jpg">
+<br/></p>
+
+<p>I ended up getting a PCI-e flex cable and mounted it to the side with a stand to survive gravity.
+I also 3d printed custom mounts for the power supply and coin buttons so i could mount momentary switches and use the coin buttons as inputs for the virtuapin controller + digital plunger.</p>
+
+<p><br/>
+<img src="/images/pinball/pinball11.jpg">
+<img src="/images/pinball/pinball12.jpg">
+<img src="/images/pinball/pinball14.jpg">
+<br/></p>
+
+<p>Next I found a 46&#8221; TV that fit like a dream after removing the LCD from the panel. I ended up mounting it similar to this (not my pinball in this photo):
+<br/>
+<img src="/images/pinball/notmine.jpg">
+<br/></p>
+
+<p>I ended up welding pipe mounts directly to the steel backing on the LCD. This was a risky move considering the &hellip; you know &hellip; electrical nature and heat of a welding machine but it worked. I went slow and just did a few tack welds then slid a galvanized pipe through it so I can lift it up for access. Then I built a bezel out of wood and vinyl wrapped it in black vinyl and laid the glass in.</p>
+
+<p><br/>
+<img src="/images/pinball/pinball15.jpg">
+<img src="/images/pinball/pinball17.jpg">
+<img src="/images/pinball/pinball18.jpg">
+<img src="/images/pinball/pinball19.jpeg">
+<br/></p>
+
+<p>Lastly I resin printed a bunch of custom L brackets (because I wanted them as tiny as possible and couldnt find any that were under 6mm wide). I resin printed about 24 of them at a time so it took a few days.
+<br/>
+<img src="/images/pinball/pinball20.jpg">
+<br/></p>
+
+<p>After carefully taking it home I set it up and put the Batman Returns lego Batmobile me and the kiddo built on top as a DIY topper</p>
+
+<p><br/>
+<img src="/images/pinball/pinball21.jpg">
+<br/></p>
+
+<p>The software its running is still in progress but works great. Just turn it on and windows loads the PinballX front end that pulls in some Pinball FX3 games (cheesy but people that come over love it) and some VPX (which look almost real!) games like Johnny Mnemonic, Addams Family, etc. The bumpers and gyro all work great. I have a servo in there but it draws too much power if you press the bumpers too fast and causes the USB bus to falter and require a windows restart so I&rsquo;ve not hooked it back up.</p>
+
+<p><br/>
+<img src="/images/pinball/pinball1.gif">
+<img src="/images/pinball/pinball2.gif">
+<br/></p>
+
+<p>If youre curious here&rsquo;s some of the parts list:</p>
+
+<ul>
+<li>Paid $50 Used - <a href="https://www.amazon.com/Vizio-E461-A1-46-Inches-Class-Razor/dp/B00AMT9GFO">Vizio E461-A1</a></li>
+<li>Paid $300 - <a href="https://pinside.com/pinball/machine/batman">Batman Data East</a></li>
+<li>$200 - <a href="https://www.retrorefurbs.com/shop/batman-data-east-pinball-cabinet-decals/">Data East Batman Vinyl Artwork</a></li>
+<li>$450 - <a href="https://www.panelook.com/LM265SQ1-SLA1_LG%20Display_26.5_LCM_overview_19945.html">LG LM265SQ1-SLA1</a></li>
+<li>$30 - <a href="https://www.amazon.com/Controller-HSD190MEN4-M170EN06-1280x1024-30Pins/dp/B06X9NJ2NR">LVDS controller</a></li>
+<li>$180 - <a href="https://virtuapin.net/index.php?main_page=product_info&amp;cPath=8&amp;products_id=105">Virtuapin Plunger kit + controller</a></li>
+<li>$75 - <a href="https://virtuapin.net/index.php?main_page=product_info&amp;cPath=3&amp;products_id=257">Data east coin door</a></li>
+<li>$300 - <a href="https://virtuapin.net/index.php?main_page=product_info&amp;cPath=6&amp;products_id=231">PinDMD v3</a></li>
+</ul>
+
+
+<p>If I had to guess I spent roughly $1500 out of pocket. If I wasn&rsquo;t sitting on parts it would be closer to $2200.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Some Arcade rebuilds]]></title>
+    <link href="https://markyoung.us/post/arcade_rebuilds"/>
+    <updated>2022-01-28T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/arcades</id>
+    <content type="html"><![CDATA[<p>I spent a good chunk of 2021 rebuilding arcades for people <!-- more --></p>
+
+<p><br/>
+<br/>
+If you&rsquo;re going to send me hate letters for pandoras box: go ahead and hit the back button. I made these for people who dont want a bunch of arcades, so every single one of these was pandoras box.
+<br/>
+<br/>
+I&rsquo;ll share some before and afters:</p>
+
+<p><br/>
+<br/>
+<br/>
+An atari centipede (already JAMMA) in mostly good condition. <br/>
+* Turned into Pandoras box<br/>
+* The CRT was bad, they wanted it LCD<br/>
+* They wanted to just turn the marquee blank<br/>
+* The 6 button wiring harness was a joke<br/>
+* I wanted to keep the steel control board so I welded back all the button holes and redrilled and added some nice polylaminate artwork over it<br/>
+<img src="/images/arcade/Centipede.jpg"></p>
+
+<p><br/>
+<br/>
+A knock off galaga<br/>
+* Turned into Pandoras box<br/>
+* The control panel was hacked together on &frac34;&#8221; MDF<br/>
+* A real fire hazard internally<br/>
+* CRT was bad, but the glass was good. The &ldquo;marquee&rdquo; was just paint on the backside: easily removed with acetone<br/>
+* Wood was mostly saveable minus the water soaked edges/corners. Fixed with lots of sanding and bondo.<br/>
+<img src="/images/arcade/galaga.jpg"><br/>
+<img src="/images/arcade/galaga1.jpg"></p>
+
+<p><br/>
+<br/>
+A Stern Berzerk in absolute terrible condition<br/>
+* Turned into Pandoras box<br/>
+* This took 90% of the time just to sand.<br/>
+* All the wood is pressed wood that had started to come apart at the bottom. Had to cut it all off and fix with bondo<br/>
+* Custom cut a new control panel from &frac34;&#8221; MDF<br/>
+* The CRT was bad, replaced with a monitor inlaid into a new &frac34;&#8221; MDF with a router for the bezel cover<br/>
+<img src="/images/arcade/stern.jpg"></p>
+
+<p><br/>
+<br/>
+Knock off WWE Wrestlefest turned Survival Arts<br/>
+* Rewired to CHAMMA, added pandoras box<br/>
+* CRT was still in great shape, no glass and didnt have the ability to cut plexi. Sold at a yard sale<br/>
+* CPO was hacked together with plexi over it. Cut all new &frac34;&#8221; for the 6 buttons, kept the hardware + plexi<br/>
+* Repainted, 3d printed a &ldquo;MAME&rdquo; marquee and glued to a new marquee<br/>
+<img src="/images/arcade/survival_arts.jpg"></p>
+
+<p><br/>
+<br/>
+Zaxxon hacked into a poker game<br/>
+* Disgusting estate sale find. <br/>
+* Contained dead rat<br/>
+* CRT was saveable with some magnet work<br/>
+* Recut new CPO from &frac34;&#8221; MDF and wired to CHAMMA with pandoras box<br/>
+* Kept all artwork and 90s style fake wood laminate<br/>
+* 3d printed a cover for the front hole (not pictured)<br/>
+<img src="/images/arcade/zaxxon.jpg"></p>
+
+<p><br/>
+<br/>
+Completely empty MK2 shell<br/>
+* Stole CPO from another similar Midway shell<br/>
+* Customer wanted light up LEDs which required hacking up all the button PCBs to separate the ground and voltage and wiring them to the +5V on the CHAMMA harness<br/>
+* New LCD built into shell from a 32&#8221; TV<br/>
+<img src="/images/arcade/mk2.jpg"></p>
+
+<p><br/>
+<br/>
+Gem fighter<br/>
+* A dynamo cabinet turned into gem fighter<br/>
+* They wanted mrs pacman marquee and a generic multi-game CPO - a nice polylaminate one with zelda, donkey kong, pacman etc<br/>
+* Wood was originally in great shape, CRT was bad. Said fixable but needed a complete overhaul. Used an LCD to replace.<br/>
+* Paint touch up, replacement locks<br/>
+<img src="/images/arcade/gem_fighter.jpg"></p>
+
+<p><br/>
+<br/>
+Custom 4 Player from MK1 cabinet<br/>
+* MK1 cabinet modified to fit a 4 player CPO<br/>
+* Built dimensions to fit, using custom latching system to remove (does not fit through a standard door as-is)<br/>
+* 2 Players are to CHAMMA harness as usual, the other 2 players are USB into pandoras box. Worked surprisingly easy<br/>
+* Wanted it galaga themed, so galaga marquee and side artwork ordered to fit<br/>
+* Original 25&#8221; CRT still worked great, added plexi<br/>
+<img src="/images/arcade/mk1_1.jpg"><br/>
+<img src="/images/arcade/mk1_2.jpg"><br/>
+<img src="/images/arcade/mk1_3.jpg"><br/>
+<img src="/images/arcade/mk1_4.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Barcaderator - Building An Arcade Kegerator]]></title>
+    <link href="https://markyoung.us/post/barcade"/>
+    <updated>2019-11-20T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/Barcaderator</id>
+    <content type="html"><![CDATA[<p>Introducing a modular arcade kegerator  <!-- more --></p>
+
+<h3>The Backstory</h3>
+
+<p>I recenly got into doing random stuff with arcades.
+In October 2018 I got ahold of a completely ripped apart San Fransisco Rush cabinet.
+I redid some of the wood, built a computer into it, reversed all the controls into a teensy and made it play Rocket League.
+My tattoo shop is currently painting it (build log to come when I have it back).</p>
+
+<p>In trade, I&rsquo;m fixing their arcade machine.</p>
+
+<p>So now apparently I like real arcade machines <a href="https://markyoung.us/post/mame-cabinet/">and not my now-broken table top</a>.</p>
+
+<p>I also brew beer. Why not combine the two?!</p>
+
+<p>So I introduce to you:</p>
+
+<p><img src="/images/barcade1.jpg">
+<img src="/images/barcade2.jpg">
+<img src="/images/barcade3.jpg">
+<img src="/images/barcade2.gif">
+<img src="/images/marquee.gif"></p>
+
+<h3>The Hardware</h3>
+
+<ul>
+<li>The Marquee is a custom &ldquo;vintage style neon light&rdquo; from a company on alibaba.</li>
+<li>The Computer is a <a href="https://www.dfrobot.com/product-1727.html?search=lattepanda%20alpha&amp;description=true">lattepanda alpha</a></li>
+<li>The LED Buttons are <a href="https://groovygamegear.com/webstore/index.php?main_page=product_info&amp;products_id=408">spectra eclipse</a></li>
+<li>The LED controller is an <a href="https://www.arcaderenovations.com/ultimarc-pacled64.html">Ultimarc pacled64</a></li>
+<li>The Cabinet was custom cut on a CNC</li>
+<li>The &ldquo;split&rdquo; frame is based on <a href="https://cdn11.bigcommerce.com/s-ecrovlce13/images/stencil/500x659/products/10801/13177/pygcjgwqewky6od7qomr__54105.1563214651.png?c=2">this style of aluminum tongue/receiver</a> from TCH hardware</li>
+<li>The &ldquo;latches&rdquo; and the handles for the split top are from TCH Hardware</li>
+</ul>
+
+
+<h3>The Software</h3>
+
+<p>The lattepanda runs Ubuntu with MAME. I originally chose windows, but LEDBlinky is <em>awful</em>. Just awful.
+So instead I&rsquo;ve been working with <a href="https://sourceforge.net/p/ledspicer/wiki/Home/">LEDSpicer by Patricio Rossi</a>. The software worked nearly out of the box and he&rsquo;s been super helpful for getting me up and running.</p>
+
+<h3>Build Pics</h3>
+
+<p><img src="/images/barcade/build2.jpg">
+<img src="/images/barcade/build3.jpg">
+<img src="/images/barcade/build4.jpg">
+<img src="/images/barcade/build5.jpg">
+<img src="/images/barcade/build6.jpg">
+<img src="/images/barcade/build7.jpg">
+<img src="/images/barcade/build8.jpg">
+<img src="/images/barcade/build9.jpg">
+<img src="/images/barcade/build10.jpg">
+<img src="/images/barcade/build11.jpg">
+<img src="/images/barcade/build12.jpg">
+<img src="/images/barcade/build13.jpg">
+<img src="/images/barcade/build14.jpg">
+<img src="/images/barcade/build15.jpg"></p>
+]]></content>
+  </entry>
+  
+</feed>

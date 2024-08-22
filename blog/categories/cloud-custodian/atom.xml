@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cloud-custodian | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/cloud-custodian/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Kubecon - AWS Organizations and Cloud-Custodian]]></title>
+    <link href="https://markyoung.us/post/kubecon_2021"/>
+    <updated>2021-10-24T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/custodian</id>
+    <content type="html"><![CDATA[<p>I did a talk with stacklet during KubeCon <!-- more --></p>
+
+<p><br/>
+<a href=https://www.youtube.com/watch?v=NB5GnHmgsa0>Talk is here</a>
+<br/></p>
+
+<p>This was part of governance as code day at KubeCon 2021</p>
+]]></content>
+  </entry>
+  
+</feed>

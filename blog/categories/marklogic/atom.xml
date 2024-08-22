@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: marklogic | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/marklogic/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
+    <link href="https://markyoung.us/post/puppet-and-marklogic"/>
+    <updated>2013-12-14T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/puppet-and-marklogic</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="https://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="https://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
+
+<p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
+
+<p>How does this suck for me? I like to test. It&rsquo;s my new thing. In order to test your module, you need consistency, and for this that&rsquo;s hard to do without violating their terms. My solution? I have a super secret vagrant .box file that has a local Yum repository with the versions I know it supports (everything over version 6). No big deal, sort of.</p>
+
+<p>Did I mention the software also requires activation? That affects testing too, because I can&rsquo;t just hardcode my license information even though it&rsquo;s free and easily obtainable. My solution was to force the user to have a <code>~/.marklogic.yml</code> file that contains the information. None of this means anything to the normal use who wishes to install marklogic, they just need a Yum repository set up that holds the MarkLogic version. It does mean something to me in terms of making something that&rsquo;s easy to fork and fix if there are issues.</p>
+
+<p>TL;DR: <a href="https://www.puppetforge.com/myoung34/marklogic">My module is here.</a></p>
+]]></content>
+  </entry>
+  
+</feed>

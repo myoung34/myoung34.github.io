@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Let&#8217;s Rethink Jenkins - Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="I lose all data from jenkins every time I deploy it. And that&rsquo;s OK. Background: a rant Let me start off by saying: I&rsquo;ve done a lot of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/post/lets-rethink-jenkins">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Let&#8217;s Rethink Jenkins</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2018-01-29T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I lose all data from jenkins every time I deploy it. And that&rsquo;s OK.  <!-- more --></p>
+
+<h2>Background: a rant</h2>
+
+<p>Let me start off by saying: I&rsquo;ve done <em>a lot</em> of Jenkins.</p>
+
+<ul>
+<li>Exhibit A (super old jenkins with fake pipelines): <img class="right" src="/images/jenkins-old.png" title="jenkins 1.4" ></li>
+</ul>
+
+
+<p>I&rsquo;ve done new Jenkins (I love 2.0 and love Jenkinsfile&rsquo;s).</p>
+
+<p>I&rsquo;ve worked with <a href="https://jenkins.ovirt.org">large jenkins installs</a>.
+I&rsquo;ve worked with small jenkins at multiple shops.</p>
+
+<p>I&rsquo;ve automated backups with S3 tarballs:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>backup_dir=/var/lib/jenkins/backup
+</span><span class='line'>if [[ -d $backup_dir ]]; then
+</span><span class='line'>  rm -rf $backup_dir/*.tar.gz
+</span><span class='line'>else
+</span><span class='line'>  mkdir -p $backup_dir
+</span><span class='line'>fi
+</span><span class='line'>archive_name=jenkins-backup-$(date +%Y-%m-%d-%H_%M_%S).tar.gz
+</span><span class='line'>filename=$backup_dir/$archive_name
+</span><span class='line'>tar --exclude=backup --exclude=backups -czf $filename --warning=no-file-changed /var/lib/jenkins
+</span><span class='line'>aws s3 cp $filename s3://$backup_bucket/backups/$backup_name</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&rsquo;ve automated backups with <a href="https://plugins.jenkins.io/thinBackup">thin backup</a>.</p>
+
+<p>I&rsquo;ve automated creating jobs with <a href="https://github.com/jenkinsci/job-dsl-plugin">job-dsl</a></p>
+
+<p>I&rsquo;ve automated creating jobs with straight XML.</p>
+
+<p>I&rsquo;ve automated creating jobs with <a href="https://docs.openstack.org/infra/jenkins-job-builder/">jenkins job builder</a>.</p>
+
+<p>They all suck. I&rsquo;m sorry. But they&rsquo;re complex and require a lot of orchestration and customization to work.</p>
+
+<h2>Im gonna do worse</h2>
+
+<p>My problem with all these previous methods is they require a hybrid suck. You have to automate the jobs and mix that with retaining your backups.</p>
+
+<p><em>I&rsquo;m tired of things using the filesystem as a database.</em></p>
+
+<p>These things are complex because the data lives in the same place as the jobs. When you build up your jobs they contain metadata about build history. So you end up with these nasty complicated methods of pulling down and merging the filesystem.</p>
+
+<p>My hypothesis: #(@$ that. Lets use a real database and artifact store for the data and just not care. Crazy Right?!</p>
+
+<p>I&rsquo;ve <a href="https://github.com/myoung34/docker-jenkins">got some demo code</a> to prove to you how easy it is. It&rsquo;s 100% groovy. No job dsl, no nothing. Just groovy and java methods.
+The one I posted shows how I automated groovy to set up:</p>
+
+<ol>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/ad.groovy">Active directory</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/ecs.groovy">AWS ECS agents</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/github.groovy">Github organizations (includes webhooks!)</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/slack.groovy">Slack</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins.properties">Libraries like better slack messages and jobs defined in a java properties file</a></li>
+<li><a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy">Logstash for the real meat of this post</a></li>
+</ol>
+
+
+<h2>The real reason youre here</h2>
+
+<p>My jenkins master is docker. Its volatile. And its stateless.</p>
+
+<p>So how do I do it? In production my docker hosts listen to UDP port 555 with Logstash for syslog and forward them to ELK (because SSL, and other reasons).
+<a href="https://github.com/myoung34/docker-jenkins/blob/master/jenkins/logstash.groovy">In my example the logstash plugin just sends directly to elasticsearch</a>.
+All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a> at run time and I get to manage the data like my other data from ELK.</p>
+
+<p>My artifacts go to someting like <a href="https://www.jfrog.com/artifactory">artifactory</a>.</p>
+
+<p>And guess what? It&rsquo;s fantastic. Automation is dead simple. And I put the data in a real database. which lets me do things like see build times across projects, see deployments, etc.</p>
+
+<p><img class="left" src="/images/jenkins1.png" title="jenkins" >
+<img class="left" src="/images/jenkins3.png" title="jenkins" ></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2018-01-29T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ci/'>ci</a>, <a class='category' href='/blog/categories/elk/'>elk</a>, <a class='category' href='/blog/categories/jenkins/'>jenkins</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/docker-vault-ca-part2" title="Previous Post: Vault as a CA for ECS containers using Terraform (Part 2)">&laquo; Vault as a CA for ECS containers using Terraform (Part 2)</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/deploy-production-button" title="Next Post: A Physical Deploy-Production Button">A Physical Deploy-Production Button &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'markyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://markyoung.us/post/lets-rethink-jenkins';
+        var disqus_url = 'https://markyoung.us/post/lets-rethink-jenkins';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: uncategorized | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/uncategorized/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[UDOO and SATA - The Definitive Guide]]></title>
+    <link href="https://markyoung.us/post/udoo-and-sata"/>
+    <updated>2014-02-23T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/udoo-sata</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve recently purchase a <a href="https://www.udoo.org">udoo</a>. I am in love with it, however I had issues trying to boot from SATA.<!--more--></p>
+
+<p>Short story: 4 core ARM computer with SATA, LVDS, and arduino support. I decided upon getting it, the first thing I&rsquo;d do is ditch the MicroSD card and boot from SATA, but it proved to be challenging. The issue is that the older images (including the one I wanted), use U-Boot 2009 or similar as the bootloader, which don&rsquo;t have great SATA support.</p>
+
+<p>The first thing I did was jump to Linaro Ubuntu 12.04 LTS, which uses U-Boot 2013. The next thing I did was grab a 16GB MicroSD and a 500GB SATA drive and load the image to it via:</p>
+
+<pre><code>    $ unzip udoo_quad_ubuntu1204_v2.0.zip
+    $ sudo dd if=udoo_quad_ubuntu1204_v2.0.img of=/dev/sdi bs=1M #sdi is my SATA drive. Be careful here.
+    $ sudo dd if=udoo_quad_ubuntu1204_v2.0.img of=/dev/sdg bs=1M #sdg is my MicroSD card. Be careful here.
+</code></pre>
+
+<p>Next, format the SATA drive the way you&rsquo;d like via GParted. I expanded the first partition to fill up all but 2GB, and formatted the rest as 2GB Swap. At this time you still have to have the MicroSD card in use for U-Boot, so expand that via GParted the same way while you&rsquo;re at it if you&rsquo;d like.</p>
+
+<p>The next part is to set up the UDOO for the Arduino IDE.</p>
+
+<p>Prerequisites:</p>
+
+<ul>
+<li>Keep J18 on (only remove the jumper if you&rsquo;re flashing the SAM3X (arduino). You&rsquo;re not, you&rsquo;ll just be communicating to the UDOO via tty, so <strong>keep J18 ON</strong>).</li>
+<li>Install the SATA. The data cable is obvious, but the power cord isn&rsquo;t. Wire the +5v line to the pin closest to the SATA data plug, and ground further. The connection is a <a href="https://www.adafruit.com/products/261">standard 2-pin JST connector.</a></li>
+<li>Install the &lsquo;USB to UART driver&rsquo; from the UDOO Downloads page if you&rsquo;re on windows. Linux has this since 3.2 kernel.</li>
+<li>Hook up a micro usb cable from the port nearest the corner of the UDOO to your PC.</li>
+<li>Download Arduino version 1.5.4, and download the bassac patch from the UDOO site. Extract Arduino (or install it), and copy the bossac files to <arduino dir>/hardware/tools , overwriting the ones there (if those are missing you&rsquo;ve gone astray already).</li>
+</ul>
+
+
+<p>Communicate with the UDOO:</p>
+
+<ul>
+<li>Load up Arduino.</li>
+<li>Select &lsquo;Arduino Due (Programming Port)&rsquo; from Tools -> Board Menu.</li>
+<li>Set the right COM in the Tools -> Port menu (Protip: if you&rsquo;re in linux and this is grayed out, run arduino as sudo).</li>
+<li>Open the serial monitor from Tools -> Serial Monitor.</li>
+<li>Change the baud rate to 115200, and set it to use Newlines, both of these are near the bottom.</li>
+</ul>
+
+
+<p>Change the default boot in the UDOO:</p>
+
+<ul>
+<li>Boot the UDOO and interrupt the boot sequence ASAP by entering something in the serial monitor and hitting Send (if you do this too slowly just reset the UDOO and try again).</li>
+<li>At the U-Boot prompt, type <code>setenv mmcroot /dev/sda1 rootwait rw</code> (To revert to booting from the sd, type <code>setenv mmcroot /dev/mmcblk0p1</code> and hit send via the serial monitor).</li>
+<li>If you&rsquo;d like to save this (probably don&rsquo;t want to the first time), type <code>saveenv</code> and hit send via the serial monitor.</li>
+<li>Type <code>boot</code> and hit send via the serial monitor.</li>
+<li>Verify it&rsquo;s actually booted via SATA with <code>df -mh</code> and hitting send via the serial monitor.</li>
+<li>???</li>
+<li>Profit.</li>
+</ul>
+
+
+<p>Bonus: Keep reading if your UDOO now boots from SATA and you&rsquo;d like to use that swap partition you created.</p>
+
+<ul>
+<li>When the UDOO is booted, type <code>sudo blkid</code> and copy the UUID for your swap partition (probably /dev/sda2) to your buffer (or your memory if you can do that crap with a GUID).</li>
+<li>Type <code>vim /etc/fstab</code> and add it as: <code>UUID=your-guid-dont-copy-pasta-me       none    swap    sw      0       0</code> . Note: use your UUID.</li>
+<li>Reboot, verify with htop (if you don&rsquo;t have it: <code>sudo apt-get install htop</code>).</li>
+</ul>
+
+
+<p>The problem is what I call the developer documentation problem. By that I mean this information is available on the UDOO site, but is out of date and was probably well written once. A long time ago. U-Boot &lt; 2013 has less than stellar SATA suport, and the guides say to use <code>setenv root root=/dev/sda1</code> which isn&rsquo;t true for U-Boot 2013. Also, I figured it would be nice to show you how to actually fill up the drive, use the swap partition, etc. Don&rsquo;t thank me. Or do.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Puppet and MarkLogic]]></title>
+    <link href="https://markyoung.us/post/puppet-and-marklogic"/>
+    <updated>2013-12-14T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/puppet-and-marklogic</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve recently been writing a few modules for my current job, and have seen some missing modules on the <a href="https://www.puppetforge.com">puppetforge</a>. One of which is something to maintain a <a href="https://www.marklogic.com">MarkLogic</a> instance.<!--more--></p>
+
+<p>Apparently, however, I apparently like to pick inherently complicated work. MarkLogic has an interesting EULA. They have RPMs to install their software, but the EULA prevents redistribution. That means there is no way to have a central YUM repository. Also in order to download the .rpm file off of their website, you have to log in. That means you can&rsquo;t just curl the latest package. In terms of a module, this kind of sucks because it means that you can&rsquo;t just install the module and have <code>ensure =&gt; latest</code> since there&rsquo;s no way of keeping an internal package store.</p>
+
+<p>How does this suck for me? I like to test. It&rsquo;s my new thing. In order to test your module, you need consistency, and for this that&rsquo;s hard to do without violating their terms. My solution? I have a super secret vagrant .box file that has a local Yum repository with the versions I know it supports (everything over version 6). No big deal, sort of.</p>
+
+<p>Did I mention the software also requires activation? That affects testing too, because I can&rsquo;t just hardcode my license information even though it&rsquo;s free and easily obtainable. My solution was to force the user to have a <code>~/.marklogic.yml</code> file that contains the information. None of this means anything to the normal use who wishes to install marklogic, they just need a Yum repository set up that holds the MarkLogic version. It does mean something to me in terms of making something that&rsquo;s easy to fork and fix if there are issues.</p>
+
+<p>TL;DR: <a href="https://www.puppetforge.com/myoung34/marklogic">My module is here.</a></p>
+]]></content>
+  </entry>
+  
+</feed>

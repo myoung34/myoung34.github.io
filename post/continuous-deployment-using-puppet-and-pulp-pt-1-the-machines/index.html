@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Complete Continuous Deployment Using Puppet and Pulp - Part 1 - The Machines - Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Complete Continuous Deployment Using Puppet and Pulp - Part 1 - the Machines</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-19T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>You&rsquo;re going to need a minimum of 4 servers. Before you freak out, that&rsquo;s to keep things simple. Again, calm down. Also, you&rsquo;ll see I like CentOS. All the servers I built were CentOS 6.5 x86_64<!--more--></p>
+
+<h1>Servers</h1>
+
+<h2>Git server</h2>
+
+<p>For this you don&rsquo;t really need to set this one up, but most likely you&rsquo;ll have an internal git server. I&rsquo;ll be using Github for this demo. Use whatever you like.</p>
+
+<h2>Pulp</h2>
+
+<p>Set up the server and client via <a href="https://pulp-user-guide.readthedocs.org/en/pulp-2.3/installation.html">this guide</a>.</p>
+
+<p>When done, go ahead and create an <em>unstable</em> feed via:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>pulp-admin login -uadmin -padmin
+</span><span class='line'>pulp-admin rpm repo create --repo-id=unstable \
+</span><span class='line'>  --relative-url=unstable --serve-http=true \
+</span><span class='line'>  --display-name='Unstable Packages'
+</span><span class='line'>pulp-admin logout</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Jenkins</h2>
+
+<p>Follow <a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+RedHat+distributions">this guide</a> to set up jenkins.</p>
+
+<p>Install the jenkins plugins:</p>
+
+<ul>
+<li>git scm</li>
+<li>ssh plugin</li>
+<li>rvm</li>
+<li>warnings</li>
+</ul>
+
+
+<p>Install these extra Yum packages:</p>
+
+<p><code>yum install -y rpm-build rpm ruby ruby-devel rubygems git automake autoconf gcc gcc-c++</code></p>
+
+<p><a href="https://rvm.io">Set up RVM</a></p>
+
+<p>Install <a href="https://github.com/jordansissel/fpm">FPM</a> via gem: <code>gem install fpm</code></p>
+
+<p>Install the pulp-admin tools the same way you did on the pulp server <strong>Not the server, just the admin tools!</strong></p>
+
+<p>Go ahead an ensure all these bits and pieces work, such as connecting to pulp via the login command, using rvm, etc. Jenkins is the heavy lifter in this stack.</p>
+
+<h2>Foreman</h2>
+
+<p><a href="https://theforeman.org/manuals/1.4/quickstart_guide.html#Installation">The guide for 1.4.1 is here</a></p>
+
+<p>Install <strong>r10k</strong> via gem: <code>gem install r10k</code></p>
+
+<p>Also, install the Puppetlabs yum repository and update puppet to 3.4.2 or higher.</p>
+
+<p>Updating Puppet from 2 to 3 on Foreman requires some configuration changes. To get these, just re-run the <code># foreman-installer</code> command.</p>
+
+<p>Make these changes to <strong>/etc/puppet/puppet.conf</strong> for now:</p>
+
+<ul>
+<li>Under the <strong>[master]</strong> section add: <code>hiera_config   = $confdir/hiera/master/hiera.yaml</code></li>
+<li>Replace the <strong>[development]</strong> and <strong>[production]</strong> elements at the bottom with:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[development]
+</span><span class='line'>    modulepath     = /etc/puppet/environments/dev/modules:/etc/puppet/modules
+</span><span class='line'>    config_version =
+</span><span class='line'>[production]
+</span><span class='line'>    modulepath     = /etc/puppet/environments/master/modules:/etc/puppet/modules
+</span><span class='line'>    config_version =</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>A puppet node</h2>
+
+<p>Because why not. Install the puppet yum repository and install Puppet 3.4.2 or higher.</p>
+
+<p>Make sure you have <code>pluginsync = true</code> in the <strong>/etc/puppet/puppet.conf</strong> file under <strong>[main]</strong></p>
+
+<p>My assumption before you move on, if you&rsquo;re following along, is that this node can connect to the puppet master (foreman) and generates all green when you run <code># puppet agent -t</code></p>
+
+<p>Lastly, make sure you&rsquo;re subscribed to the Yum repository for the <strong>myapp</strong> package we&rsquo;ve been building so that puppet can install it when we get to that point. To do that, create the file <strong>/etc/yum.repos.d/mypulp.repo</strong> with the contents:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[mypulp]
+</span><span class='line'>name=My Pulp Provider - Unstable
+</span><span class='line'>baseurl=https://pulp.blindrage.local/pulp/repos/unstable/
+</span><span class='line'>enabled=1
+</span><span class='line'>gpgcheck=0
+</span><span class='line'>metadata_expire=10</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-19T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/continuous-deployment-using-puppet-and-pulp-overview" title="Previous Post: Complete Continuous Deployment Using Puppet and Pulp - Overview">&laquo; Complete Continuous Deployment Using Puppet and Pulp - Overview</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/continuous-deployment-using-puppet-and-pulp-pt-2-the-app" title="Next Post: Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application">Complete Continuous Deployment Using Puppet and Pulp - Part 2 - The Application &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'markyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://markyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines';
+        var disqus_url = 'https://markyoung.us/post/continuous-deployment-using-puppet-and-pulp-pt-1-the-machines';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

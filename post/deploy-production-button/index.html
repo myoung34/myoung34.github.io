@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A Physical Deploy-Production Button - Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="I made a physical button to deploy production and regret nothing. Over the last few weeks I&rsquo;ve been looking for a project. I currently work for &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/post/deploy-production-button">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">A Physical Deploy-Production Button</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2018-05-19T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I made a physical button to deploy production and regret nothing.  <!-- more --></p>
+
+<p>Over the last few weeks I&rsquo;ve been looking for a project.</p>
+
+<p>I currently work for a python shop and have really taken a liking to it. Simultaneously, I keep seeing new hardware <a href="https://micropython.org">supporting micropython</a>. I&rsquo;m not against the C&#8217;ish language that the arduino type stuff pushes for, but it&rsquo;s nice to get the best of both worlds: an abstracted language with nice syntax and the ability to do dumb stuff with voltage. So: I did just that.</p>
+
+<h3>The Controller</h3>
+
+<p>I&rsquo;ve really wanted to play with the ESP8266 after seeing some cool projects cross over my feeds. I decided also to kill two birds with one stone and try the Huzzah board <a href="https://www.adafruit.com/product/2821">from adafruit</a> that includes onboard wifi because I hate money. The board itself was fantastic out of the box.</p>
+
+<h3>The Learning Curve</h3>
+
+<p>Without doing any whatsoever much research my brain really thought that micropython was going to be a &ldquo;drop in replacement&rdquo; for the UX of programming a board in the arduino IDE. It&rsquo;s not. This is actually my biggest complaint about micropython. The code itself was very very very straightforward. Write a <code>main.py</code> that does your stuff, and profit. You can load libraries that support micropython, etc.</p>
+
+<p>Getting there? Meh.</p>
+
+<p>First: you have to flash your esp with <a href="https://micropython.org/download">the micropython firmware</a>.</p>
+
+<p>Next: you have to get your code onto the board. The feedback loop for this is the annoying part. The first time you flash the firmware you have to <a href="https://learn.adafruit.com/micropython-basics-esp8266-webrepl/access-webrepl">enable WebREPL</a>. It&rsquo;s a one-time cost but it&rsquo;s smelly. This enables a wifi broadcast from the board that you can then access from webrepl with a password.</p>
+
+<p>If you make it past the previous step you can make <code>main.py</code> join your wireless network (note: 5ghz is not supported) with something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import network
+</span><span class='line'>
+</span><span class='line'>sta_if = network.WLAN(network.STA_IF)
+</span><span class='line'>
+</span><span class='line'>def do_connect():
+</span><span class='line'>    if not sta_if.isconnected():
+</span><span class='line'>        print('connecting to network...')
+</span><span class='line'>        sta_if.active(True)
+</span><span class='line'>        sta_if.connect('The LAN Before Time', 'hunter2')
+</span><span class='line'>        while not sta_if.isconnected():
+</span><span class='line'>            print('waiting to connect...')
+</span><span class='line'>            sleep(5)
+</span><span class='line'>            pass
+</span><span class='line'>
+</span><span class='line'>print('connecting...')
+</span><span class='line'>do_connect()
+</span><span class='line'>print('network config:', sta_if.ifconfig())</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that it&rsquo;s on the network you can use webrepl to the local address of the huzzah. But it still sucks compared to the typical UX of: select board, click compile.</p>
+
+<h3>What You Came To See</h3>
+
+<p>If you&rsquo;re still reading I&rsquo;m sure you want to see what I did. Basically I took 4 mechanical keyboard switches (I have a lot OK?!), wired them to the huzzah, and made it send a slack command to our internal slack bot to <em>force</em> deploy production (ignore all locks, send a message to yours truly).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>while True:
+</span><span class='line'>    buttons = [
+</span><span class='line'>        machine.Pin(4,  machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>        machine.Pin(5,  machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>        machine.Pin(2,  machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>        machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP),
+</span><span class='line'>    ]
+</span><span class='line'>
+</span><span class='line'>    _sum = 0
+</span><span class='line'>    for button in buttons:
+</span><span class='line'>        _sum += button.value()
+</span><span class='line'>    if (_sum == 0):
+</span><span class='line'>        print('generating request')
+</span><span class='line'>        print(urequests.post(webhook_url, json={'text': ":alert: DEPLOY BUTTON PRESSED. KLAXON: ACTIVATED :alert:"}, headers={'Content-Type': 'application/json'}).status_code)
+</span><span class='line'>        print(urequests.post(webhook_url, json={'text': "!deploy prod master -f"}, headers={'Content-Type': 'application/json'}).status_code)</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/huzzah1.jpg" title="huzzah1" >
+<img src="/images/huzzah2.png" title="huzzah2" ></p>
+
+<p>It works and it&rsquo;s pretty empowering to smash. We deployed to production a record number of times that day.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2018-05-19T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hardware/'>hardware</a>, <a class='category' href='/blog/categories/mechanical-keyboard/'>mechanical keyboard</a>, <a class='category' href='/blog/categories/production/'>production</a>, <a class='category' href='/blog/categories/python/'>python</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/lets-rethink-jenkins" title="Previous Post: Let's Rethink Jenkins">&laquo; Let&#8217;s Rethink Jenkins</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/hulk-smash" title="Next Post: Hulk-Smash Production">Hulk-Smash Production &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'markyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://markyoung.us/post/deploy-production-button';
+        var disqus_url = 'https://markyoung.us/post/deploy-production-button';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: conference | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/conference/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Kubecon - AWS Organizations and Cloud-Custodian]]></title>
+    <link href="https://markyoung.us/post/kubecon_2021"/>
+    <updated>2021-10-24T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/custodian</id>
+    <content type="html"><![CDATA[<p>I did a talk with stacklet during KubeCon <!-- more --></p>
+
+<p><br/>
+<a href=https://www.youtube.com/watch?v=NB5GnHmgsa0>Talk is here</a>
+<br/></p>
+
+<p>This was part of governance as code day at KubeCon 2021</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My Secure Smart Home]]></title>
+    <link href="https://markyoung.us/post/smart-home"/>
+    <updated>2020-03-31T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/smart-home</id>
+    <content type="html"><![CDATA[<p>A quick write up of how I have IoT devices that I consider secure (at the cost of my sanity).  <!-- more --></p>
+
+<p>I&rsquo;ve spent the last year figuring out what I want to control &ldquo;things&rdquo; in my house. And after wasting a bunch of time and money I finally have a set up I like.</p>
+
+<h2>The Network</h2>
+
+<p><del>I don&rsquo;t have any crazy networking gear, just a <a href="https://www.amazon.com/R7000-100PAS-Nighthawk-Parental-Controls-Compatible/dp/B00F0DD0I6">Netgear r7000</a> running <a href="https://www.myopenrouter.com/kong-downloads">Kong</a></del></p>
+
+<p>I now have a very different set up.
+<img src="/images/router.jpg"></p>
+
+<p>Configuring this for my setup is painful, but:</p>
+
+<ul>
+<li>Main Network (wired + wireless N+AG): I whitelist all my devices by Mac Address and assign static IP&rsquo;s to things.</li>
+<li>Guest Network: no whitelisting, can only reach the internet</li>
+<li>Black Hole Sun: My black hole wifi for things I don&rsquo;t trust like my TV. I know for a fact that the TV tries to send data over open wifi&rsquo;s so my hope here is to prevent that by giving it valid networking that just cant talk to anything at all.</li>
+<li>Server network: My main server stuff is here. A nomad cluster across an i7 server and a bunch of pi&rsquo;s, also a <a href="https://www.synology.com/en-us/products/DS918+">DS918+</a>. DNS is here because I use Consul with dnsmasq. Some smart stuff lives here like my <a href="https://www.ecobee.com/">ecobee</a>.</li>
+<li>IoT Network: the real meat. This is nearly the same as the black hole one except it  can talk to the Server Network for C&amp;C (esphome)</li>
+</ul>
+
+
+<h2>The Software</h2>
+
+<p>First I played with <a href="https://tasmota.github.io">tasmota</a> and the devices would randomly require me to set them up again.</p>
+
+<p>Have you ever bought a device that turns on, sets up an AP for you to connect to then configure it? Thats a lot like Tasmota.</p>
+
+<p>The problem is that in just a few days I had to set up the same devices multiple times. So I&rsquo;d go to do something, it wouldnt exist in homeassistant, and Id see a few <code>tasmota-#####</code> AP&rsquo;s I had to set up again.</p>
+
+<p>I solved this by pulling the source code down, modify the configs (which took a lot of figuring out for the settings), compile it, flash it. Per device.</p>
+
+<p>Then I had to upload the actual config for pins/buttons/etc. I hated this. Every second of it.</p>
+
+<p>After playing around with <strong>way</strong> too many things, I finally landed on <a href="https://esphome.io/">esphome</a>.</p>
+
+<p>Esphome is amazing. It has over-the-air updates, it automatically compiles based on some yaml and uploads it!
+If it cant upload it (like the initial flash) I would simply set up the yaml, compile it, SCP it locally and flash it with <a href="https://github.com/espressif/esptool">https://github.com/espressif/esptool</a>. If this worked, it would now support OTA updates.</p>
+
+<p>Because its a bunch of yaml I can source control it too!</p>
+
+<p>It uses passwords for both API integrations (home-assistant) and for OTA updates (same or different password) which makes me feel good.</p>
+
+<p>Also: the server runs as a container, so its running on my Server network on nomad. I can simply go to <a href="http://esphome.service.consul">http://esphome.service.consul</a> and click &ldquo;Upload&rdquo; to update my IoT.</p>
+
+<p><img src="/images/esphome.png"></p>
+
+<p>As for the controlling the devices I chose home-assistant. It has great support for ESPHome.</p>
+
+<p><img src="/images/hass.png"></p>
+
+<h2>The Devices</h2>
+
+<p>This is what you&rsquo;re really here for. Everything is ESP based for esphome.</p>
+
+<p>I flashed almost all of these with an <a href="https://www.amazon.com/HiLetgo-FT232RL-Converter-Adapter-Breakout/dp/B00IJXZQ7C">ftdi serial adapter</a> and <a href="https://github.com/espressif/esptool">esptool.py</a> similar to</p>
+
+<pre><code>#!/bin/bash
+firmware="something.bin"
+port="/dev/cu.usbserial-00000000"
+esptool.py --port ${port} --baud 115200 erase_flash
+esptool.py --port ${port} --baud 115200 write_flash 0x0 ${firmware}
+</code></pre>
+
+<h3>Garage Door Opener</h3>
+
+<p>This one took some learning to get right.
+Its a <a href="https://www.amazon.com/HiLetgo-Internet-Development-Wireless-Micropython/dp/B081CSJV2V">nodemcu ESP8266</a> hooked up to a 12v relay shimmed to the garage door trigger. Triggering GPIO16 triggers the relay.
+Attached to GPIO5 is a reed switch on the garage door track that is open or closed. The reed switch is a magnetic based switch. When a magnet is near it, it  breaks the switch (open) meaning the garage door is closed. I wired it this way so that the only way the door can be considered &ldquo;closed&rdquo; is that the magnet has broken the sensor. No power, messed up sensor, manually opened (without using the garage door chain) etc would all be considered an open door. I chose this because I&rsquo;d rather be safe than sorry and the door being closed is not an assumption but a fact.</p>
+
+<p><img src="/images/esp-garage1.jpg">
+<img src="/images/esp-garage2.jpg">
+<img src="/images/esp-garage3.jpg">
+<img src="/images/esp-garage4.jpg"></p>
+
+<pre><code>esphome:
+  name: garage_switch
+  platform: ESP8266
+  board: esp01_1m
+wifi:
+  ssid: !secret wifi_name
+  password: !secret wifi_pass
+  domain: !secret wifi_domain
+logger:
+api:
+  password: !secret api_password
+ota:
+  password: !secret ota_password
+binary_sensor:
+  - platform: status
+    name: "garage"
+  - platform: gpio
+    pin:
+      number: 16
+      inverted: False
+      mode: INPUT_PULLUP
+    name: "door"
+    device_class: door
+    filters:
+      - delayed_off: 10ms
+      - delayed_on: 10ms
+switch:
+  - platform: gpio
+    name: "garage"
+    pin: 5
+</code></pre>
+
+<h3>Sprinklers</h3>
+
+<p>This one is in progress. It works but I haven&rsquo;t finished the housing (needs to be gasket based and ABS).</p>
+
+<p>This is based on a <a href="https://www.amazon.com/HiLetgo-Development-ESP8285-Wireless-Internet/dp/B07BK435ZW">wemos d1 mini</a> and is essentially 2 <a href="https://www.amazon.com/gp/product/B010LT2GPG">12v solenoid valves</a> on GPIO16 and GPIO14. the 12V is controlled based on circuitry through diodes and TIP120 fed from a 12V source (dropped to 5v via a LM7805 to the d1 mini).</p>
+
+<p><img src="/images/solenoid_circuit.png">
+<img src="/images/esp-sprinkler1.jpg">
+<img src="/images/esp-sprinkler2.jpg"></p>
+
+<pre><code>esphome:
+  name: sprinklers
+  platform: ESP8266
+  board: esp01_1m
+wifi:
+  ssid: !secret wifi_name
+  password: !secret wifi_pass
+  domain: !secret wifi_domain
+logger:
+api:
+  password: !secret api_password
+ota:
+  password: !secret ota_password
+switch:
+  - platform: gpio
+    name: "sprinkler1"
+    pin: 16
+    inverted: no
+  - platform: gpio
+    name: "sprinkler2"
+    pin: 14
+    inverted: no
+</code></pre>
+
+<h3>Camera</h3>
+
+<p>This one is still a bit in progress. My end goal is to take snapshots on an interval and push them to s3 so that I can play around with machine learning, but right now it lets me view it in hass (no recording as of now).</p>
+
+<p>I chose the <a href="https://www.amazon.com/gp/product/B07RXPHYNM">esp32-cam</a> because it&rsquo;s very cheap. That&rsquo;s all, and it supports esphome.
+The housing I 3d printed <a href="https://www.thingiverse.com/thing:3652452">from here</a></p>
+
+<p>Note: This was a bit annoying to set up the first time. You can&rsquo;t &ldquo;just flash it&rdquo;, you need to set up <a href="https://github.com/pellepl/spiffs">spiffs</a> correctly. Which looked like this:</p>
+
+<pre><code>firmware="something.bin"
+port="/dev/cu.usbserial-00000000"
+# minimal spiffs:
+esptool.py --port ${port} --baud 921600 --chip esp32 erase_flash
+esptool.py --chip esp32 --port ${port} --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 80m --flash_size detect 0x1000 /Users/myoung/Library/Arduino15/packages/esp32/hardware/esp32/1.0.4/tools/sdk/bin/bootloader_qio_80m.bin 0x10000 ${firmware}
+</code></pre>
+
+<p><img src="/images/esp32-cam.jpg"></p>
+
+<pre><code>esphome:
+  name: frontdoor_cam
+  platform: ESP32
+  board: esp32dev
+wifi:
+  ssid: !secret wifi_name
+  password: !secret wifi_pass
+  domain: !secret wifi_domain
+logger:
+api:
+  password: !secret api_password
+ota:
+  password: !secret ota_password
+esp32_camera:
+  name: frontdoor_cam
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 1600x1200
+  max_framerate: 30 fps
+  jpeg_quality: 25
+</code></pre>
+
+<h3>LED Strips</h3>
+
+<p>In the kids room I have some <a href="https://www.amazon.com/Twinkle-Star-Waterproof-Extendable-Decoration/dp/B07FSLWPRB">star lights</a>, and on our Pergola I have some <a href="https://www.amazon.com/Flexible-Waterproof-Christmas-Kitchen-Daylight/dp/B00HSF66JO">waterproof LED lights</a> all controlled with:</p>
+
+<p><a href="https://www.amazon.com/Nexlux-Wireless-Controller-Compatible-Included/dp/B07116SX41">This magic home smart controller</a> . I chose this because its ESP8266 based and flashable!</p>
+
+<p><img src="/images/magichome.jpg"></p>
+
+<p>Wiring that up to the FTDI I flashed this yaml:</p>
+
+<pre><code>esphome:
+  name: liam_room_starlights
+  platform: ESP8266
+  board: esp01_1m
+wifi:
+  ssid: !secret wifi_name
+  password: !secret wifi_pass
+  domain: !secret wifi_domain
+logger:
+api:
+  password: !secret api_password
+ota:
+  password: !secret ota_password
+light:
+  - platform: rgbww
+    name: "Liam Starlight"
+    red: output_component1
+    green: output_component2
+    blue: output_component3
+    cold_white: output_component4
+    cold_white_color_temperature: 6536 K
+    warm_white: output_component5
+    warm_white_color_temperature: 2000 K
+
+output:
+  - platform: esp8266_pwm
+    id: output_component1
+    pin: 5
+
+  - platform: esp8266_pwm
+    id: output_component2
+    pin: 12
+
+  - platform: esp8266_pwm
+    id: output_component3
+    pin: 13
+
+  - platform: esp8266_pwm
+    id: output_component4
+    pin: 15
+
+  - platform: esp8266_pwm
+    id: output_component5
+    pin: 16
+</code></pre>
+
+<h3>Light Bulbs</h3>
+
+<p>For the bulbs I chose <a href="https://www.amazon.com/gp/product/B07RZ8QMG3">globe brand</a> because theyre also ESP8266 based.</p>
+
+<p>For 2 of 3 of these I had success with <a href="https://github.com/ct-Open-Source/tuya-convert">tuya-convert</a> which was pleasant.
+Basically I built my .bin from the yaml below, replaced tasmota.bin in that dir with it because I&rsquo;m sneaky, ran tuya-convert, flipped the light off/on 3 times and it flashed.</p>
+
+<p>For 2 of them (1 I broke), I had to get down and dirty. I basically tore it apart and followed <a href="https://github.com/arendst/Tasmota/wiki/Mirabella-Genio-Bulb">this guide</a>. Temporarily soldering and removing all the heat safe gunk is not fun. But 1 flashed. 1&hellip;.caught fire&hellip;.</p>
+
+<p><img src="/images/bulb-fire.jpg"></p>
+
+<pre><code>esphome:
+  name: driveway_light
+  platform: ESP8266
+  board: esp01_1m
+wifi:
+  ssid: !secret wifi_name
+  password: !secret wifi_pass
+  domain: !secret wifi_domain
+logger:
+api:
+  password: !secret api_password
+ota:
+  password: !secret ota_password
+output:
+  - platform: esp8266_pwm
+    id: output_green
+    pin: GPIO12
+    max_power: 0.7
+  - platform: esp8266_pwm
+    id: output_red
+    pin: GPIO4
+    max_power: 0.7
+  - platform: esp8266_pwm
+    id: output_blue
+    pin: GPIO14
+    max_power: 0.7
+  - platform: esp8266_pwm
+    id: output_wwhite
+    pin: GPIO13
+    max_power: 0.65
+  - platform: esp8266_pwm
+    id: output_cwhite
+    pin: GPIO5
+    max_power: 0.65
+light:
+  - platform: rgbww
+    name: "driveway_light"
+    id: light_rgb
+    red: output_red
+    green: output_green
+    blue: output_blue
+    cold_white: output_cwhite
+    warm_white: output_wwhite
+    cold_white_color_temperature: 5000 K
+    warm_white_color_temperature: 2000 K
+    effects:
+      - strobe:
+      - flicker:
+      - random:
+    restore_mode: ALWAYS_ON
+</code></pre>
+
+<h3>Smart Plugs</h3>
+
+<p>These come in handy for seasonal stuff like xmas lights, etc. But especially for my 3d printer as an emergency safe-measure (forget to turn off etc)</p>
+
+<p>I chose the <a href="https://www.amazon.com/Sonoff-Compatible-Assistant-Supporting-Required/dp/B07YXVWC3Y">Sonoff S31</a>.</p>
+
+<p><img src="/images/s31_1.jpg">
+<img src="/images/s31_2.jpg"></p>
+
+<p>Easy to take apart, a bit annoying to flash (involves temporarily soldering), but work amazingly.</p>
+
+<p>The yaml makes sure that its on by default and that the power button is a hard toggle for the power for manual control. Blue light indicates wifi, red indicates on/off for the relay.</p>
+
+<pre><code>esphome:
+  name: plug1
+  platform: ESP8266
+  board: esp01_1m
+wifi:
+  ssid: !secret wifi_name
+  password: !secret wifi_pass
+  domain: !secret wifi_domain
+logger:
+api:
+  password: !secret api_password
+ota:
+  password: !secret ota_password
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button"
+    on_press:
+      - switch.toggle: fakebutton
+  - platform: template
+    name: "Running"
+    filters:
+      - delayed_off: 15s
+    lambda: |-
+      if (isnan(id(power).state)) {
+        return {};
+      } else if (id(power).state &gt; 4) {
+        // Running
+        return true;
+      } else {
+        // Not running
+        return false;
+      }
+switch:
+  - platform: template
+    name: "POW Relay"
+    optimistic: true
+    id: fakebutton
+    turn_on_action:
+    - switch.turn_on: relay
+    - light.turn_on: led
+    turn_off_action:
+    - switch.turn_off: relay
+    - light.turn_off: led
+  - platform: gpio
+    id: relay
+    pin: GPIO12
+    restore_mode: ALWAYS_ON
+output:
+  - platform: esp8266_pwm
+    id: pow_blue_led
+    pin:
+      number: GPIO13
+      inverted: True
+
+light:
+  - platform: monochromatic
+    name: "Blue LED"
+    output: pow_blue_led
+    id: led
+    restore_mode: ALWAYS_ON
+
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    update_interval: 60s
+  - platform: uptime
+    name: "Uptime"
+  - platform: cse7766
+    update_interval: 2s
+    current:
+      name: "Current"
+    voltage:
+      name: "Voltage"
+    power:
+      name: "POW Power"
+      id: power
+      on_value_range:
+        - above: 4.0
+          then:
+            - light.turn_on: led
+        - below: 3.0
+          then:
+            - light.turn_off: led
+text_sensor:
+  - platform: version
+    name: "ESPHome Version"
+</code></pre>
+
+<h3>Smart Switch</h3>
+
+<p>I kept blowing my outdoor smart bulb, I&rsquo;m guessing the voltage or current is too volatile?</p>
+
+<p>I chose the <a href="https://www.amazon.com/gp/product/B07R7PCCT9">TreatLife single pole</a>.</p>
+
+<p><img src="/images/ss01s.png"></p>
+
+<p>This yaml lets the LED indicator (GPIO4) toggle with the virtual button (GPIO13) and the physical button (GPIO12)</p>
+
+<pre><code>esphome:
+  name: front_porch_switch
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  domain: !secret wifi_domain
+
+logger:
+  level: VERBOSE
+  baud_rate: 0
+
+api:
+  password: !secret api_password
+
+ota:
+  password: !secret ota_password
+
+switch:
+  - platform: gpio
+    id: "relay"
+    name: "light"
+    pin: 12
+
+output:
+  - platform: esp8266_pwm
+    id: status_led
+    pin:
+      number: GPIO4
+      inverted: True
+
+binary_sensor:
+  - platform: gpio
+    name: "button"
+    pin:
+      number: 13
+      inverted: True
+    on_press:
+      - switch.toggle: relay
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Homebrew Hacking]]></title>
+    <link href="https://markyoung.us/post/homebrew-hacking"/>
+    <updated>2020-03-08T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/homebrew-hacking</id>
+    <content type="html"><![CDATA[<p>I did a talk at PyTN about using hacking techniques to reverse engineer beer IoT devices  <!-- more --></p>
+
+<p><a href="https://markyoung.us/pytn-2020/#1">Slides here</a></p>
+
+<p><a href="https://youtu.be/xg2O2oanXgk">https://youtu.be/xg2O2oanXgk</a></p>
+]]></content>
+  </entry>
+  
+</feed>

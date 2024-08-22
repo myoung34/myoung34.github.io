@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash - Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="The previous part focused on getting the ECS cluster, ECR repos, and Elasticsearch up. This one focuses on getting Logstash Disclaimer I&rsquo;m &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/post/dockerized-elk-part-2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">AWS ECS Hot/Warm ELK + Curator Part 2 - Logstash</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-08T00:00:00+00:00" pubdate data-updated="true"></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The previous part focused on getting the ECS cluster, ECR repos, and Elasticsearch up. This one focuses on getting Logstash <!-- more --></p>
+
+<h1>Disclaimer</h1>
+
+<p>I&rsquo;m redacting any information that might seem sensitive such as account numbers. Use your discretion and make sure you use values that make sense for things blacked out in images or in <code>{}</code> notation.</p>
+
+<h1>Part 2a - Logstash</h1>
+
+<p>First thing we need to do is build the container and push it to ECR.</p>
+
+<p>In the ECR portion of the AWS console, create a new repository called <code>test/logstash</code>.</p>
+
+<p>Then in your console for <a href="https://github.com/myoung34/elk-docker-aws/blob/master/logstash/Dockerfile">the logstash dockerfile</a> run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker build -t logstash:local .
+</span><span class='line'>docker tag logstash:local \
+</span><span class='line'>   {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/logstash:latest
+</span><span class='line'>$(aws ecr get-login)
+</span><span class='line'>docker push {acctnum}.dkr.ecr.us-east-1.amazonaws.com/test/logstash:latest</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once this is pushed you can verify it by looking for a tag <code>latest</code> in your <code>test/logstash</code> ECR repository.</p>
+
+<p>Next upload <a href="https://github.com/myoung34/elk-docker-aws/blob/master/logstash/cloudformation.json">this cloudformation template</a> to Cloudformation (modifying the parameters as you need).</p>
+
+<p><img src="../../images/elk/logstash_cft.png" alt="" /></p>
+
+<p>You now have a listening logstash instance! My next step would be to configure a Route53 domain name to point to the logstash load balancer so you can have real SSL without any chain issues.</p>
+
+<h1>Takeaways</h1>
+
+<p>Similar to what we did with elasticsearch, logstash is listening on port <code>5000</code> for beats input. It uses self-signed SSL certificates. Most beats forwarders won&rsquo;t play nice with that out of the box, but if you configure Route53 to point to the ELB and use ACM, it will be valid SSL. The load balancer will use TCP to send to the logstash instances and not care that it is self-signed.</p>
+
+<p>The <a href="https://github.com/myoung34/elk-docker-aws/blob/master/logstash/logstash.conf">logstash configuration file</a> uses dynamic indexes, so whatever you set <code>document_type</code> on your beats configuration to will become the index.</p>
+
+<h1>Part 2b - Send to logstash</h1>
+
+<p>Install the latest stable logstash and use this filebeat configuration to get ready to ship:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>filebeat:
+</span><span class='line'>  prospectors:
+</span><span class='line'>    -
+</span><span class='line'>      paths:
+</span><span class='line'>        - "/var/log/test/*"
+</span><span class='line'>      encoding: plain
+</span><span class='line'>      input_type: log
+</span><span class='line'>      fields_under_root: true
+</span><span class='line'>      document_type: test
+</span><span class='line'>output:
+</span><span class='line'>  logstash:
+</span><span class='line'>    hosts: ["log-test.dev.mydom.com:5000"]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next make sure that directory exists via <code>sudo mkdir /var/log/test</code> and start the service (depends on your OS): <code>sudo service filebeat start</code>.</p>
+
+<p>Lastly, lets send something to logstash: <code>echo asdf | sudo tee -a /var/log/test/$(uuidgen)</code>. That will generate a random file and put <code>asdf</code> into it. It should show up in your kopf plugin to view:</p>
+
+<p><img src="../../images/elk/logstash_kopf.png" alt="" /></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-08T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws</a>, <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/ecs/'>ecs</a>, <a class='category' href='/blog/categories/elk/'>elk</a>, <a class='category' href='/blog/categories/lambda/'>lambda</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/dockerized-elk-part-1" title="Previous Post: AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch">&laquo; AWS ECS Hot/Warm ELK + Curator Part 1 - Elasticsearch</a>
+      
+      
+        <a class="basic-alignment right articlenav" href="/post/dockerized-elk-part-3" title="Next Post: AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana">AWS ECS Hot/Warm ELK + Curator Part 3 - Kibana &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/plaato_keg_esphome">Making My Own Plaato Keg Firmware</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'markyoung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://markyoung.us/post/dockerized-elk-part-2';
+        var disqus_url = 'https://markyoung.us/post/dockerized-elk-part-2';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

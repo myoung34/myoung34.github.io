@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ergo | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/ergo/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pterodactyl - The bluetooth dactyl fork]]></title>
+    <link href="https://markyoung.us/post/pterodactyl"/>
+    <updated>2020-05-23T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/pterodactyl</id>
+    <content type="html"><![CDATA[<p>I spent far too much time making a bluetooth dactyl keyboard with built in wrist rests <!-- more --></p>
+
+<p>This took about a year, off and on. With covid I finally found some time to finish it.</p>
+
+<h3>Build Hardware</h3>
+
+<ul>
+<li>Base was customized heavily by me from <a href="https://www.thingiverse.com/thing:2436848">this one</a>. <a href="https://www.thingiverse.com/thing:4186032">Mine here</a> supports less ugly wrist pads IMO, printed in Wood PLA from hatchbox on a taz6 at 0.1micron height</li>
+<li><a href="https://www.adafruit.com/product/2771">Feather 32u4</a></li>
+<li>TRRS cable</li>
+<li><a href="https://www.mouser.com/ProductDetail/Microchip-Technology/MCP23018-E-SP">MCP 23018 io expander</a></li>
+<li><a href="https://www.amazon.com/gp/product/B07DF83HK7">Wrist rests</a></li>
+<li><a href="https://drop.com/buy/drop-oblotzky-gmk-oblivion-v2-custom-keycap-set?mode=guest_open">GMK Oblotzky Oblivion V2 caps</a></li>
+<li><a href="https://mechwiki.com/holy-panda/">Holy Panda switches</a></li>
+<li><a href="https://keeb.io/products/amoeba-single-switch-pcbs">Amoeba single switch PCB&rsquo;s</a></li>
+<li><a href="https://mechanicalkeyboards.com/shop/index.php?l=product_detail&amp;p=1613">1N4148 diodes</a></li>
+</ul>
+
+
+<h3>Notes</h3>
+
+<p>I ran into a lot of issues.</p>
+
+<ol>
+<li>With the feather I had to swap <code>GPIOA</code> and <code>GPIOB</code> for <code>EXPANDER_COL_REGISTER</code> and <code>EXPANDER_ROW_REGISTER</code></li>
+<li>It took <em>months</em> for me to realize that the Serial stuff with <code>SPLIT_KEYBOARD</code> <a href="https://beta.docs.qmk.fm/using-qmk/hardware-features/feature_split_keyboard">here</a> does <em>not</em> work with an IO expander like the MCP23018. This is poorly documented IMO. You have to use two of the same chipsets to use that feature and the feather 32u4 aint cheap</li>
+<li><a href="https://github.com/adereth/dactyl-keyboard/issues/57">this issue</a> would have been massively helpful originally to know I was wiring it incorrectly.</li>
+<li>Swapping the board from the right side to the left side turned out massively tedious and <a href="https://github.com/qmk/qmk_firmware/pull/9181/files#diff-6b1633df300bad911cd57febbbbdb2aaR63">my PR</a> suffers for it.</li>
+<li>Im dumb and bought a mislabeled TRS cable as a TRRS cable and it obviously didn&rsquo;t work combined with my inability to count the rings on it.</li>
+</ol>
+
+
+<h3>Pics or GTFO</h3>
+
+<p><img class="left" src="/images/ptero1.jpg">
+<img class="left" src="/images/ptero2.jpg">
+<img class="left" src="/images/ptero3.jpg">
+<img class="left" src="/images/ptero4.jpg">
+<img class="left" src="/images/ptero5.jpg">
+<img class="left" src="/images/ptero6.jpg">
+<img class="left" src="/images/ptero7.jpg">
+<img class="left" src="/images/ptero8.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ergoslider Review]]></title>
+    <link href="https://markyoung.us/post/ergoslider-review"/>
+    <updated>2017-10-09T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/ergoslider-review</id>
+    <content type="html"><![CDATA[<p>Another ergonomic mouse review I gone and did <!-- more --></p>
+
+<p>Recently I&rsquo;ve been on an ergo kick (no pain, just realized how much more efficient I am).</p>
+
+<p>I reached out to a company selling a product much like the ContourMouse ergo mice but at a <a href="https://www.amazon.com/Ergoslider-Plus-Ergonomic-Roller-Bar-Tendinitis/dp/B071JNSD9Z/ref=sr_1_1?ie=UTF8&amp;qid=1507601165&amp;sr=8-1&amp;keywords=ergoslider">much lower price</a>.</p>
+
+<p>My assumption was that it would be ergo&#8217;ish but clunky. I was wrong. This thing is great!</p>
+
+<p>The first thing I realized, and drove me crazy for a few minutes, is that the roller bar is not attached. The documents don&rsquo;t say much, so I first thought I was missing a part. It says it&rsquo;s detached, but it didnt make sense to my brain. So after finding nothing in the booklet I just dropped it in its place and it was working. Strange. The contourmouse ones have it on a metal bar, this doenst pretend that. If you&rsquo;ve cleaned a contourmouse bar, its pretty awful. Requires bending metal, etc. This thing is cool, just remove it and rub it down with an alcohol wipe, done. I did wish it locked into place somehow though, because the drive to work involved it getting wedged under something in my backpack.</p>
+
+<p>In terms of usage, this thing is very much what I expected, plus some. Its very fluid, feels solid, and works great. The OS (mac + windows) worked immediately with it and didn&rsquo;t require pulling any software/drivers down.</p>
+
+<p>After using it for about 30 days now, I can say that if you&rsquo;re looking for an ergo mouse at a small price, look no further. This has been my go-to and will likely stay that way. It&rsquo;s been at our &ldquo;standing desk&rdquo; area for about two weeks and has prompted quite a few questions and quite a bit of usage.</p>
+
+<p>My only cons:</p>
+
+<ol>
+<li>The detachable mouse is both a pro and a con. It&rsquo;s great because it&rsquo;s detachable, but it&rsquo;s not because it&rsquo;s detached. It&rsquo;s not actually detachable, because it&rsquo;s literally always loose. Can probably get lost easily.</li>
+<li>The drivers are non-customizable. You can&rsquo;t map the buttons  to anything else, they are what they say they are. The biggest plus to contour mouse is that the keys are 100% mappable through software.</li>
+</ol>
+
+
+<p>The pros:</p>
+
+<ol>
+<li>Pretty much anything you can imagine about an ergo mouse: comfort, quality, usage, ease.</li>
+</ol>
+
+
+<p>Overall: buy this if you want to save a bit of cash.</p>
+
+<p>Pics below</p>
+
+<p><img class="left" src="/images/ergoslider1.jpg">
+<img class="left" src="/images/ergoslider2.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ergonomic Mouse Review]]></title>
+    <link href="https://markyoung.us/post/ergo-mouse-review"/>
+    <updated>2017-06-26T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/ergo-mouse-review</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve Recently been really into ergonomic mice, and wanted to give my thoughts on a few after going all in. <!-- more --></p>
+
+<p>In the last few months, I&rsquo;ve been pretty into mechanical keyboards and form factor. I&rsquo;ve been using an original (very old) Rollermouse for about 2 years now and was looking to upgrade it (the thing is huge).</p>
+
+<p>My current home setup is a Contour Rollermouse free2 and a pok3r (Cherry MX Clears) and a Logitech G700s for gaming.
+<img class="left" src="/images/free1.jpg"></p>
+
+<p>My work set up is a TechKeys JD40 on a 1up case (80g Cherry MX browns) and a Contour Rollermouse Red.
+<img class="left" src="/images/red1.jpg"></p>
+
+<p>While shopping around, I came upon the <a href="https://amzn.to/2tguHYQ">Penclic NiceTouch t2</a>. It caught my eye because it&rsquo;s <em>exactly</em> the same size as my pok3r. The original contourmouse is hilariously larger than my keyboard, so that&rsquo;s a huge draw.
+They sent me one to sample, so I decided to do a pro/con of my setups.</p>
+
+<h2>Contourmouse Red</h2>
+
+<p>This is by far the most sturdy of all of the mice. It&rsquo;s made of stainless steel, and could be used as a bludgeon. It doesnt move, and the rollerbar at the top is very thick with a grippy surface area to it.
+My biggest complaint with the original contourmouse was that you ran out of horizontal space. You&rsquo;d have to hold it far left to let the mouse slowly track over, or right because there was no physical space for the mouse to go left or right anymore.
+I got adjusted to it but it happened often enough to notice. With the red, this is gone. I&rsquo;m not sure if it&rsquo;s smarter or if the acceleration takes care of it, but it never happens, or just happens far less.</p>
+
+<p>All the buttons are 100% programmable in OSX/Windows via their driver. I havent tried on linux, but I&rsquo;m sure it is. The bar itself has a physical tensioner as well which is nice to add resistance. And as far as usability: it&rsquo;s great. The roller bar
+is a physical left click if you press, and everything is in the right place. I dont have to move my hands <em>at all</em> to use it.</p>
+
+<p><img class="left" src="/images/red1.jpg">
+<img class="left" src="/images/red2.jpg"></p>
+
+<p>The drawback is price. It&rsquo;s crazy expensive, and I got lucky to find it on ebay after months of searching/bidding for a low price. I&rsquo;m not sure it&rsquo;s worth the original MSRP, but I love it.</p>
+
+<h2>Contourmouse Free2</h2>
+
+<p>This one has most of the same pros as the Red, but I find myself getting annoyed at the physical bar occasionally. It&rsquo;s smaller than the red in terms of diameter, it&rsquo;s closer to the original contourmouse. It makes it a little harder to get your thumb on
+and move freely just because it&rsquo;s thinner. The tensioner isnt that great, so sometimes after a long coding session when my hands get a little stiff the mouse shows my thumb shakiness a little on &ldquo;exact&rdquo; clicks like on small buttons. That&rsquo;s when I can tell
+I&rsquo;ve been at it too long. And the original complaint about physical left/right exists here. I find myself out of space to go left or right and have to break focus to move the mouse over. If I were trying to do exact work like CAD/3d modelling I&rsquo;d probably
+throw it out the window by this point. It&rsquo;s great, but it&rsquo;s not worth the price considering how much nicer the Red is. Also, after only a few weeks, the palm rest started coming apart, and I used a sticker to prevent it from spreading. I can tell you right
+now though, the sticker is functionally part of it now. If I pull it off, the padding will come with it. They  call the pads replaceable, but that assumes you can find it. I can&rsquo;t find replacement pads that dont come with a full keyboard.</p>
+
+<p><img class="left" src="/images/free1.jpg">
+<img class="left" src="/images/free2.jpg"></p>
+
+<p>This one is not worth the price, but I&rsquo;d buy it again if it were &lt; $60.</p>
+
+<h2>Penclic NiceTouce T2</h2>
+
+<p>This is the one I was iffy about. Functionally, it&rsquo;s great. They sent me the matching keyboard, the Penclic NiceTouch C2, which is a chiclet key style keyboard. Together they work fine. If you like chiclets it types and works great.
+However, my biggest problem is not with the keyboard, but with the trackpad. As a trackpad, it&rsquo;s fine, but it doesn&rsquo;t support gestures or multi-finger. I&rsquo;ve become so used to being able to do two-finger scroll that it&rsquo;s frustrating to not have it.
+There is a physical rotating key that lets you scroll left right, but the right side of my palm kept touching it and making my cursor jump in vim.</p>
+
+<p><img class="left" src="/images/t2_1.jpg">
+<img class="left" src="/images/t2_4.jpg">
+<img class="left" src="/images/t2_5.jpg">
+<img class="left" src="/images/t2_6.jpg"></p>
+
+<p>My other complaint is with the buttons. They&rsquo;re not labeled or programmable so you <em>have</em> to read the booklet to know what buttons &frac34; do. They&rsquo;re also impossible to reach. The draw to the contourmouse design is that the bar clicks but also those buttons
+are very reachable by your thumbs. You can put your hands on the Home keys and not  have to move your hands at all to be efficient. With the T2 the buttons are so far down that they&rsquo;re not reachable, meaning I have to move my hands to click them. At that
+point I&rsquo;d rather have a mouse. Without two-finger scroll it means that I cant do anything except move my mouse up/down/left/right without moving my hands around.</p>
+
+<p><img class="left" src="/images/t2_3.jpg"></p>
+
+<p>The only other complaint I have is that if you use the trackpad with a different keyboard (like my pok3r), it&rsquo;s too low and leave a huge gap vertically. There are no risers (like on most keyboard) to raise the trackpad, so I stuffed a piece of cardboard
+under it, but that made it a bit wobbly. I could probably 3d print something, but that&rsquo;s pretty intense for an out-of-the-box experience. Lastly, the trackpad is <em>very</em> light. So light that it moves around while using it.  It probably only weighs a few
+ounces which gives it a flemsy breakable feel. Having something that light on top of a  piece of cardboard created a very unstable setup.</p>
+
+<p><img class="left" src="/images/t2_2.jpg"></p>
+]]></content>
+  </entry>
+  
+</feed>

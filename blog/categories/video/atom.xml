@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: video | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/video/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2024-08-22T15:39:28+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Slack Is Not Your Bash Prompt]]></title>
+    <link href="https://markyoung.us/post/slack-not-bash"/>
+    <updated>2018-11-26T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/Slack-Bash</id>
+    <content type="html"><![CDATA[<p>A video of my first and likely last conference talk (lightning talk) about chatops  <!-- more --></p>
+
+<p><a href="https://www.youtube.com/watch?v=Z6LrwUchRaE&amp;list=PLte_zIBj3fx6gNyC_8sleIFAYOvQhXemC&amp;index=7">Video here</a></p>
+]]></content>
+  </entry>
+  
+</feed>
