@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: https://marcyoung.us
-title: Marcus Young
+url: https://markyoung.us
+title: Mark Young
 subtitle: Software. Microcontrollers. Beer.
-author: Marcus Young
+author: Mark Young
 simple_search: https://www.google.com/search
 description:
 
@@ -91,13 +91,8 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name: marcyoung
+disqus_short_name: markyoung
 disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id: UA-29328388-1
-
-# Facebook Like
-facebook_like: true
-linkedin_user: marcus-young/2a/69b/a63
-resume: https://www.dropbox.com/scl/fi/jwmtljbxn9t1gnrrdamko/Resume-Marcus.Young.doc?rlkey=hzwii44a1p7cw1pmz3ufvlps5&st=vm47wfck&dl=0

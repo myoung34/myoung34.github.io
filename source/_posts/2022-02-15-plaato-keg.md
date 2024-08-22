@@ -46,7 +46,7 @@ Abi from Plaato
 
 Feb 11, 2022 2:21 AM GMT+2
 
-Hey Marcus,
+Hey Mark,
 
 Thank you for sharing. What I will do to make sure your voice is 
 heard is to share your message as a Feature Request to the development

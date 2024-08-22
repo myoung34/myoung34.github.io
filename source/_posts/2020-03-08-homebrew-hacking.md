@@ -24,6 +24,6 @@ tags:
 
 I did a talk at PyTN about using hacking techniques to reverse engineer beer IoT devices  <!-- more -->
 
-[Slides here](https://marcyoung.us/pytn-2020/#1)
+[Slides here](https://markyoung.us/pytn-2020/#1)
 
 https://youtu.be/xg2O2oanXgk

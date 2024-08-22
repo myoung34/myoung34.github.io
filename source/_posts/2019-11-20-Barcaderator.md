@@ -33,7 +33,7 @@ My tattoo shop is currently painting it (build log to come when I have it back).
 
 In trade, I'm fixing their arcade machine.
 
-So now apparently I like real arcade machines [and not my now-broken table top](https://marcyoung.us/post/mame-cabinet/).
+So now apparently I like real arcade machines [and not my now-broken table top](https://markyoung.us/post/mame-cabinet/).
 
 I also brew beer. Why not combine the two?!
 

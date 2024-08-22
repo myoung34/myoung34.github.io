@@ -24,9 +24,9 @@ EC2 Instance Connect (IMO) seems to be way under promoted by AWS, and I feel lik
 
 The TLDR for ec2 instance connect:
 
-* A user makes a call `aws ec2-instance-connect send-ssh-public-key --instance-id i-08e2c277f1ea9a99a --instance-os-user marcus.young --ssh-public-key file:///home/myoung/.ssh/asdf.pub`
-* AWS pushes the public key to `http://169.254.169.254/latest/meta-data/managed-ssh-keys/active-keys/marcus.young` for `60` seconds
-* The user does `ssh -i {private key that matches the public key} marcus.young@{public ip of the instance}` and gets in. 
+* A user makes a call `aws ec2-instance-connect send-ssh-public-key --instance-id i-08e2c277f1ea9a99a --instance-os-user mark.young --ssh-public-key file:///home/myoung/.ssh/asdf.pub`
+* AWS pushes the public key to `http://169.254.169.254/latest/meta-data/managed-ssh-keys/active-keys/mark.young` for `60` seconds
+* The user does `ssh -i {private key that matches the public key} mark.young@{public ip of the instance}` and gets in. 
 
 That's crazy cool, but we have a few issues outright (major ones):
 
@@ -75,9 +75,9 @@ Your user doesn't have to be in this format but it tracks with my needs and my S
     "userAgent": "aws-internal/3 aws-sdk-java/1.12.451 blahblahblah",
     "requestParameters": {
         "sAMLAssertionID": "_94942c8c-6b73-4912-86f9-14c",
-        "roleSessionName": "marcus.young",
+        "roleSessionName": "mark.young",
         "principalTags": {
-            "userName": "marcus.young"
+            "userName": "mark.young"
         },
 ```
 
@@ -117,7 +117,7 @@ $ aws ec2-instance-connect send-ssh-public-key \
     --instance-os-user myoung \
     --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .
 
-An error occurred (AccessDeniedException) when calling the SendSSHPublicKey operation: User: arn:aws:sts::1111111111:assumed-role/AWSReservedSSO_AdministratorAccess_e3aec0c44fb7c2e0/marcus.young is not authorized to perform: ec2-instance-connect:SendSSHPublicKey on resource: arn:aws:ec2:us-east-1:847713735871:instance/i-08843505c12cf9d7e with an explicit deny in a service control policy
+An error occurred (AccessDeniedException) when calling the SendSSHPublicKey operation: User: arn:aws:sts::1111111111:assumed-role/AWSReservedSSO_AdministratorAccess_e3aec0c44fb7c2e0/mark.young is not authorized to perform: ec2-instance-connect:SendSSHPublicKey on resource: arn:aws:ec2:us-east-1:847713735871:instance/i-08843505c12cf9d7e with an explicit deny in a service control policy
 ```
 
 ```
@@ -125,7 +125,7 @@ $ aws ec2-instance-connect send-ssh-public-key \
     --region us-east-1 \
     --availability-zone us-east-1a \
     --instance-id i-08843505c12cf9d7e \
-    --instance-os-user marcus.young \
+    --instance-os-user mark.young \
     --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .
 
 {
@@ -198,14 +198,14 @@ Let's make your `~/.ssh/config` file look like this:
 Host my-bastion
   IdentityFile ~/.ssh/asdf
   Hostname 1.2.3.4
-  User marcus.young
+  User mark.young
 
 Host private-vps
   IdentityFile ~/.ssh/asdf
   ProxyJump my-bastion
   StrictHostKeyChecking no
   Hostname 10.0.0.50
-  User marcus.young
+  User mark.young
   UserKnownHostsFile /dev/null
 ```
 
@@ -216,10 +216,10 @@ First let's prove we can't just get in. So you know I ain't lyin.
 
 ```
 $ ssh my-bastion 
-marcus.young@1.2.3.4: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+mark.young@1.2.3.4: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
 
 $ ssh private-vps
-marcus.young@1.2.3.4: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+mark.young@1.2.3.4: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
 kex_exchange_identification: Connection closed by remote host
 Connection closed by UNKNOWN port 65535
 ```
@@ -231,7 +231,7 @@ $ aws ec2-instance-connect send-ssh-public-key \
     --region us-east-1 \
     --availability-zone us-east-1a \
     --instance-id i-08e2c277f1ea9a99a \
-    --instance-os-user marcus.young \
+    --instance-os-user mark.young \
     --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .Success
 true
 
@@ -239,7 +239,7 @@ $ aws ec2-instance-connect send-ssh-public-key \
     --region us-east-1 \
     --availability-zone us-east-1a \
     --instance-id i-004b083d55a6d76c7 \
-    --instance-os-user marcus.young \
+    --instance-os-user mark.young \
     --ssh-public-key file:///home/myoung/.ssh/asdf.pub | jq .Success
 true
 

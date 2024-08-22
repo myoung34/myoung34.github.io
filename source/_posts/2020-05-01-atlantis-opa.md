@@ -95,7 +95,7 @@ First: if atlantis plan fails, its not very intuitive, *especially* if it's not 
 
 With that exception it's not very feedback friendly. The point of this project is to provide a clean feedback loop for those who may not know or care what OPA is. We have quite a few methods of automatically generating terraform projects from cookie cutter + modules. I wanted a way of providing as much context as possible.
 
-Next: we have a fairly large engineering team and I like to work in a "plugin" modal. When I'm introducing something new I like to be able to toggle it on and off quickly, or gather metrics before pushing for changes. In this way, it's completely separated from Atlantis and has its own SDLC, which is nice from a "Marc, you broke everything" perspective.
+Next: we have a fairly large engineering team and I like to work in a "plugin" modal. When I'm introducing something new I like to be able to toggle it on and off quickly, or gather metrics before pushing for changes. In this way, it's completely separated from Atlantis and has its own SDLC, which is nice from a "Mark, you broke everything" perspective.
 
 Lastly I had to make a call from a security perspective. The point of this is 100% to be able from an upper architectural/infosec level to make assertions. For example: tagging. Tagging for us is partially for billing, partially to see our accountability plane, but *mostly* so that we can scope least privilege. 
 
