@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://markyoung.us/post/automating-email-attachments-to-paperless-ngx</loc>
+<lastmod>2025-03-06T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://markyoung.us/post/ec2-instance-connect-ssh</loc>
 <lastmod>2023-04-25T00:00:00+00:00</lastmod>
 </url>
@@ -386,5 +390,11 @@
 </url>
 <url>
 <loc>https://markyoung.us/blog/categories/github/</loc>
+</url>
+<url>
+<loc>https://markyoung.us/blog/categories/paperless/</loc>
+</url>
+<url>
+<loc>https://markyoung.us/blog/categories/automation/</loc>
 </url>
 </urlset>

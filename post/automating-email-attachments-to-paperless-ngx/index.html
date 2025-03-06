@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Automating email attachments to paperless-ngx - Mark Young</title>
+  <meta name="author" content="Mark Young">
+
+  
+  <meta name="description" content="I recently set up paperless-ngx and wanted an easy way to simply email myself receipts or documents and get them uploaded and tagged. paperless-ngx &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://markyoung.us/post/automating-email-attachments-to-paperless-ngx">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/button.css" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Mark Young" type="application/atom+xml">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29328388-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="logo">
+  	<div id="logoLeft">{</div>
+  	<div id="logoText"></div>
+  	<div id="logoRight">}</div>
+  	<div class="clear"></div>
+  </div>
+  <h1><a href="/">Mark Young</a></h1>
+  
+    <h2>Software. Microcontrollers. Beer.</h2>
+  
+  <div class="clear"></div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:markyoung.us" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="https://github.com/myoung34">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Automating Email Attachments to Paperless-ngx</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2025-03-06T00:00:00+00:00" pubdate data-updated="true"></time>
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I recently set up paperless-ngx and wanted an easy way to simply email myself receipts or documents and get them uploaded and tagged. <!-- more --></p>
+
+<p><a href="https://docs.paperless-ngx.com/">paperless-ngx</a> is a super cool way to host docs. I wanted originally to just organize and digitize my receipts and taxes in a way that will stay backed up and easy to find.</p>
+
+<p>Then I realized I want to simplify it because that process can take a long time manually.</p>
+
+<p>First: I set up mailgun for my tld, lets say <code>mail.foo.com</code>
+Mailgun has a free tier thats more than enough for my low volume use-case, and they allow you to forward messages after filters to a webhook.</p>
+
+<p>I created a route that checks that I sent it and forwards it to something I deployed (will go over that futher below) behind a tailscale funnel (so that it can be exposed to the wider net).</p>
+
+<p><img src="/images/mailgun.png"></p>
+
+<p>Next I wrote a super minimal flask app called <a href="https://github.com/myoung34/mailgun-to-paperless-ngx">mailgun-to-paperless-ngx</a> that will take the attachments from mailgun and upload them to paperless-ngx using the <code>To</code> as tags. Example: <code>receipt+work@mail.foo.com</code> with an attachment <code>dinner.jpg</code> will upload it to paperless as <code>dinner</code> (title) and tags <code>receipt</code> and <code>work</code>.</p>
+
+<p>Lets see it by sending this image out to <code>testing@mail.foo.com</code>.</p>
+
+<p><img src="/images/gmail.png"></p>
+
+<p>We see mailgun posted it.</p>
+
+<p><img src="/images/mailgun1.png"></p>
+
+<p>We also now see that the flask app is processing and uploading it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>file saved to /tmp/dinner.jpg
+</span><span class='line'>Uploading dinner.jpg to http://paperless-ngx.paperless-ngx.svc.cluster.local:8000 with tags [20]
+</span><span class='line'>Upload complete. Task ID: d8148db1-19a2-4392-8e3b-17f16fc905ef
+</span><span class='line'>Checking on task d8148db1-19a2-4392-8e3b-17f16fc905ef ...
+</span><span class='line'>waiting for task d8148db1-19a2-4392-8e3b-17f16fc905ef to complete...
+</span><span class='line'>Checking on task d8148db1-19a2-4392-8e3b-17f16fc905ef ...
+</span><span class='line'>task d8148db1-19a2-4392-8e3b-17f16fc905ef completed successfully</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now it&rsquo;s in paperless as expected</p>
+
+<p><img src="/images/paperless.png"></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">myoung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2025-03-06T00:00:00+00:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/automation/'>automation</a>, <a class='category' href='/blog/categories/paperless/'>paperless</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left articlenav" href="/post/ec2-instance-connect-ssh" title="Previous Post: Just In Time SSH Using EC2 Instance Connect">&laquo; Just In Time SSH Using EC2 Instance Connect</a>
+      
+      
+    </p>
+  </footer>
+</article>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/automating-email-attachments-to-paperless-ngx">Automating Email Attachments to Paperless-ngx</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/ec2-instance-connect-ssh">Just in Time SSH Using EC2 Instance Connect</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/tilt-hydrometer-on-a-tpicoc3">Tilt Hydrometer on a T-PicoC3</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/zuckerpunch">Zuckerpunch - Abusing Self Hosted Github Runners at Facebook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/pinball">Building a Digital Pinball</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'myoung34',
+            count: 0,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/106595646200297464671?rel=author">
+      <img src="https://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2025 - Mark Young -
+  <span class="credit">Powered by <a href="https://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

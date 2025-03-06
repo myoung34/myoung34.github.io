@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="https://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: automation | Mark Young]]></title>
+  <link href="https://markyoung.us/blog/categories/automation/atom.xml" rel="self"/>
+  <link href="https://markyoung.us/"/>
+  <updated>2025-03-06T19:08:40+00:00</updated>
+  <id>https://markyoung.us/</id>
+  <author>
+    <name><![CDATA[Mark Young]]></name>
+    
+  </author>
+  <generator uri="https://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Automating email attachments to paperless-ngx]]></title>
+    <link href="https://markyoung.us/post/automating-email-attachments-to-paperless-ngx"/>
+    <updated>2025-03-06T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/mailgun-paperless</id>
+    <content type="html"><![CDATA[<p>I recently set up paperless-ngx and wanted an easy way to simply email myself receipts or documents and get them uploaded and tagged. <!-- more --></p>
+
+<p><a href="https://docs.paperless-ngx.com/">paperless-ngx</a> is a super cool way to host docs. I wanted originally to just organize and digitize my receipts and taxes in a way that will stay backed up and easy to find.</p>
+
+<p>Then I realized I want to simplify it because that process can take a long time manually.</p>
+
+<p>First: I set up mailgun for my tld, lets say <code>mail.foo.com</code>
+Mailgun has a free tier thats more than enough for my low volume use-case, and they allow you to forward messages after filters to a webhook.</p>
+
+<p>I created a route that checks that I sent it and forwards it to something I deployed (will go over that futher below) behind a tailscale funnel (so that it can be exposed to the wider net).</p>
+
+<p><img src="/images/mailgun.png"></p>
+
+<p>Next I wrote a super minimal flask app called <a href="https://github.com/myoung34/mailgun-to-paperless-ngx">mailgun-to-paperless-ngx</a> that will take the attachments from mailgun and upload them to paperless-ngx using the <code>To</code> as tags. Example: <code>receipt+work@mail.foo.com</code> with an attachment <code>dinner.jpg</code> will upload it to paperless as <code>dinner</code> (title) and tags <code>receipt</code> and <code>work</code>.</p>
+
+<p>Lets see it by sending this image out to <code>testing@mail.foo.com</code>.</p>
+
+<p><img src="/images/gmail.png"></p>
+
+<p>We see mailgun posted it.</p>
+
+<p><img src="/images/mailgun1.png"></p>
+
+<p>We also now see that the flask app is processing and uploading it:</p>
+
+<pre><code>file saved to /tmp/dinner.jpg
+Uploading dinner.jpg to http://paperless-ngx.paperless-ngx.svc.cluster.local:8000 with tags [20]
+Upload complete. Task ID: d8148db1-19a2-4392-8e3b-17f16fc905ef
+Checking on task d8148db1-19a2-4392-8e3b-17f16fc905ef ...
+waiting for task d8148db1-19a2-4392-8e3b-17f16fc905ef to complete...
+Checking on task d8148db1-19a2-4392-8e3b-17f16fc905ef ...
+task d8148db1-19a2-4392-8e3b-17f16fc905ef completed successfully
+</code></pre>
+
+<p>And now it&rsquo;s in paperless as expected</p>
+
+<p><img src="/images/paperless.png"></p>
+]]></content>
+  </entry>
+  
+</feed>

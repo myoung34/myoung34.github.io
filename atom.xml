@@ -4,7 +4,7 @@
   <title><![CDATA[Mark Young]]></title>
   <link href="https://markyoung.us/atom.xml" rel="self"/>
   <link href="https://markyoung.us/"/>
-  <updated>2024-09-05T01:09:20+00:00</updated>
+  <updated>2025-03-06T19:08:40+00:00</updated>
   <id>https://markyoung.us/</id>
   <author>
     <name><![CDATA[Mark Young]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Automating email attachments to paperless-ngx]]></title>
+    <link href="https://markyoung.us/post/automating-email-attachments-to-paperless-ngx"/>
+    <updated>2025-03-06T00:00:00+00:00</updated>
+    <id>https://markyoung.us/post/mailgun-paperless</id>
+    <content type="html"><![CDATA[<p>I recently set up paperless-ngx and wanted an easy way to simply email myself receipts or documents and get them uploaded and tagged. <!-- more --></p>
+
+<p><a href="https://docs.paperless-ngx.com/">paperless-ngx</a> is a super cool way to host docs. I wanted originally to just organize and digitize my receipts and taxes in a way that will stay backed up and easy to find.</p>
+
+<p>Then I realized I want to simplify it because that process can take a long time manually.</p>
+
+<p>First: I set up mailgun for my tld, lets say <code>mail.foo.com</code>
+Mailgun has a free tier thats more than enough for my low volume use-case, and they allow you to forward messages after filters to a webhook.</p>
+
+<p>I created a route that checks that I sent it and forwards it to something I deployed (will go over that futher below) behind a tailscale funnel (so that it can be exposed to the wider net).</p>
+
+<p><img src="https://markyoung.us/images/mailgun.png"></p>
+
+<p>Next I wrote a super minimal flask app called <a href="https://github.com/myoung34/mailgun-to-paperless-ngx">mailgun-to-paperless-ngx</a> that will take the attachments from mailgun and upload them to paperless-ngx using the <code>To</code> as tags. Example: <code>receipt+work@mail.foo.com</code> with an attachment <code>dinner.jpg</code> will upload it to paperless as <code>dinner</code> (title) and tags <code>receipt</code> and <code>work</code>.</p>
+
+<p>Lets see it by sending this image out to <code>testing@mail.foo.com</code>.</p>
+
+<p><img src="https://markyoung.us/images/gmail.png"></p>
+
+<p>We see mailgun posted it.</p>
+
+<p><img src="https://markyoung.us/images/mailgun1.png"></p>
+
+<p>We also now see that the flask app is processing and uploading it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>file saved to /tmp/dinner.jpg
+</span><span class='line'>Uploading dinner.jpg to http://paperless-ngx.paperless-ngx.svc.cluster.local:8000 with tags [20]
+</span><span class='line'>Upload complete. Task ID: d8148db1-19a2-4392-8e3b-17f16fc905ef
+</span><span class='line'>Checking on task d8148db1-19a2-4392-8e3b-17f16fc905ef ...
+</span><span class='line'>waiting for task d8148db1-19a2-4392-8e3b-17f16fc905ef to complete...
+</span><span class='line'>Checking on task d8148db1-19a2-4392-8e3b-17f16fc905ef ...
+</span><span class='line'>task d8148db1-19a2-4392-8e3b-17f16fc905ef completed successfully</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now it&rsquo;s in paperless as expected</p>
+
+<p><img src="https://markyoung.us/images/paperless.png"></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Just In Time SSH Using EC2 Instance Connect]]></title>
@@ -2977,290 +3029,6 @@ All the env vars are pulled from <a href="https://www.vaultproject.io">vault</a>
 <p>If you add that with your ECS task along with the vault role and policy from the previous post about Vault Anything in Terraform, all your dependencies are met and kept in code!</p>
 
 <p>You can now generate certificates off your PKI backend and grab secrets all in one go!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Vault as a CA for ECS containers using Terraform (Part 1)]]></title>
-    <link href="https://markyoung.us/post/docker-vault-ca-part1"/>
-    <updated>2017-12-24T00:00:00+00:00</updated>
-    <id>https://markyoung.us/post/docker-vault-ca-part1</id>
-    <content type="html"><![CDATA[<p>In this I&rsquo;ll show some examples on how to leverage HashiCorp Vault as an awesome CA. Note this part is boring and 80% copy/paste from a cuddletech blog. <!-- more --></p>
-
-<h2>Prerequisites</h2>
-
-<ol>
-<li>Vault running as a server</li>
-<li>Vault CLI to match the server</li>
-</ol>
-
-
-<h2>Create the Root cert/key</h2>
-
-<p>(This is actually mostly a clone from <a href="https://cuddletech.com/?p=959">here</a> but I want to make sure it never disappears)</p>
-
-<p><em>Note</em>: You should not let the vault server generate the root CA, you should generate it and import it. I just havent figured out how to do that yet. I will update this post when I get around to it. <a href="https://en.wikipedia.org/wiki/Offline_root_certificate_authority">More info on that here</a></p>
-
-<ol>
-<li>Mount the PKI backend for the root</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault mount -path=cuddletech -description="Cuddletech Root CA" -max-lease-ttl=87600h pki
-</span><span class='line'>Successfully mounted 'pki' at 'cuddletech'!
-</span><span class='line'>$ vault mounts
-</span><span class='line'>Path         Type       Default TTL  Max TTL    Description
-</span><span class='line'>cubbyhole/   cubbyhole  n/a          n/a        per-token private secret storage
-</span><span class='line'>cuddletech/  pki        system       315360000  Cuddletech Root CA
-</span><span class='line'>secret/      generic    system       system     generic secret storage
-</span><span class='line'>sys/         system     n/a          n/a        system endpoints used for control, policy and debugging </span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/root/generate/internal \
-</span><span class='line'>&gt; common_name="Cuddletech Root CA" \
-</span><span class='line'>&gt; ttl=87600h \
-</span><span class='line'>&gt; key_bits=4096 \
-</span><span class='line'>&gt; exclude_cn_from_sans=true
-</span><span class='line'>Key             Value
-</span><span class='line'>---             -----
-</span><span class='line'>certificate     -----BEGIN CERTIFICATE-----
-</span><span class='line'>MIIFKzCCAxOgAwIBAgIUDXiI3GDzP2IbQ9IatFSCv9Pq/lgwDQYJKoZIhvcNAQEL
-</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4MTIz
-</span><span class='line'>..
-</span><span class='line'>axscmLdVE2HTB87W1H77iKKN8n9Xne//LUidxVX0Kg==
-</span><span class='line'>-----END CERTIFICATE-----
-</span><span class='line'>expiration      1783411981
-</span><span class='line'>issuing_ca      -----BEGIN CERTIFICATE-----
-</span><span class='line'>MIIFKzCCAxOgAwIBAgIUDXiI3GDzP2IbQ9IatFSCv9Pq/lgwDQYJKoZIhvcNAQEL
-</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4MTIz
-</span><span class='line'>...
-</span><span class='line'>axscmLdVE2HTB87W1H77iKKN8n9Xne//LUidxVX0Kg==
-</span><span class='line'>-----END CERTIFICATE-----
-</span><span class='line'>serial_number   0d:78:88:dc:60:f3:3f:62:1b:43:d2:1a:b4:54:82:bf:d3:ea:fe:58</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Verify</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s https://localhost:8200/v1/cuddletech/ca/pem | openssl x509 -text
-</span><span class='line'>Certificate:
-</span><span class='line'>    Data:
-</span><span class='line'>        Version: 3 (0x2)
-</span><span class='line'>        Serial Number:
-</span><span class='line'>            0d:78:88:dc:60:f3:3f:62:1b:43:d2:1a:b4:54:82:bf:d3:ea:fe:58
-</span><span class='line'>    Signature Algorithm: sha256WithRSAEncryption
-</span><span class='line'>        Issuer: CN=Cuddletech Root CA
-</span><span class='line'>        Validity
-</span><span class='line'>            Not Before: Jul  9 08:12:31 2016 GMT
-</span><span class='line'>            Not After : Jul  7 08:13:01 2026 GMT
-</span><span class='line'>        Subject: CN=Cuddletech Root CA
-</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Fix the URL for accessing the CA/CRL URLs</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/config/urls issuing_certificates="https://10.0.0.22:8200/v1/cuddletech
-</span><span class='line'>Success! Data written to: cuddletech/config/urls</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Create the Intermediate cert/key</h2>
-
-<p>Mount the PKI for the Intermediate (similar to root)</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>vault mount -path=cuddletech_ops -description="Cuddletech Ops Intermediate CA" -max-lease-ttl=26280h pki
-</span><span class='line'>Successfully mounted 'pki' at 'cuddletech_ops'!
-</span><span class='line'>
-</span><span class='line'>$ vault mounts
-</span><span class='line'>Path             Type       Default TTL  Max TTL    Description
-</span><span class='line'>cubbyhole/       cubbyhole  n/a          n/a        per-token private secret storage
-</span><span class='line'>cuddletech/      pki        system       315360000  Cuddletech Root CA
-</span><span class='line'>cuddletech_ops/  pki        system       94608000   Cuddletech Ops Intermediate CA</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Generate the intermediate CSR</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/intermediate/generate/internal \
-</span><span class='line'>&gt;  common_name="Cuddletech Operations Intermediate CA"
-</span><span class='line'>&gt;  ttl=26280h \
-</span><span class='line'>&gt;  key_bits=4096 \
-</span><span class='line'>&gt;  exclude_cn_from_sans=true
-</span><span class='line'>Key     Value
-</span><span class='line'>---     -----
-</span><span class='line'>csr     -----BEGIN CERTIFICATE REQUEST-----
-</span><span class='line'>MIICuDCCAaACAQAwMDEuMCwGA1UEAxMlQ3VkZGxldGVjaCBPcGVyYXRpb25zIElu
-</span><span class='line'>dGVybWVkaWF0ZSBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALt8
-</span><span class='line'>...
-</span><span class='line'>hD8cpHTXqjKExYWKc/rQDgjw9+RNDdb45xszDagrgFgNPqI9i0fNh9jViMmjUiTc
-</span><span class='line'>PQTZS4XxIoRrx1/xVHJ4Qm++ntLPVCvzjMZafg==
-</span><span class='line'>-----END CERTIFICATE REQUEST-----</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cut and paste that CSR into a new file cuddletech_ops.csr. The reason we output the file here is so we can get it out of one backend and into another and then back out.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech/root/sign-intermediate \
-</span><span class='line'>&gt;  csr=@cuddletech_ops.csr \
-</span><span class='line'>&gt;  common_name="Cuddletech Ops Intermediate CA" \
-</span><span class='line'>&gt;  ttl=8760h
-</span><span class='line'>Key             Value
-</span><span class='line'>---             -----
-</span><span class='line'>certificate     -----BEGIN CERTIFICATE-----
-</span><span class='line'>MIIEZDCCAkygAwIBAgIUHuIhRF3tYtfoZiAFdjcCtQpMR+cwDQYJKoZIhvcNAQEL
-</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4Mjkz
-</span><span class='line'>...
-</span><span class='line'>UtI2b/AamAqf340eRKmSdEh4WypB4JR+t259YA45w2j4mS+rxREycEk4YosR/vUs
-</span><span class='line'>jekMiq57yNq7h8eOTrnOulJxazbVrYGb
-</span><span class='line'>-----END CERTIFICATE-----
-</span><span class='line'>expiration      1470645002
-</span><span class='line'>issuing_ca      -----BEGIN CERTIFICATE-----
-</span><span class='line'>MIIFKzCCAxOgAwIBAgIUDXiI3GDzP2IbQ9IatFSCv9Pq/lgwDQYJKoZIhvcNAQEL
-</span><span class='line'>BQAwHTEbMBkGA1UEAxMSQ3VkZGxldGVjaCBSb290IENBMB4XDTE2MDcwOTA4MTIz
-</span><span class='line'>..
-</span><span class='line'>1FRGlwHUg+6IIZBVIapzivLc6pAvLFPxQlQvT5CNHPk91zwyNQ9ZX2PzatdajUnd
-</span><span class='line'>axscmLdVE2HTB87W1H77iKKN8n9Xne//LUidxVX0Kg==
-</span><span class='line'>-----END CERTIFICATE-----
-</span><span class='line'>serial_number   1e:e2:21:44:5d:ed:62:d7:e8:66:20:05:76:37:02:b5:0a:4c:47:e7</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now that we have a Root CA signed cert, we’ll need to cut-n-paste this certificate into a file we’ll name cuddletech_ops.crt and then import it into our Intermediate CA backend:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/intermediate/set-signed \
-</span><span class='line'>&gt; certificate=@cuddletech_ops.crt
-</span><span class='line'>Success! Data written to: cuddletech_ops/intermediate/set-signed</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Awesome! Lets verify:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ curl -s https://localhost:8200/v1/cuddletech_ops/ca/pem | openssl x509 -text | head -20
-</span><span class='line'>Certificate:
-</span><span class='line'>    Data:
-</span><span class='line'>        Version: 3 (0x2)
-</span><span class='line'>        Serial Number:
-</span><span class='line'>            76:12:53:41:be:18:98:2c:a1:51:4a:f8:f0:bd:b4:a3:44:7e:74:59
-</span><span class='line'>    Signature Algorithm: sha256WithRSAEncryption
-</span><span class='line'>        Issuer: CN=Cuddletech Root CA
-</span><span class='line'>        Validity
-</span><span class='line'>            Not Before: Jul  9 09:23:39 2016 GMT
-</span><span class='line'>            Not After : Jul  9 09:24:09 2017 GMT
-</span><span class='line'>        Subject: CN=Cuddletech Ops Intermediate CA
-</span><span class='line'> ...</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The last thing we need to do is set the CA &amp; CRL URL’s for accessing the CA:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ vault write cuddletech_ops/config/urls \
-</span><span class='line'>&gt; issuing_certificates="https://10.0.0.22:8200/v1/cuddletech_ops/ca" \
-</span><span class='line'>&gt; crl_distribution_points="https://10.0.0.22:8200/v1/cuddletech_ops/crl"
-</span><span class='line'>Success! Data written to: cuddletech_ops/config/urls</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
