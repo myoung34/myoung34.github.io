@@ -4,7 +4,7 @@
   <title><![CDATA[Category: arcade | Mark Young]]></title>
   <link href="https://markyoung.us/blog/categories/arcade/atom.xml" rel="self"/>
   <link href="https://markyoung.us/"/>
-  <updated>2025-03-06T19:08:40+00:00</updated>
+  <updated>2025-04-28T21:57:27+00:00</updated>
   <id>https://markyoung.us/</id>
   <author>
     <name><![CDATA[Mark Young]]></name>
@@ -161,7 +161,7 @@ I&rsquo;ll share some before and afters:</p>
 <br/>
 <br/>
 An atari centipede (already JAMMA) in mostly good condition. <br/>
-* Turned into Pandoras box<br/>
+* PCB and wiring were all fine, but turned into Pandoras box<br/>
 * The CRT was bad, they wanted it LCD<br/>
 * They wanted to just turn the marquee blank<br/>
 * The 6 button wiring harness was a joke<br/>
@@ -182,7 +182,7 @@ A knock off galaga<br/>
 <p><br/>
 <br/>
 A Stern Berzerk in absolute terrible condition<br/>
-* Turned into Pandoras box<br/>
+* Turned into Pandoras box, though the original PCB was intact<br/>
 * This took 90% of the time just to sand.<br/>
 * All the wood is pressed wood that had started to come apart at the bottom. Had to cut it all off and fix with bondo<br/>
 * Custom cut a new control panel from &frac34;&#8221; MDF<br/>
@@ -211,7 +211,8 @@ Zaxxon hacked into a poker game<br/>
 
 <p><br/>
 <br/>
-Completely empty MK2 shell<br/>
+Mostly empty MK2 shell<br/>
+* Had a castlevania PCB inside that needed some new capacitors. No idea why this was in there.<br/>
 * Stole CPO from another similar Midway shell<br/>
 * Customer wanted light up LEDs which required hacking up all the button PCBs to separate the ground and voltage and wiring them to the +5V on the CHAMMA harness<br/>
 * New LCD built into shell from a 32&#8221; TV<br/>
@@ -219,8 +220,8 @@ Completely empty MK2 shell<br/>
 
 <p><br/>
 <br/>
-Gem fighter<br/>
-* A dynamo cabinet turned into gem fighter<br/>
+Street fighter<br/>
+* A dynamo cabinet turned into street fighter (brand new PCB but the wiring was all wrong).<br/>
 * They wanted mrs pacman marquee and a generic multi-game CPO - a nice polylaminate one with zelda, donkey kong, pacman etc<br/>
 * Wood was originally in great shape, CRT was bad. Said fixable but needed a complete overhaul. Used an LCD to replace.<br/>
 * Paint touch up, replacement locks<br/>
@@ -229,6 +230,7 @@ Gem fighter<br/>
 <p><br/>
 <br/>
 Custom 4 Player from MK1 cabinet<br/>
+* Another street fighter PCB but couldnt figure that out<br/>
 * MK1 cabinet modified to fit a 4 player CPO<br/>
 * Built dimensions to fit, using custom latching system to remove (does not fit through a standard door as-is)<br/>
 * 2 Players are to CHAMMA harness as usual, the other 2 players are USB into pandoras box. Worked surprisingly easy<br/>
